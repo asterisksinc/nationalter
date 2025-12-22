@@ -110,6 +110,11 @@ const LeaderboardWidget = () => {
   >("Scholars");
   const [searchTerm, setSearchTerm] = useState("");
 
+  React.useEffect(() => {
+    // helpful for debugging mounting issues in devtools console
+    console.log("LeaderboardWidget mounted", { activeTab });
+  }, []);
+
   const tabs = [
     { id: "Scholars", icon: GraduationCap, label: "Scholars" },
     { id: "Universities", icon: Building2, label: "Universities" },
@@ -124,9 +129,6 @@ const LeaderboardWidget = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
           <div>
             <h3 className="h3 flex items-center gap-3">
-              <div className="p-2 bg-orange-50 rounded-lg text-[#FF7A00]">
-                <Sparkles size={20} />
-              </div>
               Researched H-Index Portal
             </h3>
           </div>

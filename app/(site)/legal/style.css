@@ -1,35 +1,34 @@
 .faqtitle {
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 26px;
-    letter-spacing: -4%;
-    color: #FF8D28;
-    margin-bottom: 30px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 26px;
+  letter-spacing: -4%;
+  color: #ff8d28;
+  margin-bottom: 30px;
 }
 .page-bg {
-  background-image: url('/BG.png');
+  background-image: url("/Bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-.pad-top{
-    padding-top:150px ;
-        padding-bottom:30px ;
-
+.pad-top {
+  padding-top: 150px;
+  padding-bottom: 30px;
 }
-.topsubtitle{
-     font-family: 'Inter', sans-serif;
-  font-weight: 500;       
+.topsubtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
   font-size: 24px;
-  line-height: 24px;      
+  line-height: 24px;
   letter-spacing: -2px;
   vertical-align: middle;
-   font-size:  24px;
+  font-size: 24px;
 }
-.topbody p{
-    color: #5D5D65;
-     font-family: 'Inter', sans-serif;
-  font-weight: 400;       
+.topbody p {
+  color: #5d5d65;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
   font-size: 18px;
   line-height: 26px;
   letter-spacing: -0.04em;
@@ -37,21 +36,21 @@
   margin-top: 15px;
 }
 .leading-tight {
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;          
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
   font-size: 32px;
-  line-height: 32px;          
+  line-height: 32px;
   letter-spacing: -2px;
   vertical-align: middle;
 }
 .sub-listhead {
-    margin-top: 30px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;       
+  margin-top: 30px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: -0.04em;
-  color: #5D5D65;
+  color: #5d5d65;
 }
 
 .faqtitle {
@@ -79,7 +78,7 @@ h1 {
 .rightsubtitle {
   font-size: 15px;
   line-height: 1.8;
-  color: #6b7280; 
+  color: #6b7280;
   max-width: 560px;
 }
 
@@ -87,5 +86,3 @@ section {
   padding-left: 16px;
   padding-right: 16px;
 }
-
-

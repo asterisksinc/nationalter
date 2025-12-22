@@ -1,6 +1,7 @@
-.page-bg {
-  background-image: url("/Bg.png");
+.hero {
+  position: relative;
+  background-image: url("/Bg.jpg");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: 100% 0%;
+  background-size: cover;
+  background-position: center top;
 }
