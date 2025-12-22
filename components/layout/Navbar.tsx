@@ -53,7 +53,7 @@ export default function Navbar() {
 
             <div className="relative group">
               <button className="flex items-center gap-1 text-neutral-900 font-medium text-sm tracking-normal hover:text-[#FF7A00] transition-colors py-4">
-                Leader-board
+                Leaderboard
                 <ChevronDown
                   size={14}
                   className="group-hover:rotate-180 transition-transform duration-200"
