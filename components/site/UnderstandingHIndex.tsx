@@ -74,7 +74,7 @@ export default function UnderstandingHIndex() {
               <CheckerboardPattern className="w-full h-56" />
               <div className="p-5">
                 <h5 className="h5 mb-2">{card.title}</h5>
-                <p className="p2 text-gray-600">{card.description}</p>
+                <p className="p1 text-gray-600">{card.description}</p>
               </div>
             </div>
           ))}
@@ -92,7 +92,7 @@ export default function UnderstandingHIndex() {
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
                   <h5 className="h5 mb-2">{card.title}</h5>
-                  <p className="p2 text-gray-600 leading-snug">
+                  <p className="p1 text-gray-600 leading-snug">
                     {card.description}
                   </p>
                 </div>
