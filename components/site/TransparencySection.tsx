@@ -115,7 +115,7 @@ export default function TransparencySection() {
 
               <Link
                 href="/methodology"
-                className="inline-block px-6 py-3 rounded bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
+                className="inline-block px-3 py-2 rounded-lg  bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
               >
                 View Full Methodology
               </Link>
@@ -123,14 +123,14 @@ export default function TransparencySection() {
           </div>
 
           {/* RIGHT SCROLLABLE CONTENT */}
-          <div className="space-y-40">
+          <div className="space-y-10 lg:space-y-16">
             {products.map((p) => (
               <div
                 key={p.id}
                 ref={(el) => (serviceRefs.current[p.id] = el)}
-                className="scroll-mt-40"
+                className="scroll-mt-4"
               >
-                <div className="space-y-10">
+                <div className="space-y-3 lg:space-y-6">
                   <div className="relative aspect-[4/3] bg-neutral-100 rounded-lg overflow-hidden">
                     <Image
                       src={p.image}
@@ -141,15 +141,9 @@ export default function TransparencySection() {
                   </div>
 
                   <div className="max-w-md">
-                    <h4 className="mb-4">{p.title}</h4>
-                    <p className="mb-6">{p.description}</p>
-                    <Link
-                      href={`/methodology/${p.slug}`}
-                      className="inline-flex items-center gap-2 text-sm font-medium text-neutral-600 hover:opacity-70"
-                    >
-                      Learn more
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
+                    <h5 className="mb-4">{p.title}</h5>
+                    <p className=" mb-6">{p.description}</p>
+                   
                   </div>
                 </div>
               </div>

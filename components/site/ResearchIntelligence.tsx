@@ -9,7 +9,7 @@ export default function ResearchIntelligence() {
             <h3 className="text-[#1E1E1E] text-2xl md:text-3xl">
               Research Intelligence & Academic Insight
             </h3>
-            <p className="p1 text-[#5C5C5C] mt-4 max-w-xl">
+            <p className=" text-[#5C5C5C] mt-4 max-w-xl">
               Stay informed with data literacy, ranking methodology, and
               research visibility best practices.
             </p>

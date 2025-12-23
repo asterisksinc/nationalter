@@ -46,6 +46,21 @@ export default function AboutPage() {
           </PrimaryButton>
         </div>
       </section>
+      {/* two img placehodlers blocks.. one block with 70% width and other with 30% width..section padding 120px on left and right.. */}
+   <section className="px-[120px] w-full">
+  <div className="flex gap-6 w-full">
+    {/* 70% block */}
+    <div className="w-[65%] h-[400px] bg-neutral-200 rounded-xl flex items-center justify-center">
+      <span className="text-neutral-500">Image 1 </span>
+    </div>
+
+    {/* 30% block */}
+    <div className="w-[35%] h-[400px] bg-neutral-300 rounded-xl flex items-center justify-center">
+      <span className="text-neutral-600">Image 2 </span>
+    </div>
+  </div>
+</section>
+
 
       {/* Who We Are */}
       <section className="w-full px-4 md:px-[120px] py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
@@ -65,6 +80,7 @@ export default function AboutPage() {
             platforms, and infrastructures that are reliable, scalable, and
             future-ready.
           </p>
+          <br />
           <p className="p1">
             At our core, we are architects of digital ecosystems. We blend
             strategy, design, engineering, and automation to create solutions
@@ -72,6 +88,7 @@ export default function AboutPage() {
             with one intention: to help brands operate smarter, move faster, and
             scale stronger.
           </p>
+          <br />
           <p className="p1">
             Today, Nationcite partners with startups, enterprises, and
             innovators across industries, powering their digital journeys with
@@ -79,24 +96,44 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
+      <section className="px-[120px] w-full">
+        <div className="w-full h-[600px] bg-orange-100 border-2 ">
 
-      {/* The Minds Powering Nationcite Section */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-[120px] bg-white">
-        <div className="flex flex-col items-center gap-12">
-          <h3 className=" md:text-4xl  text-center text-[#1E1E1E]">
-            The Minds Powering Nationcite
-          </h3>
-
-          {/* Placeholder Image */}
-          <div className="w-full rounded-2xl overflow-hidden aspect-video bg-slate-100">
-            <img
-              src="https://via.placeholder.com/1200x675?text=The+Minds+Powering+Nationcite"
-              alt="The Minds Powering Nationcite"
-              className="w-full h-full object-cover"
-            />
-          </div>
         </div>
       </section>
+
+      {/* The Minds Powering Nationcite Section */}
+     <section className="w-full py-20 md:py-32 px-4 md:px-[120px] bg-white">
+  <div className="flex flex-col items-center gap-12">
+    <h3 className="md:text-4xl text-center text-[#1E1E1E]">
+      The Minds Powering Nationcite
+    </h3>
+
+    {/* Team Grid */}
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      {Array.from({ length: 8 }).map((_, index) => (
+        <div
+          key={index}
+          className="group cursor-pointer rounded-2xl bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+        >
+          {/* Image Placeholder */}
+          <div className="w-full aspect-square rounded-2xl bg-[#E6E6E6] mb-4" />
+
+          {/* Text */}
+          <div>
+            <h5 className=" px-3 text-[#1E1E1E]">
+              Team Member Name
+            </h5>
+            <p className="text-xs px-3 text-[#6B6B6B] mt-1">
+              Lorem ipsum dolor sit amet,
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Trusted By */}
       <TrustedBy />

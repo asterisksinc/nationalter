@@ -20,12 +20,12 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? "" : ""
+        isScrolled ? "hidden" : ""
       }`}
     >
       {/* Desktop: Centered white container */}
       <div className="hidden md:flex md:justify-center md:py-4">
-<div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6 py-3 flex items-center justify-between">
+<div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6 py-1 flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
@@ -35,8 +35,8 @@ export default function Navbar() {
               <Image
                 src="/logos/pcLogo.png"
                 alt="Nationcite Logo"
-                height={40}
-                width={160}
+                height={20}
+                width={120}
                 priority
               />
             </div>
@@ -109,7 +109,7 @@ export default function Navbar() {
             </Link>
 
             <div className="relative group">
-              <button className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-[#f76a23] transition-colors">
+              <button className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-lg hover:bg-[#f76a23] transition-colors">
                 Sign Up/In
                 <ChevronDown
                   size={14}
