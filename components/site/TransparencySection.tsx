@@ -127,7 +127,9 @@ export default function TransparencySection() {
             {products.map((p) => (
               <div
                 key={p.id}
-                ref={(el) => (serviceRefs.current[p.id] = el)}
+                ref={(el) => {
+                  if (el) serviceRefs.current[p.id] = el;
+                }}
                 className="scroll-mt-4"
               >
                 <div className="space-y-3 lg:space-y-6">
@@ -143,7 +145,6 @@ export default function TransparencySection() {
                   <div className="max-w-md">
                     <h5 className="mb-4">{p.title}</h5>
                     <p className=" mb-6">{p.description}</p>
-                   
                   </div>
                 </div>
               </div>
