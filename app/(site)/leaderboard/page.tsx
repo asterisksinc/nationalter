@@ -30,7 +30,7 @@ export default function LeaderboardPage() {
               Discover the top researchers and institutions driving innovation
               and making an impact in their fields. Our comprehensive rankings
               highlight the leaders in academic research and scholarly
-              achievement.
+              achievement
             </p>
           </div>
 
