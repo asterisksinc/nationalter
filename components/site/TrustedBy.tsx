@@ -41,7 +41,7 @@ const TrustedBy = () => {
               Trusted by Leading Academic Institutions
             </h3>
             <p className="text-gray-500 text-sm md:text-lg mt-3 mx-auto text-center">
-              Nationcite collaborates with universities, hospitals, and research
+              Nationcite collaborates with universities, hospitals, and research <br />
               organizations shaping India’s academic future.
             </p>
           </div>

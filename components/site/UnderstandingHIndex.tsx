@@ -58,8 +58,8 @@ export default function UnderstandingHIndex() {
             The Backbone of Research Impact
           </h3>
           <p className="p2 text-gray-500 max-w-[800px]">
-            The H-Index is more than a number. It reflects consistency,
-            influence, and academic credibility. Here's what it truly represents
+            The H-Index is more than number. It reflects consistency,
+            influence, and academic credibility. <br /> Here's what it truly represents
             and why it matters.
           </p>
         </div>

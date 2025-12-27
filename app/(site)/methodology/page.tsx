@@ -57,10 +57,10 @@ export default function MethodologyPage() {
 
       {/* Right Card Sections */}
       <RightCard />
-      <RightCard />
+      <ConsultancySection />
       <RightCard />
 
-      <ConsultancySection />
+     
       <ThreeBlocksSection />
 
       <FAQSection />

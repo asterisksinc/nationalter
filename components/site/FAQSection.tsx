@@ -28,16 +28,17 @@ export default function FAQSection({
   };
 
   return (
-    <section className="w-full px-4 md:px-[120px] py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-      <div>
+    <section className="w-full px-4 md:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
+      {/* Header Section - Centered */}
+      <div className="text-center max-w-3xl mb-12">
         <span className="text-[#F76A23] font-bold mb-4 block text-sm uppercase tracking-wider">
           {kicker}
         </span>
-        <h3 className="mb-6 text-2xl md:text-3xl">{title}</h3>
-        <p className="p1 text-[#5C5C5C] max-w-md">
+        <h3 className="mb-6 text-2xl md:text-3xl ">{title}</h3>
+        <p className="p1 text-[#5C5C5C]">
           {children ?? (
             <>
-              This section answers the most common questions about Nationcite.
+              This section answers the most common questions about Nationcite,
               who we are, how we operate, and what makes our company different
               in the digital ecosystem.
             </>
@@ -45,79 +46,82 @@ export default function FAQSection({
         </p>
       </div>
 
-      <div className="space-y-0">
-        {questions.map((question, i) => (
-          <div key={i} className="border-b border-gray-200">
-            <button
-              onClick={() => toggleFaq(i)}
-              className="flex justify-between items-center w-full py-6 text-left focus:outline-none"
-            >
-              <span
-                className={`font-medium text-lg transition-colors ${
-                  openFaqIndex === i ? "text-[#F76A23]" : "text-neutral-900"
+      {/* FAQ Items - Centered vertical list with white border */}
+      <div className="w-full max-w-3xl border border-white rounded-lg bg-white shadow-sm p-6 md:p-8">
+        <div className="space-y-0">
+          {questions.map((question, i) => (
+            <div key={i} className="border-b border-gray-200 last:border-b-0">
+              <button
+                onClick={() => toggleFaq(i)}
+                className="flex justify-between items-center w-full py-6 text-left focus:outline-none"
+              >
+                <span
+                  className={`font-medium text-lg transition-colors ${
+                    openFaqIndex === i ? "text-[#F76A23]" : "text-neutral-900"
+                  }`}
+                >
+                  {question}
+                </span>
+                <span className="text-2xl font-light text-gray-400 ml-4 flex-shrink-0">
+                  {openFaqIndex === i ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 5v14" />
+                      <path d="M5 12h14" />
+                    </svg>
+                  )}
+                </span>
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openFaqIndex === i
+                    ? "max-h-96 opacity-100 pb-6"
+                    : "max-h-0 opacity-0"
                 }`}
               >
-                {question}
-              </span>
-              <span className="text-2xl font-light text-gray-400">
-                {openFaqIndex === i ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M18 15l-6-6-6 6" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 5v14" />
-                    <path d="M5 12h14" />
-                  </svg>
-                )}
-              </span>
-            </button>
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                openFaqIndex === i
-                  ? "max-h-96 opacity-100 pb-6"
-                  : "max-h-0 opacity-0"
-              }`}
-            >
-              <div className="text-[#5C5C5C] leading-relaxed">
-                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam.
-                  </p>
-                  <br />
-                  <a
-                    href="#"
-                    className="text-[#F76A23] font-medium hover:underline flex items-center gap-1"
-                  >
-                    Learn More
-                  </a>
+                <div className="text-[#5C5C5C] leading-relaxed">
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                      do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam.
+                    </p>
+                    <br />
+                    <a
+                      href="#"
+                      className="text-[#F76A23] font-medium hover:underline flex items-center gap-1"
+                    >
+                      Learn More
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

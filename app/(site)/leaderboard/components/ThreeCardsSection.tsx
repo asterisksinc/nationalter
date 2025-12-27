@@ -23,7 +23,7 @@ export default function ThreeCardsSection() {
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="bg-[#EAEAEA] rounded-2xl p-6 md:p-10 min-h-[250px] md:min-h-[320px] flex flex-col justify-end"
+              className="bg-[#EAEAEA] rounded-2xl p-6 md:p-10 min-h-[250px] md:min-h-[500px] flex flex-col justify-end"
             >
               <h5 className="text-[#1E1E1E] mb-4 text-lg md:text-xl">
                 Lorem ipsum dolor sit amet

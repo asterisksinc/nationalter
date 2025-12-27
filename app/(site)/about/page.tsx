@@ -19,9 +19,21 @@ export default function AboutPage() {
     <main className="w-full bg-white">
       {/* Hero Section */}
       <section className="w-full px-4 md:px-[120px] h-screen flex flex-col items-center justify-center text-center page-bg">
-        <span className="text-[#F76A23] font-medium text-sm tracking-wide uppercase mb-4">
-          About Nationcite
-        </span>
+       <span className="
+  inline-block
+  bg-white
+  text-[#F76A23]
+  border border-[#F76A23]/30
+  px-3 py-1
+  rounded-lg
+  font-medium text-sm
+  tracking-wide uppercase
+  shadow-sm mb-3  
+">
+  About Nationcite
+</span>
+
+
         <h1 className="text-3xl md:text-5xl leading-tight  mb-6">
          
             Building The Digital  Infrastructure <br /> for Tomorrow's brands
@@ -50,12 +62,12 @@ export default function AboutPage() {
    <section className="px-[120px] w-full">
   <div className="flex gap-6 w-full">
     {/* 70% block */}
-    <div className="w-[65%] h-[400px] bg-neutral-200 rounded-xl flex items-center justify-center">
+    <div className="w-[65%] h-[650px] bg-neutral-200 rounded-xl flex items-center justify-center">
       <span className="text-neutral-500">Image 1 </span>
     </div>
 
     {/* 30% block */}
-    <div className="w-[35%] h-[400px] bg-neutral-300 rounded-xl flex items-center justify-center">
+    <div className="w-[35%] h-[650px] bg-neutral-300 rounded-xl flex items-center justify-center">
       <span className="text-neutral-600">Image 2 </span>
     </div>
   </div>
@@ -63,11 +75,21 @@ export default function AboutPage() {
 
 
       {/* Who We Are */}
-      <section className="w-full px-4 md:px-[120px] py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
+      <section className="w-full  px-4 md:px-[120px] py-12  md:py-24  grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
         <div>
-          <span className="text-[#F76A23] font-bold mb-4 block text-sm uppercase tracking-wider">
-            Who We Are
-          </span>
+         <span className="
+  inline-block
+  bg-white
+  text-[#F76A23]
+  border border-[#F76A23]/30
+  px-3 py-1
+  rounded-lg
+  font-medium text-sm
+  tracking-wide uppercase
+  shadow-sm mb-3  
+">
+  Who we are
+</span>
           <h3 className="text-2xl md:text-3xl">
             Where Vision Meets Engineering Excellence
           </h3>
@@ -97,10 +119,12 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="px-[120px] w-full">
-        <div className="w-full h-[600px] bg-orange-100 border-2 ">
+        <div className="w-full h-[650px] mb-23 bg-orange-100 border-2 ">
 
         </div>
       </section>
+
+       <TrustedBy  />
 
       {/* The Minds Powering Nationcite Section */}
      <section className="w-full py-20 md:py-32 px-4 md:px-[120px] bg-white">
@@ -135,49 +159,56 @@ export default function AboutPage() {
 </section>
 
 
-      {/* Trusted By */}
-      <TrustedBy />
+     
 
       {/* 15 Reasons to Join Us */}
-      <section className="w-full px-4 md:px-[120px] py-12 md:py-24 flex flex-col lg:flex-row gap-8 md:gap-16">
-        <div className="lg:w-1/4">
-          <h3 className="mb-6 text-2xl md:text-3xl">15 Reasons to Join Us</h3>
-          <p className="p2 text-[#5C5C5C]">
-            Discover why top talent chooses to build their careers with us.
-          </p>
+ <section className="w-full px-4 md:px-[120px] py-12 md:py-24 flex flex-col lg:flex-row gap-8 md:gap-16">
+  <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start">
+    <h3 className="mb-6 text-2xl md:text-3xl">Why Organizations Choose Us</h3>
+    <p className="p2 text-[#5C5C5C]">
+      A reliable platform built for scale, security, and long-term growth.
+    </p>
+  </div>
+  
+  <div className="lg:w-3/5 flex flex-col gap-4 md:gap-6 lg:max-w-xl">
+    {[
+      "Innovation",
+      "Scalability",
+      "Precision",
+      "Transparency",
+      "Reliability",
+      "Speed",
+      "Security",
+      "Ownership",
+      "Performance",
+      "Adaptability",
+      "Vision",
+      "Automation",
+    ].map((reason, i) => (
+      <div
+        key={i}
+        className="bg-white p-4 md:p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+      >
+        <div className="flex items-start mt-16 gap-3">
+          <div className="w-8 md:w-10 h-8 md:h-10 text-[#F76A23] bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Check size={18} className="md:w-5 md:h-5" />
+          </div>
+          <div >
+
+            <h5 className="font-medium text-sm md:text-lg text-neutral-800">
+              {reason}
+            </h5>
+            <p className="p2 text-[#5C5C5C] mt-1">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+            </p>
+          </div>
         </div>
-        <div className="lg:w-3/4 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-          {[
-            "Innovation",
-            "Scalability",
-            "Precision",
-            "Transparency",
-            "Reliability",
-            "Speed",
-            "Security",
-            "Ownership",
-            "Performance",
-            "Adaptability",
-            "Vision",
-            "Automation",
-            "Growth",
-            "Excellence",
-            "Trust",
-          ].map((reason, i) => (
-            <div
-              key={i}
-              className="bg-[#F9F9F9] p-4 md:p-6 rounded-xl flex flex-col gap-3 md:gap-4 border border-transparent"
-            >
-              <div className="w-8 md:w-10 h-8 md:h-10 text-[#5C5C5C] bg-white rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
-                <Check size={18} className="md:w-5 md:h-5" />
-              </div>
-              <p className="font-medium text-sm md:text-lg text-neutral-800">
-                {reason}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
+
 
       <FAQSection />
       <FinalCTA />

@@ -6,20 +6,20 @@ export default function FinalCTA() {
     <section className="w-full py-20 md:py-32 bg-white px-4 md:px-[120px]">
       <div className="w-full flex flex-col items-center text-center">
         <div className="mb-8 md:mb-10">
-          <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-full text-sm font-medium border border-[#FFD6B3]">
+          <span className="bg-[#FFF5EB] text-[#FF7A00] px-4  rounded-full text-sm font-medium border border-[#FFD6B3]">
             CTA Section
           </span>
         </div>
 
-        <h2 className="text-[#1E1E1E] mb-10 md:mb-16 text-3xl md:text-4xl">
+        <h3 className="text-[#1E1E1E] mb-10 md:mb-16 text-3xl md:text-3xl">
           Claim Your Academic Identity.
           <br />
           Shape Your Research Legacy.
-        </h2>
+        </h3>
 
         <p className="p1 text-[#5C5C5C] mt-10 mb-14 md:mb-20 w-full md:w-[900px]">
           Whether you are a researcher building visibility, or an institution
-          managing thousands of profiles Nationcite gives you verified control,
+          managing thousands of profiles  Nationcite gives you verified control,
           transparent impact measurement, and trusted national recognition.
         </p>
 
