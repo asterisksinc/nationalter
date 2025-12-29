@@ -25,18 +25,18 @@ export default function Navbar() {
     >
       {/* Desktop: Centered white container */}
       <div className="hidden md:flex md:justify-center md:py-4">
-<div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6 py-1 flex items-center justify-between">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 text-gray-900 font-bold hover:opacity-80 transition-opacity"
           >
-            <div className="h-10 w-40">
+            <div className="h-12 w-48">
               <Image
                 src="/logos/pcLogo.png"
                 alt="Nationcite Logo"
-                height={20}
-                width={120}
+                height={24}
+                width={144}
                 priority
               />
             </div>
@@ -139,153 +139,56 @@ export default function Navbar() {
       </div>
 
       {/* Mobile: Full width (unchanged) */}
-      <div className="md:hidden w-full py-2 flex items-center justify-between px-4 bg-white border-b border-gray-200">
+      <div className="md:hidden w-full flex items-center justify-between px-2 py-2 bg-white border-b border-gray-200">
         {/* Mobile Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-gray-900 font-bold hover:opacity-80 transition-opacity"
-        >
-          <div className="h-14 w-14 flex items-center justify-center">
-            <Image
-              src="/logos/mobilelogo.png"
-              alt="Nationcite Mobile Logo"
-              width={56}
-              height={56}
-              priority
-            />
-          </div>
+        <Link href="/" className="flex items-center h-full flex-1">
+          <Image
+            src="/logos/mobilelogo.png"
+            alt="Nationcite Mobile Logo"
+            width={120}
+            height={120}
+            priority
+            className="h-full w-auto object-contain"
+          />
         </Link>
 
         {/* Mobile Menu Button */}
         <button
-          className="flex flex-col gap-1 p-2"
+          className="flex flex-col gap-1 p-2 h-full flex items-center justify-center"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <span className="w-6 h-0.5 bg-gray-900 transition-all"></span>
-          <span className="w-6 h-0.5 bg-gray-900 transition-all"></span>
-          <span className="w-6 h-0.5 bg-gray-900 transition-all"></span>
+          <span className="w-6 h-0.5 bg-gray-900"></span>
+          <span className="w-6 h-0.5 bg-gray-900"></span>
+          <span className="w-6 h-0.5 bg-gray-900"></span>
         </button>
       </div>
 
       {/* Mobile Menu (unchanged) */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white flex flex-col items-center gap-5 p-6 shadow-lg border-t border-gray-200">
-          <Link
-            href="/about"
-            className="text-neutral-900 font-medium text-base tracking-normal"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            About
+        <div className="md:hidden w-full h-14 flex items-center justify-between px-4 bg-white border-b border-gray-200">
+          {/* Mobile Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logos/mobilelogo.png"
+              alt="Nationcite Mobile Logo"
+              width={120} // any value, will be constrained
+              height={40}
+              priority
+              className="h-8 w-auto object-contain"
+            />
           </Link>
 
-          <div className="w-full flex flex-col items-center">
-            <button
-              onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
-              className="flex items-center gap-2 text-neutral-900 font-medium text-base tracking-normal"
-            >
-              Leaderboard
-              <ChevronDown
-                size={16}
-                className={`transition-transform duration-200 ${
-                  isLeaderboardOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isLeaderboardOpen && (
-              <div className="flex flex-col items-center gap-3 mt-3 bg-slate-50 w-full py-3 rounded-xl">
-                <Link
-                  href="/leaderboard/scholars"
-                  className="text-slate-600 font-medium text-sm"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Scholars
-                </Link>
-                <Link
-                  href="/leaderboard/universities"
-                  className="text-slate-600 font-medium text-sm"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Universities
-                </Link>
-                <Link
-                  href="/leaderboard/doctors"
-                  className="text-slate-600 font-medium text-sm"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Doctors
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <Link
-            href="/methodology"
-            className="text-neutral-900 font-medium text-base tracking-normal"
-            onClick={() => setIsMenuOpen(false)}
+          {/* Mobile Menu Button */}
+          <button
+            className="flex flex-col gap-1.5 p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
-            Methodology
-          </Link>
-
-          <Link
-            href="/pricing"
-            className="text-neutral-900 font-medium text-base tracking-normal"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Pricing Plan
-          </Link>
-
-          <Link
-            href="/blog"
-            className="text-neutral-900 font-medium text-base tracking-normal"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Blogs
-          </Link>
-
-          <div className="w-full flex flex-col items-center">
-            <button
-              onClick={() => setIsAuthOpen(!isAuthOpen)}
-              className="flex items-center gap-2 text-neutral-900 font-medium text-base tracking-normal"
-            >
-              Account
-              <ChevronDown
-                size={16}
-                className={`transition-transform duration-200 ${
-                  isAuthOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isAuthOpen && (
-              <div className="flex flex-col items-center gap-3 mt-3 bg-slate-50 w-full py-3 rounded-xl">
-                <Link
-                  href="/signin"
-                  className="text-slate-600 font-medium text-sm"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsAuthOpen(false);
-                  }}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="text-slate-600 font-medium text-sm"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsAuthOpen(false);
-                  }}
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-          </div>
+            <span className="w-6 h-0.5 bg-gray-900"></span>
+            <span className="w-6 h-0.5 bg-gray-900"></span>
+            <span className="w-6 h-0.5 bg-gray-900"></span>
+          </button>
         </div>
       )}
     </nav>

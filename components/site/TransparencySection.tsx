@@ -77,8 +77,8 @@ export default function TransparencySection() {
   }, []);
 
   return (
-    <section className="py-32 w-full">
-      <div className="px-[120px] max-w-[1440px] mx-auto">
+    <section className="py-12 md:py-16 w-full px-4 md:px-[72px]">
+      <div className="max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="mb-16 w-full">
           <h3>
@@ -86,18 +86,23 @@ export default function TransparencySection() {
             <br />
             Governed by Data Integrity.
           </h3>
+          <p className="mt-4 max-w-xl text-gray-600">
+            NationCite follows a reproducible, evidence-backed methodology using
+            global open and licensed bibliometric sources. Every metric is
+            source-labeled, auditable, and continuously updated.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-0 lg:gap-12">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-0 md:gap-12">
           {/* LEFT STICKY COLUMN */}
-          <div className="hidden lg:block">
-            <div className="sticky top-32 space-y-10">
-              <ul className="space-y-6">
+          <div className="md:block">
+            <div className="md:sticky md:top-32 space-y-6 md:space-y-10">
+              <ul className="space-y-4 md:space-y-6">
                 {products.map((p) => (
                   <li
                     key={p.id}
                     onClick={() => scrollToService(p.id)}
-                    className={`cursor-pointer border-b pb-4 transition-all flex items-center justify-between ${
+                    className={`cursor-pointer border-b pb-3 md:pb-4 transition-all flex items-center justify-between text-xs md:text-base ${
                       activeService === p.id
                         ? "text-neutral-600 border-neutral-600"
                         : "text-neutral-400 border-neutral-200 hover:text-neutral-600"
@@ -105,7 +110,7 @@ export default function TransparencySection() {
                   >
                     <span>{p.title}</span>
                     <ArrowUpRight
-                      className={`w-5 h-5 transition ${
+                      className={`w-4 h-4 md:w-5 md:h-5 transition flex-shrink-0 ml-2 ${
                         activeService === p.id ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -115,7 +120,7 @@ export default function TransparencySection() {
 
               <Link
                 href="/methodology"
-                className="inline-block px-3 py-2 rounded-lg  bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
+                className="inline-block px-3 py-2 rounded-lg text-xs md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
               >
                 View Full Methodology
               </Link>
@@ -123,7 +128,7 @@ export default function TransparencySection() {
           </div>
 
           {/* RIGHT SCROLLABLE CONTENT */}
-          <div className="space-y-10 lg:space-y-16">
+          <div className="space-y-6 md:space-y-16">
             {products.map((p) => (
               <div
                 key={p.id}
@@ -132,8 +137,8 @@ export default function TransparencySection() {
                 }}
                 className="scroll-mt-4"
               >
-                <div className="space-y-3 lg:space-y-6">
-                  <div className="relative aspect-[4/3] bg-neutral-100 rounded-lg overflow-hidden">
+                <div className="space-y-2 md:space-y-6">
+                  <div className="relative aspect-4/3 bg-neutral-100 rounded-lg overflow-hidden">
                     <Image
                       src={p.image}
                       alt={p.title}
@@ -142,7 +147,7 @@ export default function TransparencySection() {
                     />
                   </div>
 
-                  <div className="max-w-md">
+                  <div className="max-w-md hidden md:block">
                     <h5 className="mb-4">{p.title}</h5>
                     <p className=" mb-6">{p.description}</p>
                   </div>

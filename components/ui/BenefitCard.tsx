@@ -25,10 +25,12 @@ export default function BenefitCard({
   const displayDescription = description || benefitDescriptions[index % 3];
 
   return (
-    <div className="relative flex flex-col justify-end items-center p-6 gap-4 h-[450px] w-full bg-[#EAEAEA] rounded-2xl shadow-[0px_16px_32px_-12px_rgba(31,30,130,0.1)] group transition-shadow duration-300">
-      <div className="flex flex-col items-center gap-2 w-full">
-        <h4 className="h4-card text-center text-[#252525]">{displayTitle}</h4>
-        <p className="text-card text-center text-[#252525]">
+    <div className="relative flex flex-col justify-end items-center p-5 md:p-6 gap-3 md:gap-4 h-auto md:h-[450px] w-full bg-[#EAEAEA] rounded-lg md:rounded-2xl shadow-[0px_16px_32px_-12px_rgba(31,30,130,0.1)] group transition-shadow duration-300">
+      <div className="flex flex-col items-center gap-1 md:gap-2 w-full">
+        <h4 className="text-sm md:text-base font-semibold text-center text-[#252525]">
+          {displayTitle}
+        </h4>
+        <p className="text-xs md:text-sm text-center text-[#252525]">
           {displayDescription}
         </p>
       </div>

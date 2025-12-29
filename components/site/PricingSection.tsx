@@ -60,17 +60,16 @@ export default function PricingSection({ className }: { className?: string }) {
 
   return (
     <section
-      className={`w-full pt-5 pb-12 md:pb-20 min-h-screen font-sans px-4 md:px-[120px] ${
+      className={`w-full py-12 md:py-16 min-h-screen font-sans px-4 md:px-[72px] ${
         className || "bg-white"
       }`}
     >
-      <div className="w-full">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
           <h3 className="text-[#111111] mb-6 md:mb-8 text-2xl md:text-3xl">
-            Free Access for Discovery &{" "}
+            Free Access for Discovery & <br /> Premium Tools for Power Users
           </h3>
-          <h3> Premium Tools for Power Users</h3>
 
           {/* Toggle Switch */}
           <div className="flex justify-center">
@@ -104,7 +103,7 @@ export default function PricingSection({ className }: { className?: string }) {
           {plans.map((plan, i) => (
             <div
               key={i}
-              className={`rounded-2xl overflow-hidden transition-all duration-300 flex flex-col ${
+              className={`rounded-lg md:rounded-2xl overflow-hidden transition-all duration-300 flex flex-col ${
                 plan.highlight
                   ? "border border-[#FF9534] shadow-[0_0_40px_-5px_rgba(255,149,52,0.3)] scale-100 z-10"
                   : "border border-gray-200 shadow-sm hover:shadow-md"
@@ -112,22 +111,24 @@ export default function PricingSection({ className }: { className?: string }) {
             >
               {/* Top Section (Colored Background) */}
               <div
-                className={`p-6 md:p-8 pb-8 md:pb-10 flex flex-col h-full ${
+                className={`p-5 md:p-8 pb-6 md:pb-10 flex flex-col h-full ${
                   plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
                 }`}
               >
-                <h4 className="text-[#111111] mb-4">{plan.title}</h4>
+                <h4 className="text-sm md:text-base font-semibold text-[#111111] mb-3 md:mb-4">
+                  {plan.title}
+                </h4>
 
-                <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-3xl md:text-4xl font-bold text-[#111111]">
+                <div className="flex items-baseline gap-1 mb-3 md:mb-4">
+                  <span className="text-2xl md:text-4xl font-bold text-[#111111]">
                     {plan.price}
                   </span>
-                  <span className="text-gray-500 font-normal text-base md:text-lg">
+                  <span className="text-gray-500 font-normal text-xs md:text-lg">
                     / year
                   </span>
                 </div>
 
-                <p className="p3 pb-3 text-[#5C5C5C] mb-6 md:mb-8">
+                <p className="text-xs md:text-sm text-[#5C5C5C] mb-4 md:mb-8">
                   {plan.description}
                 </p>
 
@@ -147,7 +148,7 @@ export default function PricingSection({ className }: { className?: string }) {
                   <div className="space-y-3 md:space-y-4">
                     {plan.features.map((feature, j) => (
                       <div key={j} className="flex items-start gap-3">
-                        <div className="flex-shrink-0 mt-0.5">
+                        <div className="shrink-0 mt-0.5">
                           <div className="w-5 h-5 rounded-full bg-[#FFF0E0] flex items-center justify-center">
                             <Check
                               className="w-3.5 h-3.5 text-[#FF7A00]"
