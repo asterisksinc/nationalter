@@ -6,7 +6,7 @@
 
 /* H1 - Hero Section */
 h1 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 600;
   font-size: 64px;
   line-height: 72px; /* Tighter line spacing for hero headings */
@@ -17,7 +17,7 @@ h1 {
 
 /* H2 - CTA Sections */
 h2 {
-  font-family: var(--font-inter);
+  font-family: "Inter";
   font-weight: 500;
   font-size: 56px;
   line-height: 68px; /* Increased from 56px */
@@ -29,7 +29,7 @@ h2 {
 
 /* H3 - Section Headings */
 h3 {
-  font-family: var(--font-inter);
+  font-family: "Inter";
   font-weight: 500;
   font-size: 36px;
   line-height: 44px; /* Increased from 36px */
@@ -41,7 +41,7 @@ h3 {
 
 /* H4 - Card Headings */
 h4 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 500;
   font-size: 28px;
   line-height: 36px; /* Increased from 28px */
@@ -51,7 +51,7 @@ h4 {
 }
 
 h5 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 500;
   font-size: 23px;
   line-height: 36px; /* Increased from 28px */
@@ -88,7 +88,7 @@ h5 {
 
 /* Default paragraph - P2 style */
 p {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 400;
   font-size: 16px;
   line-height: 24px; /* Increased to 1.5x ratio for readability */
@@ -110,7 +110,7 @@ p {
 
 /* Paragraph 1 - P1: Hero Section, CTA Section */
 .p1 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 400;
   font-size: 18px;
   line-height: 28px; /* CRITICAL FIX: Was 16px (overlapping), now 28px */
@@ -120,7 +120,7 @@ p {
 
 /* Paragraph 2 - P2: Section Descriptions (default for <p>) */
 .p2 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 400;
   font-size: 16px;
   line-height: 24px; /* Increased from 16px */
@@ -130,7 +130,7 @@ p {
 
 /* Paragraph 3 - P3: Card Descriptions */
 .p3 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter";
   font-weight: 300;
   font-size: 14px;
   line-height: 21px; /* Increased from 14px */
@@ -183,6 +183,7 @@ p {
    Footer-specific overrides
    ======================================== */
 /* Scoped to `.site-footer` to override global heading colors placed after Tailwind utilities */
+.site-footer h1,
 .site-footer h1,
 .site-footer h2,
 .site-footer h3,

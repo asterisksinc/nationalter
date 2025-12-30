@@ -6,7 +6,7 @@ export default function FinalCTA() {
     <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[72px]">
       <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center">
         <div className="mb-8 md:mb-10">
-          <span className="bg-[#FFF5EB] text-[#FF7A00] px-5 py-2 rounded-full text-sm font-medium border border-[#FFD6B3] inline-block">
+          <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-sm font-medium border border-[#FFD6B3] inline-block">
             CTA Section
           </span>
         </div>
@@ -17,7 +17,7 @@ export default function FinalCTA() {
           Shape Your Research Legacy.
         </h3>
 
-        <p className="p1 text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px]">
+        <p className="p2 text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px]">
           Whether you are a researcher building visibility, or an institution
           managing thousands of profiles Nationcite gives you verified control,
           transparent impact measurement, and trusted national recognition.

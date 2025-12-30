@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-      <section className="hero relative pt-32 pb-12 w-full overflow-visible bg-white">
+        <section className="hero relative pt-32 pb-12 w-full overflow-visible bg-white">
         <div className="w-full px-4 md:px-[72px] z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
@@ -89,7 +89,7 @@ export default function HomePage() {
       </section>
 
       {/* Leaderboard Widget Section */}
-      <section className="w-full px-4 md:px-[72px] py-12 md:py-16 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           <LeaderboardWidget />
         </div>

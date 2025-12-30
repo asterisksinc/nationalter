@@ -77,22 +77,20 @@ const TrustedBy = () => {
 
 // Logo Item Component
 const LogoItem = ({ logo }: { logo: Logo }) => (
-  // Layout Logic:
-  // - Container is ~60vw. To see 3 items, each needs to be ~20vw.
-  // - px-4 makes the spacing much tighter between cards.
-  <div className="flex items-center justify-center w-[50vw] md:w-[20vw] shrink-0 px-4">
-    <div className="flex items-center gap-3 group cursor-default">
-      {/* Placeholder Space - slightly smaller for compactness */}
-      <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600 transition-colors duration-300">
+  <div className="flex items-center justify-center w-[40vw] md:w-[14vw] shrink-0 px-2">
+    <div className="flex items-center gap-2 group cursor-default">
+      {/* Icon */}
+      <div className="w-9 h-9 md:w-10 md:h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600 transition-colors duration-300">
         {logo.icon}
       </div>
 
-      {/* Text Label */}
-      <span className="text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
+      {/* Text */}
+      <span className="text-base md:text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
         {logo.name}
       </span>
     </div>
   </div>
 );
+
 
 export default TrustedBy;

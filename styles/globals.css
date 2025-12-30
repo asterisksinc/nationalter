@@ -10,8 +10,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter";
+  --font-mono: "Inter";
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,25 +24,18 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: "Inter";
 }
 
 /* Force Inter for Tailwind `font-sans` utility and common form elements
    so inline utility classes and placeholders render Inter consistently. */
 .font-sans,
-html,
-body,
-input,
-textarea,
-select,
-button {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
 }
 
 /* Ensure placeholder text also uses Inter */
 input::placeholder,
-textarea::placeholder {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
 }
 
 /* Enhanced spacing and readability */
@@ -68,7 +61,7 @@ button + button {
 
 /* Base button styles - all buttons inherit this */
 button {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -77,7 +70,7 @@ button {
 
 /* Primary Button */
 .btn-primary {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -88,7 +81,7 @@ button {
 
 /* Secondary Button */
 .btn-secondary {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -115,9 +108,7 @@ select {
 
 /* Input and textarea base styles */
 input,
-textarea,
-select {
-  font-family: var(--font-inter) !important;
+  font-family: "Inter" !important;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;

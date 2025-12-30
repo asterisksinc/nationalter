@@ -31,9 +31,24 @@ export default function FAQSection({
     <section className="w-full px-4 md:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
       {/* Header Section - Centered */}
       <div className="text-center max-w-3xl mb-12">
-        <span className="text-[#F76A23] font-bold mb-4 block text-sm uppercase tracking-wider">
-          {kicker}
-        </span>
+       <span
+  className="
+    inline-flex items-center
+    px-4 py-1.5
+    rounded-[7px]
+    border border-[#F76A23]/30
+    bg-[#F76A23]/10
+    text-[#F76A23]
+    text-sm
+    font-semibold
+    uppercase
+    tracking-wider
+    mb-4
+  "
+>
+  {kicker}
+</span>
+
         <h3 className="mb-6 text-2xl md:text-3xl ">{title}</h3>
         <p className="p1 text-[#5C5C5C]">
           {children ?? (
