@@ -49,7 +49,7 @@ export default function BlogPage() {
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
 
-          <button className="inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm hover:bg-gray-50 mt-5">
+          <button className="font-inter inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm hover:bg-gray-50 mt-5">
             CTA Button
           </button>
         </section>

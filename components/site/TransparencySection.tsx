@@ -147,9 +147,9 @@ export default function TransparencySection() {
                     />
                   </div>
 
-                  <div className="max-w-md hidden md:block">
-                    <h5 className="mb-4">{p.title}</h5>
-                    <p className=" mb-6">{p.description}</p>
+                  <div className="max-w-md block md:block mt-4 md:mt-0">
+                    <h5 className="mb-3 md:mb-4">{p.title}</h5>
+                    <p className="mb-4 md:mb-6">{p.description}</p>
                   </div>
                 </div>
               </div>

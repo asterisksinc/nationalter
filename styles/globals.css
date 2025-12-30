@@ -24,7 +24,25 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Force Inter for Tailwind `font-sans` utility and common form elements
+   so inline utility classes and placeholders render Inter consistently. */
+.font-sans,
+html,
+body,
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-inter) !important;
+}
+
+/* Ensure placeholder text also uses Inter */
+input::placeholder,
+textarea::placeholder {
+  font-family: var(--font-inter) !important;
 }
 
 /* Enhanced spacing and readability */
@@ -43,4 +61,65 @@ h4 + p {
 /* Better button spacing */
 button + button {
   margin-left: 0.5rem;
+}
+/* ========================================
+   UNIFIED BUTTON STYLES
+   ======================================== */
+
+/* Base button styles - all buttons inherit this */
+button {
+  font-family: var(--font-inter) !important;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* Primary Button */
+.btn-primary {
+  font-family: var(--font-inter) !important;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  font-family: var(--font-inter) !important;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+}
+
+/* ========================================
+   UNIFIED PLACEHOLDER STYLES
+   ======================================== */
+
+/* Input and textarea placeholders */
+input::placeholder,
+textarea::placeholder,
+select {
+  font-family: var(--font-inter) !important;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: #9ca3af;
+}
+
+/* Input and textarea base styles */
+input,
+textarea,
+select {
+  font-family: var(--font-inter) !important;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
 }

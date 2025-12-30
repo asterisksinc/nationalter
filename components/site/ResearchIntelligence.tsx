@@ -57,8 +57,8 @@ export default function ResearchIntelligence() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-8 md:mt-12">
-          <button className="px-3 md:px-5 py-1 md:py-2 bg-[#FF7A00] text-white rounded-lg font-medium hover:bg-[#E66A00] transition-colors">
+        <div className="flex justify-center mt-6 md:mt-12">
+          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-lg hover:bg-[#E66A00] transition-colors shadow-lg shadow-orange-200 w-auto max-w-sm text-center">
             Explore All Research & Insights
           </button>
         </div>

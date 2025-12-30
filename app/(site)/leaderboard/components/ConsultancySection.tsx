@@ -81,7 +81,7 @@ export default function ConsultancySection() {
         </div>
 
         {/* CTA Button */}
-        <button className="bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-sm relative z-10">
+        <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-lg shadow-orange-200 relative z-10">
           CTA Button
         </button>
       </div>

@@ -202,44 +202,29 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
       {/* FOOTER PAGINATION */}
       <div className="w-full border-t border-slate-100 bg-white z-10 py-4 md:py-0 h-auto md:h-20 px-4 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500">
+          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500 font-inter">
             <ChevronLeft size={18} />
           </button>
 
           <div className="flex items-center bg-slate-50 rounded-lg p-1">
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow-sm font-bold text-sm text-[#FF7A00]"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
+            <button className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow-sm font-medium text-sm text-[#FF7A00] font-inter">
               1
             </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/50 font-medium text-sm text-slate-500 transition-colors"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
+            <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/50 font-medium text-sm text-slate-500 transition-colors font-inter">
               2
             </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/50 font-medium text-sm text-slate-500 transition-colors"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
+            <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/50 font-medium text-sm text-slate-500 transition-colors font-inter">
               3
             </button>
           </div>
-          <span
-            className="text-slate-300 px-1 font-medium"
-            style={{ fontFamily: "var(--font-inter)" }}
-          >
+          <span className="text-slate-300 px-1 font-medium font-inter">
             ...
           </span>
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 font-medium text-sm text-slate-500 transition-colors"
-            style={{ fontFamily: "var(--font-inter)" }}
-          >
+          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 font-medium text-sm text-slate-500 transition-colors font-inter">
             100
           </button>
 
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500">
+          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500 font-inter">
             <ChevronRight size={18} />
           </button>
         </div>

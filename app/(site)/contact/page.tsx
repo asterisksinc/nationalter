@@ -121,7 +121,7 @@ export default function ContactPage() {
 
             <button
               type="submit"
-              className="mt-2 w-full rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600 transition-colors"
+              className="font-inter mt-2 w-full rounded-xl bg-[#FF7A00] px-4 py-2 text-sm font-medium text-white hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200"
             >
               Submit
             </button>

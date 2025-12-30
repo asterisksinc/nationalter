@@ -53,7 +53,7 @@ export default function FAQSection({
             <div key={i} className="border-b border-gray-200 last:border-b-0">
               <button
                 onClick={() => toggleFaq(i)}
-                className="flex justify-between items-center w-full py-6 text-left focus:outline-none"
+                className="font-inter flex justify-between items-center w-full py-6 text-left focus:outline-none"
               >
                 <span
                   className={`font-medium text-lg transition-colors ${
@@ -105,8 +105,8 @@ export default function FAQSection({
                 <div className="text-[#5C5C5C] leading-relaxed">
                   <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                      do eiusmod tempor incididunt ut labore et dolore magna
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam.
                     </p>
                     <br />

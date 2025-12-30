@@ -140,7 +140,7 @@ const LeaderboardWidget = () => {
             <input
               type="text"
               placeholder="Search researchers, institutions..."
-              className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-sm"
+              className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-xl text-sm font-inter text-slate-700 placeholder:text-slate-400 placeholder:font-inter focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -157,7 +157,7 @@ const LeaderboardWidget = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2.5 px-6 py-3 rounded-full text-sm transition-all duration-300 border ${
+                className={`flex items-center gap-2.5 px-6 py-3 rounded-full text-sm font-inter font-medium transition-all duration-300 border ${
                   isActive
                     ? "bg-[#FF7A00] text-white border-[#FF7A00] shadow-lg shadow-orange-200 transform -translate-y-0.5"
                     : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"

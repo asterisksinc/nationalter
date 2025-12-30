@@ -14,7 +14,7 @@ export default function ThreeCardsSection() {
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
-          <button className="bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium hover:bg-[#e66e00] transition-colors uppercase text-sm tracking-wide w-auto">
+          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium hover:bg-[#e66e00] transition-colors uppercase text-sm tracking-wide w-auto shadow-lg shadow-orange-200">
             CTA Button
           </button>
         </div>

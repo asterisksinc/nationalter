@@ -313,8 +313,24 @@ input[type="text"] {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
 }
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #9ca3af;
+}
+
 .box-upload {
   padding: 10px 198px;
 }
@@ -322,7 +338,7 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus {
   outline: none;
-  border-color: #fb923c;
+  border-color: #ff7a00;
   box-shadow: 0 0 0 1px #fed7aa;
 }
 
@@ -333,18 +349,16 @@ input[type="text"]:focus {
 }
 
 .checkbox-field {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
-    "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-weight: 400;
-  font-style: normal;
   font-size: 14px;
-  line-height: 100%;
-  letter-spacing: 0em;
+  line-height: 1.5;
+  letter-spacing: 0;
   text-align: center;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-style: bold;
 }
 
 .checkbox-field input {
@@ -352,11 +366,14 @@ input[type="text"]:focus {
 }
 
 .checkbox-field a {
-  color: #f97316;
+  color: #ff7a00;
   text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
 .checkbox-field a:hover {
+  color: #e66e00;
   text-decoration: underline;
 }
 
@@ -365,9 +382,17 @@ input[type="text"]:focus {
   background: none;
   padding: 0;
   margin: 0;
-  color: #f97316;
+  color: #ff7a00;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.link-btn:hover {
+  color: #e66e00;
 }
 .addtitle {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -386,19 +411,23 @@ input[type="text"]:focus {
   padding: 10px 14px;
   border-radius: 10px;
   border: none;
-  background: #fb923c;
+  background: #ff7a00;
   color: #ffffff;
   margin-top: 4px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-weight: 500;
-  font-style: normal;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1.5;
   letter-spacing: 0;
   vertical-align: middle;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .primary-btn:hover {
-  background: #f97316;
+  background: #e66e00;
+  box-shadow: 0 8px 12px rgba(255, 122, 0, 0.2);
 }
 
 .upload-block {

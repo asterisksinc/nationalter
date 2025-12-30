@@ -72,15 +72,15 @@ export default function HomePage() {
               <div className="flex flex-row mt-10 justify-center gap-4 w-full">
                 <Link
                   href="/leaderboard"
-                  className="flex-1 sm:flex-none bg-[#FF7A00] text-white px-2 py-2 rounded-lg font-medium text-base transition-colors hover:bg-[#ff8c1a]"
+                  className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
                 >
                   Leaderboard
                 </Link>
                 <Link
                   href="/methodology"
-                  className="flex-1 sm:flex-none bg-white text-[#1E1E1E] border border-gray-300 px-2 py-2 rounded-lg font-medium text-base transition-colors hover:bg-gray-50"
+                  className="flex-1 sm:flex-none font-inter bg-white text-[#1E1E1E]  border border-gray-300 px-4 py-2 rounded-xl font-medium text-base transition-colors hover:bg-gray-50"
                 >
-                  View Methodology
+                   Methodology
                 </Link>
               </div>
             </div>

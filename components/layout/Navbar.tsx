@@ -109,7 +109,7 @@ export default function Navbar() {
             </Link>
 
             <div className="relative group">
-              <button className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-lg hover:bg-[#f76a23] transition-colors">
+              <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-xl hover:bg-[#f76a23] transition-colors">
                 Sign Up/In
                 <ChevronDown
                   size={14}

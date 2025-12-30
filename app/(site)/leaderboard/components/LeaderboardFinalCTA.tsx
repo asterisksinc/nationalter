@@ -11,10 +11,10 @@ export default function LeaderboardFinalCTA() {
         </h2>
 
         <div className="flex flex-col md:flex-row justify-center gap-4">
-          <button className="bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium hover:bg-[#e66e00] transition-colors w-fit">
+          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium hover:bg-[#e66e00] transition-colors w-fit shadow-lg shadow-orange-200">
             CTA Button
           </button>
-          <button className="bg-[#1E1E1E] text-white px-4 py-2 rounded-xl font-medium hover:bg-black transition-colors w-fit">
+          <button className="font-inter bg-[#1E1E1E] text-white px-4 py-2 rounded-xl font-medium hover:bg-black transition-colors w-fit">
             CTA Button
           </button>
         </div>

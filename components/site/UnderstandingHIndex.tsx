@@ -53,7 +53,7 @@ export default function UnderstandingHIndex() {
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px]">
-            Understanding the H-Index <br /> The Backbone of Research Impact
+            Understanding the H-Index <br /> Backbone of Research Impact
           </h3>
           <p className="p2 text-gray-500 max-w-[350px] md:max-w-[700px]">
             The H-Index is more than number. It reflects consistency, influence,
