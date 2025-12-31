@@ -148,10 +148,10 @@ export default function AboutPage() {
             {Array.from({ length: 8 }).map((_, index) => (
               <div
                 key={index}
-                className="group cursor-pointer rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                className="group cursor-pointer rounded-[2px] sm:rounded-[2px] md:rounded-[4px] lg:rounded-[4px] bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Image Placeholder */}
-                <div className="w-full aspect-square rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4" />
+                <div className="w-full aspect-square rounded-[2px] sm:rounded-[2px] md:rounded-[4px] lg:rounded-[4px] bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4" />
 
                 {/* Text */}
                 <div>
