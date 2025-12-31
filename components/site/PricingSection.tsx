@@ -60,14 +60,18 @@ export default function PricingSection({ className }: { className?: string }) {
 
   return (
     <section
-      className={`w-full py-12 md:py-16 min-h-screen font-inter px-4 md:px-[72px] ${
+      className={`w-full px-4 sm:px-6 md:px-8 lg:px-[120px] pt-24 sm:pt-32 pb-10 sm:pb-16 md:pb-20 lg:pb-24 ${
         className || "bg-white"
       }`}
     >
       <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-10 md:mb-16">
-          <h3 className="font-inter text-[#111111] mb-8 md:mb-10 text-2xl md:text-3xl">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-3 sm:mb-4 md:mb-4 lg:mb-5">
+            Pricing
+          </span>
+
+          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-4 sm:mb-6 md:mb-6 lg:mb-8 text-[#111111]">
             Free Access for Discovery & <br /> Premium Tools for Power Users
           </h3>
 
@@ -99,7 +103,7 @@ export default function PricingSection({ className }: { className?: string }) {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 items-start">
           {plans.map((plan, i) => (
             <div
               key={i}
@@ -111,7 +115,7 @@ export default function PricingSection({ className }: { className?: string }) {
             >
               {/* Top Section (Colored Background) */}
               <div
-                className={`p-5 md:p-8 pb-6 md:pb-10 flex flex-col h-full ${
+                className={`p-4 sm:p-5 md:p-6 lg:p-8 pb-5 sm:pb-6 md:pb-8 lg:pb-10 flex flex-col h-full ${
                   plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
                 }`}
               >
@@ -127,7 +131,7 @@ export default function PricingSection({ className }: { className?: string }) {
                     / year
                   </span>
                 </div>
-                <p className="font-inter text-xs md:text-sm text-[#5C5C5C] mb-4 md:mb-6">
+                <p className="font-inter text-xs sm:text-sm md:text-sm text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed">
                   {plan.description}
                 </p>
 
@@ -141,12 +145,12 @@ export default function PricingSection({ className }: { className?: string }) {
               </div>
 
               {/* Bottom Section (White Background) */}
-              <div className="p-6 md:p-8 bg-white flex-1 flex flex-col">
+              <div className="p-4 sm:p-5 md:p-6 lg:p-8 bg-white flex-1 flex flex-col">
                 <div className="mb-5">
                   <span className="font-inter text-base font-bold text-[#111111] block mb-3 md:mb-4">
                     What's Included
                   </span>
-                  <div className="space-y-3 md:space-y-4">
+                  <div className="space-y-3 sm:space-y-3 md:space-y-4">
                     {plan.features.map((feature, j) => (
                       <div key={j} className="flex items-start gap-3">
                         <div className="shrink-0 mt-0.5">

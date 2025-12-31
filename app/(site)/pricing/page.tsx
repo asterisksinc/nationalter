@@ -1,36 +1,35 @@
 "use client";
 
 import React from "react";
-import "./pricing-style.css";
 import { Check } from "lucide-react";
 import PricingSection from "@/components/site/PricingSection";
 import FAQSection from "@/components/site/FAQSection";
-import LeaderboardFinalCTA from "../leaderboard/components/LeaderboardFinalCTA";
-import PricingMidCTA from "@/components/site/PricingMidCTA";
 import FinalCTA from "@/components/site/FinalCTA";
 
 export default function PricingPage() {
   return (
     <div className="bg-white font-sans">
       {/* Hero / Pricing Section */}
-      <section className="w-full bg-linear-to-b from-[#FFF5EE] via-[#FFE4C8] to-[#f8f7f7] pricing-bg">
-        <PricingSection className="pt-30 bg-transparent pt-0" />
+      <section className="w-full bg-linear-to-b from-[#FFF5EE] via-[#FFE4C8] to-[#f8f7f7]">
+        <PricingSection className="bg-transparent" />
       </section>
 
       {/* Comparison Tables Section */}
-      <section className="w-full pb-12 md:pb-20 px-4 md:px-[120px]">
-        <div className="w-full md:space-y-5">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
+        <div className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
           {/* Table 1: Overview & Pricing */}
           <div>
-            <h4 className="mb-5">Overview & Pricing</h4>
-            <div className="border border-gray-200 rounded-2xl overflow-hidden">
+            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">Overview & Pricing</h4>
+            <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <div className="min-w-[800px]">
-                  <div className="grid grid-cols-4 bg-gray-50 p-3 border-b border-gray-200">
-                    <h5 className="sticky left-0 bg-gray-50 z-10">Plan</h5>
-                    <h5>Price</h5>
-                    <h5>Audience</h5>
-                    <h5>Ideal For</h5>
+                  <div className="grid grid-cols-4 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
+                    <h5 className="sticky left-0 bg-gray-50 z-10 text-left">
+                      Plan
+                    </h5>
+                    <h5 className="text-center">Price</h5>
+                    <h5 className="text-center">Audience</h5>
+                    <h5 className="text-center">Ideal For</h5>
                   </div>
                   <div className="divide-y divide-gray-200">
                     {[
@@ -53,11 +52,16 @@ export default function PricingPage() {
                         "Medium to large institutions",
                       ],
                     ].map((row, i) => (
-                      <div key={i} className="grid grid-cols-4 p-4">
-                        <p className="sticky left-0 bg-white z-10">{row[0]}</p>
-                        <p>{row[1]}</p>
-                        <p>{row[2]}</p>
-                        <p>{row[3]}</p>
+                      <div
+                        key={i}
+                        className="grid grid-cols-4 px-4 sm:px-5 md:px-6 py-3 sm:py-4 items-start"
+                      >
+                        <p className="sticky left-0 bg-white z-10 pr-3">
+                          {row[0]}
+                        </p>
+                        <p className="text-center">{row[1]}</p>
+                        <p className="text-center">{row[2]}</p>
+                        <p className="text-center">{row[3]}</p>
                       </div>
                     ))}
                   </div>
@@ -154,13 +158,15 @@ export default function PricingPage() {
 
           {/* Table 6: Add-ons */}
           <div>
-            <h4 className="mb-5">Add-ons (Optional for all)</h4>
-            <div className="border border-gray-200 rounded-2xl overflow-hidden max-w-2xl">
+            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+              Add-ons (Optional for all)
+            </h4>
+            <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden max-w-2xl">
               <div className="overflow-x-auto">
                 <div className="w-full min-w-[300px]">
-                  <div className="grid grid-cols-2 bg-gray-50 p-3 border-b border-gray-200">
-                    <h5>Add-On</h5>
-                    <h5>Price</h5>
+                  <div className="grid grid-cols-2 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
+                    <h5 className="text-left">Add-On</h5>
+                    <h5 className="text-center">Price</h5>
                   </div>
                   <div className="divide-y divide-gray-200">
                     {[
@@ -170,9 +176,12 @@ export default function PricingPage() {
                       ["Premium API access", "₹1,499/year"],
                       ["White-labeled analytics", "Enterprise only"],
                     ].map((row, i) => (
-                      <div key={i} className="grid grid-cols-2 p-4">
-                        <p>{row[0]}</p>
-                        <p>{row[1]}</p>
+                      <div
+                        key={i}
+                        className="grid grid-cols-2 px-4 sm:px-5 md:px-6 py-3 sm:py-4 items-start"
+                      >
+                        <p className="text-left">{row[0]}</p>
+                        <p className="text-center">{row[1]}</p>
                       </div>
                     ))}
                   </div>
@@ -216,15 +225,19 @@ function ComparisonTable({
 }) {
   return (
     <div>
-      <h4 className="mb-5">{title}</h4>
-      <div className="border border-gray-200 rounded-2xl overflow-hidden">
+      <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">{title}</h4>
+      <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <div className="min-w-[800px]">
-            <div className="grid grid-cols-4 bg-gray-50 p-3 border-b border-gray-200">
+            <div className="grid grid-cols-4 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
               {headers.map((header, i) => (
                 <h5
                   key={i}
-                  className={i === 0 ? "sticky left-0 bg-gray-50 z-10" : ""}
+                  className={
+                    i === 0
+                      ? "sticky left-0 bg-gray-50 z-10 text-left"
+                      : "text-center"
+                  }
                 >
                   {header}
                 </h5>
@@ -233,10 +246,16 @@ function ComparisonTable({
 
             <div className="divide-y divide-gray-200">
               {rows.map((row, i) => (
-                <div key={i} className="grid grid-cols-4 p-4 items-center">
-                  <p className="sticky left-0 bg-white z-10">{row[0]}</p>
+                <div
+                  key={i}
+                  className="grid grid-cols-4 px-4 sm:px-5 md:px-6 py-3 sm:py-4 items-center"
+                >
+                  <p className="sticky left-0 bg-white z-10 pr-3">{row[0]}</p>
                   {row.slice(1).map((cell, j) => (
-                    <div key={j} className="flex items-center">
+                    <div
+                      key={j}
+                      className="flex items-center justify-center text-center"
+                    >
                       {cell === true ? (
                         <div className="w-5 h-5 rounded-full bg-[#FF7A00] flex items-center justify-center">
                           <Check
@@ -245,9 +264,9 @@ function ComparisonTable({
                           />
                         </div>
                       ) : cell === "—" || cell === false ? (
-                        <p className="text-gray-300">—</p>
+                        <p className="text-gray-300 text-center">—</p>
                       ) : (
-                        <p>{cell}</p>
+                        <p className="text-center">{cell}</p>
                       )}
                     </div>
                   ))}
