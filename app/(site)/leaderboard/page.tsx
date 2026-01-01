@@ -18,14 +18,14 @@ export default function LeaderboardPage() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-orange-100 rounded-full opacity-20 -mr-40 -mt-40"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-50 rounded-full opacity-30 -ml-36 -mb-36"></div>
 
-        <div className="relative z-10 max-w-5xl mx-auto">
+        <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center w-full">
           {/* BADGE */}
           <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mt-4 sm:mt-5 md:mt-5 lg:mt-5 mb-2 sm:mb-4 md:mb-4 lg:mb-4">
             Leaderboard
           </span>
 
           {/* HEADING */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 sm:mb-6 md:mb-6 lg:mb-6">
+          <h1 className="font-inter mb-8 text-center">
             Top Researchers &{" "}
             <span className="text-[#FF7A00]">Institutions</span>
             <br />
@@ -33,16 +33,11 @@ export default function LeaderboardPage() {
           </h1>
 
           {/* DESCRIPTION */}
-          <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-2xl inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-            <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C]">
-              <span className="block max-w-3xl mx-auto">
-                Discover the top researchers and institutions driving innovation
-                and making an impact in their fields. Our comprehensive rankings
-                highlight the leaders in academic research and scholarly
-                achievement
-              </span>
-            </p>
-          </div>
+          <p className="p1 pt-4 mb-10 max-w-[500px] mx-auto text-center">
+            Discover the top researchers and institutions driving innovation and
+            making an impact in their fields. Our comprehensive rankings
+            highlight the leaders in academic research and scholarly achievement
+          </p>
         </div>
       </section>
 

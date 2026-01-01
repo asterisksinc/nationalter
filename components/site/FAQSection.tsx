@@ -37,7 +37,7 @@ export default function FAQSection({
     px-4 py-1.5
     rounded-[7px]
     border border-[#F76A23]/30
-    bg-[#F76A23]/10
+    bg-[white]/10
     text-[#F76A23]
     text-sm
     font-semibold

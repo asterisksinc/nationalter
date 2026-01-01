@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Check } from "lucide-react";
+import "../hero-style.css";
 import PricingSection from "@/components/site/PricingSection";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
@@ -10,7 +11,7 @@ export default function PricingPage() {
   return (
     <div className="bg-white font-sans">
       {/* Hero / Pricing Section */}
-      <section className="w-full bg-linear-to-b from-[#FFF5EE] via-[#FFE4C8] to-[#f8f7f7]">
+      <section className="hero relative w-full">
         <PricingSection className="bg-transparent" />
       </section>
 

@@ -2,7 +2,6 @@
 
 import React from "react";
 import "./hero-style.css";
-import PrimaryButton from "@/components/ui/PrimaryButton";
 import TrustedBy from "@/components/site/TrustedBy";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
@@ -56,12 +55,12 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="w-full px-4 flex justify-center sm:w-auto sm:px-0">
-          <PrimaryButton
+          <button
             onClick={scrollToNextSection}
-            className="bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 w-auto py-3 rounded-lg text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
+            className="bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 w-auto py-2 rounded-lg text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
           >
             Explore Our Ecosystem
-          </PrimaryButton>
+          </button>
         </div>
       </section>
 

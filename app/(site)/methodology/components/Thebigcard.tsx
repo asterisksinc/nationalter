@@ -1,17 +1,16 @@
 import React from "react";
+import Badge from "@/components/ui/Badge";
 
 export default function Thebigcard() {
   return (
     <section className="w-full py-8 md:py-12 bg-white px-4 md:px-[120px]">
       {/* Main Container Card - Cream Background */}
-      <div className="w-full bg-[#FFF9F5] rounded-[32px] p-6 md:p-16">
+      <div className="w-full bg-white rounded-[32px] py-6 md:py-16">
         {/* Top Text Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start mb-8 md:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 items-start mb-8 md:mb-12">
           {/* Left Column: Headings */}
           <div>
-            <span className="text-[#FF7A00] font-medium mb-4 md:mb-6 block text-sm tracking-wide uppercase">
-              Lorem ipsum
-            </span>
+            <Badge> Lorem ipsum </Badge>
             <h3 className="text-[#1E1E1E] text-3xl md:text-5xl font-semibold leading-tight">
               Lorem ipsum
               <br />

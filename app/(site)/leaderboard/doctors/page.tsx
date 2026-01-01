@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import { Search, Sparkles } from "lucide-react";
+import "../hero-style.css";
 import LeaderboardTable, {
   LeaderboardEntry,
 } from "@/components/site/LeaderboardTable";
 import ThreeCardsSection from "../components/ThreeCardsSection";
 import ConsultancySection from "../components/ConsultancySection";
+import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
@@ -110,28 +112,30 @@ export default function DoctorsLeaderboardPage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-      <section className="relative bg-linear-to-b from-[#FFF5EE] via-[#FFE4C8] to-[#FFD9B3] pt-12 pb-12 md:pt-20 md:pb-16 px-4 md:px-[72px] overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-100 rounded-full opacity-20 -mr-40 -mt-40"></div>
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-50 rounded-full opacity-30 -ml-36 -mb-36"></div>
+      <section className="hero relative pt-48 pb-12 w-full overflow-visible">
+        <div className="w-full px-4 md:px-[72px] z-20">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col items-center text-center mx-auto">
+              {/* Main Heading */}
+              <h1 className="font-inter z-10 max-w-sm md:max-w-2xl lg:max-w-4xl mb-8 text-center  text-slate-700">
+                Top Doctors & Medical Researchers
+              </h1>
 
-        <div className="w-full max-2xl relative z-10">
-          <div className="mb-8 mt-4 md:mb-12 md:mt-8">
-            <h3 className="text-[#1E1E1E] mb-4 md:mb-6 pt-7 md:pt-0 text-2xl md:text-3xl">
-              Top <span className="text-[#FF7A00]">Doctors</span> & Medical
-              Researchers
-              <br />
-              Shaping the Future
-            </h3>
-            <p className="p1 text-[#5C5C5C] line-clamp-3 w-full md:w-[40vw]">
-              Discover the top doctors and medical researchers driving
-              innovation and making an impact in healthcare. Our comprehensive
-              rankings highlight the leaders in medical research.
-            </p>
+              {/* Subheading */}
+              <p className="p1 pt-4 z-20 mb-10 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl mx-auto text-center text-slate-600">
+                Discover the top doctors and medical researchers driving
+                innovation and making an impact in healthcare. Our comprehensive
+                rankings highlight the leaders in medical research.
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
 
-          {/* Leaderboard Container */}
-          <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/60 w-full max-w-none flex flex-col border border-slate-100 overflow-hidden min-h-[700px]">
+      {/* Leaderboard Section */}
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}
             <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -172,7 +176,41 @@ export default function DoctorsLeaderboardPage() {
 
       <ThreeCardsSection />
 
-      <ConsultancySection />
+
+      <TabContentToggle
+        title="Custom Consultancy Calls"
+        description="Powered by Industry Experts"
+        ctaText="Explore All Resources"
+        tabs={[
+          {
+            id: "feature1",
+            label: "Feature 1",
+            content: (
+              <div className="text-center text-slate-600">
+                Placeholder content for feature 1
+              </div>
+            ),
+          },
+          {
+            id: "feature2",
+            label: "Feature 2",
+            content: (
+              <div className="text-center text-slate-600">
+                Placeholder content for feature 2
+              </div>
+            ),
+          },
+          {
+            id: "feature3",
+            label: "Feature 3",
+            content: (
+              <div className="text-center text-slate-600">
+                Placeholder content for feature 3
+              </div>
+            ),
+          },
+        ]}
+      />
 
       <ThreeBlocksSection />
 

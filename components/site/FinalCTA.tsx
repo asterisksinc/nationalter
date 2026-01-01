@@ -24,10 +24,10 @@ export default function FinalCTA() {
         </p>
 
         <div className="flex py-6 flex-col md:flex-row gap-6 justify-center items-center">
-          <button className="font-inter bg-[#1E1E1E] text-white px-4 py-2 rounded-xl font-medium text-lg hover:bg-black transition-colors w-full md:w-auto max-w-[360px] text-center">
+          <button className="font-inter bg-[#1E1E1E] text-white px-2 py-1.5 rounded-[7px] font-medium text-lg hover:bg-black transition-colors w-full md:w-auto max-w-[360px] text-center">
             Request Institution Dashboard
           </button>
-          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-full md:w-auto max-w-[360px] text-center">
+          <button className="font-inter bg-[#FF7A00] text-white px-2 py-1.5 rounded-[7px] font-medium text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-full md:w-auto max-w-[360px] text-center">
             Claim Your Profile
           </button>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "./hero-style.css";
+import "./hero-style.css" ;
 import TrustedBy from "@/components/site/TrustedBy";
 import UnderstandingHIndex from "@/components/site/UnderstandingHIndex";
 import TransparencySection from "@/components/site/TransparencySection";

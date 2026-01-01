@@ -28,15 +28,17 @@ const items = [
 ];
 export default function BlogPage() {
   const [openIndex, setOpenIndex] = useState(0);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("newest");
 
   const toggle = (index: number) => {
     setOpenIndex((prev) => (prev === index ? -1 : index));
   };
 
   return (
-    <>
+    <main className="w-full bg-white">
       {/* Hero Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] min-h-screen sm:h-screen flex flex-col items-center justify-center text-center page-bg py-8 sm:py-10 md:py-10 lg:py-10">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] min-h-[80vh] sm:h-screen flex flex-col items-center justify-center text-center page-bg py-8 sm:py-10 md:py-10 lg:py-10">
         {/* BADGE */}
         <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mt-4 sm:mt-5 md:mt-5 lg:mt-5 mb-2 sm:mb-4 md:mb-4 lg:mb-4">
           Resources
@@ -60,23 +62,103 @@ export default function BlogPage() {
         </div>
 
         {/* CTA */}
-        <div className="w-full px-4 flex justify-center sm:w-auto sm:px-0">
-          <button className="bg-white text-[#1E1E1E] border border-gray-300 px-4 sm:px-6 md:px-6 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-3 rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-xl text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-gray-50 transition duration-200 w-full sm:w-auto">
-            Explore Resources
-          </button>
-        </div>
       </section>
 
       {/* First Blog Grid Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-10 md:py-10 lg:py-10 bg-white">
         <div className="w-full max-w-7xl mx-auto">
-          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-            Lorem ipsum
-            <br />
-            dolor self amet
-          </h3>
+          {/* Search and Filter Section */}
+          <div className="bg-[#f5f5f5] rounded-xl p-1 sm:p-1 md:p-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-10 lg:mb-10">
+            {/* Search Input */}
+            <div className="w-full sm:flex-1">
+              <input
+                type="text"
+                placeholder="Search for Resources"
+                className="w-full px-4 py-2 sm:py-2.5 text-sm text-black rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent font-inter placeholder-gray-500"
+              />
+            </div>
+
+            {/* Filter and Sort Controls */}
+            <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              {/* Sort Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setSortOpen(!sortOpen)}
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border border-gray-200 bg-white rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50"
+                >
+                  <span>Sort</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${
+                      sortOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </button>
+
+                {/* Sort Dropdown Menu */}
+                {sortOpen && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                    <button
+                      onClick={() => {
+                        setSortBy("newest");
+                        setSortOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm font-inter transition-colors ${
+                        sortBy === "newest"
+                          ? "bg-orange-50 text-[#FF7A00]"
+                          : "text-black hover:bg-gray-50"
+                      }`}
+                    >
+                      Newest
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSortBy("oldest");
+                        setSortOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm font-inter transition-colors border-t border-gray-200 ${
+                        sortBy === "oldest"
+                          ? "bg-orange-50 text-[#FF7A00]"
+                          : "text-black hover:bg-gray-50"
+                      }`}
+                    >
+                      Oldest
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Filter Button */}
+              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border-1 border-gray-200 bg-white rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50">
+                <span>Filter</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {Array.from({ length: 9 }).map((_, i) => (
               <article
                 key={i}
                 className="group cursor-pointer rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
@@ -110,84 +192,9 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Two Column Feature Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
-        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-0 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl overflow-hidden shadow-lg">
-          <div className="min-h-[300px] md:min-h-[420px] bg-[url('/dummy/test.png')] bg-[length:40px_40px] bg-repeat flex items-center">
-            <div className="p-6 sm:p-8 md:p-10 lg:p-12">
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight mb-4 sm:mb-5 md:mb-6 lg:mb-6 text-[#252525]">
-                Lorem ipsum dolor
-                <br />
-                sit amet consectetur
-                <br className="hidden md:block" />
-                Lorem ipsum dolor sit
-              </h3>
-              <p className="text-sm sm:text-base md:text-base lg:text-base text-[#5C5C5C] leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-          <div className="bg-[#FFF7EE] flex items-center">
-            <div className="p-6 sm:p-8 md:p-10 lg:p-12">
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight mb-4 sm:mb-5 md:mb-6 lg:mb-6 text-[#252525]">
-                Lorem ipsum dolor
-                <br />
-                sit amet
-              </h3>
-              <p className="text-sm sm:text-base md:text-base lg:text-base text-[#5C5C5C] leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Second Blog Grid Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
-        <div className="w-full max-w-7xl mx-auto">
-          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-            Lorem ipsum
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <article
-                key={i}
-                className="group cursor-pointer rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-              >
-                <div className="w-full bg-[#f5f5f5]">
-                  <img
-                    src="/dummy/test.png"
-                    alt="Blog post image"
-                    className="w-full h-40 sm:h-48 md:h-48 lg:h-48 object-cover"
-                  />
-                </div>
-                <div className="p-3 sm:p-4 md:p-4 lg:p-5">
-                  <h5 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-[#1E1E1E] mb-2 leading-snug">
-                    Lorem ipsum dolor slef amet
-                  </h5>
-                  <p className="text-xs sm:text-sm md:text-sm lg:text-sm text-[#6B6B6B] mb-3 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                  <Link
-                    href="/blog/example-post"
-                    className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] transition-colors inline-flex items-center gap-1"
-                  >
-                    Learn more <span>→</span>
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* FAQ/Accordion Section */}
-            
+      <FAQSection />
 
       <FinalCTA />
-    </>
+    </main>
   );
 }

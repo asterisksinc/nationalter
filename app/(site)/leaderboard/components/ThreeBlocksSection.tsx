@@ -2,84 +2,90 @@ import React from "react";
 
 export default function ThreeBlocksSection() {
   return (
-    <section className="w-full py-8 md:py-12 bg-white px-4 md:px-[120px]">
-      <div className="w-full flex flex-col gap-4">
-        {/* Block 1 - Now a single connected card */}
-        <div className="w-full rounded-3xl overflow-hidden border border-gray-200 bg-[#F5F5F5] shadow-[0_20px_40px_rgba(2,6,23,0.06)] flex flex-col md:flex-row">
-          {/* Left Side: Content */}
-          <div className="p-6 md:p-16 flex-1 flex flex-col justify-center">
-            <h4 className="text-[#1E1E1E] mb-4 md:mb-6 font-semibold text-2xl md:text-3xl">
-              Lorem ipsum dolor slef amet
-            </h4>
-            <p className="p2 text-[#5C5C5C] mb-6 md:mb-10 text-base md:text-lg leading-relaxed max-w-lg">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <a
-              href="#"
-              className="text-[#1E1E1E] font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
-            >
-              Learn more about lorem ipsum &gt;
-            </a>
+    <section className="w-full py-12 md:py-24 mt-10 px-4 md:px-[72px] bg-white">
+      <div className="w-full max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col items-center text-center mb-10 md:mb-14">
+          <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px]">
+            Research Intelligence & <br /> Academic Insight
+          </h3>
+          <p className="p2 text-gray-500 max-w-[350px] md:max-w-[700px]">
+            Stay informed with data literacy, ranking methodology, and research
+            visibility best practices.
+          </p>
+        </div>
+
+        {/* Cards Grid - 60% left (2 cards), 40% right (1 tall card) */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 mb-10 auto-rows-fr">
+          {/* Left Column - 60% width - 2 Stacked Cards */}
+          <div className="md:col-span-3 flex flex-col gap-6 md:gap-8 h-full">
+            {/* Card 1 */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col flex-1">
+              <div className="p-6 md:p-8 flex flex-col flex-1">
+                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+                  Lorem ipsum dolor slef amet
+                </h5>
+                <p className="text-xs text-gray-600 leading-snug flex-1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <a
+                  href="#"
+                  className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                >
+                  Learn More &gt;
+                </a>
+              </div>
+              <div className="w-full h-[260px] md:h-[260px] bg-gray-100"></div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col flex-1">
+              <div className="p-6 md:p-8 flex flex-col flex-1">
+                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+                  Lorem ipsum dolor slef amet
+                </h5>
+                <p className="text-xs text-gray-600 leading-snug flex-1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <a
+                  href="#"
+                  className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                >
+                  Learn More &gt;
+                </a>
+              </div>
+              <div className="w-full h-[260px] md:h-[260px] bg-gray-100"></div>
+            </div>
           </div>
 
-          {/* Right Side: Visual/Placeholder */}
-          <div className="w-full md:w-1/2 min-h-[250px] md:min-h-[400px] relative bg-transparent flex items-center justify-center p-6 md:pr-16 md:py-16">
-            {/* Checkerboard Pattern Area */}
-            <div
-              className="w-full h-full relative"
-              style={{
-                backgroundImage: `linear-gradient(45deg, #E5E5E5 25%, transparent 25%), linear-gradient(-45deg, #E5E5E5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E5E5E5 75%), linear-gradient(-45deg, transparent 75%, #E5E5E5 75%)`,
-                backgroundSize: `40px 40px`,
-                backgroundPosition: `0 0, 0 20px, 20px -20px, -20px 0`,
-                opacity: 0.6,
-                maskImage: "linear-gradient(to right, transparent, black 20%)",
-                WebkitMaskImage:
-                  "linear-gradient(to right, transparent, black 20%)",
-              }}
-            ></div>
+          {/* Right Column - 40% width - 1 Tall Card */}
+          <div className="md:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+            <div className="p-6 md:p-8 flex flex-col">
+              <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+                Lorem ipsum dolor slef amet
+              </h5>
+              <p className="text-xs text-gray-600 leading-snug">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <a
+                href="#"
+                className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+              >
+                Learn More &gt;
+              </a>
+            </div>
+            <div className="w-full flex-1 bg-gray-100"></div>
           </div>
         </div>
 
-        {/* Block 2 - Bottom two cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Bottom Card 1 */}
-          <div className="relative rounded-3xl min-h-[300px] md:min-h-[420px] overflow-hidden border border-gray-200 bg-[#F5F5F5] shadow-[0_18px_40px_rgba(2,6,23,0.06)]">
-            <div className="p-6 md:p-16 flex flex-col justify-start h-full">
-              <h4 className="text-[#1E1E1E] mb-4 md:mb-6 font-semibold text-xl md:text-2xl">
-                Lorem ipsum dolor slef amet
-              </h4>
-              <p className="p2 text-[#5C5C5C] mb-6 md:mb-10 text-base leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <a
-                href="#"
-                className="text-[#1E1E1E] font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto"
-              >
-                Learn more about lorem ipsum &gt;
-              </a>
-            </div>
-          </div>
-
-          {/* Bottom Card 2 */}
-          <div className="relative rounded-3xl min-h-[300px] md:min-h-[420px] overflow-hidden border border-gray-200 bg-[#F5F5F5] shadow-[0_18px_40px_rgba(2,6,23,0.06)]">
-            <div className="p-6 md:p-16 flex flex-col justify-start h-full">
-              <h4 className="text-[#1E1E1E] mb-4 md:mb-6 font-semibold text-xl md:text-2xl">
-                Lorem ipsum dolor slef amet
-              </h4>
-              <p className="p2 text-[#5C5C5C] mb-6 md:mb-10 text-base leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <a
-                href="#"
-                className="text-[#1E1E1E] font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto"
-              >
-                Learn more about lorem ipsum &gt;
-              </a>
-            </div>
-          </div>
+        {/* CTA Button */}
+        <div className="flex justify-center">
+          <button className="bg-[#FF7A00] text-white px-6 py-2 rounded-lg font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-md">
+            Explore All Resources
+          </button>
         </div>
       </div>
     </section>
