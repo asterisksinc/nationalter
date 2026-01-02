@@ -49,7 +49,21 @@ export default function FAQSection({
           {kicker}
         </span>
 
-        <h3 className="mb-6 text-2xl md:text-3xl text-center">{title}</h3>
+<div className="w-full flex justify-center">
+  <h3
+    className="
+      mb-6
+      text-2xl md:text-3xl
+      text-center
+      max-w-[22ch]
+      sm:max-w-none
+      leading-snug
+    "
+  >
+    {title}
+  </h3>
+</div>
+
         <p className="text-[#5C5C5C] text-center text-sm sm:text-base leading-relaxed">
           {children ?? (
             <>
