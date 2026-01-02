@@ -80,16 +80,16 @@ export default function TransparencySection() {
     <section className="py-12 md:py-16 w-full px-4 md:px-[72px]">
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
-        <div className="mb-16 w-full">
-          <h3>
+        <div className="mb-16 w-full text-center md:text-left">
+          <h3 className="text-center md:text-left">
             Built on Transparency.
             <br />
             Governed by Data Integrity.
           </h3>
-          <p className="mt-4 max-w-xl text-gray-600">
+          <p className="mt-4 p1 max-w-xl text-gray-600 text-center md:text-left">
             NationCite follows a reproducible, evidence-backed methodology using
             global open and licensed bibliometric sources. Every metric is
-            source-labeled, auditable, and continuously updated.
+            source-labeled and continuously updated.
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export default function TransparencySection() {
 
               <Link
                 href="/methodology"
-                className="inline-block px-3 py-2 rounded-lg text-xs md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
+                className="inline-block px-3 py-2 rounded-md sm:rounded-lg text-xs md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
               >
                 View Full Methodology
               </Link>
@@ -138,7 +138,7 @@ export default function TransparencySection() {
                 className="scroll-mt-4"
               >
                 <div className="space-y-2 md:space-y-6">
-                  <div className="relative aspect-4/3 bg-neutral-100 rounded-lg overflow-hidden">
+                  <div className="relative aspect-4/3 bg-neutral-100 rounded-md sm:rounded-lg overflow-hidden">
                     <Image
                       src={p.image}
                       alt={p.title}

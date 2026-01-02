@@ -16,7 +16,7 @@ export default function ArticleCard({
   return (
     <article className="group flex flex-col bg-white rounded-none md:rounded-sm transition-all duration-300">
       {hasImage && (
-        <div className="w-full h-96 bg-gray-50 rounded-3xl border border-dashed border-gray-200 flex flex-col items-center justify-center relative overflow-hidden mb-6 transition-colors">
+        <div className="w-full h-96 bg-gray-50 rounded-md sm:rounded-lg border border-dashed border-gray-200 flex flex-col items-center justify-center relative overflow-hidden mb-6 transition-colors">
           <div className="text-gray-300 flex flex-col items-center gap-3">
             <div className="p-3 bg-white rounded-full shadow-sm">
               <svg

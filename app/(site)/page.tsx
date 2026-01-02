@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "./hero-style.css" ;
+import "./hero-style.css";
 import TrustedBy from "@/components/site/TrustedBy";
 import UnderstandingHIndex from "@/components/site/UnderstandingHIndex";
 import TransparencySection from "@/components/site/TransparencySection";
@@ -14,12 +14,12 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-        <section className="hero relative pt-32 pb-12 w-full overflow-visible bg-white">
+      <section className="hero relative pt-32 pb-12 w-full overflow-visible bg-white">
         <div className="w-full px-4 md:px-[72px] z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
               {/* Badge at top - with arrow */}
-              <div className="flex items-center gap-3 px-4 py-2 mt-12 rounded-lg bg-white border border-gray-200 shadow-sm mb-10">
+              <div className="flex items-center justify-center gap-3 px-4 py-2 mt-12 rounded-md sm:rounded-lg bg-white border border-gray-200 shadow-sm mb-10 flex-wrap md:flex-nowrap md:justify-start">
                 <div className="flex -space-x-2">
                   {[1, 2, 3].map((i) => (
                     <div
@@ -63,7 +63,7 @@ export default function HomePage() {
               </h1>
 
               {/* Subheading */}
-              <p className="p1 pt-4 mb-10 max-w-[500px] mx-auto">
+              <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
                 Nationcite is India's national research visibility and H-Index
                 analytics platform
               </p>
@@ -72,15 +72,15 @@ export default function HomePage() {
               <div className="flex flex-row mt-10 justify-center gap-4 w-full">
                 <Link
                   href="/leaderboard"
-                  className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
+                  className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
                 >
                   Leaderboard
                 </Link>
                 <Link
                   href="/methodology"
-                  className="flex-1 sm:flex-none font-inter bg-white text-[#1E1E1E]  border border-gray-300 px-4 py-2 rounded-xl font-medium text-base transition-colors hover:bg-gray-50"
+                  className="flex-1 sm:flex-none font-inter bg-white text-[#1E1E1E]  border border-gray-300 px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-gray-50"
                 >
-                   Methodology
+                  Methodology
                 </Link>
               </div>
             </div>

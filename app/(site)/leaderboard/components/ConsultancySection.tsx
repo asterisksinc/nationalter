@@ -34,20 +34,20 @@ export default function ConsultancySection() {
         {/* --- Main Content --- */}
 
         {/* Tag */}
-        <div className="mb-6 relative z-10">
-          <span className="bg-[#FFF5EB] text-[#1E1E1E] pl-2 pr-4 py-1.5 rounded-full text-xs font-semibold border border-[#FFD6B3] flex items-center gap-2">
+        <div className="mb-6 relative z-10 text-center">
+          <span className="bg-[#FFF5EB] text-[#1E1E1E] pl-2 pr-4 py-1.5 rounded-full text-xs font-semibold border border-[#FFD6B3] flex items-center gap-2 justify-center mx-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></span>
             CTA Goes Here
           </span>
         </div>
 
         {/* Heading */}
-        <h3 className="mb-6 relative z-10 max-w-3xl">
+        <h3 className="mb-6 relative z-10 max-w-3xl text-center">
           Custom Consultancy Calls Powered by Industry Experts
         </h3>
 
         {/* Subtext */}
-        <p className="p2 pb-3 mb-10 relative z-10 max-w-xl">
+        <p className="p2 pb-3 mb-10 relative z-10 max-w-xl text-center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
@@ -81,7 +81,7 @@ export default function ConsultancySection() {
         </div>
 
         {/* CTA Button */}
-        <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-lg shadow-orange-200 relative z-10">
+        <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-lg shadow-orange-200 relative z-10">
           CTA Button
         </button>
       </div>

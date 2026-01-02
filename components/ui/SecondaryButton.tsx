@@ -18,7 +18,7 @@ export default function SecondaryButton({
   size = "md",
 }: SecondaryButtonProps) {
   const baseStyles =
-    "flex justify-center items-center font-inter font-medium rounded-lg transition-all hover:opacity-90 whitespace-nowrap";
+    "flex justify-center items-center font-inter font-medium rounded-md sm:rounded-lg transition-all hover:opacity-90 whitespace-nowrap";
 
   const sizeStyles = {
     sm: "px-4 py-2 text-sm",

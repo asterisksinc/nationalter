@@ -11,13 +11,13 @@ export default function PricingMidCTA() {
             </span>
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-semibold text-[#1E1E1E] mb-6">
+          <h2 className="text-3xl md:text-5xl font-semibold text-[#1E1E1E] mb-6 text-center">
             Lorem ipsum dolor
             <br />
             self amet consectetur
           </h2>
 
-          <p className="text-[#5C5C5C] max-w-xl mx-auto">
+          <p className="text-[#5C5C5C] max-w-xl mx-auto text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>

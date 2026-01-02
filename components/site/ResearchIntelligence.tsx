@@ -5,12 +5,12 @@ export default function ResearchIntelligence() {
     <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[72px]">
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
-          <h3 className="text-[#1E1E1E] text-2xl md:text-3xl mb-4">
+          <h3 className="text-[#1E1E1E] text-2xl md:text-3xl mb-4 text-center">
             Research Intelligence & <br /> Academic Insight
           </h3>
-          <p className="text-[#5C5C5C] max-w-xl mx-auto">
-            Stay informed with data literacy, <br /> ranking methodology, and
-            research visibility best practices.
+          <p className="text-[#5C5C5C]   p1  mx-auto text-center">
+            Stay informed with data literacy, ranking methodology, and research
+            visibility best practices.
           </p>
         </div>
 
@@ -38,27 +38,29 @@ export default function ResearchIntelligence() {
           ].map((item, i) => (
             <div
               key={i}
-              className="group cursor-pointer research-card bg-[#F5F5F5] rounded-lg md:rounded-2xl overflow-hidden flex flex-col"
+              className="group cursor-pointer research-card bg-[#F5F5F5] rounded-md sm:rounded-lg overflow-hidden flex flex-col h-full"
             >
               {/* Image Container - Now inside the card */}
-              <div className="h-40 md:h-[350px] w-full relative overflow-hidden">
+              <div className="h-40 md:h-[350px] w-full relative overflow-hidden flex-shrink-0">
                 <div className="absolute inset-0 bg-gray-200/50 transition-colors"></div>
                 {/* Optional: Add a subtle overlay or placeholder pattern here if needed to match the 'checkerboard' look, 
                     but keeping it clean as per original code style. */}
               </div>
 
               {/* Text Content - Now inside the card with padding */}
-              <div className="p-4 md:p-6 pt-4 md:pt-5 flex flex-col gap-1 md:gap-2">
-                <h4 className="text-[#1E1E1E] transition-colors text-sm md:text-lg font-semibold">
+              <div className="p-4 md:p-6 pt-4 md:pt-5 flex flex-col gap-1 md:gap-2 flex-1">
+                <h4 className="text-[#1E1E1E] transition-colors text-xs sm:text-sm md:text-lg font-semibold">
                   {item.title}
                 </h4>
-                <p className="text-xs md:text-sm text-[#5C5C5C]">{item.desc}</p>
+                <p className="text-[10px] sm:text-xs md:text-sm text-[#5C5C5C]">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
         </div>
         <div className="flex justify-center mt-6 md:mt-12">
-          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-lg hover:bg-[#E66A00] transition-colors shadow-lg shadow-orange-200 w-auto max-w-sm text-center">
+          <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm sm:text-base md:text-lg hover:bg-[#E66A00] transition-colors shadow-lg shadow-orange-200 w-auto max-w-sm text-center">
             Explore All Research & Insights
           </button>
         </div>

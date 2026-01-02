@@ -39,17 +39,16 @@ export default function MethodologyPage() {
           </h1>
 
           {/* DESCRIPTION */}
-          <p className="p1 pt-4 mb-10 max-w-[500px] mx-auto text-center">
+          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
             Nationcite follows a reproducible, evidence-backed methodology using
             global open and licensed bibliometric sources.
           </p>
 
           {/* CTA BUTTONS */}
           <div className="flex flex-col sm:flex-row mt-10 justify-center items-center gap-4  sm:w-auto">
-            <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-xl font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 w-full sm:w-auto">
+            <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 w-full sm:w-auto">
               Explore Methodology
             </button>
-         
           </div>
         </div>
       </section>

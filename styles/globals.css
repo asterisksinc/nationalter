@@ -90,6 +90,13 @@ button {
   border-radius: 0.75rem;
 }
 
+@media (max-width: 639px) {
+  .btn-primary,
+  .btn-secondary {
+    border-radius: 0.5rem;
+  }
+}
+
 /* ========================================
    UNIFIED PLACEHOLDER STYLES
    ======================================== */

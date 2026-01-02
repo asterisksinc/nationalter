@@ -19,9 +19,11 @@ export default function PricingPage() {
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
         <div className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
           {/* Table 1: Overview & Pricing */}
-          <div>
-            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">Overview & Pricing</h4>
-            <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden">
+          <div className="space-y-7">
+            <h4 className="mb-6 sm:mb-8 md:mb-10 lg:mb-10 text-center sm:text-left">
+              Overview & Pricing
+            </h4>
+            <div className="mt-4 sm:mt-6 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <div className="min-w-[800px]">
                   <div className="grid grid-cols-4 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
@@ -159,10 +161,10 @@ export default function PricingPage() {
 
           {/* Table 6: Add-ons */}
           <div>
-            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6 text-center sm:text-left">
               Add-ons (Optional for all)
             </h4>
-            <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden max-w-2xl">
+            <div className="border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden max-w-2xl">
               <div className="overflow-x-auto">
                 <div className="w-full min-w-[300px]">
                   <div className="grid grid-cols-2 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
@@ -225,9 +227,11 @@ function ComparisonTable({
   rows: (string | boolean)[][];
 }) {
   return (
-    <div>
-      <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6">{title}</h4>
-      <div className="border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden">
+    <div className=" ">
+      <h4 className="mb-6 sm:mb-8 md:mb-10 lg:mb-10 text-center sm:text-left">
+        {title}
+      </h4>
+      <div className="mt-4 sm:mt-6 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <div className="min-w-[800px]">
             <div className="grid grid-cols-4 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">
@@ -236,7 +240,7 @@ function ComparisonTable({
                   key={i}
                   className={
                     i === 0
-                      ? "sticky left-0 bg-gray-50 z-10 text-left"
+                      ? "sticky left-0 bg-gray-50 mb- z-10 text-left"
                       : "text-center"
                   }
                 >

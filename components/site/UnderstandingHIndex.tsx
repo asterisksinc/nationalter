@@ -52,10 +52,10 @@ export default function UnderstandingHIndex() {
       <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
-          <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px]">
+          <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
             Understanding the H-Index <br /> Backbone of Research Impact
           </h3>
-          <p className="p2 text-gray-500 max-w-[350px] md:max-w-[700px]">
+          <p className="p1 text-gray-500 max-w-[350px] md:max-w-[700px] text-center">
             The H-Index is more than number. It reflects consistency, influence,
             and academic credibility. Here's what it truly represents and why it
             matters.
@@ -67,14 +67,16 @@ export default function UnderstandingHIndex() {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+              className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden"
             >
               <CheckerboardPattern className="w-full h-40" />
               <div className="p-4">
-                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-1">
+                <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-1">
                   {card.title}
                 </h5>
-                <p className="text-xs text-gray-600">{card.description}</p>
+                <p className="text-[11px] sm:text-xs text-gray-600">
+                  {card.description}
+                </p>
               </div>
             </div>
           ))}
@@ -87,14 +89,14 @@ export default function UnderstandingHIndex() {
             {cards.slice(0, 3).map((card, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
+                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
-                  <h5 className="text-sm font-semibold text-[#1E1E1E] mb-2">
+                  <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
                     {card.title}
                   </h5>
-                  <p className="text-xs text-gray-600 leading-snug">
+                  <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
                     {card.description}
                   </p>
                 </div>
@@ -107,14 +109,14 @@ export default function UnderstandingHIndex() {
             {cards.slice(3, 5).map((card, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
+                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
-                  <h5 className="text-sm font-semibold text-[#1E1E1E] mb-2">
+                  <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
                     {card.title}
                   </h5>
-                  <p className="text-xs text-gray-600 leading-snug">
+                  <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
                     {card.description}
                   </p>
                 </div>

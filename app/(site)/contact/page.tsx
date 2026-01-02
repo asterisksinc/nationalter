@@ -8,21 +8,21 @@ export default function ContactPage() {
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           {/* Left Column - Content */}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center text-center md:text-left">
             {/* BADGE */}
-            <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-4 sm:mb-6 md:mb-6 lg:mb-8 w-fit">
+            <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-4 sm:mb-6 md:mb-6 lg:mb-8 w-fit md:w-fit mx-auto md:mx-0">
               Get in Touch with Nationcite
             </span>
 
             {/* HEADING */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 sm:mb-6 md:mb-6 lg:mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-center md:text-left">
               Let's Build India's Research
               <br />
               Transparency Together
             </h1>
 
             {/* DESCRIPTION */}
-            <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] leading-relaxed mb-8 sm:mb-12 md:mb-16 lg:mb-24">
+            <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] leading-relaxed mb-8 sm:mb-12 md:mb-16 lg:mb-24 text-center md:text-left max-w-[500px] mx-auto md:mx-0">
               Whether you're a researcher seeking profile support, an
               institution exploring analytics, or a partner interested in
               collaboration – our team is here to assist you with verified,
@@ -31,7 +31,7 @@ export default function ContactPage() {
 
             {/* Trusted By Section */}
             <div>
-              <h5 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-[#1E1E1E] mb-4 sm:mb-6 md:mb-6 lg:mb-6">
+              <h5 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-[#1E1E1E] mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-center md:text-left">
                 Trusted by 8,000+ Researchers India
               </h5>
 
@@ -61,7 +61,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right Column - Form */}
-          <div className="bg-white shadow-xl rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 border border-gray-100">
+          <div className="bg-white shadow-xl rounded-lg sm:rounded-xl md:rounded-2xl lg:rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 border border-gray-100">
             <form className="space-y-4 sm:space-y-5 md:space-y-5 lg:space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div>
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <input
                     type="text"
                     placeholder="Enter Input"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                   />
                 </div>
                 <div>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                   <input
                     type="email"
                     placeholder="Enter Input"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                   />
                 </div>
               </div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                 <input
                   type="text"
                   placeholder="Enter Input"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                 />
               </div>
               <div>
@@ -102,7 +102,7 @@ export default function ContactPage() {
                 </label>
                 <div className="relative">
                   <select
-                    className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm text-gray-500 outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full appearance-none rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm text-gray-500 outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                     defaultValue=""
                   >
                     <option value="" disabled>
@@ -127,13 +127,13 @@ export default function ContactPage() {
                 <textarea
                   rows={4}
                   placeholder="Enter Input"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all resize-none"
+                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all resize-none"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-3 rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-xl text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow-lg shadow-orange-200 hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
+                className="w-auto sm:w-full bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-3 rounded-[7px] text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow-lg shadow-orange-200 hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
               >
                 Submit
               </button>

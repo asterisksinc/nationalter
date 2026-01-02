@@ -118,7 +118,7 @@ export default function Footer() {
             <div className="flex flex-row lg:flex-col gap-2 md:gap-3 pt-0 md:pt-2 w-full lg:w-auto justify-start lg:justify-start">
               <a
                 href="#"
-                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors group"
+                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-[7px] flex items-center justify-center hover:bg-gray-200 transition-colors group"
               >
                 {/* Instagram Icon */}
                 <svg
@@ -139,7 +139,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors"
+                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-[7px] flex items-center justify-center hover:bg-gray-200 transition-colors"
               >
                 {/* X (Twitter) Icon */}
                 <svg
@@ -154,7 +154,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors"
+                className="w-8 md:w-10 h-8 md:h-10 bg-white rounded-[7px] flex items-center justify-center hover:bg-gray-200 transition-colors"
               >
                 {/* Youtube Icon */}
                 <svg

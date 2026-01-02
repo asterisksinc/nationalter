@@ -11,19 +11,19 @@ export default function LegalPage() {
           <button className="faqtitle rounded-full px-4 py-1 mb-6 border border-[#f9a96a]/40">
             • Privacy Policy
           </button>
-          <h1 className="mb-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight text-black">
-            Nationcite’s Privacy Policy
+          <h1 className="mb-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight text-black text-center">
+            Nationcite's Privacy Policy
           </h1>
 
-          <p className="max-w-xl mx-auto mb-8 text-base md:text-lg text-gray-500 sub-listhead">
+          <p className="max-w-xl mx-auto mb-8 text-xs sm:text-sm md:text-base lg:text-lg text-gray-500 sub-listhead text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </section>
       </div>
       <section className="w-full flex justify-center bg-white ">
-        <article className="w-full max-w-5xl px-6 md:px-0 text-left">
-          <h2 className="topsubtitle mb-6 text-left">
+        <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
+          <h2 className="topsubtitle mb-6 text-center md:text-left">
             Lorem ipsum
             <br />
             dolor self amet

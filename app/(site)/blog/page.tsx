@@ -52,9 +52,9 @@ export default function BlogPage() {
         </h1>
 
         {/* DESCRIPTION */}
-        <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-2xl inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
+        <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-md sm:rounded-lg inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
           <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C]">
-            <span className="block max-w-3xl mx-auto">
+            <span className="block max-w-[500px] mx-auto">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </span>
@@ -68,13 +68,13 @@ export default function BlogPage() {
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-10 md:py-10 lg:py-10 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           {/* Search and Filter Section */}
-          <div className="bg-[#f5f5f5] rounded-xl p-1 sm:p-1 md:p-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-10 lg:mb-10">
+          <div className="bg-[#f5f5f5] rounded-lg sm:rounded-xl p-1 sm:p-1 md:p-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-10 lg:mb-10">
             {/* Search Input */}
             <div className="w-full sm:flex-1">
               <input
                 type="text"
                 placeholder="Search for Resources"
-                className="w-full px-4 py-2 sm:py-2.5 text-sm text-black rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent font-inter placeholder-gray-500"
+                className="w-full px-4 py-2 sm:py-2.5 text-sm text-black rounded-md sm:rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent font-inter placeholder-gray-500"
               />
             </div>
 
@@ -84,7 +84,7 @@ export default function BlogPage() {
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border border-gray-200 bg-white rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50"
                 >
                   <span>Sort</span>
                   <svg
@@ -106,7 +106,7 @@ export default function BlogPage() {
 
                 {/* Sort Dropdown Menu */}
                 {sortOpen && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-md sm:rounded-lg shadow-lg z-10">
                     <button
                       onClick={() => {
                         setSortBy("newest");
@@ -138,7 +138,7 @@ export default function BlogPage() {
               </div>
 
               {/* Filter Button */}
-              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border-1 border-gray-200 bg-white rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50">
+              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border-1 border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50">
                 <span>Filter</span>
                 <svg
                   className="w-4 h-4"
@@ -161,7 +161,7 @@ export default function BlogPage() {
             {Array.from({ length: 9 }).map((_, i) => (
               <article
                 key={i}
-                className="group cursor-pointer rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group cursor-pointer rounded-md sm:rounded-lg bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 <div className="w-full bg-[#f5f5f5]">
                   <img

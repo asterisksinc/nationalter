@@ -33,7 +33,7 @@ const TrustedBy = () => {
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-8">
         <div className="w-full text-center">
           <div className="inline-block max-w-3xl">
-            <p className="text-gray-500  text-sm md:text-lg mt-3 mx-auto text-center">
+            <p className="text-gray-500  text-xs sm:text-sm md:text-lg mt-3 mx-auto text-center">
               Trusted by Leading Academic Institutions{" "}
             </p>
           </div>
@@ -80,17 +80,16 @@ const LogoItem = ({ logo }: { logo: Logo }) => (
   <div className="flex items-center justify-center w-[40vw] md:w-[14vw] shrink-0 px-2">
     <div className="flex items-center gap-2 group cursor-default">
       {/* Icon */}
-      <div className="w-9 h-9 md:w-10 md:h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600 transition-colors duration-300">
+      <div className="w-9 h-9 md:w-10 md:h-10 bg-gray-100 rounded-md sm:rounded-lg flex items-center justify-center text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600 transition-colors duration-300">
         {logo.icon}
       </div>
 
       {/* Text */}
-      <span className="text-base md:text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
+      <span className="text-xs sm:text-sm md:text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
         {logo.name}
       </span>
     </div>
   </div>
 );
-
 
 export default TrustedBy;

@@ -5,11 +5,11 @@ export default function RightCard() {
     <section className="w-full py-8 md:py-12 px-4 md:px-[120px]">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
         {/* Left Column: Badge & Heading */}
-        <div>
+        <div className="text-center md:text-left">
           <span className="inline-block text-[#FF7A00] font-medium mb-4 md:mb-6 text-sm tracking-wide uppercase">
             How we Calculate
           </span>
-          <h3 className="text-[#1E1E1E] text-3xl md:text-5xl font-semibold leading-tight">
+          <h3 className="text-[#1E1E1E] text-3xl md:text-5xl font-semibold leading-tight text-center md:text-left">
             Lorem ipsum dolor
             <br />
             Self Amet
@@ -17,8 +17,8 @@ export default function RightCard() {
         </div>
 
         {/* Right Column: Text Content */}
-        <div className="space-y-4 text-[#5C5C5C]">
-          <p className="text-base leading-relaxed">
+        <div className="space-y-4 text-[#5C5C5C] text-center md:text-left">
+          <p className="text-sm sm:text-base leading-relaxed">
             Nationcite was born from a simple realization: businesses don't fail
             due to lack of ideas, they fail due to lack of execution-grade
             systems. We exist to bridge this gap by building digital products,
@@ -26,7 +26,7 @@ export default function RightCard() {
             future-ready.
           </p>
           <br />
-          <p className="text-base leading-relaxed">
+          <p className="text-sm sm:text-base leading-relaxed">
             At our core, we are architects of digital ecosystems. We blend
             strategy, design, engineering, and automation to create solutions
             that remove friction from growth. Every product we build is designed
@@ -34,7 +34,7 @@ export default function RightCard() {
             scale stronger.
           </p>
           <br />
-          <p className="text-base leading-relaxed">
+          <p className="text-sm sm:text-base leading-relaxed">
             Today, Nationcite partners with startups, enterprises, and
             innovators across industries, powering their digital journeys with
             precision, accountability, and long-term thinking.

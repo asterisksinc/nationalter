@@ -52,7 +52,7 @@ export default function TabContentToggle({
         {/* Content Container with Tabs */}
         <div className="relative">
           {/* Main Content Area */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex items-center justify-center p-6 md:p-8 lg:p-12">
+          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex items-center justify-center p-6 md:p-8 lg:p-12">
             {activeTabContent ? (
               <div className="w-full">{activeTabContent.content}</div>
             ) : (
@@ -79,10 +79,10 @@ export default function TabContentToggle({
                     {tab.icon}
                   </span>
                 )}
-                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-2">
+                <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
                   {tab.label}
                 </h5>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-gray-600 leading-relaxed">
                   Build credibility. Track your research impact.
                 </p>
               </button>
@@ -96,7 +96,7 @@ export default function TabContentToggle({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-[7px] text-xs sm:text-sm font-medium transition-all ${
                 activeTab === tab.id
                   ? "bg-[#FF7A00] text-white shadow-md"
                   : "bg-gray-100 text-gray-700 active:bg-gray-200"

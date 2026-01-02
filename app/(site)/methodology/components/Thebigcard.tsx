@@ -5,13 +5,13 @@ export default function Thebigcard() {
   return (
     <section className="w-full py-8 md:py-12 bg-white px-4 md:px-[120px]">
       {/* Main Container Card - Cream Background */}
-      <div className="w-full bg-white rounded-[32px] py-6 md:py-16">
+      <div className="w-full bg-white rounded-md sm:rounded-lg py-6 md:py-16">
         {/* Top Text Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 items-start mb-8 md:mb-12">
           {/* Left Column: Headings */}
-          <div>
+          <div className="text-center md:text-left">
             <Badge> Lorem ipsum </Badge>
-            <h3 className="text-[#1E1E1E] text-3xl md:text-5xl font-semibold leading-tight">
+            <h3 className="text-[#1E1E1E] text-3xl md:text-5xl font-semibold leading-tight text-center md:text-left">
               Lorem ipsum
               <br />
               dolor self amet
@@ -19,20 +19,20 @@ export default function Thebigcard() {
           </div>
 
           {/* Right Column: Paragraphs */}
-          <div className="space-y-6 text-[#5C5C5C]">
-            <p className="text-base leading-relaxed">
+          <div className="space-y-6 text-[#5C5C5C] text-center md:text-left">
+            <p className="text-sm sm:text-base leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
               faucibus ex sapien vitae pellentesque sem placerat. In id cursus
               mi pretium tellus duis convallis.
             </p>
             <br className="hidden md:block" />
-            <p className="text-base leading-relaxed">
+            <p className="text-sm sm:text-base leading-relaxed">
               Tempus leo eu aenean sed diam urna tempor, Pulvinar vivamus
               fringilla lacus nec metus bibendum egestas. Iaculis massa nisl
               malesuada lacinia integer nunc posuere.
             </p>
             <br className="hidden md:block" />
-            <p className="text-base leading-relaxed">
+            <p className="text-sm sm:text-base leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
               faucibus ex sapien vitae pellentesque sem placerat. In id cursus
               mi pretium tellus duis convallis.
@@ -41,7 +41,7 @@ export default function Thebigcard() {
         </div>
 
         {/* Bottom Image/Placeholder Section */}
-        <div className="w-full h-[250px] md:h-[500px] relative rounded-2xl  overflow-hidden bg-gray-100 border border-gray-300">
+        <div className="w-full h-[250px] md:h-[500px] relative rounded-md sm:rounded-lg overflow-hidden bg-gray-100 border border-gray-300">
           {/* Checkerboard Pattern */}
           <div
             className="absolute inset-0 w-full h-full"

@@ -9,26 +9,26 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             • Blog
           </button>
 
-          <h1 className="mb-4 monttitle">
+          <h1 className="mb-4 monttitle text-center">
             Lorem ipsum dolor sit amet,
             <br />
             consectetur adipiscing elite
           </h1>
 
-          <p className="monthsubtitle max-w-xl mx-auto mb-6">
+          <p className="monthsubtitle max-w-xl mx-auto mb-6 text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
 
-          <p className="monthfooter">Month 00, YYYY</p>
+          <p className="monthfooter text-center">Month 00, YYYY</p>
         </section>
       </div>
 
       <section className="w-full flex justify-center bg-white ">
-        <article className="w-full max-w-5xl px-6 md:px-0 text-left">
-          <p className="toptitle  mb-4">Lorem ipsum</p>
+        <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
+          <p className="toptitle  mb-4 text-center md:text-left">Lorem ipsum</p>
 
-          <h2 className="topsubtitle mb-6 text-left">
+          <h2 className="topsubtitle mb-6 text-center md:text-left">
             Lorem ipsum
             <br />
             dolor self amet
@@ -61,8 +61,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
       <section className="w-full flex justify-center bg-white ">
-        <article className="w-full max-w-5xl px-6 md:px-0 text-left">
-          <h2 className="topsubtitle mb-6 text-left">
+        <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
+          <h2 className="topsubtitle mb-6 text-center md:text-left">
             Lorem ipsum
             <br />
             dolor self amet

@@ -11,13 +11,13 @@ export default function FinalCTA() {
           </span>
         </div>
 
-        <h3 className="text-[#1E1E1E] mb-8 md:mb-12 text-3xl md:text-3xl">
+        <h3 className="text-[#1E1E1E] mb-8 md:mb-12 text-3xl md:text-3xl text-center">
           Claim Your Academic Identity.
           <br />
           Shape Your Research Legacy.
         </h3>
 
-        <p className="p2 text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px]">
+        <p className="p2 text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px] text-center">
           Whether you are a researcher building visibility, or an institution
           managing thousands of profiles Nationcite gives you verified control,
           transparent impact measurement, and trusted national recognition.
@@ -38,7 +38,7 @@ export default function FinalCTA() {
         <img
           src="/CTA Section Image - Nationcite.png"
           alt="Nationcite CTA Section"
-          className="w-full h-auto rounded-lg md:rounded-2xl"
+          className="w-full h-auto rounded-md sm:rounded-lg"
         />
       </div>
     </section>

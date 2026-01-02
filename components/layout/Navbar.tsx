@@ -25,7 +25,7 @@ export default function Navbar() {
     >
       {/* Desktop: Centered white container */}
       <div className="hidden md:flex md:justify-center md:py-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
@@ -61,7 +61,7 @@ export default function Navbar() {
               </button>
 
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 py-2">
+                <div className="bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-100 py-2">
                   <Link
                     href="/leaderboard/scholars"
                     className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors"
@@ -109,7 +109,7 @@ export default function Navbar() {
             </Link>
 
             <div className="relative group">
-              <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-xl hover:bg-[#f76a23] transition-colors">
+              <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
                 Sign Up/In
                 <ChevronDown
                   size={14}
@@ -118,7 +118,7 @@ export default function Navbar() {
               </button>
 
               <div className="absolute top-full right-0 pt-2 w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
+                <div className="bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
                   <Link
                     href="/signin"
                     className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
@@ -167,7 +167,7 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown (compact) */}
       {isMenuOpen && (
         <div className="md:hidden absolute left-0 right-0 mt-2 mx-2 z-50">
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 py-3 px-4 flex flex-col gap-1 animate-dropdown">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-lg border border-gray-200 py-3 px-4 flex flex-col gap-1 animate-dropdown">
             <nav className="flex flex-col gap-1">
               <Link
                 href="/about"
@@ -245,7 +245,7 @@ export default function Navbar() {
               {/* Sign Up/In with submenu */}
               <div>
                 <button
-                  className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-base px-4 py-2 rounded-xl w-full mt-2"
+                  className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-base px-4 py-2 rounded-[7px] w-full mt-2"
                   onClick={() => setIsAuthOpen((v) => !v)}
                   aria-expanded={isAuthOpen}
                   aria-controls="mobile-auth-menu"

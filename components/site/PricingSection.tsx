@@ -71,13 +71,13 @@ export default function PricingSection({ className }: { className?: string }) {
             Pricing
           </span>
 
-          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-4 sm:mb-6 md:mb-6 lg:mb-8 text-[#111111]">
+          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-4 sm:mb-6 md:mb-6 lg:mb-8 text-[#111111] text-center">
             Free Access for Discovery & <br /> Premium Tools for Power Users
           </h3>
 
           {/* Toggle Switch */}
           <div className="flex justify-center">
-            <div className="bg-[#F3F4F6] p-1 rounded-lg inline-flex items-center gap-1">
+            <div className="bg-[#F3F4F6] p-1 rounded-md sm:rounded-lg inline-flex items-center gap-1">
               <button
                 onClick={() => setBillingCycle("monthly")}
                 className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${
@@ -107,7 +107,7 @@ export default function PricingSection({ className }: { className?: string }) {
           {plans.map((plan, i) => (
             <div
               key={i}
-              className={`rounded-lg md:rounded-2xl overflow-hidden transition-all duration-300 flex flex-col ${
+              className={`rounded-md sm:rounded-lg overflow-hidden transition-all duration-300 flex flex-col ${
                 plan.highlight
                   ? "border border-[#FF9534] shadow-[0_0_40px_-5px_rgba(255,149,52,0.3)] scale-100 z-10"
                   : "border border-gray-200 shadow-sm hover:shadow-md"
@@ -119,7 +119,7 @@ export default function PricingSection({ className }: { className?: string }) {
                   plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
                 }`}
               >
-                <h4 className="font-inter text-sm md:text-base font-semibold text-[#111111] mb-4 md:mb-5">
+                <h4 className="font-inter text-xs sm:text-sm md:text-base font-semibold text-[#111111] mb-4 md:mb-5">
                   {plan.title}
                 </h4>
 
@@ -127,17 +127,17 @@ export default function PricingSection({ className }: { className?: string }) {
                   <span className="font-inter text-2xl md:text-4xl font-bold text-[#111111]">
                     {plan.price}
                   </span>
-                  <span className="font-inter text-gray-500 font-normal text-xs md:text-lg">
+                  <span className="font-inter text-gray-500 font-normal text-[9px] sm:text-[10px] md:text-xs lg:text-lg">
                     / year
                   </span>
                 </div>
-                <p className="font-inter text-xs sm:text-sm md:text-sm text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed">
+                <p className="font-inter text-[10px] sm:text-xs md:text-sm text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed">
                   {plan.description}
                 </p>
 
                 <div className="mt-4 flex justify-center">
                   <button
-                    className={`w-11/12 md:w-3/4 py-3 md:py-3.5 rounded-xl  text-sm md:text-base font-inter transition-colors duration-200 ${plan.btnStyle}`}
+                    className={`w-11/12 md:w-3/4 py-3 md:py-3.5 rounded-[7px]  text-sm md:text-base font-inter transition-colors duration-200 ${plan.btnStyle}`}
                   >
                     {plan.btnText}
                   </button>

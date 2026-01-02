@@ -44,9 +44,9 @@ export default function AboutPage() {
         </h1>
 
         {/* DESCRIPTION */}
-        <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-2xl inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C]">
-            <span className="block max-w-3xl mx-auto">
+        <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-md sm:rounded-lg mt-10 md:mt-5 inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
+          <p className="text-base sm:text-lg md:text-lg lg:text-xl text-[#5C5C5C]">
+            <span className="block max-w-[500px] mx-auto">
               Nationcite builds intelligent digital infrastructure to help
               brands scale with clarity and speed.
             </span>
@@ -57,7 +57,7 @@ export default function AboutPage() {
         <div className="w-full px-4 flex justify-center sm:w-auto sm:px-0">
           <button
             onClick={scrollToNextSection}
-            className="bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 w-auto py-2 rounded-lg text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
+            className="bg-[#FF7A00] text-white px-4 sm:px-6 md:px-6 lg:px-6 w-auto py-2 rounded-md sm:rounded-lg text-sm sm:text-base md:text-base lg:text-base font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow hover:shadow-md focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2"
           >
             Explore Our Ecosystem
           </button>
@@ -68,14 +68,14 @@ export default function AboutPage() {
       <section className="px-4 sm:px-6 md:px-8 lg:px-[120px] w-full py-8 sm:py-10 md:py-12 lg:py-12">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
           {/* 70% block */}
-          <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[500px] lg:h-[600px] bg-neutral-200 rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-xl flex items-center justify-center">
+          <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[500px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
             <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">
               Image 1{" "}
             </span>
           </div>
 
           {/* 30% block */}
-          <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[500px] lg:h-[600px] bg-neutral-300 rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-xl flex items-center justify-center">
+          <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[500px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
             <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">
               Image 2{" "}
             </span>
@@ -85,7 +85,7 @@ export default function AboutPage() {
 
       {/* Who We Are */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
-        <div>
+        <div className="text-center md:text-left">
           <span
             className="
   inline-block
@@ -105,7 +105,7 @@ export default function AboutPage() {
             Where Vision Meets Engineering Excellence
           </h3>
         </div>
-        <div className="space-y-3 sm:space-y-6 md:space-y-6 lg:space-y-8 text-[#5C5C5C]">
+        <div className="space-y-3 sm:space-y-6 md:space-y-6 lg:space-y-8 text-[#5C5C5C] text-center md:text-left">
           <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">
             Nationcite was born from a simple realization: businesses don't fail
             due to lack of ideas, they fail due to lack of execution-grade
@@ -130,7 +130,7 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="px-4 sm:px-6 md:px-8 lg:px-[120px] w-full py-8 sm:py-10 md:py-12 lg:py-12">
-        <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-lg sm:rounded-xl md:rounded-xl lg:rounded-xl"></div>
+        <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg"></div>
       </section>
 
       <TrustedBy />
@@ -143,14 +143,14 @@ export default function AboutPage() {
           </h3>
 
           {/* Team Grid */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
+          <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
             {Array.from({ length: 8 }).map((_, index) => (
               <div
                 key={index}
-                className="group cursor-pointer rounded-[2px] sm:rounded-[2px] md:rounded-[4px] lg:rounded-[4px] bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                className="group cursor-pointer rounded-md sm:rounded-lg bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Image Placeholder */}
-                <div className="w-full aspect-square rounded-[2px] sm:rounded-[2px] md:rounded-[4px] lg:rounded-[4px] bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4" />
+                <div className="w-full aspect-square rounded-md sm:rounded-lg bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4" />
 
                 {/* Text */}
                 <div>
@@ -169,7 +169,7 @@ export default function AboutPage() {
 
       {/* 15 Reasons to Join Us */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
-        <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start">
+        <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start text-center lg:text-left">
           <h3 className="mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-xl sm:text-2xl md:text-2xl lg:text-3xl">
             Why Organizations Choose Us
           </h3>
@@ -195,10 +195,10 @@ export default function AboutPage() {
           ].map((reason, i) => (
             <div
               key={i}
-              className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-lg sm:rounded-2xl md:rounded-2xl lg:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-2 sm:gap-3 md:gap-3 lg:gap-3">
-                <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0">
                   <Check className="w-6 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
                 </div>
                 <div>

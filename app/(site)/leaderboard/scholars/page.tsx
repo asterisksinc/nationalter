@@ -117,12 +117,12 @@ export default function ScholarsLeaderboardPage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mx-auto">
               {/* Main Heading */}
-              <h1 className="font-inter z-10 max-w-sm md:max-w-2xl  lg:max-w-4xl mb-8 text-center  text-slate-700">
+              <h1 className="font-inter z-10 max-w-sm md:max-w-2xl lg:max-w-4xl mb-8 text-center text-slate-700">
                 Top Researchers & Scholars
               </h1>
 
               {/* Subheading */}
-              <p className="p1 pt-4 mb-10 max-w-xs sm:max-w-sm z-20 md:max-w-md lg:max-w-2xl mx-auto text-center text-slate-600">
+              <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-xs sm:max-w-sm z-20 md:max-w-md lg:max-w-2xl mx-auto text-center">
                 Explore India's leading researchers and scholars who are
                 advancing knowledge and contributing to global research. Ranked
                 by H-Index and research impact.
@@ -135,19 +135,19 @@ export default function ScholarsLeaderboardPage() {
       {/* Leaderboard Section */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
         <div className="w-full max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}
             <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
+                <div className="text-center md:text-left w-full md:w-auto">
                   <h3
-                    className="h3-bento text-slate-900 flex items-center gap-3"
+                    className="h3-bento text-slate-900 flex items-center gap-3 justify-center md:justify-start"
                     style={{
                       fontFamily:
                         "'Helvetica Rounded', 'Helvetica', sans-serif",
                     }}
                   >
-                    <div className="p-2 bg-orange-50 rounded-lg text-[#FF7A00]">
+                    <div className="p-2 bg-orange-50 rounded-md sm:rounded-lg text-[#FF7A00]">
                       <Sparkles size={20} />
                     </div>
                     Scholars Leaderboard
@@ -161,7 +161,7 @@ export default function ScholarsLeaderboardPage() {
                   <input
                     type="text"
                     placeholder="Search scholars..."
-                    className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-sm"
+                    className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-sm"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -175,7 +175,6 @@ export default function ScholarsLeaderboardPage() {
       </section>
 
       <ThreeCardsSection />
-
 
       <TabContentToggle
         title="Custom Consultancy Calls"
