@@ -124,8 +124,7 @@ export default function ScholarsLeaderboardPage() {
               {/* Subheading */}
               <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-xs sm:max-w-sm z-20 md:max-w-md lg:max-w-2xl mx-auto text-center">
                 Explore India's leading researchers and scholars who are
-                advancing knowledge and contributing to global research. Ranked
-                by H-Index and research impact.
+                advancing knowledge and contributing to global research.
               </p>
             </div>
           </div>
@@ -141,7 +140,7 @@ export default function ScholarsLeaderboardPage() {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="text-center md:text-left w-full md:w-auto">
                   <h3
-                    className="h3-bento text-slate-900 flex items-center gap-3 justify-center md:justify-start"
+                    className="h3-bento text-slate-900 flex  gap-3 justify-start md:justify-start"
                     style={{
                       fontFamily:
                         "'Helvetica Rounded', 'Helvetica', sans-serif",

@@ -19,41 +19,63 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
               {/* Badge at top - with arrow */}
-              <div className="flex items-center justify-center gap-3 px-4 py-2 mt-12 rounded-md sm:rounded-lg bg-white border border-gray-200 shadow-sm mb-10 flex-wrap md:flex-nowrap md:justify-start">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
-                    >
-                      <img
-                        src={`https://i.pravatar.cc/150?img=${i + 20}`}
-                        alt="user"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <span className="text-sm sm:text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
-                  1,42,846+ Indian Researchers Indexed
-                </span>
+             <div
+  className="
+    flex items-center justify-center
+    flex-nowrap min-w-0
+    gap-2 sm:gap-3
+    px-3 sm:px-4 py-2 mt-12
+    rounded-md sm:rounded-lg
+    bg-white border border-gray-200 shadow-sm
+    mb-10
+  "
+>
+  {/* Avatars */}
+  <div className="flex -space-x-2 shrink-0">
+    {[1, 2, 3].map((i) => (
+      <div
+        key={i}
+        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
+      >
+        <img
+          src={`https://i.pravatar.cc/150?img=${i + 20}`}
+          alt="user"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    ))}
+  </div>
 
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  className="text-[#1E1E1E]"
-                >
-                  <path
-                    d="M6 3L11 8L6 13"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
+  {/* Text */}
+  <span
+    className="
+      text-sm font-medium text-[#1E1E1E]
+      whitespace-nowrap
+      max-w-[72%]
+      overflow-hidden
+      text-ellipsis
+    "
+  >
+    1,42,846+ Indian Researchers Indexed
+  </span>
+
+  {/* Arrow */}
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    className="text-[#1E1E1E] shrink-0 flex-none"
+  >
+    <path
+      d="M6 3L11 8L6 13"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</div>
 
               {/* Main Heading */}
               <h1 className="mb-8">

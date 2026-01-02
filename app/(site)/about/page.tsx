@@ -47,8 +47,8 @@ export default function AboutPage() {
         <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-md sm:rounded-lg mt-10 md:mt-5 inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
           <p className="text-sm sm:text-lg md:text-lg lg:text-xl text-[#5C5C5C] leading-relaxed">
             <span className="block max-w-[500px] mx-auto">
-              Nationcite builds intelligent digital infrastructure to help brands
-              scale with clarity and speed.
+              Nationcite builds intelligent digital infrastructure to help
+              brands scale with clarity and speed.
             </span>
           </p>
         </div>
@@ -154,10 +154,10 @@ export default function AboutPage() {
 
                 {/* Text */}
                 <div>
-                  <h5 className="px-3 text-base sm:text-base md:text-base lg:text-base font-medium text-[#1E1E1E] leading-snug">
+                  <h5 className="p2 px-3 text-base sm:text-base md:text-base lg:text-base font-medium text-[#1E1E1E] leading-snug">
                     Team Member Name
                   </h5>
-                  <p className="text-sm sm:text-sm md:text-sm lg:text-sm px-3 text-[#6B6B6B] mt-1 leading-relaxed">
+                  <p className="p3 text-sm sm:text-sm md:text-sm lg:text-sm px-3 text-[#6B6B6B] mt-1 leading-relaxed">
                     Lorem ipsum dolor sit amet,
                   </p>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Badge from "@/components/ui/Badge";
 
 interface TabItem {
   id: string;
@@ -36,10 +37,9 @@ export default function TabContentToggle({
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 md:mb-14 gap-6">
           <div className="flex-1 text-center md:text-left">
+            <Badge className="mx-auto md:mx-0 mb-4"> {description}</Badge>
+            <p className="text-gray-600 mb-4 max-w-[700px] text-sm sm:text-base leading-relaxed mx-auto md:mx-0"></p>
             <h3 className="h3 mb-3 md:mb-4 text-[#1E1E1E]">{title}</h3>
-            <p className="text-gray-600 max-w-[700px] text-sm sm:text-base leading-relaxed mx-auto md:mx-0">
-              {description}
-            </p>
           </div>
           {ctaText && (
             <a
@@ -90,24 +90,24 @@ export default function TabContentToggle({
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Tab Controls - Mobile (Below Content) */}
-        <div className="sm:hidden mt-16 md:mt-20 flex flex-wrap gap-2 justify-center">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-[7px] text-sm font-medium transition-all ${
-                activeTab === tab.id
-                  ? "bg-[#FF7A00] text-white shadow-md"
-                  : "bg-gray-100 text-gray-700 active:bg-gray-200"
-              }`}
-            >
-              {tab.icon && <span className="text-base">{tab.icon}</span>}
-              <span>{tab.label}</span>
-            </button>
-          ))}
+          {/* Tab Controls - Mobile (Attached Row) */}
+          <div className="sm:hidden absolute bottom-0 left-0 right-0 translate-y-1/2 grid grid-cols-3 gap-2 px-4 z-10">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full mt-8 flex items-center rounded-[5px] justify-center gap-2 py-2 text-sm font-medium transition-all first:rounded-l-[7px] last:rounded-r-[7px] ${
+                  activeTab === tab.id
+                    ? "bg-[#FF7A00] text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-200"
+                }`}
+              >
+                {tab.icon && <span className="text-base">{tab.icon}</span>}
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
