@@ -15,7 +15,7 @@ export default function LegalPage() {
             Nationcite's Privacy Policy
           </h1>
 
-          <p className="max-w-xl mx-auto mb-8 text-xs sm:text-sm md:text-base lg:text-lg text-gray-500 sub-listhead text-center">
+          <p className="max-w-xl mx-auto mb-8 text-sm sm:text-sm md:text-base lg:text-lg text-gray-500 sub-listhead text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>

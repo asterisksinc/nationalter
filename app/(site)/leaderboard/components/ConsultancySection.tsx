@@ -6,11 +6,11 @@ export default function ConsultancySection() {
       <div className="w-full relative flex flex-col items-center text-center max-w-6xl mx-auto">
         {/* --- Floating Badge Icons (Decorative) --- */}
         {/* Top Left */}
-        <div className="absolute top-[-40px] left-[5%] md:left-[10%] text-gray-800 opacity-80 scale-75 md:scale-100 animate-pulse-slow">
+        <div className="absolute -top-10 left-[5%] md:left-[10%] text-gray-800 opacity-80 scale-75 md:scale-100 animate-pulse-slow">
           <BadgeIcon />
         </div>
         {/* Middle Left */}
-        <div className="absolute top-[35%] left-[-20px] md:left-[5%] text-gray-800 opacity-80 scale-90">
+        <div className="absolute top-[35%] -left-5 md:left-[5%] text-gray-800 opacity-80 scale-90">
           <BadgeIcon />
         </div>
         {/* Bottom Left */}
@@ -19,11 +19,11 @@ export default function ConsultancySection() {
         </div>
 
         {/* Top Right */}
-        <div className="absolute top-[-20px] right-[5%] md:right-[15%] text-gray-800 opacity-80 scale-90">
+        <div className="absolute -top-5 right-[5%] md:right-[15%] text-gray-800 opacity-80 scale-90">
           <BadgeIcon />
         </div>
         {/* Middle Right */}
-        <div className="absolute top-[40%] right-[-10px] md:right-[5%] text-gray-800 opacity-80">
+        <div className="absolute top-[40%] -right-2.5 md:right-[5%] text-gray-800 opacity-80">
           <BadgeIcon />
         </div>
         {/* Bottom Right */}
@@ -35,7 +35,7 @@ export default function ConsultancySection() {
 
         {/* Tag */}
         <div className="mb-6 relative z-10 text-center">
-          <span className="bg-[#FFF5EB] text-[#1E1E1E] pl-2 pr-4 py-1.5 rounded-full text-xs font-semibold border border-[#FFD6B3] flex items-center gap-2 justify-center mx-auto">
+          <span className="bg-[#FFF5EB] text-[#1E1E1E] pl-2 pr-4 py-1.5 rounded-full text-sm font-semibold border border-[#FFD6B3] flex items-center gap-2 justify-center mx-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></span>
             CTA Goes Here
           </span>
@@ -47,7 +47,7 @@ export default function ConsultancySection() {
         </h3>
 
         {/* Subtext */}
-        <p className="p2 pb-3 mb-10 relative z-10 max-w-xl text-center">
+        <p className="pb-3 mb-10 relative z-10 max-w-xl text-center text-sm sm:text-base text-[#5C5C5C] leading-relaxed">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
@@ -61,7 +61,7 @@ export default function ConsultancySection() {
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3">
               {/* Checkmark Icon */}
-              <div className="w-6 h-6 rounded-full bg-[#FFF5EB] flex items-center justify-center text-[#FF7A00] flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-[#FFF5EB] flex items-center justify-center text-[#FF7A00] shrink-0">
                 <svg
                   width="14"
                   height="14"
@@ -75,7 +75,9 @@ export default function ConsultancySection() {
                   <polyline points="11.5 3.5 5.5 10.5 2.5 7.5"></polyline>
                 </svg>
               </div>
-              <span className="font-medium text-[#1E1E1E]">{item}</span>
+              <span className="font-medium text-sm sm:text-base text-[#1E1E1E]">
+                {item}
+              </span>
             </div>
           ))}
         </div>

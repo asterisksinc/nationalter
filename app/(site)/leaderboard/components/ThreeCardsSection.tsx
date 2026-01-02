@@ -9,7 +9,7 @@ export default function ThreeCardsSection() {
             <h3 className="text-[#1E1E1E] mb-3 pb-0 md:mb-3 text-2xl md:text-3xl text-center">
               Lorem Ipsum
             </h3>
-            <p className="p1 text-[#5C5C5C] mt-0 pb-0 max-w-xl text-center">
+            <p className="text-[#5C5C5C] mt-0 pb-0 max-w-xl text-center text-sm sm:text-base leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
@@ -27,7 +27,7 @@ export default function ThreeCardsSection() {
                 <h5 className="text-[#1E1E1E] mb-4 text-base sm:text-lg md:text-xl">
                   Lorem ipsum dolor sit amet
                 </h5>
-                <p className="p3 text-[#5C5C5C]">
+                <p className="text-sm sm:text-base text-[#5C5C5C] leading-relaxed">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>

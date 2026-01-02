@@ -33,7 +33,7 @@ const TrustedBy = () => {
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-8">
         <div className="w-full text-center">
           <div className="inline-block max-w-3xl">
-            <p className="text-gray-500  text-xs sm:text-sm md:text-lg mt-3 mx-auto text-center">
+            <p className="text-gray-500 text-sm sm:text-sm md:text-lg mt-3 mx-auto text-center">
               Trusted by Leading Academic Institutions{" "}
             </p>
           </div>
@@ -85,7 +85,7 @@ const LogoItem = ({ logo }: { logo: Logo }) => (
       </div>
 
       {/* Text */}
-      <span className="text-xs sm:text-sm md:text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
+      <span className="text-sm sm:text-sm md:text-lg font-semibold text-gray-600 group-hover:text-gray-900 transition-colors duration-300 whitespace-nowrap">
         {logo.name}
       </span>
     </div>

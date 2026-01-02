@@ -6,7 +6,7 @@ export default function PricingMidCTA() {
       <div className="w-full flex justify-center">
         <div className="text-center">
           <div className="inline-block bg-[#FFF5EB] border border-[#FFD6B3] rounded-full px-3 py-1 mb-6">
-            <span className="text-[#FF7A00] text-xs font-bold uppercase tracking-wide">
+            <span className="text-[#FF7A00] text-sm font-bold uppercase tracking-wide">
               CTA Does Here
             </span>
           </div>

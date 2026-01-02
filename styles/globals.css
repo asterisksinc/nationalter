@@ -2,6 +2,10 @@
 @import "./variables.css";
 @import "./typography.css";
 
+/* ========================================
+   THEME VARIABLES
+   ======================================== */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -21,91 +25,40 @@
   }
 }
 
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
 }
 
-/* Force Inter for Tailwind `font-sans` utility and common form elements
-   so inline utility classes and placeholders render Inter consistently. */
-.font-sans,
-  font-family: "Inter" !important;
+/* Force Inter for Tailwind font-sans utility */
+.font-sans {
+  font-family: "Inter", sans-serif !important;
 }
 
-/* Ensure placeholder text also uses Inter */
-input::placeholder,
-  font-family: "Inter" !important;
-}
-
-/* Enhanced spacing and readability */
-section {
-  scroll-margin-top: 2rem;
-}
-
-/* Ensure proper spacing for all headings when followed by content */
-/* h1 + p,
-h2 + p,
-h3 + p,
-h4 + p {
-  margin-top: 0.5rem;
-} */
-
-/* Better button spacing */
-button + button {
-  margin-left: 0.5rem;
-}
 /* ========================================
-   UNIFIED BUTTON STYLES
+   FORM ELEMENTS — INTER ENFORCEMENT
    ======================================== */
 
-/* Base button styles - all buttons inherit this */
+input,
+textarea,
+select,
 button {
-  font-family: "Inter" !important;
+  font-family: "Inter", sans-serif !important;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0;
 }
 
-/* Primary Button */
-.btn-primary {
-  font-family: "Inter" !important;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
-}
-
-/* Secondary Button */
-.btn-secondary {
-  font-family: "Inter" !important;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
-}
-
-@media (max-width: 639px) {
-  .btn-primary,
-  .btn-secondary {
-    border-radius: 0.5rem;
-  }
-}
-
-/* ========================================
-   UNIFIED PLACEHOLDER STYLES
-   ======================================== */
-
-/* Input and textarea placeholders */
+/* Placeholder styles */
 input::placeholder,
-textarea::placeholder,
-select {
-  font-family: var(--font-inter) !important;
+textarea::placeholder {
+  font-family: "Inter", sans-serif !important;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -113,11 +66,43 @@ select {
   color: #9ca3af;
 }
 
-/* Input and textarea base styles */
-input,
-  font-family: "Inter" !important;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0;
+/* ========================================
+   LAYOUT & SPACING
+   ======================================== */
+
+section {
+  scroll-margin-top: 2rem;
+}
+
+/* Button spacing */
+button + button {
+  margin-left: 0.5rem;
+}
+
+/* ========================================
+   UNIFIED BUTTON STYLES
+   ======================================== */
+
+button {
+  font-weight: 500;
+}
+
+/* Primary Button */
+.btn-primary {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Mobile tweaks */
+@media (max-width: 639px) {
+  .btn-primary,
+  .btn-secondary {
+    border-radius: 0.5rem;
+  }
 }

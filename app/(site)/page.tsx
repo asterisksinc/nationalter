@@ -34,7 +34,7 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
+                <span className="text-sm sm:text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
                   1,42,846+ Indian Researchers Indexed
                 </span>
 

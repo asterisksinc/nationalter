@@ -86,7 +86,7 @@ export default function TransparencySection() {
             <br />
             Governed by Data Integrity.
           </h3>
-          <p className="mt-4 p1 max-w-xl text-gray-600 text-center md:text-left">
+          <p className="mt-4 max-w-xl text-gray-600 text-center md:text-left text-sm sm:text-base leading-relaxed">
             NationCite follows a reproducible, evidence-backed methodology using
             global open and licensed bibliometric sources. Every metric is
             source-labeled and continuously updated.
@@ -102,7 +102,7 @@ export default function TransparencySection() {
                   <li
                     key={p.id}
                     onClick={() => scrollToService(p.id)}
-                    className={`cursor-pointer border-b pb-3 md:pb-4 transition-all flex items-center justify-between text-xs md:text-base ${
+                    className={`cursor-pointer border-b pb-3 md:pb-4 transition-all flex items-center justify-between text-sm md:text-base ${
                       activeService === p.id
                         ? "text-neutral-600 border-neutral-600"
                         : "text-neutral-400 border-neutral-200 hover:text-neutral-600"
@@ -120,7 +120,7 @@ export default function TransparencySection() {
 
               <Link
                 href="/methodology"
-                className="inline-block px-3 py-2 rounded-md sm:rounded-lg text-xs md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
+                className="inline-block px-3 py-2 rounded-md sm:rounded-lg text-sm md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
               >
                 View Full Methodology
               </Link>
@@ -148,8 +148,12 @@ export default function TransparencySection() {
                   </div>
 
                   <div className="max-w-md block md:block mt-4 md:mt-0">
-                    <h5 className="mb-3 md:mb-4">{p.title}</h5>
-                    <p className="mb-4 md:mb-6">{p.description}</p>
+                    <h5 className="text-base md:text-lg font-semibold mb-3 md:mb-4 leading-snug">
+                      {p.title}
+                    </h5>
+                    <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed">
+                      {p.description}
+                    </p>
                   </div>
                 </div>
               </div>

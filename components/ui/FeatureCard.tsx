@@ -25,7 +25,9 @@ export default function FeatureCard({
           <h4 className="text-sm md:text-base font-semibold text-[#111] mb-2 md:mb-3">
             {title}
           </h4>
-          <p className="text-xs md:text-sm text-[#666666]">{description}</p>
+          <p className="text-sm md:text-sm text-[#666666] leading-relaxed">
+            {description}
+          </p>
         </div>
         {hasImage && (
           <div className="w-full md:w-[200px] h-56 md:h-72 bg-[#f0f0f0] rounded-md sm:rounded-lg md:rounded-xl"></div>
@@ -41,7 +43,9 @@ export default function FeatureCard({
           <h4 className="text-sm md:text-lg font-semibold text-[#111] mb-2 md:mb-4">
             {title}
           </h4>
-          <p className="text-xs md:text-sm text-[#666666]">{description}</p>
+          <p className="text-sm md:text-sm text-[#666666] leading-relaxed">
+            {description}
+          </p>
         </div>
         {hasImage && (
           <div className="w-full md:w-[320px] h-56 md:h-72 bg-[#f0f0f0] rounded-md sm:rounded-lg md:rounded-xl"></div>
@@ -62,7 +66,9 @@ export default function FeatureCard({
         <h4 className="text-sm md:text-base font-semibold text-[#111] mb-2 md:mb-3">
           {title}
         </h4>
-        <p className="text-xs md:text-sm text-[#666666]">{description}</p>
+        <p className="text-sm md:text-sm text-[#666666] leading-relaxed">
+          {description}
+        </p>
       </div>
       {hasImage && (
         <div className="w-full md:w-40 h-40 bg-[#f0f0f0] rounded-md sm:rounded-lg md:rounded-xl"></div>

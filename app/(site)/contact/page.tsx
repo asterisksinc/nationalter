@@ -65,44 +65,44 @@ export default function ContactPage() {
             <form className="space-y-4 sm:space-y-5 md:space-y-5 lg:space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
+                  <label className="block text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter Input"
-                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-sm sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
+                  <label className="block text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
                     Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
                     placeholder="Enter Input"
-                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-sm sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
+                <label className="block text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
                   Medical School / Affiliation{" "}
                   <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="Enter Input"
-                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-sm sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
+                <label className="block text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
                   Research Paper Focus
                 </label>
                 <div className="relative">
                   <select
-                    className="w-full appearance-none rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm text-gray-500 outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
+                    className="w-full appearance-none rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-sm sm:text-sm md:text-sm lg:text-sm text-gray-500 outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                     defaultValue=""
                   >
                     <option value="" disabled>
@@ -120,14 +120,14 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="block text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
+                <label className="block text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#1E1E1E] mb-2">
                   Describe Your Mentorship Needs{" "}
                   <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   rows={4}
                   placeholder="Enter Input"
-                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-xs sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all resize-none"
+                  className="w-full rounded-md sm:rounded-lg border border-gray-200 bg-gray-50 px-3 sm:px-4 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-2.5 lg:py-2.5 text-sm sm:text-sm md:text-sm lg:text-sm outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all resize-none"
                 />
               </div>
 

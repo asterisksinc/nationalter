@@ -40,7 +40,7 @@ export default function BlogPage() {
       {/* Hero Section */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] min-h-[80vh] sm:h-screen flex flex-col items-center justify-center text-center page-bg py-8 sm:py-10 md:py-10 lg:py-10">
         {/* BADGE */}
-        <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mt-4 sm:mt-5 md:mt-5 lg:mt-5 mb-2 sm:mb-4 md:mb-4 lg:mb-4">
+        <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-md font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mt-4 sm:mt-5 md:mt-5 lg:mt-5 mb-2 sm:mb-4 md:mb-4 lg:mb-4">
           Resources
         </span>
 
@@ -84,7 +84,7 @@ export default function BlogPage() {
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-sm text-black border border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50"
                 >
                   <span>Sort</span>
                   <svg
@@ -138,7 +138,7 @@ export default function BlogPage() {
               </div>
 
               {/* Filter Button */}
-              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-black border-1 border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50">
+              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-sm text-black border border-gray-200 bg-white rounded-md sm:rounded-lg hover:bg-gray-100 hover:border-gray-600 transition-colors font-inter shadow-md z-50">
                 <span>Filter</span>
                 <svg
                   className="w-4 h-4"
@@ -171,17 +171,17 @@ export default function BlogPage() {
                   />
                 </div>
                 <div className="p-3 sm:p-4 md:p-4 lg:p-5">
-                  <h5 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-[#1E1E1E] mb-2 leading-snug">
+                  <h5 className="text-base sm:text-base md:text-base lg:text-lg font-medium text-[#1E1E1E] mb-2 leading-snug">
                     Lorem ipsum dolor slef amet
                   </h5>
-                  <p className="text-xs sm:text-sm md:text-sm lg:text-sm text-[#6B6B6B] mb-3 leading-relaxed">
+                  <p className="text-sm sm:text-sm md:text-sm lg:text-sm text-[#6B6B6B] mb-3 leading-relaxed">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
                   <Link
                     href="/blog/example-post"
-                    className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] transition-colors inline-flex items-center gap-1"
+                    className="text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] transition-colors inline-flex items-center gap-1"
                   >
                     Learn more <span>→</span>
                   </Link>

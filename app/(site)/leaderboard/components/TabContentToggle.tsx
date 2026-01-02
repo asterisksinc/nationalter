@@ -34,15 +34,17 @@ export default function TabContentToggle({
     <section className="w-full py-12 md:py-16 px-4 md:px-[72px] bg-white">
       <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 md:mb-14 gap-6">
-          <div className="flex-1">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 md:mb-14 gap-6">
+          <div className="flex-1 text-center md:text-left">
             <h3 className="h3 mb-3 md:mb-4 text-[#1E1E1E]">{title}</h3>
-            <p className="p2 text-gray-600 max-w-[700px]">{description}</p>
+            <p className="text-gray-600 max-w-[700px] text-sm sm:text-base leading-relaxed mx-auto md:mx-0">
+              {description}
+            </p>
           </div>
           {ctaText && (
             <a
               href={ctaLink || "#"}
-              className="flex-shrink-0 inline-flex items-center gap-2 px-3 py-2 bg-[#FF7A00] text-white font-medium text-sm rounded-[7px] hover:bg-[#ff8c1a] transition-colors shadow-md hover:shadow-lg"
+              className="shrink-0 inline-flex items-center display-block gap-2 px-3 py-2 bg-[#FF7A00] text-white font-medium text-sm rounded-[7px] hover:bg-[#ff8c1a] transition-colors shadow-md hover:shadow-lg  md:w-auto justify-center md:justify-start"
             >
               {ctaText}
             </a>
@@ -63,7 +65,7 @@ export default function TabContentToggle({
           </div>
 
           {/* Tab Controls - Desktop (Full Width Bottom) */}
-          <div className="hidden sm:grid absolute -bottom-0 left-0 right-0 translate-y-1/2 grid-cols-3 gap-4 md:gap-6 z-10">
+          <div className="hidden sm:grid absolute bottom-0 left-0 right-0 translate-y-1/2 grid-cols-3 gap-4 md:gap-6 z-10">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -79,10 +81,10 @@ export default function TabContentToggle({
                     {tab.icon}
                   </span>
                 )}
-                <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
+                <h5 className="text-sm md:text-base font-semibold text-[#1E1E1E] mb-2 leading-snug">
                   {tab.label}
                 </h5>
-                <p className="text-[11px] sm:text-xs text-gray-600 leading-relaxed">
+                <p className="text-sm md:text-sm text-gray-600 leading-relaxed">
                   Build credibility. Track your research impact.
                 </p>
               </button>
@@ -96,7 +98,7 @@ export default function TabContentToggle({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-[7px] text-xs sm:text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-[7px] text-sm font-medium transition-all ${
                 activeTab === tab.id
                   ? "bg-[#FF7A00] text-white shadow-md"
                   : "bg-gray-100 text-gray-700 active:bg-gray-200"

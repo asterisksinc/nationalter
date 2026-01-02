@@ -9,7 +9,7 @@ export default function ThreeBlocksSection() {
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
             Research Intelligence & <br /> Academic Insight
           </h3>
-          <p className="p2 text-gray-500 max-w-[350px] md:max-w-[700px] text-center">
+          <p className="text-gray-500 max-w-[350px] md:max-w-[700px] text-center text-sm sm:text-base leading-relaxed">
             Stay informed with data literacy, ranking methodology, and research
             visibility best practices.
           </p>
@@ -21,16 +21,16 @@ export default function ThreeBlocksSection() {
           <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
-              <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-3">
+              <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                 Lorem ipsum dolor slef amet
               </h5>
-              <p className="text-[11px] sm:text-xs text-gray-600 leading-snug flex-1">
+              <p className="text-sm sm:text-sm text-gray-600 leading-relaxed flex-1">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <a
                 href="#"
-                className="text-[#F76A23] font-medium text-[10px] sm:text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                className="text-[#F76A23] font-medium text-sm sm:text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
               >
                 Learn More &gt;
               </a>
@@ -41,16 +41,16 @@ export default function ThreeBlocksSection() {
           <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
-              <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-3">
+              <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                 Lorem ipsum dolor slef amet
               </h5>
-              <p className="text-[11px] sm:text-xs text-gray-600 leading-snug flex-1">
+              <p className="text-sm sm:text-sm text-gray-600 leading-relaxed flex-1">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <a
                 href="#"
-                className="text-[#F76A23] font-medium text-[10px] sm:text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                className="text-[#F76A23] font-medium text-sm sm:text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
               >
                 Learn More &gt;
               </a>
@@ -61,16 +61,16 @@ export default function ThreeBlocksSection() {
           <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
-              <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-3">
+              <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                 Lorem ipsum dolor slef amet
               </h5>
-              <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
+              <p className="text-sm sm:text-sm text-gray-600 leading-relaxed">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <a
                 href="#"
-                className="text-[#F76A23] font-medium text-[10px] sm:text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                className="text-[#F76A23] font-medium text-sm sm:text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
               >
                 Learn More &gt;
               </a>
@@ -86,16 +86,16 @@ export default function ThreeBlocksSection() {
             <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
               <div className="w-full h-[260px] bg-gray-100 flex-shrink-0 md:order-last"></div>
               <div className="p-8 flex flex-col flex-1">
-                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+                <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                   Lorem ipsum dolor slef amet
                 </h5>
-                <p className="text-xs text-gray-600 leading-snug flex-1">
+                <p className="text-sm text-gray-600 leading-relaxed flex-1">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
                 <a
                   href="#"
-                  className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                  className="text-[#F76A23] font-medium text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
                 >
                   Learn More &gt;
                 </a>
@@ -106,16 +106,16 @@ export default function ThreeBlocksSection() {
             <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
               <div className="w-full h-[260px] bg-gray-100 flex-shrink-0 md:order-last"></div>
               <div className="p-8 flex flex-col flex-1">
-                <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+                <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                   Lorem ipsum dolor slef amet
                 </h5>
-                <p className="text-xs text-gray-600 leading-snug flex-1">
+                <p className="text-sm text-gray-600 leading-relaxed flex-1">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
                 <a
                   href="#"
-                  className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                  className="text-[#F76A23] font-medium text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
                 >
                   Learn More &gt;
                 </a>
@@ -127,16 +127,16 @@ export default function ThreeBlocksSection() {
           <div className="md:col-span-2 bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
             <div className="w-full flex-1 bg-gray-100 md:order-last md:flex-[2]"></div>
             <div className="p-8 flex flex-col flex-shrink-0">
-              <h5 className="text-sm font-semibold text-[#1E1E1E] mb-3">
+              <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
                 Lorem ipsum dolor slef amet
               </h5>
-              <p className="text-xs text-gray-600 leading-snug">
+              <p className="text-sm text-gray-600 leading-relaxed">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <a
                 href="#"
-                className="text-[#F76A23] font-medium text-xs mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
+                className="text-[#F76A23] font-medium text-sm mt-4 hover:text-[#ff8c1a] transition-colors flex items-center gap-1"
               >
                 Learn More &gt;
               </a>

@@ -39,7 +39,7 @@ export default function FAQSection({
     border border-[#F76A23]/30
     bg-[white]/10
     text-[#F76A23]
-    text-sm
+    text-xs sm:text-sm
     font-semibold
     uppercase
     tracking-wider
@@ -50,7 +50,7 @@ export default function FAQSection({
         </span>
 
         <h3 className="mb-6 text-2xl md:text-3xl text-center">{title}</h3>
-        <p className="p1 text-[#5C5C5C] text-center">
+        <p className="text-[#5C5C5C] text-center text-sm sm:text-base leading-relaxed">
           {children ?? (
             <>
               This section answers the most common questions about Nationcite,
@@ -71,13 +71,13 @@ export default function FAQSection({
                 className="font-inter flex justify-between items-center w-full py-6 text-left focus:outline-none"
               >
                 <span
-                  className={`font-medium text-sm sm:text-base md:text-lg transition-colors ${
+                  className={`font-medium text-base sm:text-base md:text-lg transition-colors ${
                     openFaqIndex === i ? "text-[#F76A23]" : "text-neutral-900"
                   }`}
                 >
                   {question}
                 </span>
-                <span className="text-2xl font-light text-gray-400 ml-4 flex-shrink-0">
+                <span className="text-2xl font-light text-gray-400 ml-4 shrink-0">
                   {openFaqIndex === i ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@ export default function FAQSection({
                     : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="text-[#5C5C5C] text-sm sm:text-base leading-relaxed">
+                <div className="text-[#5C5C5C] text-sm sm:text-sm md:text-base leading-relaxed">
                   <div className="bg-gray-50 p-6 rounded-md sm:rounded-lg border border-gray-100">
                     <p>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -127,7 +127,7 @@ export default function FAQSection({
                     <br />
                     <a
                       href="#"
-                      className="text-[#F76A23] font-medium text-xs sm:text-sm hover:underline flex items-center gap-1"
+                      className="text-[#F76A23] font-medium text-sm sm:text-sm hover:underline flex items-center gap-1"
                     >
                       Learn More
                     </a>

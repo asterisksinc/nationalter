@@ -29,25 +29,25 @@ export default function Footer() {
               <div className="flex flex-col gap-2 md:gap-4">
                 <a
                   href="/about"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   About
                 </a>
                 <a
                   href="/methodology"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Methodology
                 </a>
                 <a
                   href="/blog"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Blogs
                 </a>
                 <a
                   href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Contact
                 </a>
@@ -62,19 +62,19 @@ export default function Footer() {
               <div className="flex flex-col gap-2 md:gap-4">
                 <a
                   href="/leaderboard/scholars"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Researchers
                 </a>
                 <a
                   href="/leaderboard/universities"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Universities
                 </a>
                 <a
                   href="/leaderboard/doctors"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Medical Professionals
                 </a>
@@ -89,25 +89,25 @@ export default function Footer() {
               <div className="flex flex-col gap-2 md:gap-4">
                 <a
                   href="/blog"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Blog
                 </a>
                 <a
                   href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Case Studies
                 </a>
                 <a
                   href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Whitepapers
                 </a>
                 <a
                   href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   eBooks
                 </a>
@@ -173,25 +173,25 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800/60 pt-6 md:pt-8 flex flex-col-reverse md:flex-row justify-between items-center gap-4 md:gap-6 text-center md:text-left">
-          <p className="text-slate-700 text-xs md:text-sm">
+          <p className="text-slate-700 text-sm md:text-sm">
             © copyright Nationcite 2025
           </p>
           <div className="flex flex-wrap justify-center gap-3 md:gap-4 lg:gap-8">
             <a
               href="/privacy"
-              className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+              className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
             >
               Privacy Policy
             </a>
             <a
               href="/legal"
-              className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+              className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
             >
               Legal
             </a>
             <a
               href="/terms"
-              className="text-slate-700 hover:text-slate-900 transition-colors text-xs md:text-sm"
+              className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
             >
               Term of Services
             </a>

@@ -15,18 +15,22 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             consectetur adipiscing elite
           </h1>
 
-          <p className="monthsubtitle max-w-xl mx-auto mb-6 text-center">
+          <p className="monthsubtitle max-w-xl mx-auto mb-6 text-center text-sm sm:text-base text-[#5C5C5C]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
 
-          <p className="monthfooter text-center">Month 00, YYYY</p>
+          <p className="monthfooter text-center text-xs sm:text-sm text-[#6B6B6B]">
+            Month 00, YYYY
+          </p>
         </section>
       </div>
 
       <section className="w-full flex justify-center bg-white ">
         <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
-          <p className="toptitle  mb-4 text-center md:text-left">Lorem ipsum</p>
+          <p className="toptitle mb-4 text-center md:text-left text-xs sm:text-sm text-[#6B6B6B]">
+            Lorem ipsum
+          </p>
 
           <h2 className="topsubtitle mb-6 text-center md:text-left">
             Lorem ipsum
@@ -34,7 +38,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             dolor self amet
           </h2>
 
-          <div className="space-y-6 topbody">
+          <div className="space-y-6 topbody text-sm sm:text-base text-[#5C5C5C]">
             {Array.from({ length: 5 }).map((_, i) => (
               <p key={i} className="mar-btm">
                 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
@@ -68,7 +72,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             dolor self amet
           </h2>
 
-          <div className="space-y-6 topbody">
+          <div className="space-y-6 topbody text-sm sm:text-base text-[#5C5C5C]">
             {Array.from({ length: 5 }).map((_, i) => (
               <p key={i} className="mar-btm">
                 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
@@ -81,7 +85,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               </p>
             ))}
           </div>
-          <div className="space-y-6 topbody">
+          <div className="space-y-6 topbody text-sm sm:text-base text-[#5C5C5C]">
             {Array.from({ length: 5 }).map((_, i) => (
               <p key={i} className="mar-btm">
                 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque

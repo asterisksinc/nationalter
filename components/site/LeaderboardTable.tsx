@@ -156,7 +156,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
                         {row.hIndex}
                       </span>
                       <span
-                        className="ml-1.5 text-[10px] font-semibold text-orange-300 group-hover:text-orange-100 uppercase tracking-wide"
+                        className="ml-1.5 text-xs font-semibold text-orange-300 group-hover:text-orange-100 uppercase tracking-wide"
                         style={{ fontFamily: "var(--font-inter)" }}
                       >
                         Score
@@ -182,7 +182,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
                         {row.articles}
                       </span>
                       <span
-                        className="text-[10px] text-slate-400 font-medium uppercase"
+                        className="text-xs text-slate-400 font-medium uppercase"
                         style={{ fontFamily: "var(--font-inter)" }}
                       >
                         Pubs

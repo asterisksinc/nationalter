@@ -67,7 +67,7 @@ export default function PricingSection({ className }: { className?: string }) {
       <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-3 sm:mb-4 md:mb-4 lg:mb-5">
+          <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-md font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-3 sm:mb-4 md:mb-4 lg:mb-5">
             Pricing
           </span>
 
@@ -119,19 +119,19 @@ export default function PricingSection({ className }: { className?: string }) {
                   plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
                 }`}
               >
-                <h4 className="font-inter text-xs sm:text-sm md:text-base font-semibold text-[#111111] mb-4 md:mb-5">
+                <h4 className="font-inter text-base sm:text-base md:text-lg font-semibold text-[#111111] mb-4 md:mb-5">
                   {plan.title}
                 </h4>
 
                 <div className="flex items-baseline gap-1 mb-4 md:mb-5">
-                  <span className="font-inter text-2xl md:text-4xl font-bold text-[#111111]">
+                  <span className="font-inter text-xl sm:text-2xl md:text-4xl font-bold text-[#111111]">
                     {plan.price}
                   </span>
-                  <span className="font-inter text-gray-500 font-normal text-[9px] sm:text-[10px] md:text-xs lg:text-lg">
+                  <span className="font-inter text-gray-500 font-normal text-xs sm:text-xs md:text-sm">
                     / year
                   </span>
                 </div>
-                <p className="font-inter text-[10px] sm:text-xs md:text-sm text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed">
+                <p className="font-inter text-sm sm:text-sm md:text-base text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed">
                   {plan.description}
                 </p>
 
@@ -147,8 +147,8 @@ export default function PricingSection({ className }: { className?: string }) {
               {/* Bottom Section (White Background) */}
               <div className="p-4 sm:p-5 md:p-6 lg:p-8 bg-white flex-1 flex flex-col">
                 <div className="mb-5">
-                  <span className="font-inter text-base font-bold text-[#111111] block mb-3 md:mb-4">
-                    What's Included
+                  <span className="font-inter text-sm sm:text-base font-semibold text-[#111111] block mb-3 md:mb-4">
+                    What&apos;s Included
                   </span>
                   <div className="space-y-3 sm:space-y-3 md:space-y-4">
                     {plan.features.map((feature, j) => (
@@ -161,7 +161,7 @@ export default function PricingSection({ className }: { className?: string }) {
                             />
                           </div>
                         </div>
-                        <span className="font-inter text-sm md:text-[15px] text-[#111111] leading-tight">
+                        <span className="font-inter text-sm md:text-base text-[#111111] leading-tight">
                           {feature}
                         </span>
                       </div>
@@ -169,10 +169,10 @@ export default function PricingSection({ className }: { className?: string }) {
                   </div>
                 </div>
                 <div className="mt-auto pt-3">
-                  <p className="font-inter text-xs font-bold text-[#111111] mb-1">
+                  <p className="font-inter text-sm sm:text-sm font-semibold text-[#111111] mb-1">
                     For Individual researchers, faculty, authors
                   </p>
-                  <p className="font-inter text-xs text-[#FF9534] italic font-medium">
+                  <p className="font-inter text-sm text-[#FF9534] italic font-medium">
                     Note: Best value for professionals
                   </p>
                 </div>

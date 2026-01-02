@@ -30,7 +30,7 @@ export default function BenefitCard({
         <h4 className="text-sm md:text-base font-semibold text-center text-[#252525]">
           {displayTitle}
         </h4>
-        <p className="text-xs md:text-sm text-center text-[#252525]">
+        <p className="text-sm md:text-sm text-center text-[#252525] leading-relaxed">
           {displayDescription}
         </p>
       </div>

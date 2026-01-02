@@ -8,7 +8,7 @@ export default function ResearchIntelligence() {
           <h3 className="text-[#1E1E1E] text-2xl md:text-3xl mb-4 text-center">
             Research Intelligence & <br /> Academic Insight
           </h3>
-          <p className="text-[#5C5C5C]   p1  mx-auto text-center">
+          <p className="text-[#5C5C5C] mx-auto text-center text-sm sm:text-base leading-relaxed">
             Stay informed with data literacy, ranking methodology, and research
             visibility best practices.
           </p>
@@ -49,10 +49,10 @@ export default function ResearchIntelligence() {
 
               {/* Text Content - Now inside the card with padding */}
               <div className="p-4 md:p-6 pt-4 md:pt-5 flex flex-col gap-1 md:gap-2 flex-1">
-                <h4 className="text-[#1E1E1E] transition-colors text-xs sm:text-sm md:text-lg font-semibold">
+                <h4 className="text-[#1E1E1E] transition-colors text-base sm:text-base md:text-lg font-semibold leading-snug">
                   {item.title}
                 </h4>
-                <p className="text-[10px] sm:text-xs md:text-sm text-[#5C5C5C]">
+                <p className="text-sm sm:text-sm md:text-base text-[#5C5C5C] leading-relaxed">
                   {item.desc}
                 </p>
               </div>

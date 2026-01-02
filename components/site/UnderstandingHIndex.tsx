@@ -55,10 +55,10 @@ export default function UnderstandingHIndex() {
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
             Understanding the H-Index <br /> Backbone of Research Impact
           </h3>
-          <p className="p1 text-gray-500 max-w-[350px] md:max-w-[700px] text-center">
+          <p className="text-gray-500 max-w-[350px] md:max-w-[700px] text-center text-sm sm:text-base leading-relaxed">
             The H-Index is more than number. It reflects consistency, influence,
-            and academic credibility. Here's what it truly represents and why it
-            matters.
+            and academic credibility. Here&apos;s what it truly represents and
+            why it matters.
           </p>
         </div>
 
@@ -71,10 +71,10 @@ export default function UnderstandingHIndex() {
             >
               <CheckerboardPattern className="w-full h-40" />
               <div className="p-4">
-                <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-1">
+                <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-1 leading-snug">
                   {card.title}
                 </h5>
-                <p className="text-[11px] sm:text-xs text-gray-600">
+                <p className="text-sm sm:text-sm text-gray-600 leading-relaxed">
                   {card.description}
                 </p>
               </div>
@@ -93,10 +93,10 @@ export default function UnderstandingHIndex() {
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
-                  <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
+                  <h5 className="text-base font-semibold text-[#1E1E1E] mb-2 leading-snug">
                     {card.title}
                   </h5>
-                  <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {card.description}
                   </p>
                 </div>
@@ -113,10 +113,10 @@ export default function UnderstandingHIndex() {
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
-                  <h5 className="text-xs sm:text-sm font-semibold text-[#1E1E1E] mb-2">
+                  <h5 className="text-base font-semibold text-[#1E1E1E] mb-2 leading-snug">
                     {card.title}
                   </h5>
-                  <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {card.description}
                   </p>
                 </div>
