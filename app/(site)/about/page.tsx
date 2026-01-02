@@ -45,11 +45,10 @@ export default function AboutPage() {
 
         {/* DESCRIPTION */}
         <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-md sm:rounded-lg mt-10 md:mt-5 inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-          <p className="text-base sm:text-lg md:text-lg lg:text-xl text-[#5C5C5C]">
-            <p className="text-sm sm:text-lg md:text-lg lg:text-xl text-[#5C5C5C] leading-relaxed">
+          <p className="text-sm sm:text-lg md:text-lg lg:text-xl text-[#5C5C5C] leading-relaxed">
             <span className="block max-w-[500px] mx-auto">
-              Nationcite builds intelligent digital infrastructure to help
-              brands scale with clarity and speed.
+              Nationcite builds intelligent digital infrastructure to help brands
+              scale with clarity and speed.
             </span>
           </p>
         </div>
