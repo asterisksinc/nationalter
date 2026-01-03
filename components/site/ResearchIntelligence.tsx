@@ -5,35 +5,37 @@ export default function ResearchIntelligence() {
     <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[72px]">
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
+          <div className="mb-4">
+            <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
+              Intelligence
+            </span>
+          </div>
           <h3 className="text-[#1E1E1E] text-2xl md:text-3xl mb-4 text-center">
-            Research Intelligence & <br /> Academic Insight
+            The Research Playbook
           </h3>
           <p className="text-[#5C5C5C] mx-auto text-center text-sm sm:text-base leading-relaxed">
-            Stay informed with data literacy, ranking methodology, and research
-            visibility best practices.
+            Strategies to increase your citations, win grants, and publish in Q1
+            journals.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
             {
-              title: "How the H-Index Shapes Academic Careers in India",
-              desc: "A practical guide to understanding how research metrics influence promotions, funding, and reputation.",
+              title: "How to boost your H-index in 6 months",
+              desc: "Actionable steps to get your old work noticed again.",
             },
             {
-              title:
-                "OpenAlex vs Scopus vs Web of Science: What's the Difference?",
-              desc: "A comparative breakdown of global bibliometric data ecosystems.",
+              title: "The Grant Writing Checklist",
+              desc: "What the committees are actually looking for this year.",
             },
             {
-              title:
-                "How to Claim & Verify Your Research Profile on Nationcite",
-              desc: "Step-by-step guide for researchers to gain ownership and improve profile accuracy.",
+              title: 'Stop ignoring "Altmetrics"',
+              desc: "Why social media mentions are starting to matter for tenure.",
             },
             {
-              title:
-                "Preventing Metric Manipulation: Inside Nationcite's Anti-Gaming System",
-              desc: "Preventing Metric Manipulation: Inside Nationcite's Anti-Gaming System",
+              title: "Understanding the Nationcite Algorithm",
+              desc: "How we calculate your rank compared to your peers.",
             },
           ].map((item, i) => (
             <div
@@ -61,7 +63,7 @@ export default function ResearchIntelligence() {
         </div>
         <div className="flex justify-center mt-6 md:mt-12">
           <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm sm:text-base md:text-lg hover:bg-[#E66A00] transition-colors shadow-lg shadow-orange-200 w-auto max-w-sm text-center">
-            Explore All Research & Insights
+            Read All Guides
           </button>
         </div>
       </div>

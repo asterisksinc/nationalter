@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Search, Sparkles } from "lucide-react";
-import "../hero-style.css";
+import SiteHero from "@/components/site/SiteHero";
+import Badge from "@/components/ui/Badge";
 import LeaderboardTable, {
   LeaderboardEntry,
 } from "@/components/site/LeaderboardTable";
@@ -112,28 +113,30 @@ export default function UniversitiesLeaderboardPage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-      <section className="hero relative pt-48 pb-12 w-full overflow-visible">
-        <div className="w-full px-4 md:px-[72px] z-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col items-center text-center mx-auto">
-              {/* Main Heading */}
-              <h1 className="font-inter max-w-sm md:max-w-2xl z-10 lg:max-w-4xl mb-8 text-center text-slate-700">
-                Top Universities & Institutions
-              </h1>
+      <SiteHero>
+        {/* BADGE */}
+        <Badge>Leaderboard</Badge>
 
-              {/* Subheading */}
-              <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-xs sm:max-w-sm z-20 md:max-w-md lg:max-w-2xl mx-auto text-center">
-                Discover India's leading universities and research institutions
-                excelling in research output and academic excellence. Ranked by
-                H-Index and research contributions.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        {/* Main Heading */}
+        <h1 className="font-inter mb-8 text-center">
+          Top Universities & Institutions
+        </h1>
+
+        {/* Subheading */}
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
+          Discover India&apos;s leading universities and research institutions
+          excelling in research output and academic excellence. Ranked by
+          H-Index and research contributions.
+        </p>
+
+        {/* CTA BUTTON */}
+        <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6">
+          Explore Universities
+        </button>
+      </SiteHero>
 
       {/* Leaderboard Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-0 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}

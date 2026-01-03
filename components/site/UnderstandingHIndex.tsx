@@ -21,29 +21,29 @@ const CheckerboardPattern = ({ className }: { className?: string }) => (
 export default function UnderstandingHIndex() {
   const cards = [
     {
-      title: "What is the H-Index?",
+      title: "Productivity meets Impact",
       description:
-        "It measures both productivity and impact by balancing total publications with citation performance.",
+        "H-index proves you don't just write papers you write papers that other scientists actually use. It is the only metric that measures both quantity and quality.",
     },
     {
-      title: "Why H-Index Matters",
+      title: "Unlock More Grants",
       description:
-        "It reflects sustained scholarly influence not just one successful paper.",
+        "Grant committees don't have time to read every paper. They look at your score. A verified H-index on Nationcite proves your track record instantly.",
     },
     {
-      title: "Beyond Citation Counts",
+      title: "Fast-Track Tenure",
       description:
-        "Unlike raw citations, H-Index prevents inflation through a single highly-cited work.",
+        "Universities hire based on prestige. A high ranking on our National Leaderboard puts your resume at the top of the pile.",
     },
     {
-      title: "Institutional Benchmarking",
+      title: "We Catch What Others Miss",
       description:
-        "Helps universities assess research output and discipline strengths.",
+        "Generic search engines often attribute your work to others with the same name. We verify your identity so you get credit for every citation.",
     },
     {
-      title: "Academic Visibility",
+      title: "Speak the Global Language",
       description:
-        "Higher H-index improves visibility in global research databases.",
+        "Whether you are applying to IIT or Oxford, the H-index is the universal standard of scientific competence.",
     },
   ];
 
@@ -53,12 +53,11 @@ export default function UnderstandingHIndex() {
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
-            Understanding the H-Index <br /> Backbone of Research Impact
+            The Number That Defines Your Career
           </h3>
           <p className="text-gray-500 max-w-[350px] md:max-w-[700px] text-center text-sm sm:text-base leading-relaxed">
-            The H-Index is more than number. It reflects consistency, influence,
-            and academic credibility. Here&apos;s what it truly represents and
-            why it matters.
+            Your H-index is more than just a statistic. In modern academia, it
+            is your currency. Here is why it matters.
           </p>
         </div>
 

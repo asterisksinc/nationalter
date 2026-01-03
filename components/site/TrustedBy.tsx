@@ -34,7 +34,7 @@ const TrustedBy = () => {
         <div className="w-full text-center">
           <div className="inline-block max-w-3xl">
             <p className="text-gray-500 text-sm sm:text-sm md:text-lg mt-3 mx-auto text-center">
-              Trusted by Leading Academic Institutions{" "}
+              Trusted by India&apos;s Top Institutions
             </p>
           </div>
         </div>

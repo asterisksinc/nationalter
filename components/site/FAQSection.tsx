@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-export type FAQItem = { title: string; desc?: string };
+export type FAQItem = { question: string; answer: string };
 
 export default function FAQSection({
   title = "Everything You Need to Know About Us",
@@ -14,11 +14,13 @@ export default function FAQSection({
     "What is your engagement model?",
     "How do you handle data security?",
   ],
+  faqItems,
   children,
 }: {
   title?: string;
   kicker?: string;
   questions?: string[];
+  faqItems?: FAQItem[];
   children?: React.ReactNode;
 }) {
   const [openFaqIndex, setOpenFaqIndex] = useState(-1);
@@ -26,6 +28,10 @@ export default function FAQSection({
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? -1 : index);
   };
+
+  // Use faqItems if provided, otherwise use questions array for backwards compatibility
+  const displayItems =
+    faqItems || questions.map((q) => ({ question: q, answer: "" }));
 
   return (
     <section className="w-full px-4 md:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
@@ -49,9 +55,9 @@ export default function FAQSection({
           {kicker}
         </span>
 
-<div className="w-full flex justify-center">
-  <h3
-    className="
+        <div className="w-full flex justify-center">
+          <h3
+            className="
       mb-6
       text-2xl md:text-3xl
       text-center
@@ -59,10 +65,10 @@ export default function FAQSection({
       sm:max-w-none
       leading-snug
     "
-  >
-    {title}
-  </h3>
-</div>
+          >
+            {title}
+          </h3>
+        </div>
 
         <p className="text-[#5C5C5C] text-center text-sm sm:text-base leading-relaxed">
           {children ?? (
@@ -78,7 +84,7 @@ export default function FAQSection({
       {/* FAQ Items - Centered vertical list with white border */}
       <div className="w-full max-w-3xl border border-white rounded-md sm:rounded-lg bg-white shadow-sm p-6 md:p-8">
         <div className="space-y-0">
-          {questions.map((question, i) => (
+          {displayItems.map((item, i) => (
             <div key={i} className="border-b border-gray-200 last:border-b-0">
               <button
                 onClick={() => toggleFaq(i)}
@@ -89,7 +95,7 @@ export default function FAQSection({
                     openFaqIndex === i ? "text-[#F76A23]" : "text-neutral-900"
                   }`}
                 >
-                  {question}
+                  {item.question}
                 </span>
                 <span className="text-2xl font-light text-gray-400 ml-4 shrink-0">
                   {openFaqIndex === i ? (
@@ -134,17 +140,9 @@ export default function FAQSection({
                 <div className="text-[#5C5C5C] text-sm sm:text-sm md:text-base leading-relaxed">
                   <div className="bg-gray-50 p-6 rounded-md sm:rounded-lg border border-gray-100">
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam.
+                      {item.answer ||
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."}
                     </p>
-                    <br />
-                    <a
-                      href="#"
-                      className="text-[#F76A23] font-medium text-sm sm:text-sm hover:underline flex items-center gap-1"
-                    >
-                      Learn More
-                    </a>
                   </div>
                 </div>
               </div>

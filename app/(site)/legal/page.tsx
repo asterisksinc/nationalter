@@ -2,25 +2,20 @@
 import { useState } from "react";
 import "./style.css";
 import Link from "next/link";
+import SiteHero from "@/components/site/SiteHero";
+import Badge from "@/components/ui/Badge";
 
 export default function LegalPage() {
   return (
     <>
-      <div className=" flex items-center justify-center bg-white page-bg">
-        <section className="text-center px-4 pad-top">
-          <button className="faqtitle rounded-full px-4 py-1 mb-6 border border-[#f9a96a]/40">
-            • Privacy Policy
-          </button>
-          <h1 className="mb-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight text-black text-center">
-            Nationcite's Privacy Policy
-          </h1>
-
-          <p className="max-w-xl mx-auto mb-8 text-sm sm:text-sm md:text-base lg:text-lg text-gray-500 sub-listhead text-center">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-        </section>
-      </div>
+      <SiteHero>
+        <Badge>Privacy Policy</Badge>
+        <h1 className="mb-8">Nationcite&apos;s Privacy Policy</h1>
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </SiteHero>
       <section className="w-full flex justify-center bg-white ">
         <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
           <h2 className="topsubtitle mb-6 text-center md:text-left">

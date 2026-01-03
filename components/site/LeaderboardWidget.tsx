@@ -104,7 +104,11 @@ const MOCK_DATA: LeaderboardEntry[] = [
   },
 ];
 
-const LeaderboardWidget = () => {
+const LeaderboardWidget = ({
+  title = "Researched H-Index Portal",
+}: {
+  title?: string;
+}) => {
   const [activeTab, setActiveTab] = useState<
     "Scholars" | "Universities" | "Doctors"
   >("Scholars");
@@ -129,7 +133,7 @@ const LeaderboardWidget = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
           <div className="text-center md:text-left w-full md:w-auto">
             <h3 className="h3 flex items-center gap-3 justify-center md:justify-start">
-              Researched H-Index Portal
+              {title}
             </h3>
           </div>
 

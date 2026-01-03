@@ -2,18 +2,18 @@
 
 import React from "react";
 import { Check } from "lucide-react";
-import "../hero-style.css";
+import SiteHero from "@/components/site/SiteHero";
 import PricingSection from "@/components/site/PricingSection";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
 
 export default function PricingPage() {
   return (
-    <div className="bg-white font-sans">
+    <div className="bg-white  font-sans">
       {/* Hero / Pricing Section */}
-      <section className="hero relative w-full">
-        <PricingSection className="bg-transparent" />
-      </section>
+      <SiteHero layout="raw" className="hero">
+        <PricingSection className="bg-transparent pt-38 " isHero />
+      </SiteHero>
 
       {/* Comparison Tables Section */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">

@@ -4,6 +4,27 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center top;
+  min-height: 600px;
+}
+
+@media (min-width: 768px) {
+  .page-bg {
+    min-height: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-bg {
+    min-height: 800px;
+  }
+}
+
+/* Mobile background */
+@media (max-width: 767px) {
+  .page-bg {
+    background-image: url("/Mobile_Responsive.jpg");
+    background-position: top center;
+  }
 }
 
 /* Smooth fade at bottom of hero so the background transitions into the white section beneath */
@@ -16,5 +37,5 @@
   height: 240px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }

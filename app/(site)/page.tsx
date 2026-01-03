@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "./hero-style.css";
+import SiteHero from "@/components/site/SiteHero";
 import TrustedBy from "@/components/site/TrustedBy";
 import UnderstandingHIndex from "@/components/site/UnderstandingHIndex";
 import TransparencySection from "@/components/site/TransparencySection";
@@ -12,17 +12,14 @@ import FinalCTA from "@/components/site/FinalCTA";
 import LeaderboardWidget from "@/components/site/LeaderboardWidget";
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="min-h-screen  bg-white font-sans">
       {/* Hero Section */}
-      <section className="hero relative pt-32 pb-12 w-full overflow-visible bg-white">
-        <div className="w-full px-4 md:px-[72px] z-10">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
-              {/* Badge at top - with arrow */}
-             <div
+      <SiteHero>
+        {/* Badge at top - with arrow */}
+       <div
   className="
-    flex items-center justify-center
-    flex-nowrap min-w-0
+    inline-flex items-center justify-center
+    flex-nowrap
     gap-2 sm:gap-3
     px-3 sm:px-4 py-2 mt-12
     rounded-md sm:rounded-lg
@@ -47,16 +44,8 @@ export default function HomePage() {
   </div>
 
   {/* Text */}
-  <span
-    className="
-      text-sm font-medium text-[#1E1E1E]
-      whitespace-nowrap
-      max-w-[72%]
-      overflow-hidden
-      text-ellipsis
-    "
-  >
-    1,42,846+ Indian Researchers Indexed
+  <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
+    1,928,384+ Indian Researchers
   </span>
 
   {/* Arrow */}
@@ -65,7 +54,7 @@ export default function HomePage() {
     height="16"
     viewBox="0 0 16 16"
     fill="none"
-    className="text-[#1E1E1E] shrink-0 flex-none"
+    className="text-[#1E1E1E] shrink-0"
   >
     <path
       d="M6 3L11 8L6 13"
@@ -77,41 +66,38 @@ export default function HomePage() {
   </svg>
 </div>
 
-              {/* Main Heading */}
-              <h1 className="mb-8">
-                India's H-Index
-                <br />
-                Leaderboard Portal
-              </h1>
 
-              {/* Subheading */}
-              <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
-                Nationcite is India's national research visibility and H-Index
-                analytics platform
-              </p>
+        {/* Main Heading */}
+        <h1 className="mb-8">
+          India’s Official Benchmark for Research Excellence
+        </h1>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-row mt-10 justify-center gap-4 w-full">
-                <Link
-                  href="/leaderboard"
-                  className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
-                >
-                  Leaderboard
-                </Link>
-                <Link
-                  href="/methodology"
-                  className="flex-1 sm:flex-none font-inter bg-white text-[#1E1E1E]  border border-gray-300 px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-gray-50"
-                >
-                  Methodology
-                </Link>
-              </div>
-            </div>
-          </div>
+        {/* Subheading */}
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+          Stop guessing your impact. We verify, rank, and showcase your academic
+          performance so you get the funding, promotions, and recognition you
+          actually deserve.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-row mt-10 justify-center gap-4 w-full">
+          <Link
+            href="/leaderboard"
+            className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
+          >
+            Claim My Profile
+          </Link>
+          <Link
+            href="/methodology"
+            className="flex-1 sm:flex-none font-inter bg-white text-[#1E1E1E]  border border-gray-300 px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-gray-50"
+          >
+            Search Directory
+          </Link>
         </div>
-      </section>
+      </SiteHero>
 
       {/* Leaderboard Widget Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-0 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           <LeaderboardWidget />
         </div>

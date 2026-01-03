@@ -18,31 +18,31 @@ interface Product {
 const products: Product[] = [
   {
     id: "open-data",
-    title: "Open & Licensed Data Sources",
-    tagline: "Transparent data foundation",
+    title: "Controlled Data Sources",
+    tagline: "Curated Ingestion",
     category: "Data",
     description:
-      "We ingest validated data from OpenAlex (open), and optionally from Scopus & Web of Science (licensed) where available.",
+      "We don't just grab data from the messy web. We ingest structured records from trusted global repositories, ensuring no junk data enters your profile.",
     image: "/dummy/placeholder-1.png",
     slug: "open-data-sources",
   },
   {
     id: "verification",
-    title: "Evidence-Based Verification",
-    tagline: "Moderated accuracy",
+    title: 'The "Human-in-the-Loop" Check',
+    tagline: "Human Governance",
     category: "Verification",
     description:
-      "All profile corrections and claims require documentary evidence and undergo structured moderation.",
+      "Algorithms make mistakes. People don't. Our management team manually reviews and processes data uploads to ensure that Dr. A. Sharma is the right Dr. A. Sharma.",
     image: "/dummy/placeholder-2.png",
     slug: "evidence-verification",
   },
   {
     id: "refresh",
-    title: "Continuous Refresh & Audit",
-    tagline: "Real-time reliability",
+    title: "Live Leaderboards",
+    tagline: "Dynamic Ranking",
     category: "Audit",
     description:
-      "Nightly updates, weekly recomputations, and immutable audit trails ensure metric reliability.",
+      "Once verified, your score is pushed to the National Leaderboard. You aren't just a number in a database; you are ranked against peers in your specific field and state.",
     image: "/dummy/placeholder-3.png",
     slug: "continuous-refresh",
   },
@@ -81,15 +81,10 @@ export default function TransparencySection() {
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="mb-16 w-full text-center md:text-left">
-          <h3 className="text-center md:text-left">
-            Built on Transparency.
-            <br />
-            Governed by Data Integrity.
-          </h3>
+          <h3 className="text-center md:text-left">Built on Verified Truth</h3>
           <p className="mt-4 max-w-xl text-gray-600 text-center md:text-left text-sm sm:text-base leading-relaxed">
-            NationCite follows a reproducible, evidence-backed methodology using
-            global open and licensed bibliometric sources. Every metric is
-            source-labeled and continuously updated.
+            We refuse to rely on buggy automated scrapers. Our data is curated,
+            governed, and locked-in by experts.
           </p>
         </div>
 
@@ -108,7 +103,7 @@ export default function TransparencySection() {
                         : "text-neutral-400 border-neutral-200 hover:text-neutral-600"
                     }`}
                   >
-                    <span>{p.title}</span>
+                    <span>{p.tagline}</span>
                     <ArrowUpRight
                       className={`w-4 h-4 md:w-5 md:h-5 transition flex-shrink-0 ml-2 ${
                         activeService === p.id ? "opacity-100" : "opacity-0"
@@ -122,7 +117,7 @@ export default function TransparencySection() {
                 href="/methodology"
                 className="inline-block px-3 py-2 rounded-md sm:rounded-lg text-sm md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
               >
-                View Full Methodology
+                Learn Our Process
               </Link>
             </div>
           </div>

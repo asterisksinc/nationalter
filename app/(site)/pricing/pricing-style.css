@@ -1,0 +1,42 @@
+.hero {
+  position: relative;
+  background-image: url("/Bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  min-height: 600px;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    min-height: 800px;
+  }
+}
+
+/* Mobile background */
+@media (max-width: 767px) {
+  .hero {
+    background-image: url("/Mobile_Responsive.jpg");
+    background-position: top center;
+  }
+}
+
+/* Smooth fade at bottom of hero so the background transitions into
+   the white leaderboard section beneath */
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 240px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+  pointer-events: none;
+  z-index: 1;
+}

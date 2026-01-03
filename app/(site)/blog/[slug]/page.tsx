@@ -1,30 +1,26 @@
 import "../style.css";
+import SiteHero from "@/components/site/SiteHero";
+import Badge from "@/components/ui/Badge";
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-white page-bg">
-        <section className="text-center px-4">
-          <button className="faqtitle rounded-full px-4 py-1 mb-6 border border-[#f9a96a]/40">
-            • Blog
-          </button>
+      <SiteHero>
+        <Badge>Blog</Badge>
 
-          <h1 className="mb-4 monttitle text-center">
-            Lorem ipsum dolor sit amet,
-            <br />
-            consectetur adipiscing elite
-          </h1>
+        <h1 className="mb-8">
+          Lorem ipsum dolor sit amet,
+          <br />
+          consectetur adipiscing elite
+        </h1>
 
-          <p className="monthsubtitle max-w-xl mx-auto mb-6 text-center text-sm sm:text-base text-[#5C5C5C]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
 
-          <p className="monthfooter text-center text-xs sm:text-sm text-[#6B6B6B]">
-            Month 00, YYYY
-          </p>
-        </section>
-      </div>
+        <p className="text-xs sm:text-sm text-[#6B6B6B]">Month 00, YYYY</p>
+      </SiteHero>
 
       <section className="w-full flex justify-center bg-white ">
         <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">

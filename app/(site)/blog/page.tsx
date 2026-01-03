@@ -2,6 +2,8 @@
 import { useState } from "react";
 import "./style.css";
 import Link from "next/link";
+import Badge from "@/components/ui/Badge";
+import SiteHero from "@/components/site/SiteHero";
 import FinalCTA from "@/components/site/FinalCTA";
 import FAQSection from "@/components/site/FAQSection";
 const items = [
@@ -38,34 +40,25 @@ export default function BlogPage() {
   return (
     <main className="w-full bg-white">
       {/* Hero Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] min-h-[80vh] sm:h-screen flex flex-col items-center justify-center text-center page-bg py-8 sm:py-10 md:py-10 lg:py-10">
+      <SiteHero>
         {/* BADGE */}
-        <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-md font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mt-4 sm:mt-5 md:mt-5 lg:mt-5 mb-2 sm:mb-4 md:mb-4 lg:mb-4">
-          Resources
-        </span>
+        <Badge>Resources</Badge>
 
         {/* HEADING */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 sm:mb-6 md:mb-6 lg:mb-6">
+        <h1 className="mb-8">
           Lorem ipsum dolor
-          <br className="hidden sm:block" />
-          sit amet consectetur
+          <br className="hidden sm:block" /> sit amet consectetur
         </h1>
 
         {/* DESCRIPTION */}
-        <div className="px-4 sm:p-4 md:p-5 lg:p-6 rounded-md sm:rounded-lg inline-block mx-auto mb-6 sm:mb-8 md:mb-8 lg:mb-8">
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C]">
-            <span className="block max-w-[500px] mx-auto">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </span>
-          </p>
-        </div>
-
-        {/* CTA */}
-      </section>
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </SiteHero>
 
       {/* First Blog Grid Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-10 md:py-10 lg:py-10 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-0 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           {/* Search and Filter Section */}
           <div className="bg-[#f5f5f5] rounded-lg sm:rounded-xl p-1 sm:p-1 md:p-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-10 lg:mb-10">
