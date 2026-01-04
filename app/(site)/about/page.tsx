@@ -286,7 +286,7 @@ export default function AboutPage() {
       </FAQSection>
 
       {/* Custom CTA for About Page */}
-      <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[72px]">
+      <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[120px]">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center">
           <div className="mb-8 md:mb-10">
             <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
@@ -314,7 +314,7 @@ export default function AboutPage() {
         </div>
 
         {/* Full-width Image Section */}
-        <div className="w-screen relative left-[calc(-50vw+50%)] px-4 md:px-[76px] mt-12 md:mt-16">
+        <div className="w-full mt-12 md:mt-16">
           <img
             src="/CTA Section Image - Nationcite.png"
             alt="Nationcite CTA Section"

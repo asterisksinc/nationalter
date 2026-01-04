@@ -6,17 +6,18 @@ import SiteHero from "@/components/site/SiteHero";
 import PricingSection from "@/components/site/PricingSection";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
+import "./pricing-style.css";
 
 export default function PricingPage() {
   return (
     <div className="bg-white  font-sans">
       {/* Hero / Pricing Section */}
-      <SiteHero layout="raw" className="hero">
+      <SiteHero layout="raw" className="hero" useDefaultBackground={false}>
         <PricingSection className="bg-transparent pt-38 " isHero />
       </SiteHero>
 
       {/* Comparison Tables Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
         <div className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
           {/* Table 1: Overview & Pricing */}
           <div className="space-y-7">
@@ -161,10 +162,10 @@ export default function PricingPage() {
 
           {/* Table 6: Add-ons */}
           <div>
-            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6 text-center sm:text-left">
+            <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6   text-center sm:text-left">
               Add-ons (Optional for all)
             </h4>
-            <div className="border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden max-w-2xl">
+            <div className="border mt-6 border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden max-w-2xl">
               <div className="overflow-x-auto">
                 <div className="w-full min-w-[300px]">
                   <div className="grid grid-cols-2 bg-gray-50 px-4 sm:px-5 md:px-6 py-3 border-b border-gray-200">

@@ -135,7 +135,7 @@ export default function ScholarsLeaderboardPage() {
       </SiteHero>
 
       {/* Leaderboard Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-0 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-[120px] py-0 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}

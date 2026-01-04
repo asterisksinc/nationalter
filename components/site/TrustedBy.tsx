@@ -29,7 +29,7 @@ const logos: Logo[] = [
 
 const TrustedBy = () => {
   return (
-    <section className="w-full py-12 md:py-16 bg-white overflow-hidden px-4 md:px-[72px]">
+    <section className="w-full py-12 md:py-16 bg-white overflow-hidden px-4 md:px-[120px]">
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-8">
         <div className="w-full text-center">
           <div className="inline-block max-w-3xl">

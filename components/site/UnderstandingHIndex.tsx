@@ -48,7 +48,7 @@ export default function UnderstandingHIndex() {
   ];
 
   return (
-    <section className="w-full bg-white py-12 md:py-16 px-4 md:px-[72px]">
+    <section className="w-full bg-white py-12 md:py-16 px-4 md:px-[120px]">
       <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">

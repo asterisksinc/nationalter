@@ -16,8 +16,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <SiteHero>
         {/* Badge at top - with arrow */}
-       <div
-  className="
+        <div
+          className="
     inline-flex items-center justify-center
     flex-nowrap
     gap-2 sm:gap-3
@@ -26,46 +26,45 @@ export default function HomePage() {
     bg-white border border-gray-200 shadow-sm
     mb-10
   "
->
-  {/* Avatars */}
-  <div className="flex -space-x-2 shrink-0">
-    {[1, 2, 3].map((i) => (
-      <div
-        key={i}
-        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
-      >
-        <img
-          src={`https://i.pravatar.cc/150?img=${i + 20}`}
-          alt="user"
-          className="w-full h-full object-cover"
-        />
-      </div>
-    ))}
-  </div>
+        >
+          {/* Avatars */}
+          <div className="flex -space-x-2 shrink-0">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-300 border-2 border-white overflow-hidden"
+              >
+                <img
+                  src={`https://i.pravatar.cc/150?img=${i + 20}`}
+                  alt="user"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
 
-  {/* Text */}
-  <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
-    1,928,384+ Indian Researchers
-  </span>
+          {/* Text */}
+          <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
+            1,928,384+ Indian Researchers
+          </span>
 
-  {/* Arrow */}
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    className="text-[#1E1E1E] shrink-0"
-  >
-    <path
-      d="M6 3L11 8L6 13"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-</div>
-
+          {/* Arrow */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            className="text-[#1E1E1E] shrink-0"
+          >
+            <path
+              d="M6 3L11 8L6 13"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
 
         {/* Main Heading */}
         <h1 className="mb-8">
@@ -97,7 +96,7 @@ export default function HomePage() {
       </SiteHero>
 
       {/* Leaderboard Widget Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[72px] py-0 bg-white">
+      <section className="w-full px-4 sm:px-6 md:px-[120px] py-0 bg-white">
         <div className="w-full max-w-7xl mx-auto">
           <LeaderboardWidget />
         </div>

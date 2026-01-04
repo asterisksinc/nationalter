@@ -69,7 +69,7 @@ export default function PricingSection({
     <section
       className={`w-full ${
         isHero
-          ? "px-4 md:px-[72px] pt-8 pb-12"
+          ? "px-4 md:px-[120px] pt-8 pb-12"
           : "px-4 sm:px-6 md:px-8 lg:px-[120px] pt-24 sm:pt-32 pb-10 sm:pb-16 md:pb-20 lg:pb-24"
       } ${className || "bg-white"}`}
     >

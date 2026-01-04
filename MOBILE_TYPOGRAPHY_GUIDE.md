@@ -238,7 +238,7 @@ text-[#6B6B6B] (or text-gray-400)
 ```tsx
 export default function ExamplePage() {
   return (
-    <section className="w-full py-12 md:py-16 px-4 md:px-[72px]">
+    <section className="w-full py-12 md:py-16 px-4 md:px-[120px]">
       <div className="max-w-7xl mx-auto">
         {/* Level 1: Section Title */}
         <h3 className="text-2xl md:text-3xl font-bold text-[#1E1E1E] text-center mb-4">

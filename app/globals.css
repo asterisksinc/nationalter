@@ -23,4 +23,22 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Inter";
+  overflow-x: hidden;
+}
+
+html {
+  max-width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
 }
