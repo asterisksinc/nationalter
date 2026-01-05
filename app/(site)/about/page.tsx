@@ -24,7 +24,9 @@ export default function AboutPage() {
 
         {/* HEADING */}
         <h1 className="mb-8 text-center">
-          <span className="block sm:inline">The Digital Backbone of&nbsp; India&apos;s Research&nbsp; Ecosystem</span>
+          <span className="block sm:inline">
+            The Digital Backbone of&nbsp; India&apos;s Research&nbsp; Ecosystem
+          </span>
           <span className="block sm:inline"></span>
         </h1>
 
@@ -49,14 +51,14 @@ export default function AboutPage() {
       <section className="px-4 sm:px-8 lg:px-[120px] w-full py-8 sm:py-10 md:py-12 lg:py-12">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
           {/* 70% block */}
-          <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[500px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
+          <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
             <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">
               Image 1{" "}
             </span>
           </div>
 
           {/* 30% block */}
-          <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[500px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
+          <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[350px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
             <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">
               Image 2{" "}
             </span>
@@ -304,16 +306,15 @@ export default function AboutPage() {
             defining the standard for Indian research excellence.
           </p>
 
-        <div className="flex py-6 flex-row md:flex-row gap-3 justify-center items-center">
-  <button className="font-inter bg-[#1E1E1E] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-black transition-colors w-auto text-center whitespace-nowrap">
-    Search Directory
-  </button>
+          <div className="flex py-6 flex-row md:flex-row gap-3 justify-center items-center">
+            <button className="font-inter bg-[#1E1E1E] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-black transition-colors w-auto text-center whitespace-nowrap">
+              Search Directory
+            </button>
 
-  <button className="font-inter bg-[#FF7A00] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-auto text-center whitespace-nowrap">
-    Get Verified Now
-  </button>
-</div>
-
+            <button className="font-inter bg-[#FF7A00] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-auto text-center whitespace-nowrap">
+              Get Verified Now
+            </button>
+          </div>
         </div>
 
         {/* Full-width Image Section */}

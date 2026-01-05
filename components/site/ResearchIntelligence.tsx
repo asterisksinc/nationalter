@@ -43,7 +43,7 @@ export default function ResearchIntelligence() {
               className="group cursor-pointer research-card bg-[#F5F5F5] rounded-md sm:rounded-lg overflow-hidden flex flex-col h-full"
             >
               {/* Image Container - Now inside the card */}
-              <div className="h-40 md:h-[350px] w-full relative overflow-hidden flex-shrink-0">
+              <div className="h-40 md:h-[250px] lg:h-[350px] w-full relative overflow-hidden flex-shrink-0">
                 <div className="absolute inset-0 bg-gray-200/50 transition-colors"></div>
                 {/* Optional: Add a subtle overlay or placeholder pattern here if needed to match the 'checkerboard' look, 
                     but keeping it clean as per original code style. */}

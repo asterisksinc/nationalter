@@ -68,10 +68,10 @@ export default function HomePage() {
 
         {/* Main Heading */}
         <h1 className="mb-8">
-                India's H-Index
-                <br />
-                Leaderboard Portal
-              </h1>
+          India's H-Index
+          <br />
+          Leaderboard Portal
+        </h1>
 
         {/* Subheading */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">

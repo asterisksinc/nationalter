@@ -22,7 +22,7 @@ export default function ThreeCardsSection() {
               key={i}
               className="bg-[#EAEAEA] rounded-md sm:rounded-lg overflow-hidden flex flex-col h-full"
             >
-              <div className="w-full h-[200px] md:h-auto md:min-h-[500px] bg-[#EAEAEA] flex-shrink-0 md:flex-1"></div>
+              <div className="w-full h-[200px] md:h-auto lg:min-h-[500px] bg-[#EAEAEA] flex-shrink-0 md:flex-1"></div>
               <div className="p-6 md:p-10 flex flex-col flex-1">
                 <h5 className="text-[#1E1E1E] mb-4 text-base sm:text-lg md:text-xl">
                   Lorem ipsum dolor sit amet
