@@ -48,7 +48,7 @@ export default function AboutPage() {
       </SiteHero>
 
       {/* two img placehodlers blocks.. one block with 70% width and other with 30% width..section padding 120px on left and right.. */}
-      <section className="px-4 sm:px-8 lg:px-[120px] w-full py-8 sm:py-10 md:py-12 lg:py-12">
+      <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
           {/* 70% block */}
           <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
@@ -67,7 +67,7 @@ export default function AboutPage() {
       </section>
 
       {/* Who We Are */}
-      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
+      <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
         <div className="text-center md:text-left">
           <span
             className="
@@ -113,14 +113,14 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
-      <section className="px-4 sm:px-8 lg:px-[120px] w-full py-8 sm:py-10 md:py-12 lg:py-12">
+      <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
         <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg"></div>
       </section>
 
       <TrustedBy />
 
       {/* The Minds Powering Nationcite Section */}
-      <section className="w-full py-10 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-8 lg:px-[120px] bg-white">
+      <section className="w-full py-10 sm:py-16 md:py-24 lg:py-32 section-padding bg-white">
         <div className="flex flex-col items-center gap-8 sm:gap-10 md:gap-10 lg:gap-12">
           <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl text-center text-[#1E1E1E]">
             The Architects of Integrity
@@ -152,7 +152,7 @@ export default function AboutPage() {
       </section>
 
       {/* 15 Reasons to Join Us */}
-      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
+      <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
         <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start text-center lg:text-left">
           <h3 className="mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-xl sm:text-2xl md:text-2xl lg:text-3xl">
             Why Researchers Choose Nationcite
@@ -289,7 +289,7 @@ export default function AboutPage() {
       </FAQSection>
 
       {/* Custom CTA for About Page */}
-      <section className="w-full py-12 md:py-16 bg-white px-4 sm:px-8 lg:px-[120px]">
+      <section className="w-full py-12 md:py-16 bg-white section-padding">
         <div className="w-full mx-auto flex flex-col items-center text-center">
           <div className="mb-8 md:mb-10">
             <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">

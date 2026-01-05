@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ConsultancySection() {
   return (
-    <section className="w-full py-8 md:py-12 bg-white px-4 sm:px-8 lg:px-[120px] overflow-hidden relative">
+    <section className="w-full py-8 md:py-12 bg-white section-padding overflow-hidden relative">
       <div className="w-full relative flex flex-col items-center text-center mx-auto">
         {/* --- Floating Badge Icon (Decorative) --- */}
         {/* Top Left */}

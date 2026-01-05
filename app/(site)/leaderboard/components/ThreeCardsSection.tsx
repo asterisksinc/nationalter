@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ThreeCardsSection() {
   return (
-    <section className="w-full py-12 md:py-20 bg-white px-4 sm:px-8 lg:px-[120px]">
+    <section className="w-full py-12 md:py-20 bg-white section-padding">
       <div className="w-full">
         <div className="w-full flex justify-center">
           <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-6 max-w-3xl">

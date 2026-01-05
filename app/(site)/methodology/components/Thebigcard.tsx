@@ -3,7 +3,7 @@ import Badge from "@/components/ui/Badge";
 
 export default function Thebigcard() {
   return (
-    <section className="w-full py-8 md:py-12 bg-white px-4 sm:px-8 lg:px-[120px]">
+    <section className="w-full py-8 md:py-12 bg-white section-padding">
       {/* Main Container Card - Cream Background */}
       <div className="w-full bg-white rounded-md sm:rounded-lg py-6 md:py-16">
         {/* Top Text Section */}

@@ -46,7 +46,7 @@ export default function SiteHero({
       {layout === "raw" ? (
         <div className="relative z-10 w-full">{children}</div>
       ) : (
-        <div className="relative z-10 w-full px-4 sm:px-8 lg:px-[120px]">
+        <div className="relative z-10 w-full section-padding">
           <div className="w-full mx-auto">
             <div className="w-full mx-auto flex flex-col items-center text-center">
               {children}

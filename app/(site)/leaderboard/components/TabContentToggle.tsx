@@ -32,7 +32,7 @@ export default function TabContentToggle({
   const activeTabContent = tabs.find((tab) => tab.id === activeTab);
 
   return (
-    <section className="w-full py-12 md:py-16 px-4 sm:px-8 lg:px-[120px] bg-white">
+    <section className="w-full py-12 md:py-16 section-padding bg-white">
       <div className="w-full mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 md:mb-14 gap-6">

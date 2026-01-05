@@ -26,7 +26,7 @@ export default function MethodologyPage() {
         <Badge>Methodology</Badge>
 
         {/* HEADING */}
-        <h1 className="font-inter mb-8 text-center leading-snug">
+        <h1 className="font-inter mb-8 text-center leading-snug md:max-w-[800px]">
           <span className="block sm:inline">Built on Transparency&nbsp; Governed&nbsp; by Data Integrity</span>
         </h1>
 

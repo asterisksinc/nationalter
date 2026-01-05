@@ -34,7 +34,7 @@ export default function LeaderboardPage() {
       </SiteHero>
 
       {/* LeaderboardWidget Section */}
-      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
+      <section className="w-full section-padding py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
         <div className="w-full mx-auto">
           <div className="w-full bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             <LeaderboardWidget />

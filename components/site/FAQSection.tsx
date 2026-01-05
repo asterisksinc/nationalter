@@ -34,7 +34,7 @@ export default function FAQSection({
     faqItems || questions.map((q) => ({ question: q, answer: "" }));
 
   return (
-    <section className="w-full px-4 sm:px-8 lg:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
+    <section className="w-full section-padding pt-12 md:pt-24 flex flex-col items-center">
       {/* Header Section - Centered */}
       <div className="text-center max-w-3xl mb-12">
         <span

@@ -98,7 +98,7 @@ export default function HomePage() {
       </SiteHero>
 
       {/* Leaderboard Widget Section */}
-      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-0 bg-white">
+      <section className="w-full section-padding py-0 bg-white">
         <div className="w-full mx-auto">
           <LeaderboardWidget />
         </div>

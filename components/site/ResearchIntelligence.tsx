@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ResearchIntelligence() {
   return (
-    <section className="w-full py-12 md:py-16 bg-white px-4 sm:px-8 lg:px-[120px]">
+    <section className="w-full py-12 md:py-16 bg-white section-padding">
       <div className="w-full mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
           <div className="mb-4">

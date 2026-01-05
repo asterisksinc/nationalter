@@ -136,7 +136,7 @@ export default function DoctorsLeaderboardPage() {
       </SiteHero>
 
       {/* Leaderboard Section */}
-      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-0 bg-white">
+      <section className="w-full section-padding py-0 bg-white">
         <div className="w-full mx-auto">
           <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}

@@ -4,7 +4,7 @@ import { Instagram, Twitter, Youtube, X } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-[#050505] text-white pt-12 md:pt-20 pb-8 font-sans site-footer w-full">
-      <div className="w-full mx-auto px-4 sm:px-8 lg:px-[120px]">
+      <div className="w-full mx-auto section-padding">
         {/* Separator Line */}
         <div className="w-full h-px bg-gray-800/60 mb-10 md:mb-16"></div>
 

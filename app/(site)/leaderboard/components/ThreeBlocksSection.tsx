@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ThreeBlocksSection() {
   return (
-    <section className="w-full py-12 md:py-24 mt-10 px-4 sm:px-8 lg:px-[120px] bg-white">
+    <section className="w-full py-12 md:py-24 mt-10 section-padding bg-white">
       <div className="w-full mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
