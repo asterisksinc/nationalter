@@ -2,7 +2,7 @@ import React from "react";
 
 export default function LeaderboardFinalCTA() {
   return (
-    <section className="w-full py-20 md:py-28 bg-white px-4 md:px-[120px]">
+    <section className="w-full py-20 md:py-28 bg-white px-4 sm:px-8 lg:px-[120px]">
       <div className="w-full bg-[#EAEAEA] rounded-md sm:rounded-lg p-10 md:p-32 text-center min-h-[320px] md:min-h-[420px] flex flex-col items-center justify-center">
         <h2 className="text-[#1E1E1E] mb-6 md:mb-10 text-2xl md:text-4xl font-semibold text-center">
           Lorem ipsum dolor

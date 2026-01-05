@@ -17,8 +17,8 @@ export default function PricingPage() {
       </SiteHero>
 
       {/* Comparison Tables Section */}
-      <section className="w-full px-4 sm:px-6 md:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
-        <div className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
+      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-10 sm:py-16 md:py-20 lg:py-24 bg-white">
+        <div className="w-full mx-auto space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
           {/* Table 1: Overview & Pricing */}
           <div className="space-y-7">
             <h4 className="mb-6 sm:mb-8 md:mb-10 lg:mb-10 text-center sm:text-left">

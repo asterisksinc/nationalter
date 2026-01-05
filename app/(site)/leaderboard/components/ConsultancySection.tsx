@@ -2,8 +2,8 @@ import React from "react";
 
 export default function ConsultancySection() {
   return (
-    <section className="w-full py-8 md:py-12 bg-white px-4 md:px-[120px] overflow-hidden relative">
-      <div className="w-full relative flex flex-col items-center text-center max-w-6xl mx-auto">
+    <section className="w-full py-8 md:py-12 bg-white px-4 sm:px-8 lg:px-[120px] overflow-hidden relative">
+      <div className="w-full relative flex flex-col items-center text-center mx-auto">
         {/* --- Floating Badge Icons (Decorative) --- */}
         {/* Top Left */}
         <div className="absolute -top-10 left-[5%] md:left-[10%] text-gray-800 opacity-80 scale-75 md:scale-100 animate-pulse-slow">

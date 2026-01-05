@@ -151,11 +151,16 @@ const LeaderboardWidget = ({
           </div>
         </div>
 
-        {/* Bottom Row: Tabs Selection */}
-        <div className="flex flex-wrap items-center gap-3">
-          {tabs.map((tab) => {
+        {/* Bottom Row: Tabs Selection
+            Mobile: grid with 2 columns, third tab spans both columns and is centered.
+            Desktop: keep existing inline pill buttons. */}
+        <div className="grid grid-cols-2 gap-3 md:flex md:flex-wrap md:items-center">
+          {tabs.map((tab, idx) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+
+            // make the third tab span both columns on small screens
+            const mobileSpanClass = idx === 2 ? "col-span-2" : "";
 
             return (
               <button
@@ -165,7 +170,7 @@ const LeaderboardWidget = ({
                   isActive
                     ? "bg-[#FF7A00] text-white border-[#FF7A00] shadow-lg shadow-orange-200 transform -translate-y-0.5"
                     : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                }`}
+                } ${mobileSpanClass}`}
               >
                 <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                 {tab.label}

@@ -3,8 +3,8 @@ import Image from "next/image";
 
 export default function FinalCTA() {
   return (
-    <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[120px]">
-      <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center">
+    <section className="w-full py-12 md:py-16 bg-white px-4 sm:px-8 lg:px-[120px]">
+      <div className="w-full mx-auto flex flex-col items-center text-center">
         <div className="mb-8 md:mb-10">
           <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
             Get Verified

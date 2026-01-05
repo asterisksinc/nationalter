@@ -26,10 +26,8 @@ export default function MethodologyPage() {
         <Badge>Methodology</Badge>
 
         {/* HEADING */}
-        <h1 className="font-inter mb-8 text-center">
-          Built on Transparency,
-          <br className="hidden sm:block" />
-          Governed by Data Integrity
+        <h1 className="font-inter mb-8 text-center leading-snug">
+          <span className="block sm:inline">Built on Transparency&nbsp; Governed&nbsp; by Data Integrity</span>
         </h1>
 
         {/* DESCRIPTION */}

@@ -58,8 +58,8 @@ export default function BlogPage() {
       </SiteHero>
 
       {/* First Blog Grid Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] py-0 bg-white">
-        <div className="w-full max-w-7xl mx-auto">
+      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-0 bg-white">
+        <div className="w-full mx-auto">
           {/* Search and Filter Section */}
           <div className="bg-[#f5f5f5] rounded-lg sm:rounded-xl p-1 sm:p-1 md:p-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-10 lg:mb-10">
             {/* Search Input */}

@@ -136,8 +136,8 @@ export default function UniversitiesLeaderboardPage() {
       </SiteHero>
 
       {/* Leaderboard Section */}
-      <section className="w-full px-4 sm:px-6 md:px-[120px] py-0 bg-white">
-        <div className="w-full max-w-7xl mx-auto">
+      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-0 bg-white">
+        <div className="w-full mx-auto">
           <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
             {/* HEADER SECTION: Title and Search */}
             <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">

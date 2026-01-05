@@ -2,7 +2,7 @@ import React from "react";
 
 export default function PricingMidCTA() {
   return (
-    <section className="w-full py-12 md:py-20 bg-white px-4 md:px-[120px]">
+    <section className="w-full py-12 md:py-20 bg-white px-4 sm:px-8 lg:px-[120px]">
       <div className="w-full flex justify-center">
         <div className="text-center">
           <div className="inline-block bg-[#FFF5EB] border border-[#FFD6B3] rounded-full px-3 py-1 mb-6">

@@ -68,8 +68,10 @@ export default function HomePage() {
 
         {/* Main Heading */}
         <h1 className="mb-8">
-          India’s Official Benchmark for Research Excellence
-        </h1>
+                India's H-Index
+                <br />
+                Leaderboard Portal
+              </h1>
 
         {/* Subheading */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
@@ -96,8 +98,8 @@ export default function HomePage() {
       </SiteHero>
 
       {/* Leaderboard Widget Section */}
-      <section className="w-full px-4 sm:px-6 md:px-[120px] py-0 bg-white">
-        <div className="w-full max-w-7xl mx-auto">
+      <section className="w-full px-4 sm:px-8 lg:px-[120px] py-0 bg-white">
+        <div className="w-full mx-auto">
           <LeaderboardWidget />
         </div>
       </section>

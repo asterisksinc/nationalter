@@ -34,7 +34,7 @@ export default function FAQSection({
     faqItems || questions.map((q) => ({ question: q, answer: "" }));
 
   return (
-    <section className="w-full px-4 md:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
+    <section className="w-full px-4 sm:px-8 lg:px-[120px] pt-12 md:pt-24 flex flex-col items-center">
       {/* Header Section - Centered */}
       <div className="text-center max-w-3xl mb-12">
         <span
@@ -82,7 +82,7 @@ export default function FAQSection({
       </div>
 
       {/* FAQ Items - Centered vertical list with white border */}
-      <div className="w-full max-w-3xl border border-white rounded-md sm:rounded-lg bg-white shadow-sm p-6 md:p-8">
+      <div className="w-full border border-white rounded-md sm:rounded-lg bg-white shadow-sm p-6 md:p-8">
         <div className="space-y-0">
           {displayItems.map((item, i) => (
             <div key={i} className="border-b border-gray-200 last:border-b-0">

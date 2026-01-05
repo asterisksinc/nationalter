@@ -2,8 +2,8 @@ import React from "react";
 
 export default function ResearchIntelligence() {
   return (
-    <section className="w-full py-12 md:py-16 bg-white px-4 md:px-[120px]">
-      <div className="w-full max-w-7xl mx-auto">
+    <section className="w-full py-12 md:py-16 bg-white px-4 sm:px-8 lg:px-[120px]">
+      <div className="w-full mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
           <div className="mb-4">
             <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
