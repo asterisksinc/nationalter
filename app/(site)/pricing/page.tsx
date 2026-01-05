@@ -12,7 +12,7 @@ export default function PricingPage() {
   return (
     <div className="bg-white  font-sans">
       {/* Hero / Pricing Section */}
-      <SiteHero layout="raw" className="hero" useDefaultBackground={false}>
+      <SiteHero className="hero">
         <PricingSection className="bg-transparent pt-38 " isHero />
       </SiteHero>
 
