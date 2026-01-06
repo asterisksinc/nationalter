@@ -1,1062 +1,255 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import "./signstyle.css";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { SignupNavbar } from "./components/SignupNavbar";
+import { SignupSidebar } from "./components/SignupSidebar";
+import { UserTypeCard } from "./components/UserTypeCard";
+import { FlowRenderer } from "./components/FlowRenderer";
+import { Icon } from "./components/Icon";
+
+// Types
+enum UserType {
+  Medical = "Medical Professional",
+  Institution = "Institution/ Organisation",
+  Researcher = "Researcher",
+}
+
+enum FlowStep {
+  Identity = 1,
+  Authentication = 2,
+  Profile = 3,
+  Welcome = 4,
+  Dashboard = 5,
+}
 
 export default function RegisterPage() {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [role, setRole] = useState<"researcher" | "university" | "medical">();
+  const [userType, setUserType] = useState<UserType | null>(null);
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [otpSent, setOtpSent] = useState(false);
+  const [timer, setTimer] = useState(60);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [country, setCountry] = useState("");
-  const [institutionEmail, setInstitutionEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Timer effect for OTP
+  useEffect(() => {
+    let interval: any;
+    if (otpSent && timer > 0) {
+      interval = setInterval(() => setTimer((p) => p - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpSent, timer]);
 
-  const [institutionName, setInstitutionName] = useState("");
-  const [fieldOfResearch, setFieldOfResearch] = useState("");
-  const [institutionId, setInstitutionId] = useState("");
-  const [verificationFile, setVerificationFile] = useState<File | null>(null);
+  // Reset OTP state when step changes
+  useEffect(() => {
+    setOtpSent(false);
+    setTimer(60);
+  }, [currentStep]);
 
-  const [heardFrom, setHeardFrom] = useState<string[]>([]);
-  const [useCase, setUseCase] = useState<string[]>([]);
-
-  const toggleInArray = (
-    value: string,
-    current: string[],
-    setter: (v: string[]) => void
-  ) => {
-    if (current.includes(value)) {
-      setter(current.filter((v) => v !== value));
-    } else {
-      setter([...current, value]);
+  const handleNextStep = () => {
+    if (currentStep === 0) {
+      if (userType) setCurrentStep(1);
+      return;
+    }
+    if (currentStep < FlowStep.Dashboard) {
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
-  const handleRoleSelect = (value: "researcher" | "university" | "medical") => {
-    setRole(value);
-    setStep(2);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setVerificationFile(e.target.files[0]);
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      role,
-      firstName,
-      lastName,
-      country,
-      institutionEmail,
-      password,
-      institutionName,
-      fieldOfResearch,
-      institutionId,
-      verificationFileName: verificationFile?.name,
-      heardFrom,
-      useCase,
-    };
-    console.log("Final payload:", payload);
-  };
+  const isSelectionStep = currentStep === 0;
+  const isDashboardStep = currentStep === FlowStep.Dashboard;
 
-  const StepIndicator = () => (
-    <nav className="steps">
-      <div
-        className={`step-item ${step === 1 ? "current" : ""} ${
-          step > 1 ? "completed" : ""
-        }`}
-      >
-        <div className="step-main">
-          <span className="step-icon">
-            {step == 1 || step > 1 ? (
-              <img
-                src="./dummy/tick.png"
-                alt="Completed"
-                style={{ height: "22px" }}
-              />
-            ) : (
-              <img
-                src="./dummy/Loader.png"
-                alt="Completed"
-                style={{ height: "25px" }}
-              />
-            )}
-          </span>
+  if (isSelectionStep) {
+    return (
+      <>
+        <SignupNavbar />
+        {/* Main Layout - Fixed Height */}
+        <div className="h-screen pt-16 w-full flex flex-col md:flex-row bg-white overflow-hidden">
+          {/* Left Panel - Branding */}
           <div
-            className={`step-text-wrapper ${step > 1 ? "is-completed" : ""}`}
+            className="hidden md:flex md:w-[35%] h-full bg-orange-50 items-center justify-center relative overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
+            }}
           >
-            <div className="step-title">Select your Profile</div>
-            <div className="step-subtitle">
-              Select the profile that suits you the best
-            </div>
-          </div>
-        </div>
-        <span className="step-arrow">
-          {" "}
-          {step == 1 || step > 1 ? (
-            <img
-              src="./dummy/arrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          ) : (
-            <img
-              src="./dummy/garrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          )}
-        </span>
-      </div>
-      <div
-        className={`step-item ${step === 2 ? "current" : ""} ${
-          step > 2 ? "completed" : ""
-        } ${step < 2 ? "disabled" : ""}`}
-      >
-        <div className="step-main">
-          <span className="step-icon">
-            {step == 2 || step > 2 ? (
-              <img
-                src="./dummy/tick.png"
-                alt="Completed"
-                style={{ height: "22px" }}
-              />
-            ) : (
-              <img
-                src="./dummy/Loader.png"
-                alt="Completed"
-                style={{ height: "25px" }}
-              />
-            )}
-          </span>
-          <div
-            className={`step-text-wrapper ${step > 2 ? "is-completed" : ""}`}
-          >
-            <div className="step-title">Basic Information</div>
-            <div className="step-subtitle">
-              Organization details &amp; account setup
-            </div>
-          </div>
-        </div>
-        <span className="step-arrow">
-          {" "}
-          {step == 2 || step > 2 ? (
-            <img
-              src="./dummy/arrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          ) : (
-            <img
-              src="./dummy/garrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          )}
-        </span>
-      </div>
-
-      <div
-        className={`step-item ${step === 3 ? "current" : ""} ${
-          step > 3 ? "completed" : ""
-        } ${step < 3 ? "disabled" : ""}`}
-      >
-        <div className="step-main">
-          <span className="step-icon">
-            {step == 3 || step > 3 ? (
-              <img
-                src="./dummy/tick.png"
-                alt="Completed"
-                style={{ height: "22px" }}
-              />
-            ) : (
-              <img
-                src="./dummy/Loader.png"
-                alt="Completed"
-                style={{ height: "25px" }}
-              />
-            )}
-          </span>
-          <div
-            className={`step-text-wrapper ${step > 3 ? "is-completed" : ""}`}
-          >
-            <div className="step-title">Additional Verification</div>
-            <div className="step-subtitle">Provide verification of account</div>
-          </div>
-        </div>
-        <span className="step-arrow">
-          {" "}
-          {step == 3 || step > 3 ? (
-            <img
-              src="./dummy/arrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          ) : (
-            <img
-              src="./dummy/garrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          )}
-        </span>
-      </div>
-
-      <div
-        className={`step-item ${step === 4 ? "current" : ""} ${
-          step > 4 ? "completed" : ""
-        } ${step < 4 ? "disabled" : ""}`}
-      >
-        <div className="step-main">
-          <span className="step-icon">
-            {step == 4 || step > 4 ? (
-              <img
-                src="./dummy/tick.png"
-                alt="Completed"
-                style={{ height: "22px" }}
-              />
-            ) : (
-              <img
-                src="./dummy/Loader.png"
-                alt="Completed"
-                style={{ height: "25px" }}
-              />
-            )}
-          </span>
-          <div
-            className={`step-text-wrapper ${step > 4 ? "is-completed" : ""}`}
-          >
-            <div className="step-title">Discovery Questions</div>
-            <div className="step-subtitle">How you&apos;ll use Nationcite</div>
-          </div>
-        </div>
-        <span className="step-arrow">
-          {" "}
-          {step == 4 || step > 4 ? (
-            <img
-              src="./dummy/arrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          ) : (
-            <img
-              src="./dummy/garrow.png"
-              alt="arrow"
-              style={{ height: "22px" }}
-            />
-          )}
-        </span>
-      </div>
-    </nav>
-  );
-
-  return (
-    <>
-      {/* Navbar */}
-      <nav className="auth-navbar">
-        <Link href="/" className="auth-logo">
-          <img src="/logos/pcLogo.png" alt="Nationcite" />
-        </Link>
-        <div className="auth-nav-right">
-          <span className="auth-nav-text">Already have an account?</span>
-          <Link href="/signin" className="auth-nav-link">
-            Sign in
-          </Link>
-        </div>
-      </nav>
-
-      <div className="page">
-        <aside className="sidebar">
-          <div>
-            <h2 className="sidebar-title">Complete these steps</h2>
-            <StepIndicator />
-          </div>
-        </aside>
-
-        <main className="content">
-          {step === 1 && (
-            <div className="auth-content">
-              <h1 className="title">Lorem ipsum dolor self amet consectetur</h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
+            <div className="z-10 flex flex-col items-center">
+              <div className="text-5xl font-bold tracking-tight text-black mb-3">
+                NATIONCITE
+              </div>
+              <p className="text-xs text-black font-semibold tracking-[0.2em] uppercase">
+                Powering India&apos;s Research Future
               </p>
+            </div>
+          </div>
 
-              <div className="card-list">
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("researcher")}
-                >
-                  <img src="./dummy/researcher.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">Researcher</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
-
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("university")}
-                >
-                  <img src="./dummy/university.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">University / Organisation</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
-
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("medical")}
-                >
-                  <img src="./dummy/medical.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">Medical Professional</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
-                <div className="role-desc">
-                  Lorem ipsum dolor sit amet, consectetur{" "}
-                  <span style={{ color: "#FF8D28" }}>adipiscing elit…</span>
+          {/* Right Panel - Scrollable Form Area */}
+          <div className="w-full md:w-[65%] h-[calc(100vh-4rem)] bg-white relative z-10 flex flex-col">
+            <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
+              <div className="md:hidden mb-6 flex items-center gap-2">
+                <div className="text-xl font-bold tracking-tight text-black">
+                  NATIONCITE
                 </div>
               </div>
 
-              <p className="foot-note">
-                <span className="foot-note-strong">Do you know: </span>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit…
-              </p>
-            </div>
-          )}
-
-          {step === 2 && role === "researcher" && (
-            <div className="auth-content">
-              <h1 className="auth-title">
-                Lorem ipsum dolor self amet (Researcher)
-              </h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
-              </p>
-
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(3);
-                }}
-              >
-                <label className="field">
-                  <span className="field-label">First Name</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                  />
-                </label>
-                <label className="field">
-                  <span className="field-label">Last Name</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                  />
-                </label>
-                <label className="field">
-                  <span className="field-label">Country / Region</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your Country / Region"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Your Institutional Email</span>
-                  <input
-                    type="email"
-                    placeholder="Placeholder"
-                    value={institutionEmail}
-                    onChange={(e) => setInstitutionEmail(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">
-                    Password (6 or more characters)
-                  </span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="checkbox-field">
-                  <input type="checkbox" required />
-                  <span>
-                    I agree to the <a href="#">Terms of Service</a> and
-                    acknowledge the <a href="#">Privacy Policy</a>.
-                  </span>
-                </label>
-
-                <button type="submit" className="primary-btn">
-                  Continue to Sign up
-                </button>
-
-                <p className="bottom-inline">
-                  Already on Nationcite?{" "}
-                  <Link href="/signin" className="link-btn">
-                    Sign in here
-                  </Link>
-                </p>
-              </form>
-            </div>
-          )}
-
-          {step === 3 && role === "researcher" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Additional Information</h1>
-
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(4);
-                }}
-              >
-                <label className="field">
-                  <span className="field-label">
-                    Institution / Organization Name
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={institutionName}
-                    onChange={(e) => setInstitutionName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Field of Research</span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={fieldOfResearch}
-                    onChange={(e) => setFieldOfResearch(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">
-                    Institution ID / Registration Number
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={institutionId}
-                    onChange={(e) => setInstitutionId(e.target.value)}
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Email</span>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    disabled
-                    value={institutionEmail}
-                  />
-                </label>
-
-                <div className="upload-block">
-                  <p className="upload-title">
-                    Upload one of the following documents:
-                  </p>
-                  <ul className="upload-list">
-                    <li>Institutional ID card</li>
-                    <li>Researcher appointment letter</li>
-                    <li>Proof of ongoing research (project letter)</li>
-                    <li>Published paper (PDF or link)</li>
-                    <li>ResearchGate / Google Scholar link</li>
-                  </ul>
-
-                  <label className="dropzone">
-                    <input type="file" onChange={handleFileChange} />
-                    <div className="box-upload">
-                      <img
-                        src="./dummy/upload-icon.png"
-                        alt=""
-                        style={{ height: "15px", textAlign: "center" }}
-                      />
+              <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-center">
+                <div className="w-full bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col">
+                  <div className="mb-4 text-center md:text-left">
+                    <h4 className="mb-1 text-neutral-800 font-medium text-base">
+                      Create New Account
+                    </h4>
+                    <p className="text-xs text-neutral-500">Sign Up as:</p>
+                  </div>
+                  <div className="space-y-2.5 mb-6">
+                    <UserTypeCard
+                      type={UserType.Medical}
+                      icon="medical"
+                      description="Access Medical user dashboards"
+                      isSelected={userType === UserType.Medical}
+                      onClick={() => setUserType(UserType.Medical)}
+                    />
+                    <UserTypeCard
+                      type={UserType.Institution}
+                      icon="building"
+                      description="Access Organisation dashboards"
+                      isSelected={userType === UserType.Institution}
+                      onClick={() => setUserType(UserType.Institution)}
+                    />
+                    <UserTypeCard
+                      type={UserType.Researcher}
+                      icon="researcher"
+                      description="Access Researcher dashboards"
+                      isSelected={userType === UserType.Researcher}
+                      onClick={() => setUserType(UserType.Researcher)}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      onClick={handleNextStep}
+                      disabled={!userType}
+                      className="w-full bg-[var(--color-primary)] text-white py-3 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                    >
+                      Next
+                    </button>
+                    <div className="mt-4 text-center md:text-left">
+                      <p className="text-xs text-neutral-500 font-medium">
+                        Already a User?{" "}
+                        <Link
+                          href="/signin"
+                          className="text-blue-600 hover:underline font-bold"
+                        >
+                          Login
+                        </Link>
+                      </p>
                     </div>
-                    <span>Drop your File here or click here to Upload</span>
-                  </label>
-                </div>
-
-                <button type="submit" className="primary-btn">
-                  Continue
-                </button>
-              </form>
-            </div>
-          )}
-
-          {step === 4 && role === "researcher" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Finish Signing Up</h1>
-              <form className="auth-form" onSubmit={handleSubmit}>
-                <div className="pill-group">
-                  <p className="field-label">Where did you hear about us?</p>
-                  {[
-                    "Social Media (Instagram/Twitter/LinkedIn)",
-                    "Google Search",
-                    "Recommendation from a colleague/friend",
-                    "University/institution referral",
-                    "Conference",
-                    "Advertisement",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        heardFrom.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() =>
-                        toggleInArray(item, heardFrom, setHeardFrom)
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="pill-group">
-                  <p className="field-label">
-                    What will you use Nationcite for?
-                  </p>
-                  {[
-                    "Conducting research",
-                    "Managing citations",
-                    "Publishing papers",
-                    "University account management",
-                    "Accessing datasets",
-                    "General exploration",
-                    "Student project or assignment",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        useCase.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() => toggleInArray(item, useCase, setUseCase)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-
-                <button type="submit" className="primary-btn full-width">
-                  Sign up
-                </button>
-              </form>
-            </div>
-          )}
-          {step === 2 && role === "university" && (
-            <div className="auth-content">
-              <h1 className="auth-title">
-                Lorem ipsum dolor self amet (University)
-              </h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
-              </p>
-
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(3);
-                }}
-              >
-                <label className="field">
-                  <span className="field-label">
-                    Enter your Organization / University
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={institutionName}
-                    onChange={(e) => setInstitutionName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Country / Region</span>
-                  <input
-                    type="text"
-                    placeholder="Enter the Country / Region"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <div className="field">
-                  <span className="field-label">
-                    Select your institution&apos;s governance type
-                  </span>
-                  <div className="radio-row">
-                    <label className="radio-item">
-                      <input
-                        type="radio"
-                        name="govType"
-                        value="private"
-                        defaultChecked
-                      />
-                      <span>Private</span>
-                    </label>
-                    <label className="radio-item">
-                      <input type="radio" name="govType" value="public" />
-                      <span>Government / Public</span>
-                    </label>
                   </div>
                 </div>
-
-                <label className="field">
-                  <span className="field-label">
-                    Password (6 or more characters)
-                  </span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="checkbox-field">
-                  <input type="checkbox" required />
-                  <span>
-                    I agree to the <a href="#">Terms of Service</a> and
-                    acknowledge the <a href="#">Privacy Policy</a>.
-                  </span>
-                </label>
-
-                <button type="submit" className="primary-btn">
-                  Continue to Sign up
-                </button>
-
-                <p className="bottom-inline">
-                  Already on Nationcite?{" "}
-                  <Link href="/signin" className="link-btn">
-                    Sign in here
-                  </Link>
-                </p>
-              </form>
+              </div>
             </div>
-          )}
+          </div>
+        </div>
+      </>
+    );
+  }
 
-          {step === 3 && role === "university" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Additional Information</h1>
+  // WIZARD LAYOUT (Steps 1+)
+  return (
+    <>
+      <SignupNavbar />
+      <div className="h-screen pt-16 w-full flex flex-col md:flex-row bg-white overflow-hidden">
+        {/* Left Sidebar */}
+        <div
+          className="w-full md:w-[35%] h-auto md:h-full shrink-0 transition-all duration-500 relative z-20"
+          style={{
+            background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
+          }}
+        >
+          <SignupSidebar currentStep={isDashboardStep ? 4 : currentStep} />
+        </div>
 
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(4);
-                }}
+        {/* Right Panel - Scrollable Form Area */}
+        <div className="w-full md:w-[65%] h-[calc(100vh-4rem)] bg-white relative z-10 flex flex-col">
+          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
+            {/* Back Button positioned relative to the content area or absolute if desired. 
+                Keeping it layout-safe by putting it inside the flux but absolute to the panel.
+            */}
+            {!isDashboardStep && (
+              <button
+                onClick={handleBack}
+                className="absolute top-4 left-4 md:top-6 md:left-6 p-2 hover:bg-neutral-100 rounded-full transition-colors z-30"
+                aria-label="Go Back"
               >
-                <label className="field">
-                  <span className="field-label">Representative Name</span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                  />
-                </label>
+                <Icon
+                  name="arrow-left"
+                  className="text-neutral-600"
+                  size={20}
+                />
+              </button>
+            )}
 
-                <label className="field">
-                  <span className="field-label">Job Title</span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Institution Email</span>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    value={institutionEmail}
-                    onChange={(e) => setInstitutionEmail(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Official Website URL</span>
-                  <input
-                    type="url"
-                    placeholder="Enter your Organization's Official Website URL"
-                    value={institutionName}
-                    onChange={(e) => setInstitutionName(e.target.value)}
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">
-                    Organization / University ID
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Enter your ID / Tag"
-                    value={institutionId}
-                    onChange={(e) => setInstitutionId(e.target.value)}
-                  />
-                </label>
-
-                <div className="upload-block">
-                  <span className="field-label">
-                    Official Letter of Authorization
-                  </span>
-                  <label className="dropzone">
-                    <input type="file" onChange={handleFileChange} />
-                    <div className="box-upload">
-                      <img
-                        src="./dummy/upload-icon.png"
-                        alt=""
-                        style={{ height: "15px" }}
+            <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-center">
+              {isDashboardStep ? (
+                <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-sm flex flex-col justify-center">
+                  <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Icon name="check" size={24} />
+                  </div>
+                  <h4 className="text-lg font-medium mb-2 text-neutral-800">
+                    Welcome to Dashboard!
+                  </h4>
+                  <p className="text-xs text-neutral-500 mb-5 max-w-md mx-auto">
+                    Your account has been successfully created and you are now
+                    logged in.
+                  </p>
+                  <button
+                    className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full max-w-xs mx-auto"
+                    onClick={() => window.location.reload()}
+                  >
+                    Go to Home
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col h-full">
+                  <div className="mb-4 text-center md:text-left shrink-0">
+                    <h4 className="mb-0.5 text-neutral-800 font-medium text-base">
+                      Create New Account
+                    </h4>
+                    <p className="text-xs text-neutral-500">
+                      Sign Up as:{" "}
+                      <span className="text-[var(--color-accent)] font-medium">
+                        {userType}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex-1 flex flex-col min-h-0">
+                    {userType && (
+                      <FlowRenderer
+                        userType={userType}
+                        step={currentStep}
+                        onNext={handleNextStep}
+                        otpSent={otpSent}
+                        setOtpSent={setOtpSent}
+                        timer={timer}
                       />
-                    </div>
-                    <span>Drop your File here or click here to Upload</span>
-                  </label>
+                    )}
+                  </div>
                 </div>
-
-                <button type="submit" className="primary-btn">
-                  Continue
-                </button>
-              </form>
-            </div>
-          )}
-
-          {step === 4 && role === "university" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Finish Signing Up</h1>
-              <form className="auth-form" onSubmit={handleSubmit}>
-                <div className="pill-group">
-                  <p className="field-label">Where did you hear about us?</p>
-                  {[
-                    "Social Media (Instagram/Twitter/LinkedIn)",
-                    "Google Search",
-                    "Recommendation from a colleague/friend",
-                    "University/institution referral",
-                    "Conference",
-                    "Advertisement",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        heardFrom.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() =>
-                        toggleInArray(item, heardFrom, setHeardFrom)
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="pill-group">
-                  <p className="field-label">
-                    What will you use Nationcite for?
+              )}
+              {!isDashboardStep && (
+                <div className="mt-4 text-center md:text-left">
+                  <p className="text-xs font-medium text-neutral-900">
+                    Already a User?{" "}
+                    <Link href="/signin" className="text-blue-500 underline">
+                      Login
+                    </Link>
                   </p>
-                  {[
-                    "Conducting research",
-                    "Managing citations",
-                    "Publishing papers",
-                    "University account management",
-                    "Accessing datasets",
-                    "General exploration",
-                    "Student project or assignment",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        useCase.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() => toggleInArray(item, useCase, setUseCase)}
-                    >
-                      {item}
-                    </button>
-                  ))}
                 </div>
-
-                <button type="submit" className="primary-btn full-width">
-                  Sign up
-                </button>
-              </form>
+              )}
             </div>
-          )}
-          {step === 2 && role === "medical" && (
-            <div className="auth-content">
-              <h1 className="auth-title">
-                Lorem ipsum dolor self amet (Doctor)
-              </h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
-              </p>
-
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(3);
-                }}
-              >
-                <label className="field">
-                  <span className="field-label">
-                    First Name (As per Medical Licence)
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Enter your First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Last Name</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Country / Region</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your Country / Region"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">
-                    Medical Registration Number
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Registration Number"
-                    value={institutionId}
-                    onChange={(e) => setInstitutionId(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">
-                    Password (6 or more characters)
-                  </span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="checkbox-field">
-                  <input type="checkbox" required />
-                  <span>
-                    I agree to the <a href="#">Terms of Service</a> and
-                    acknowledge the <a href="#">Privacy Policy</a>.
-                  </span>
-                </label>
-
-                <button type="submit" className="primary-btn">
-                  Continue to Sign up
-                </button>
-
-                <p className="bottom-inline">
-                  Already on Nationcite?{" "}
-                  <Link href="/signin" className="link-btn">
-                    Sign in here
-                  </Link>
-                </p>
-              </form>
-            </div>
-          )}
-          {step === 3 && role === "medical" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Additional Information</h1>
-
-              <form
-                className="auth-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setStep(4);
-                }}
-              >
-                <label className="field">
-                  <span className="field-label">Issuing Medical Council</span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={institutionName}
-                    onChange={(e) => setInstitutionName(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Specialization</span>
-                  <input
-                    type="text"
-                    placeholder="Placeholder"
-                    value={fieldOfResearch}
-                    onChange={(e) => setFieldOfResearch(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <div className="upload-block">
-                  <p className="upload-title">
-                    Upload one of the following documents:
-                  </p>
-                  <ul className="upload-list">
-                    <li>Medical license / registration certificate</li>
-                    <li>Doctor ID (hospital/clinic)</li>
-                    <li>Degree certificate (MBBS/MD/MS etc.)</li>
-                    <li>Practice certificate</li>
-                  </ul>
-
-                  <label className="dropzone">
-                    <input type="file" onChange={handleFileChange} />
-                    <div className="box-upload">
-                      <img
-                        src="./dummy/upload-icon.png"
-                        alt=""
-                        style={{ height: "15px" }}
-                      />
-                    </div>
-                    <span>Drop your File here or click here to Upload</span>
-                  </label>
-                </div>
-
-                <button type="submit" className="primary-btn">
-                  Continue
-                </button>
-              </form>
-            </div>
-          )}
-          {step === 4 && role === "medical" && (
-            <div className="auth-content">
-              <h1 className="addtitle">Finish Signing Up</h1>
-              <form className="auth-form" onSubmit={handleSubmit}>
-                <div className="pill-group">
-                  <p className="field-label">Where did you hear about us?</p>
-                  {[
-                    "Social Media (Instagram/Twitter/LinkedIn)",
-                    "Google Search",
-                    "Recommendation from a colleague/friend",
-                    "University/institution referral",
-                    "Conference",
-                    "Advertisement",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        heardFrom.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() =>
-                        toggleInArray(item, heardFrom, setHeardFrom)
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="pill-group">
-                  <p className="field-label">
-                    What will you use Nationcite for?
-                  </p>
-                  {[
-                    "Conducting research",
-                    "Managing citations",
-                    "Publishing papers",
-                    "Accessing datasets",
-                    "General exploration",
-                    "Student project or assignment",
-                    "Other",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className={`pill ${
-                        useCase.includes(item) ? "pill-active" : ""
-                      }`}
-                      onClick={() => toggleInArray(item, useCase, setUseCase)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-
-                <button type="submit" className="primary-btn full-width">
-                  Sign up
-                </button>
-              </form>
-            </div>
-          )}
-        </main>
+          </div>
+        </div>
       </div>
     </>
   );
