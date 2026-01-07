@@ -118,7 +118,7 @@ export default function ScholarsLeaderboardPage() {
         <Badge>Leaderboard</Badge>
 
         {/* Main Heading */}
-        <h1 className="font-inter mb-8 text-center">
+        <h1 className="font-inter mb-8  md:max-w-[700px] text-center">
           Top Researchers & Scholars
         </h1>
 

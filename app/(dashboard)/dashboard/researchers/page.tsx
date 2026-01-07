@@ -262,38 +262,9 @@ export default function ResearchersPage() {
       <aside className="w-[260px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-20">
         <div className="h-20 flex items-center px-6 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <div className="bg-[#f76a23] rounded p-1">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 12L9 7L14 12L19 7"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M4 17L9 12L14 17L19 12"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold text-gray-800 tracking-tight leading-none">
-                NATIONCITE
-              </span>
-              <span className="text-[7px] text-gray-400 font-medium tracking-wider uppercase leading-none mt-0.5">
-                Powering India&apos;s Research Future
-              </span>
-            </div>
+                <img src="/logo.png" alt="NationCite Logo" className="h-28 w-auto" />
+
+           
           </div>
         </div>
 

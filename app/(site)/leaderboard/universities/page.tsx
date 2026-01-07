@@ -118,7 +118,7 @@ export default function UniversitiesLeaderboardPage() {
         <Badge>Leaderboard</Badge>
 
         {/* Main Heading */}
-        <h1 className="font-inter mb-8 text-center">
+        <h1 className="font-inter  md:max-w-[700px] mb-8 text-center">
           Top Universities & Institutions
         </h1>
 

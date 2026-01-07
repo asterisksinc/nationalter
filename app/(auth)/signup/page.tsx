@@ -66,9 +66,8 @@ export default function RegisterPage() {
   if (isSelectionStep) {
     return (
       <>
-        <SignupNavbar />
         {/* Main Layout - Fixed Height */}
-        <div className="h-screen pt-16 w-full flex flex-col md:flex-row bg-white overflow-hidden">
+        <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
           {/* Left Panel - Branding */}
           <div
             className="hidden md:flex md:w-[35%] h-full bg-orange-50 items-center justify-center relative overflow-hidden"
@@ -87,7 +86,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Right Panel - Scrollable Form Area */}
-          <div className="w-full md:w-[65%] h-[calc(100vh-4rem)] bg-white relative z-10 flex flex-col">
+          <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
             <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
               <div className="md:hidden mb-6 flex items-center gap-2">
                 <div className="text-xl font-bold tracking-tight text-black">
@@ -158,8 +157,7 @@ export default function RegisterPage() {
   // WIZARD LAYOUT (Steps 1+)
   return (
     <>
-      <SignupNavbar />
-      <div className="h-screen pt-16 w-full flex flex-col md:flex-row bg-white overflow-hidden">
+      <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
         {/* Left Sidebar */}
         <div
           className="w-full md:w-[35%] h-auto md:h-full shrink-0 transition-all duration-500 relative z-20"
@@ -171,7 +169,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Panel - Scrollable Form Area */}
-        <div className="w-full md:w-[65%] h-[calc(100vh-4rem)] bg-white relative z-10 flex flex-col">
+        <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
           <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
             {/* Back Button positioned relative to the content area or absolute if desired. 
                 Keeping it layout-safe by putting it inside the flux but absolute to the panel.

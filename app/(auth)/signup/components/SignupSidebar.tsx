@@ -33,15 +33,8 @@ interface SidebarProps {
 
 export const SignupSidebar = ({ currentStep }: SidebarProps) => (
   <div className="w-full h-[calc(100vh-4rem)] p-4 md:p-6 lg:p-8 flex flex-col justify-between relative z-10 overflow-hidden">
-    <div className="mb-6">
-      <div className="flex items-center gap-2.5">
-        <div className="text-2xl font-bold tracking-tight text-black">
-          NATIONCITE
-        </div>
-      </div>
-      <p className="text-[9px] text-neutral-700 font-semibold tracking-[0.2em] uppercase mt-2 pl-0.5">
-        Powering India&apos;s Research Future
-      </p>
+    <div className="mb-1">
+      <img src="/logo.png" alt="NationCite Logo" className="h-28 w-auto" />
     </div>
     <div className="flex-1 flex flex-col justify-center max-w-sm overflow-auto">
       {STEPS_CONFIG.map((step) => {
@@ -88,21 +81,25 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => (
                 isPending ? "opacity-60" : "opacity-100"
               }`}
             >
-              <div
-                className={`text-[10px] uppercase tracking-widest mb-0.5 font-semibold ${
-                  isActive ? "text-[var(--color-primary)]" : "text-neutral-500"
-                }`}
-              >
-                Step 0{step.id}
+              <div className="flex items-center gap-2 mb-0.5">
+                <div
+                  className={`text-[10px] uppercase tracking-widest font-semibold ${
+                    isActive
+                      ? "text-[var(--color-primary)]"
+                      : "text-neutral-500"
+                  }`}
+                >
+                  Step 0{step.id}
+                </div>
+                <h5
+                  className={`text-base font-medium leading-tight ${
+                    isActive ? "text-neutral-900" : "text-neutral-700"
+                  }`}
+                >
+                  {step.title}
+                </h5>
               </div>
-              <h4
-                className={`text-base font-medium mb-0.5 leading-tight ${
-                  isActive ? "text-neutral-900" : "text-neutral-700"
-                }`}
-              >
-                {step.title}
-              </h4>
-              <p className="text-xs text-neutral-500 leading-relaxed max-w-[200px]">
+              <p className="text-xs text-neutral-500 leading-relaxed max-w-[400px]">
                 {step.description}
               </p>
             </div>
