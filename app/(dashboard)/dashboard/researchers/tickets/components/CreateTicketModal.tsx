@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import { X, ArrowLeft, Upload, CheckCircle } from "lucide-react";
 
-// --- Types ---
+// --- Types & Enums ---
+
+export enum TicketStep {
+  CATEGORY = "CATEGORY",
+  SUB_CATEGORY = "SUB_CATEGORY",
+  SEARCH = "SEARCH",
+  PAPER_DETAILS = "PAPER_DETAILS",
+  ISSUE_REASON = "ISSUE_REASON",
+  UPLOAD = "UPLOAD",
+  IMPACT = "IMPACT",
+  NOTES = "NOTES",
+  SUCCESS = "SUCCESS",
+}
 
 interface PaperData {
   title: string;
@@ -17,8 +29,7 @@ type TicketType =
   | "publications-citations"
   | "affiliation-institution"
   | "credentials"
-  | "other"
-  | "search-attach";
+  | "other";
 
 type IssueReason = "not-mine" | "not-author" | "different-person";
 
@@ -27,6 +38,7 @@ type ImpactLevel = "low" | "medium" | "high";
 interface TicketFormData {
   userType: string;
   ticketType: TicketType | null;
+  subCategory?: string; // For specific issue dropdown details
   selectedPaper?: PaperData;
   issueReason?: IssueReason;
   uploadedFile?: File | null;
@@ -46,12 +58,16 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+  // Navigation Stack State
+  const [history, setHistory] = useState<TicketStep[]>([TicketStep.CATEGORY]);
+
   const [formData, setFormData] = useState<TicketFormData>({
     userType: "Researcher",
     ticketType: null,
     consent: false,
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const mockPaper: PaperData = {
     title: "Lorem ipsum Lorem ipsum Lorem ipsum",
@@ -62,13 +78,17 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
     doi: "829129",
   };
 
+  // Helper to get current step
+  const currentStep = history[history.length - 1];
+
   const resetModal = () => {
-    setCurrentStep(1);
+    setHistory([TicketStep.CATEGORY]);
     setFormData({
       userType: "Researcher",
       ticketType: null,
       consent: false,
     });
+    setSearchQuery("");
   };
 
   const handleClose = () => {
@@ -76,36 +96,48 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
     setTimeout(resetModal, 300);
   };
 
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+  const pushStep = (step: TicketStep) => {
+    setHistory((prev) => [...prev, step]);
+  };
+
+  const popStep = () => {
+    if (history.length > 1) {
+      setHistory((prev) => prev.slice(0, -1));
     }
   };
 
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1);
-  };
+  // --- Handlers ---
 
   const handleTicketTypeSelect = (type: TicketType) => {
     setFormData({ ...formData, ticketType: type });
-    if (type === "search-attach") {
-      setCurrentStep(10); // Search flow
-    } else if (type === "publications-citations") {
-      setFormData({ ...formData, selectedPaper: mockPaper });
-      setCurrentStep(20); // Paper issue flow
+    if (type === "publications-citations") {
+      pushStep(TicketStep.SEARCH);
     } else {
-      setCurrentStep(2);
+      // For Profile, Affiliation, Credentials, Other -> go to Sub-category/Notes
+      // Note: Design implies some have sub-categories, others might go straight to a text area.
+      // Based on Flow 1 (Profile & Identity), it goes to a sub-cat dropdown.
+      // We will map them generally to SUB_CATEGORY
+      pushStep(TicketStep.SUB_CATEGORY);
+    }
+  };
+
+  const handlePaperSearch = () => {
+    // Mock search success
+    if (searchQuery.trim()) {
+      setFormData({ ...formData, selectedPaper: mockPaper });
+      pushStep(TicketStep.PAPER_DETAILS);
     }
   };
 
   const handleIssueReasonSelect = (reason: IssueReason) => {
     setFormData({ ...formData, issueReason: reason });
+    // Flow Logic
     if (reason === "not-mine") {
-      // Flow 2.3 (Fast track)
-      setCurrentStep(25);
+      // Flow 2.3 (Fast Track) -> Notes
+      pushStep(TicketStep.NOTES);
     } else {
-      // Flow 2.1 & 2.2 (Full flow)
-      setCurrentStep(22);
+      // Flow 2.1 (Not Author) & 2.2 (Different Person) -> Upload
+      pushStep(TicketStep.UPLOAD);
     }
   };
 
@@ -117,27 +149,32 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
   const handleSubmit = () => {
     console.log("Submitting ticket:", formData);
-    setCurrentStep(99); // Success screen
+    // Ideally call API here
+    pushStep(TicketStep.SUCCESS);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto relative flex flex-col">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl">
-          {currentStep > 1 && currentStep !== 99 && (
+        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
+          {history.length > 1 && currentStep !== TicketStep.SUCCESS ? (
             <button
-              onClick={handleBack}
+              onClick={popStep}
               className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <ArrowLeft size={20} className="text-gray-600" />
             </button>
+          ) : (
+            <div className="w-7" /> /* Spacer to keep title centered */
           )}
-          <h4 className="flex-1 text-center">
-            {currentStep === 99 ? "Ticket Created 🎉" : "Create a New Ticket"}
+
+          <h4 className="flex-1 text-center font-semibold text-gray-900">
+            {currentStep === TicketStep.SUCCESS ? "Ticket Created 🎉" : "Create a New Ticket"}
           </h4>
+
           <button
             onClick={handleClose}
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
@@ -147,9 +184,9 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {/* Step 1: User Type & Ticket Type Selection */}
-          {currentStep === 1 && (
+        <div className="p-6 flex-1 overflow-y-auto">
+          {/* STEP: Category Selection */}
+          {currentStep === TicketStep.CATEGORY && (
             <div className="space-y-4">
               <p className="text-sm text-gray-600 mb-4">
                 You are submitting as:{" "}
@@ -157,95 +194,36 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               </p>
 
               <div className="space-y-2">
-                <label
-                  onClick={() => handleTicketTypeSelect("profile-identity")}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="ticketType"
-                    checked={formData.ticketType === "profile-identity"}
-                    onChange={() => {}}
-                    className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    Profile & Identity
-                  </span>
-                </label>
-
-                <label
-                  onClick={() =>
-                    handleTicketTypeSelect("publications-citations")
-                  }
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="ticketType"
-                    checked={formData.ticketType === "publications-citations"}
-                    onChange={() => {}}
-                    className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    Publications & Citations
-                  </span>
-                </label>
-
-                <label
-                  onClick={() =>
-                    handleTicketTypeSelect("affiliation-institution")
-                  }
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="ticketType"
-                    checked={formData.ticketType === "affiliation-institution"}
-                    onChange={() => {}}
-                    className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    Affiliation & Institution
-                  </span>
-                </label>
-
-                <label
-                  onClick={() => handleTicketTypeSelect("credentials")}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="ticketType"
-                    checked={formData.ticketType === "credentials"}
-                    onChange={() => {}}
-                    className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    Credentials (Medics only)
-                  </span>
-                </label>
-
-                <label
-                  onClick={() => handleTicketTypeSelect("other")}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="ticketType"
-                    checked={formData.ticketType === "other"}
-                    onChange={() => {}}
-                    className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    Other
-                  </span>
-                </label>
+                {[
+                  { id: "profile-identity", label: "Profile & Identity" },
+                  { id: "publications-citations", label: "Publications & Citations" },
+                  { id: "affiliation-institution", label: "Affiliation & Institution" },
+                  { id: "credentials", label: "Credentials (Medical only)" },
+                  { id: "other", label: "Other" },
+                ].map((type) => (
+                  <label
+                    key={type.id}
+                    onClick={() => handleTicketTypeSelect(type.id as TicketType)}
+                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
+                  >
+                    <input
+                      type="radio"
+                      name="ticketType"
+                      checked={formData.ticketType === type.id}
+                      onChange={() => { }}
+                      className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                    />
+                    <span className="text-sm font-medium text-gray-900">
+                      {type.label}
+                    </span>
+                  </label>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Step 2: Sub-category */}
-          {currentStep === 2 && (
+          {/* STEP: Sub Category (Flow 1) */}
+          {currentStep === TicketStep.SUB_CATEGORY && (
             <div className="space-y-4">
               <div className="flex items-start gap-3 mb-4">
                 <input
@@ -254,20 +232,39 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   readOnly
                   className="mt-1 w-4 h-4 text-[#f76a23]"
                 />
-                <span className="text-sm font-medium text-gray-900">
-                  Profile & Identity
+                <span className="text-sm font-medium text-gray-900 capitalize">
+                  {formData.ticketType?.replace("-", " & ")}
                 </span>
               </div>
 
-              <select className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm text-gray-600">
-                <option>Select</option>
-                <option>Name incorrect</option>
-                <option>Affiliation wrong</option>
-                <option>Other profile issue</option>
-              </select>
+              {formData.ticketType === "other" ? (
+                <textarea
+                  placeholder="Something else..."
+                  value={formData.additionalNotes || ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      additionalNotes: e.target.value,
+                    })
+                  }
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm resize-none"
+                />
+              ) : (
+                <select
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm text-gray-600"
+                  onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+                  value={formData.subCategory || ""}
+                >
+                  <option value="">Select</option>
+                  <option value="option1">Option 1</option>
+                  <option value="option2">Option 2</option>
+                  <option value="option3">Option 3</option>
+                </select>
+              )}
 
               <button
-                onClick={handleNext}
+                onClick={() => pushStep(TicketStep.NOTES)} // Skip complex flows for simpler categories for now, or go to step with submit
                 className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Next
@@ -275,41 +272,35 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* Step 10: Search Flow */}
-          {currentStep === 10 && (
+          {/* STEP: Search (Flow 2) */}
+          {currentStep === TicketStep.SEARCH && (
             <div className="space-y-4">
               <div className="flex items-start gap-3 mb-4">
-                <input
-                  type="radio"
-                  checked
-                  readOnly
-                  className="mt-1 w-4 h-4 text-[#f76a23]"
-                />
-                <span className="text-sm font-medium text-gray-900">
+                <p className="text-sm font-medium text-gray-900">
                   Search & Attach Publication
-                </span>
+                </p>
               </div>
 
               <input
                 type="text"
                 placeholder="Search by title, DOI, or journal"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm"
               />
 
               <button
-                onClick={() => {
-                  setFormData({ ...formData, selectedPaper: mockPaper });
-                  setCurrentStep(11);
-                }}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+                onClick={handlePaperSearch}
+                disabled={!searchQuery.trim()}
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Search
               </button>
             </div>
           )}
 
-          {/* Step 11: Paper Found */}
-          {currentStep === 11 && (
+          {/* STEP: Paper Details (Flow 2) */}
+          {currentStep === TicketStep.PAPER_DETAILS && formData.selectedPaper && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-green-600 mb-4">
                 <CheckCircle size={18} />
@@ -318,39 +309,33 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <div className="space-y-2 text-sm">
                 <div>
-                  <span className="font-semibold text-gray-900">
-                    Paper Title
-                  </span>
-                  <p className="text-gray-600">{mockPaper.title}</p>
+                  <span className="font-semibold text-gray-900">Paper Title</span>
+                  <p className="text-gray-600">{formData.selectedPaper.title}</p>
                 </div>
                 <div>
                   <span className="font-semibold text-gray-900">Authors</span>
-                  <p className="text-gray-600">{mockPaper.authors}</p>
+                  <p className="text-gray-600">{formData.selectedPaper.authors}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">
-                    Journal / Conference name
-                  </span>
-                  <p className="text-gray-600">{mockPaper.journal}</p>
+                  <span className="font-semibold text-gray-900">Journal / Conference name</span>
+                  <p className="text-gray-600">{formData.selectedPaper.journal}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">
-                    Year of publication
-                  </span>
-                  <p className="text-gray-600">{mockPaper.year}</p>
+                  <span className="font-semibold text-gray-900">Year of publication</span>
+                  <p className="text-gray-600">{formData.selectedPaper.year}</p>
                 </div>
                 <div>
                   <span className="font-semibold text-gray-900">Publisher</span>
-                  <p className="text-gray-600">{mockPaper.publisher}</p>
+                  <p className="text-gray-600">{formData.selectedPaper.publisher}</p>
                 </div>
                 <div>
                   <span className="font-semibold text-gray-900">DOI</span>
-                  <p className="text-gray-600">{mockPaper.doi}</p>
+                  <p className="text-gray-600">{formData.selectedPaper.doi}</p>
                 </div>
               </div>
 
               <button
-                onClick={() => setCurrentStep(20)}
+                onClick={() => pushStep(TicketStep.ISSUE_REASON)}
                 className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Next
@@ -358,83 +343,57 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* Step 20: What is wrong? (For paper issues) */}
-          {currentStep === 20 && (
+          {/* STEP: Issue Reason (Flow 2) */}
+          {currentStep === TicketStep.ISSUE_REASON && (
             <div className="space-y-4">
               <p className="text-sm font-semibold text-gray-900 mb-4">
                 What is wrong?
               </p>
 
               <div className="space-y-3">
-                <label
-                  onClick={() => handleIssueReasonSelect("not-mine")}
-                  className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="issueReason"
-                    checked={formData.issueReason === "not-mine"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm text-gray-900">
-                    This publication is not mine
-                  </span>
-                </label>
-
-                <label
-                  onClick={() => handleIssueReasonSelect("not-author")}
-                  className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="issueReason"
-                    checked={formData.issueReason === "not-author"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm text-gray-900">
-                    I am not an author on this paper
-                  </span>
-                </label>
-
-                <label
-                  onClick={() => handleIssueReasonSelect("different-person")}
-                  className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
-                >
-                  <input
-                    type="radio"
-                    name="issueReason"
-                    checked={formData.issueReason === "different-person"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <span className="text-sm text-gray-900">
-                    Author name matches but this is a different person
-                  </span>
-                </label>
+                {[
+                  { id: "not-mine", label: "This publication is not mine" },
+                  { id: "not-author", label: "I am not an author on this paper" },
+                  { id: "different-person", label: "Author name matches but this is a different person" }
+                ].map((reason) => (
+                  <label
+                    key={reason.id}
+                    onClick={() => handleIssueReasonSelect(reason.id as IssueReason)}
+                    className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
+                  >
+                    <input
+                      type="radio"
+                      name="issueReason"
+                      checked={formData.issueReason === reason.id}
+                      onChange={() => { }}
+                      className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                    />
+                    <span className="text-sm text-gray-900">
+                      {reason.label}
+                    </span>
+                  </label>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Step 22: Upload Files (Flow 2.1 & 2.2) */}
-          {currentStep === 22 && (
+          {/* STEP: Upload (Flow 2.1 & 2.2) */}
+          {currentStep === TicketStep.UPLOAD && (
             <div className="space-y-4">
               <p className="text-sm font-semibold text-gray-900 mb-2">
                 Upload screenshots, letters, certificates, or ID
+                {/* Add required asterisk if mandatory, implied by logic */}
+                <span className="text-red-500">*</span>
               </p>
 
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-[#f76a23] transition-colors">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-[#f76a23] transition-colors relative">
                 <input
                   type="file"
                   id="fileUpload"
-                  className="hidden"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   onChange={handleFileUpload}
                 />
-                <label
-                  htmlFor="fileUpload"
-                  className="cursor-pointer flex flex-col items-center"
-                >
+                <div className="flex flex-col items-center pointer-events-none">
                   <Upload size={32} className="text-gray-400 mb-3" />
                   <p className="text-sm text-gray-600 mb-1">
                     <span className="text-[#f76a23] font-medium">
@@ -444,7 +403,10 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   <p className="text-xs text-gray-400">
                     Support for a single or bulk upload. Allowed: PDF, JPG, PNG
                   </p>
-                </label>
+                  {formData.uploadedFile && (
+                    <p className="text-sm text-green-600 mt-2 font-medium">Selected: {formData.uploadedFile.name}</p>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -467,7 +429,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               </div>
 
               <button
-                onClick={() => setCurrentStep(23)}
+                // TODO: Validation to ensure file or link is present? Assume optional for prototype unless specified
+                onClick={() => pushStep(TicketStep.IMPACT)}
                 className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Next
@@ -475,94 +438,46 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* Step 23: Impact Level (Flow 2.1 & 2.2) */}
-          {currentStep === 23 && (
+          {/* STEP: Impact (Flow 2.1 & 2.2) */}
+          {currentStep === TicketStep.IMPACT && (
             <div className="space-y-4">
               <p className="text-sm font-semibold text-gray-900 mb-2">
                 Impact Level
               </p>
 
               <div className="space-y-3">
-                <label
-                  onClick={() =>
-                    setFormData({ ...formData, impactLevel: "low" })
-                  }
-                  className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
-                    formData.impactLevel === "low"
-                      ? "border-[#f76a23] bg-orange-50/30"
-                      : "border-gray-200 hover:border-[#f76a23] hover:bg-orange-50/20"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="impact"
-                    checked={formData.impactLevel === "low"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <div className="flex-1">
-                    <span className="text-sm font-medium text-gray-900 block">
-                      Low
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      Minor correction, does not affect my ranking.
-                    </span>
-                  </div>
-                </label>
-
-                <label
-                  onClick={() =>
-                    setFormData({ ...formData, impactLevel: "medium" })
-                  }
-                  className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
-                    formData.impactLevel === "medium"
-                      ? "border-[#f76a23] bg-orange-50/30"
-                      : "border-gray-200 hover:border-[#f76a23] hover:bg-orange-50/20"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="impact"
-                    checked={formData.impactLevel === "medium"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <div className="flex-1">
-                    <span className="text-sm font-medium text-gray-900 block">
-                      Medium
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      Affects how my profile appears to others.
-                    </span>
-                  </div>
-                </label>
-
-                <label
-                  onClick={() =>
-                    setFormData({ ...formData, impactLevel: "high" })
-                  }
-                  className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
-                    formData.impactLevel === "high"
-                      ? "border-[#f76a23] bg-orange-50/30"
-                      : "border-gray-200 hover:border-[#f76a23] hover:bg-orange-50/20"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="impact"
-                    checked={formData.impactLevel === "high"}
-                    onChange={() => {}}
-                    className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
-                  />
-                  <div className="flex-1">
-                    <span className="text-sm font-medium text-gray-900 block">
-                      High
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      Serious error affecting my reputation or compliance.
-                    </span>
-                  </div>
-                </label>
+                {[
+                  { id: "low", label: "Low", desc: "Minor correction, does not affect my ranking." },
+                  { id: "medium", label: "Medium", desc: "Affects how my profile appears to others." },
+                  { id: "high", label: "High", desc: "Serious error affecting my reputation or compliance." }
+                ].map((level) => (
+                  <label
+                    key={level.id}
+                    onClick={() =>
+                      setFormData({ ...formData, impactLevel: level.id as ImpactLevel })
+                    }
+                    className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${formData.impactLevel === level.id
+                        ? "border-[#f76a23] bg-orange-50/30"
+                        : "border-gray-200 hover:border-[#f76a23] hover:bg-orange-50/20"
+                      }`}
+                  >
+                    <input
+                      type="radio"
+                      name="impact"
+                      checked={formData.impactLevel === level.id}
+                      onChange={() => { }}
+                      className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                    />
+                    <div className="flex-1">
+                      <span className="text-sm font-medium text-gray-900 block">
+                        {level.label}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {level.desc}
+                      </span>
+                    </div>
+                  </label>
+                ))}
               </div>
 
               <div>
@@ -587,7 +502,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               </div>
 
               <button
-                onClick={() => setCurrentStep(24)}
+                onClick={() => pushStep(TicketStep.NOTES)}
                 className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Next
@@ -595,8 +510,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* Step 24: Additional Notes (Flow 2.1 & 2.2) */}
-          {currentStep === 24 && (
+          {/* STEP: Notes (All Flows) */}
+          {currentStep === TicketStep.NOTES && (
             <div className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-700 mb-2">
@@ -627,79 +542,27 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   className="mt-0.5 w-4 h-4 text-green-600 focus:ring-green-500 rounded"
                 />
                 <span className="text-xs text-gray-700">
-                  I confirm that I am an author or co-author of this
-                  publication. I understand that any false or misleading
-                  information may result in strict action.
+                  {/* Dynamic consent text based on flow? Using generic/safest string */}
+                  I confirm that all information provided is accurate.
+                  I understand that any false or misleading information may result in strict action.
                 </span>
               </label>
 
               <button
                 onClick={handleSubmit}
                 disabled={!formData.consent}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                  formData.consent
+                className={`w-full py-3 rounded-lg font-medium transition-colors ${formData.consent
                     ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                }`}
+                  }`}
               >
                 Submit Ticket
               </button>
             </div>
           )}
 
-          {/* Step 25: Additional Notes (Flow 2.3 - Fast Track) */}
-          {currentStep === 25 && (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm text-gray-700 mb-2">
-                  Additional Notes{" "}
-                  <span className="text-gray-400 font-normal">(Optional)</span>
-                </label>
-                <textarea
-                  placeholder="Anything else the review team should know?"
-                  value={formData.additionalNotes || ""}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      additionalNotes: e.target.value,
-                    })
-                  }
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm resize-none"
-                />
-              </div>
-
-              <label className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-lg cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.consent}
-                  onChange={(e) =>
-                    setFormData({ ...formData, consent: e.target.checked })
-                  }
-                  className="mt-0.5 w-4 h-4 text-green-600 focus:ring-green-500 rounded"
-                />
-                <span className="text-xs text-gray-700">
-                  I understand that any false or misleading information may
-                  result in strict action.
-                </span>
-              </label>
-
-              <button
-                onClick={handleSubmit}
-                disabled={!formData.consent}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                  formData.consent
-                    ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Submit Ticket
-              </button>
-            </div>
-          )}
-
-          {/* Step 99: Success */}
-          {currentStep === 99 && (
+          {/* STEP: Success */}
+          {currentStep === TicketStep.SUCCESS && (
             <div className="space-y-4 text-center py-4">
               <p className="text-sm text-gray-600">
                 Your ticket has been submitted!
@@ -708,11 +571,14 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <div className="space-y-2 text-sm bg-gray-50 p-4 rounded-lg text-left">
                 <div>
                   <span className="font-semibold text-gray-900">Ticket ID</span>
-                  <p className="text-gray-600">TKT-REQ-2048</p>
+                  <p className="text-gray-600">NC-REQ-2048</p>
                 </div>
                 <div>
                   <span className="font-semibold text-gray-900">Issue</span>
-                  <p className="text-gray-600">Publication is missing</p>
+                  {/* Dynamic based on ticket type */}
+                  <p className="text-gray-600">
+                    {formData.ticketType === "publications-citations" ? "Publication Issue" : "Profile Issue"}
+                  </p>
                 </div>
                 <div>
                   <span className="font-semibold text-gray-900">Status</span>
