@@ -83,7 +83,7 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => (
             >
               <div className="flex items-center gap-2 mb-0.5">
                 <div
-                  className={`text-[10px] uppercase tracking-widest font-semibold ${
+                  className={`text-[10px]  uppercase tracking-widest font-semibold ${
                     isActive
                       ? "text-[var(--color-primary)]"
                       : "text-neutral-500"
@@ -91,6 +91,7 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => (
                 >
                   Step 0{step.id}
                 </div>
+                  
                 <h5
                   className={`text-base font-medium leading-tight ${
                     isActive ? "text-neutral-900" : "text-neutral-700"
