@@ -11,5 +11,11 @@ export const PriorityBadge: React.FC<PriorityBadgeProps> = ({ priority }) => {
     Low: "text-gray-600",
   };
 
-  return <span className={`text-sm ${styles[priority]}`}>{priority}</span>;
+  return (
+    <span
+      className={`text-[14px] font-medium leading-[120%] ${styles[priority]}`}
+    >
+      {priority}
+    </span>
+  );
 };

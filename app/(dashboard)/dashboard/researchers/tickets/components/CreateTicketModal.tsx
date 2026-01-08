@@ -171,9 +171,11 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             <div className="w-7" /> /* Spacer to keep title centered */
           )}
 
-          <h4 className="flex-1 text-center font-semibold text-gray-900">
-            {currentStep === TicketStep.SUCCESS ? "Ticket Created 🎉" : "Create a New Ticket"}
-          </h4>
+          <div className="flex-1 text-center text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+            {currentStep === TicketStep.SUCCESS
+              ? "Ticket Created 🎉"
+              : "Create a New Ticket"}
+          </div>
 
           <button
             onClick={handleClose}
@@ -188,7 +190,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {/* STEP: Category Selection */}
           {currentStep === TicketStep.CATEGORY && (
             <div className="space-y-4">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mb-4">
                 You are submitting as:{" "}
                 <span className="text-[#f76a23] font-medium">Researcher</span>
               </p>
@@ -196,24 +198,32 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <div className="space-y-2">
                 {[
                   { id: "profile-identity", label: "Profile & Identity" },
-                  { id: "publications-citations", label: "Publications & Citations" },
-                  { id: "affiliation-institution", label: "Affiliation & Institution" },
+                  {
+                    id: "publications-citations",
+                    label: "Publications & Citations",
+                  },
+                  {
+                    id: "affiliation-institution",
+                    label: "Affiliation & Institution",
+                  },
                   { id: "credentials", label: "Credentials (Medical only)" },
                   { id: "other", label: "Other" },
                 ].map((type) => (
                   <label
                     key={type.id}
-                    onClick={() => handleTicketTypeSelect(type.id as TicketType)}
+                    onClick={() =>
+                      handleTicketTypeSelect(type.id as TicketType)
+                    }
                     className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
                   >
                     <input
                       type="radio"
                       name="ticketType"
                       checked={formData.ticketType === type.id}
-                      onChange={() => { }}
+                      onChange={() => {}}
                       className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
                     />
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
                       {type.label}
                     </span>
                   </label>
@@ -232,7 +242,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   readOnly
                   className="mt-1 w-4 h-4 text-[#f76a23]"
                 />
-                <span className="text-sm font-medium text-gray-900 capitalize">
+                <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] capitalize">
                   {formData.ticketType?.replace("-", " & ")}
                 </span>
               </div>
@@ -248,12 +258,14 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                     })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] resize-none placeholder-[#8E8E93]"
                 />
               ) : (
                 <select
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm text-gray-600"
-                  onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#333333]"
+                  onChange={(e) =>
+                    setFormData({ ...formData, subCategory: e.target.value })
+                  }
                   value={formData.subCategory || ""}
                 >
                   <option value="">Select</option>
@@ -264,8 +276,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               )}
 
               <button
-                onClick={() => pushStep(TicketStep.NOTES)} // Skip complex flows for simpler categories for now, or go to step with submit
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+                onClick={() => pushStep(TicketStep.NOTES)}
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
               >
                 Next
               </button>
@@ -276,7 +288,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {currentStep === TicketStep.SEARCH && (
             <div className="space-y-4">
               <div className="flex items-start gap-3 mb-4">
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
                   Search & Attach Publication
                 </p>
               </div>
@@ -286,13 +298,13 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 placeholder="Search by title, DOI, or journal"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93]"
               />
 
               <button
                 onClick={handlePaperSearch}
                 disabled={!searchQuery.trim()}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white py-3 rounded-lg font-medium transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
               >
                 Search
               </button>
@@ -300,75 +312,110 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           )}
 
           {/* STEP: Paper Details (Flow 2) */}
-          {currentStep === TicketStep.PAPER_DETAILS && formData.selectedPaper && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-green-600 mb-4">
-                <CheckCircle size={18} />
-                <span className="text-sm font-semibold">Paper Found</span>
-              </div>
+          {currentStep === TicketStep.PAPER_DETAILS &&
+            formData.selectedPaper && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-green-600 mb-4">
+                  <CheckCircle size={18} />
+                  <span className="text-[14px] font-semibold leading-[120%]">
+                    Paper Found
+                  </span>
+                </div>
 
-              <div className="space-y-2 text-sm">
-                <div>
-                  <span className="font-semibold text-gray-900">Paper Title</span>
-                  <p className="text-gray-600">{formData.selectedPaper.title}</p>
+                <div className="space-y-2 text-[14px]">
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Paper Title
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.title}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Authors
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.authors}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Journal / Conference name
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.journal}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Year of publication
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.year}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Publisher
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.publisher}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      DOI
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.selectedPaper.doi}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Authors</span>
-                  <p className="text-gray-600">{formData.selectedPaper.authors}</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Journal / Conference name</span>
-                  <p className="text-gray-600">{formData.selectedPaper.journal}</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Year of publication</span>
-                  <p className="text-gray-600">{formData.selectedPaper.year}</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Publisher</span>
-                  <p className="text-gray-600">{formData.selectedPaper.publisher}</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">DOI</span>
-                  <p className="text-gray-600">{formData.selectedPaper.doi}</p>
-                </div>
-              </div>
 
-              <button
-                onClick={() => pushStep(TicketStep.ISSUE_REASON)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
-              >
-                Next
-              </button>
-            </div>
-          )}
+                <button
+                  onClick={() => pushStep(TicketStep.ISSUE_REASON)}
+                  className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+            )}
 
           {/* STEP: Issue Reason (Flow 2) */}
           {currentStep === TicketStep.ISSUE_REASON && (
             <div className="space-y-4">
-              <p className="text-sm font-semibold text-gray-900 mb-4">
+              <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-4">
                 What is wrong?
               </p>
 
               <div className="space-y-3">
                 {[
                   { id: "not-mine", label: "This publication is not mine" },
-                  { id: "not-author", label: "I am not an author on this paper" },
-                  { id: "different-person", label: "Author name matches but this is a different person" }
+                  {
+                    id: "not-author",
+                    label: "I am not an author on this paper",
+                  },
+                  {
+                    id: "different-person",
+                    label: "Author name matches but this is a different person",
+                  },
                 ].map((reason) => (
                   <label
                     key={reason.id}
-                    onClick={() => handleIssueReasonSelect(reason.id as IssueReason)}
+                    onClick={() =>
+                      handleIssueReasonSelect(reason.id as IssueReason)
+                    }
                     className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#f76a23] hover:bg-orange-50/30 cursor-pointer transition-all"
                   >
                     <input
                       type="radio"
                       name="issueReason"
                       checked={formData.issueReason === reason.id}
-                      onChange={() => { }}
+                      onChange={() => {}}
                       className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
                     />
-                    <span className="text-sm text-gray-900">
+                    <span className="text-[14px] font-normal leading-[120%] text-[#0E121B]">
                       {reason.label}
                     </span>
                   </label>
@@ -380,9 +427,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {/* STEP: Upload (Flow 2.1 & 2.2) */}
           {currentStep === TicketStep.UPLOAD && (
             <div className="space-y-4">
-              <p className="text-sm font-semibold text-gray-900 mb-2">
+              <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-2">
                 Upload screenshots, letters, certificates, or ID
-                {/* Add required asterisk if mandatory, implied by logic */}
                 <span className="text-red-500">*</span>
               </p>
 
@@ -395,25 +441,27 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 />
                 <div className="flex flex-col items-center pointer-events-none">
                   <Upload size={32} className="text-gray-400 mb-3" />
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#333333] mb-1">
                     <span className="text-[#f76a23] font-medium">
                       Click or Drag File To This Area to Upload
                     </span>
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-[12px] font-normal leading-[120%] text-[#8E8E93]">
                     Support for a single or bulk upload. Allowed: PDF, JPG, PNG
                   </p>
                   {formData.uploadedFile && (
-                    <p className="text-sm text-green-600 mt-2 font-medium">Selected: {formData.uploadedFile.name}</p>
+                    <p className="text-[14px] font-medium leading-[120%] text-green-600 mt-2">
+                      Selected: {formData.uploadedFile.name}
+                    </p>
                   )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-gray-500 mb-2">
+                <label className="block text-[12px] font-normal leading-[120%] text-[#525866] mb-2">
                   Add supporting links*
                   <br />
-                  <span className="text-gray-400">
+                  <span className="text-[#8E8E93]">
                     (Google Scholar, PubMed, ORCID, hospital website)
                   </span>
                 </label>
@@ -424,14 +472,13 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   onChange={(e) =>
                     setFormData({ ...formData, supportLinks: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93]"
                 />
               </div>
 
               <button
-                // TODO: Validation to ensure file or link is present? Assume optional for prototype unless specified
                 onClick={() => pushStep(TicketStep.IMPACT)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
               >
                 Next
               </button>
@@ -441,38 +488,54 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {/* STEP: Impact (Flow 2.1 & 2.2) */}
           {currentStep === TicketStep.IMPACT && (
             <div className="space-y-4">
-              <p className="text-sm font-semibold text-gray-900 mb-2">
+              <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-2">
                 Impact Level
               </p>
 
               <div className="space-y-3">
                 {[
-                  { id: "low", label: "Low", desc: "Minor correction, does not affect my ranking." },
-                  { id: "medium", label: "Medium", desc: "Affects how my profile appears to others." },
-                  { id: "high", label: "High", desc: "Serious error affecting my reputation or compliance." }
+                  {
+                    id: "low",
+                    label: "Low",
+                    desc: "Minor correction, does not affect my ranking.",
+                  },
+                  {
+                    id: "medium",
+                    label: "Medium",
+                    desc: "Affects how my profile appears to others.",
+                  },
+                  {
+                    id: "high",
+                    label: "High",
+                    desc: "Serious error affecting my reputation or compliance.",
+                  },
                 ].map((level) => (
                   <label
                     key={level.id}
                     onClick={() =>
-                      setFormData({ ...formData, impactLevel: level.id as ImpactLevel })
+                      setFormData({
+                        ...formData,
+                        impactLevel: level.id as ImpactLevel,
+                      })
                     }
-                    className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${formData.impactLevel === level.id
+                    className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
+                      formData.impactLevel === level.id
                         ? "border-[#f76a23] bg-orange-50/30"
                         : "border-gray-200 hover:border-[#f76a23] hover:bg-orange-50/20"
-                      }`}
+                    }`}
                   >
                     <input
                       type="radio"
                       name="impact"
                       checked={formData.impactLevel === level.id}
-                      onChange={() => { }}
+                      onChange={() => {}}
                       className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
                     />
                     <div className="flex-1">
-                      <span className="text-sm font-medium text-gray-900 block">
+                      <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] block">
                         {level.label}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-[12px] font-normal leading-[120%] text-[#525866]">
                         {level.desc}
                       </span>
                     </div>
@@ -481,7 +544,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-2">
+                <label className="block text-[14px] font-medium leading-[120%] text-[#525866] mb-2">
                   Preferred Outcome*
                 </label>
                 <select
@@ -492,7 +555,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       preferredOutcome: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#333333]"
                 >
                   <option value="">Select</option>
                   <option value="remove">Remove publication</option>
@@ -503,7 +566,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <button
                 onClick={() => pushStep(TicketStep.NOTES)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
               >
                 Next
               </button>
@@ -514,9 +577,9 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {currentStep === TicketStep.NOTES && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm text-gray-700 mb-2">
+                <label className="block text-[14px] font-medium leading-[120%] text-[#525866] mb-2">
                   Additional Notes{" "}
-                  <span className="text-gray-400 font-normal">(Optional)</span>
+                  <span className="text-[#8E8E93] font-normal">(Optional)</span>
                 </label>
                 <textarea
                   placeholder="Anything else the review team should know?"
@@ -528,7 +591,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                     })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] resize-none placeholder-[#8E8E93]"
                 />
               </div>
 
@@ -541,20 +604,22 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   }
                   className="mt-0.5 w-4 h-4 text-green-600 focus:ring-green-500 rounded"
                 />
-                <span className="text-xs text-gray-700">
+                <span className="text-[12px] font-normal leading-[120%] text-[#333333]">
                   {/* Dynamic consent text based on flow? Using generic/safest string */}
-                  I confirm that all information provided is accurate.
-                  I understand that any false or misleading information may result in strict action.
+                  I confirm that all information provided is accurate. I
+                  understand that any false or misleading information may result
+                  in strict action.
                 </span>
               </label>
 
               <button
                 onClick={handleSubmit}
                 disabled={!formData.consent}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${formData.consent
+                className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                  formData.consent
                     ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  }`}
+                }`}
               >
                 Submit Ticket
               </button>
@@ -564,35 +629,48 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {/* STEP: Success */}
           {currentStep === TicketStep.SUCCESS && (
             <div className="space-y-4 text-center py-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
                 Your ticket has been submitted!
               </p>
 
-              <div className="space-y-2 text-sm bg-gray-50 p-4 rounded-lg text-left">
+              <div className="space-y-2 text-[14px] bg-gray-50 p-4 rounded-lg text-left">
                 <div>
-                  <span className="font-semibold text-gray-900">Ticket ID</span>
-                  <p className="text-gray-600">NC-REQ-2048</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Issue</span>
-                  {/* Dynamic based on ticket type */}
-                  <p className="text-gray-600">
-                    {formData.ticketType === "publications-citations" ? "Publication Issue" : "Profile Issue"}
+                  <span className="font-semibold leading-[120%] text-[#0E121B]">
+                    Ticket ID
+                  </span>
+                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                    NC-REQ-2048
                   </p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">Status</span>
-                  <p className="text-green-600">Open – Awaiting review</p>
+                  <span className="font-semibold leading-[120%] text-[#0E121B]">
+                    Issue
+                  </span>
+                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                    {formData.ticketType === "publications-citations"
+                      ? "Publication Issue"
+                      : "Profile Issue"}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold leading-[120%] text-[#0E121B]">
+                    Status
+                  </span>
+                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-green-600">
+                    Open – Awaiting review
+                  </p>
+                </div>
+                <div>
+                  <span className="font-semibold leading-[120%] text-[#0E121B]">
                     Estimated Review Time
                   </span>
-                  <p className="text-gray-600">Within 3–5 working days</p>
+                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                    Within 3–5 working days
+                  </p>
                 </div>
               </div>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-[12px] font-normal leading-[120%] text-[#525866]">
                 We will contact you at{" "}
                 <span className="text-[#f76a23] font-medium">[email]</span> if
                 we need more information
@@ -601,13 +679,13 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <div className="flex gap-3">
                 <button
                   onClick={handleClose}
-                  className="flex-1 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex-1 py-2.5 border border-gray-300 rounded-lg text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 transition-colors"
                 >
                   Back to Dashboard
                 </button>
                 <button
                   onClick={handleClose}
-                  className="flex-1 bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-lg text-sm font-medium transition-colors"
+                  className="flex-1 bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors"
                 >
                   View Ticket Details
                 </button>

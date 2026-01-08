@@ -23,9 +23,11 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
   return (
     <div className="col-span-8 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
       <div className="flex justify-between items-center mb-6">
-        <h5 className="font-semibold text-gray-900">H-Index Performance</h5>
+        <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+          H-Index Performance
+        </div>
         <div className="flex items-center gap-3">
-          <div className="bg-gray-100 rounded-lg p-1 flex text-xs font-medium">
+          <div className="bg-gray-100 rounded-lg p-1 flex text-[12px] font-medium leading-[120%]">
             <button className="px-3 py-1 bg-white text-gray-900 rounded shadow-sm">
               1Y
             </button>
@@ -39,7 +41,7 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
               All
             </button>
           </div>
-          <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50">
+          <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded-lg text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50">
             <Download size={14} /> Export Report
           </button>
         </div>
@@ -81,8 +83,8 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
                   return (
-                    <div className="bg-gray-900 text-white text-xs py-1.5 px-3 rounded shadow-lg flex flex-col items-center z-10 relative">
-                      <span className="font-bold mb-0.5">
+                    <div className="bg-gray-900 text-white text-[12px] font-normal leading-[120%] py-1.5 px-3 rounded shadow-lg flex flex-col items-center z-10 relative">
+                      <span className="font-semibold mb-0.5">
                         {payload[0].value}
                       </span>
                       <span className="text-gray-400 text-[10px]">H-Index</span>

@@ -1,0 +1,52 @@
+Based on the CSS file you've attached, here's a comprehensive font guide for your overall design system:[1]
+
+## Primary Font Family
+
+The entire design uses **Inter** as the primary and only font family.[1]
+
+## Font Weights Used
+
+- **400 (Regular)**: Default body text and secondary content
+- **500 (Medium)**: Titles, input labels, and emphasized text
+- **600 (Semibold)**: Navigation tabs, buttons, headings, and prominent UI elements
+
+## Typography Hierarchy
+
+### Headings & Titles
+- **16px Medium (500)**: Section headings like "Settings & Privacy", "Email Address", "Change Password" with `line-height: 20px` and `letter-spacing: -0.006em`[1]
+- **14px Semibold (600)**: Tab labels ("Account & Security", "Linked Accounts", "Data & Privacy") with `line-height: 150%` and `letter-spacing: -0.04em` or `-0.02em`[1]
+- **14px Medium (500)**: Sidebar menu items (selected state), form field labels with `line-height: 120%` or `20px`[1]
+
+### Body Text
+- **14px Regular (400)**: Input placeholder text, sidebar menu items (default state), general body text with `line-height: 150%` or `120%` and `letter-spacing: -0.02em`[1]
+- **12px Regular (400)**: Breadcrumbs, helper text, descriptions with `line-height: 120%` (14px)[1]
+- **12px Medium (500)**: Emphasized breadcrumb items like "Settings & Privacy" with `line-height: 120%`[1]
+
+### Button Text
+- **14px Semibold (600)**: Primary button text with `line-height: 120%`[1]
+
+## Line Heights
+
+- **120%**: Most compact text elements (navigation, buttons, breadcrumbs)[1]
+- **150%**: More readable body text and tab labels[1]
+- **Fixed values (20px, 22px)**: Used for consistent alignment in form fields and titles[1]
+
+## Letter Spacing
+
+- **-0.006em**: Standard for 16px and 14px medium titles[1]
+- **-0.02em**: Used for 14px regular body text and some tabs[1]
+- **-0.04em**: Tighter spacing for emphasized 14px semibold text and some headings[1]
+
+## Color Palette for Typography
+
+- #000000: Primary black for main headings and active states[1]
+- #0E121B: Dark text for page titles[1]
+- #181B25: User profile name[1]
+- #333333: Standard body text and form labels[1]
+- #525866: Secondary text, sidebar menu items, breadcrumbs[1]
+- #8E8E93: Placeholder text and disabled states[1]
+- #FFFFFF: Button text on colored backgrounds[1]
+- #FF7A00: Active/selected state (orange)[1]
+- #0088FF: Link text[1]
+
+[1](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/52517393/1a649c66-3956-4091-84d1-ab8f35955865/paste.txt)

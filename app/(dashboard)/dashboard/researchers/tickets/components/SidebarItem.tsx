@@ -26,7 +26,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         {icon}
       </div>
       <span
-        className={`font-medium text-sm ${
+        className={`font-medium text-[14px] leading-[120%] tracking-[-0.006em] ${
           active ? "text-[#f76a23]" : "text-gray-600"
         }`}
       >

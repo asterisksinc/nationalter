@@ -95,10 +95,10 @@ export default function ResearchersPage() {
 
         {/* Welcome */}
         <div className="mb-6">
-          <h5 className="font-bold text-gray-900">
+          <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
             Good Evening, Dr. Sarah Mitchell!
-          </h5>
-          <p className="text-sm text-gray-500">
+          </div>
+          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
             Welcome back to your Research Impact Portal.
           </p>
         </div>
@@ -148,10 +148,12 @@ export default function ResearchersPage() {
                 <Check size={12} className="text-[#f76a23]" strokeWidth={3} />
               </div>
             </div>
-            <span className="text-gray-600 text-sm font-medium mb-1">
+            <span className="text-[14px] font-medium leading-[20px] text-[#525866] mb-1">
               Publications
             </span>
-            <span className="text-3xl font-bold text-[#f76a23]">234</span>
+            <span className="text-[32px] font-semibold leading-tight text-[#f76a23]">
+              234
+            </span>
             {/* Decorative gradient overlay */}
             <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-200 to-transparent rounded-full opacity-50 blur-xl"></div>
           </div>

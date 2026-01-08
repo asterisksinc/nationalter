@@ -148,15 +148,15 @@ export default function PublicationsPage() {
       <main className="flex-1 ml-[260px] p-8 min-w-[1000px]">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
             <Link
               href="/dashboard/researchers"
-              className="hover:text-gray-900 cursor-pointer"
+              className="hover:text-[#0E121B] cursor-pointer"
             >
               Home
             </Link>
             <ChevronRight size={14} className="mx-2 text-gray-400" />
-            <span className="text-[#1e1e1e] font-medium">My Publications</span>
+            <span className="text-[#0E121B] font-medium">My Publications</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -168,14 +168,14 @@ export default function PublicationsPage() {
               <input
                 type="text"
                 placeholder="Search"
-                className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-sm focus:outline-none w-64 text-gray-700 placeholder:text-gray-400 transition-all"
+                className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none w-64 text-[#333333] placeholder-[#8E8E93] transition-all"
               />
             </div>
             <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-sm">
               <Bell size={18} />
               <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
             </button>
-            <button className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+            <button className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors shadow-sm">
               Raise Ticket <Plus size={16} />
             </button>
           </div>
@@ -183,8 +183,10 @@ export default function PublicationsPage() {
 
         {/* Page Title */}
         <div className="mb-6">
-          <h4 className="mb-1">My Publications</h4>
-          <p className="text-sm text-gray-500">
+          <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-1">
+            My Publications
+          </div>
+          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
             Manage and track your research publications and their impact
             metrics.
           </p>
@@ -200,17 +202,17 @@ export default function PublicationsPage() {
             <input
               type="text"
               placeholder="Search by ORCID, DOI..."
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:border-[#f76a23] text-gray-700"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] text-[#333333] placeholder-[#8E8E93]"
             />
           </div>
 
           <div className="flex items-center gap-3 ml-4">
-            <button className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 bg-white">
+            <button className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 bg-white">
               <Filter size={16} /> Filter
             </button>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 border-2 border-[#f76a23] rounded-lg text-sm font-medium text-[#f76a23] hover:bg-orange-50 bg-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 border-2 border-[#f76a23] rounded-lg text-[14px] font-semibold leading-[120%] text-[#f76a23] hover:bg-orange-50 bg-white transition-colors"
             >
               <Plus size={16} /> Add Missing Publication
             </button>

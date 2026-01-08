@@ -16,17 +16,19 @@ export const SidebarItem = ({
 }: SidebarItemProps) => {
   const content = (
     <div
-      className={`flex items-center gap-[12px] px-[12px] py-[10px] rounded-[8px] cursor-pointer transition-colors mb-[4px] ${active
+      className={`flex items-center gap-[12px] px-[12px] py-[10px] rounded-[8px] cursor-pointer transition-colors mb-[4px] ${
+        active
           ? "bg-[#FF7A00]/10 text-[#FF7A00]"
           : "text-[#525866] hover:bg-[#E1E4EA]"
-        }`}
+      }`}
     >
       <div className={`${active ? "text-[#FF7A00]" : "text-[#525866]"}`}>
         {icon}
       </div>
       <span
-        className={`font-medium text-[14px] leading-[17px] ${active ? "text-[#FF7A00]" : "text-[#525866]"
-          }`}
+        className={`font-medium text-[14px] leading-[120%] tracking-[-0.006em] ${
+          active ? "text-[#FF7A00]" : "text-[#525866]"
+        }`}
       >
         {label}
       </span>

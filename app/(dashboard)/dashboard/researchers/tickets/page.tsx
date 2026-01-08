@@ -194,10 +194,10 @@ export default function TicketsPage() {
               className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm"
             />
             <div className="flex flex-col flex-1 min-w-0">
-              <span className="text-sm font-semibold text-gray-900 truncate">
+              <span className="text-[14px] font-semibold leading-[120%] text-[#181B25] truncate">
                 John Doe
               </span>
-              <span className="text-xs text-gray-500 truncate">
+              <span className="text-[12px] font-normal leading-[120%] text-[#525866] truncate">
                 example@gmail.com
               </span>
             </div>
@@ -212,15 +212,15 @@ export default function TicketsPage() {
       <main className="flex-1 ml-[260px] p-8">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
             <Link
               href="/dashboard/researchers"
-              className="hover:text-gray-900 cursor-pointer"
+              className="hover:text-[#0E121B] cursor-pointer"
             >
               Home
             </Link>
             <ChevronRight size={14} className="mx-2 text-gray-400" />
-            <span className="text-[#1e1e1e] font-medium">Tickets Center</span>
+            <span className="text-[#0E121B] font-medium">Tickets Center</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -232,7 +232,7 @@ export default function TicketsPage() {
               <input
                 type="text"
                 placeholder="Search"
-                className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-sm focus:outline-none w-64 text-gray-700 placeholder:text-gray-400 transition-all"
+                className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none w-64 text-[#333333] placeholder-[#8E8E93] transition-all"
               />
             </div>
             <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-sm">
@@ -241,7 +241,7 @@ export default function TicketsPage() {
             </button>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors shadow-sm"
             >
               Raise Ticket <Plus size={16} />
             </button>
@@ -250,8 +250,12 @@ export default function TicketsPage() {
 
         {/* Page Title */}
         <div className="mb-6">
-          <h4 className="mb-1">Ticket Center</h4>
-          <p className="text-sm text-gray-500">Manage your Tickets</p>
+          <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-1">
+            Ticket Center
+          </div>
+          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
+            Manage your Tickets
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -273,10 +277,10 @@ export default function TicketsPage() {
             <input
               type="text"
               placeholder="Search Tickets"
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:border-[#f76a23] text-gray-700"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] text-[#333333] placeholder-[#8E8E93]"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 bg-white">
+          <button className="flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-xl text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 bg-white">
             <Filter size={16} /> Filter
           </button>
         </div>

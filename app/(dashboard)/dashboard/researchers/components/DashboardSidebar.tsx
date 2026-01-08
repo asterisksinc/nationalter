@@ -20,7 +20,11 @@ export const DashboardSidebar = ({
     <aside className="w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-20">
       <div className="h-[72px] flex items-center px-[20px] border-b border-[#E1E4EA]">
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="NationCite Logo" className="h-[32px] w-auto" />
+          <img
+            src="/logo.png"
+            alt="NationCite Logo"
+            className="h-[90px] w-auto"
+          />
         </div>
       </div>
 
@@ -60,10 +64,10 @@ export const DashboardSidebar = ({
             className="w-[40px] h-[40px] rounded-full object-cover ring-2 ring-white shadow-sm"
           />
           <div className="flex flex-col flex-1 min-w-0">
-            <span className="text-[14px] font-semibold text-[#181B25] truncate">
+            <span className="text-[14px] font-semibold leading-[120%] text-[#181B25] truncate">
               John Doe
             </span>
-            <span className="text-[12px] text-[#525866] truncate">
+            <span className="text-[12px] font-normal leading-[120%] text-[#525866] truncate">
               example@gmail.com
             </span>
           </div>

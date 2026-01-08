@@ -57,12 +57,12 @@ export const ProfileGauge = ({ percentage }: ProfileGaugeProps) => {
           </g>
         </svg>
 
-        {/* Text (unchanged classes) */}
+        {/* Text */}
         <div className="absolute flex flex-col items-center justify-center bottom-[-1px]">
-          <span className="text-2xl font-bold text-[#FF9A3C] leading-none mb-1">
+          <span className="text-[24px] font-semibold text-[#FF9A3C] leading-none mb-1">
             {percentage}%
           </span>
-          <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">
+          <span className="text-[10px] font-medium leading-[120%] text-[#525866] uppercase tracking-wide">
             Profile Completed
           </span>
         </div>
