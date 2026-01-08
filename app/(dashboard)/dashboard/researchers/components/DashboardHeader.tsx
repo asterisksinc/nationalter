@@ -12,14 +12,14 @@ export const DashboardHeader = ({
   onRaiseTicket,
 }: DashboardHeaderProps) => {
   return (
-    <header className="flex justify-between items-center mb-8">
-      <div className="flex items-center text-sm text-gray-500">
+    <header className="flex justify-between items-center mb-[20px] h-[72px]">
+      <div className="flex items-center text-[12px] leading-[14px] text-[#525866]">
         {breadcrumbItems.map((item, index) => (
           <React.Fragment key={index}>
             {item.href ? (
               <Link
                 href={item.href}
-                className="hover:text-gray-900 cursor-pointer"
+                className="hover:text-[#0E121B] cursor-pointer"
               >
                 {item.label}
               </Link>
@@ -35,31 +35,31 @@ export const DashboardHeader = ({
               </span>
             )}
             {index < breadcrumbItems.length - 1 && (
-              <ChevronRight size={14} className="mx-2 text-gray-400" />
+              <ChevronRight size={14} className="mx-[8px] text-[#8E8E93]" />
             )}
           </React.Fragment>
         ))}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-[20px]">
         <div className="relative">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-[12px] top-1/2 -translate-y-1/2 text-[#525866]"
             size={16}
           />
           <input
             type="text"
             placeholder="Search"
-            className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-sm focus:outline-none w-64 text-gray-700 placeholder:text-gray-400 transition-all"
+            className="pl-[36px] pr-[16px] py-[10px] bg-[#F2F5F8] border border-transparent focus:bg-white focus:border-[#E1E4EA] rounded-[8px] text-[14px] focus:outline-none w-[280px] text-[#333333] placeholder-[#8E8E93] transition-all"
           />
         </div>
-        <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-sm">
-          <Bell size={18} />
-          <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
+        <button className="p-[10px] bg-white border border-[#E1E4EA] rounded-[8px] text-[#525866] hover:text-[#0E121B] hover:bg-[#F5F7FA] relative">
+          <Bell size={20} />
+          <span className="absolute top-[8px] right-[8px] w-[5px] h-[5px] bg-[#DF120B] rounded-full"></span>
         </button>
         <button
           onClick={onRaiseTicket}
-          className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+          className="flex items-center gap-[8px] bg-[#FF7A00] hover:bg-[#FF8D28] text-white px-[16px] py-[10px] rounded-[6px] text-[14px] font-semibold transition-colors h-[40px]"
         >
           <Plus size={16} /> Raise Ticket
         </button>
