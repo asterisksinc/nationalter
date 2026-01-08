@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Check } from "lucide-react";
 import {
   DashboardSidebar,
@@ -10,6 +10,7 @@ import {
   ProfileCompleteness,
   TicketsTable,
 } from "./components";
+import { CreateTicketModal } from "../researchers/tickets/components";
 
 // --- Types ---
 
@@ -78,35 +79,38 @@ const tickets: TicketData[] = [
 // --- Main Page Component ---
 
 export default function ResearchersPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-[#f8f9fa] font-sans text-[#1e1e1e]">
       {/* Sidebar */}
       <DashboardSidebar activePage="overview" />
 
       {/* Main Content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]">
+      <main className="flex-1 ml-[260px] p-6 min-w-[1000px]">
         {/* Header */}
         <DashboardHeader
           breadcrumbItems={[
             { label: "Home", href: "/" },
             { label: "Dashboard" },
           ]}
+          onRaiseTicket={() => setIsModalOpen(true)}
         />
 
         {/* Welcome */}
-        <div className="mb-6">
+        <div className="mb-5 pb-4 border-b border-[#E1E4EA]">
           <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
             Good Evening, Dr. Sarah Mitchell!
           </div>
-          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
-            Welcome back to your Research Impact Portal.
+          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mt-1">
+            Welcome back to your Research Impact Portal
           </p>
         </div>
 
         {/* Stats Row */}
-        <div className="flex gap-4 mb-6">
-          {/* Main Metrics Group */}
-          <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex divide-x divide-gray-100">
+        <div className="flex gap-3 mb-5">
+          {/* Main Metrics Group - All 5 stats together */}
+          <div className="flex-1 bg-white rounded-lg border border-[#E1E4EA] flex divide-x divide-[#E1E4EA]">
             <div className="flex-1">
               <StatItem
                 label="University Rank"
@@ -139,28 +143,20 @@ export default function ResearchersPage() {
                 isPositive={true}
               />
             </div>
-          </div>
-
-          {/* Publications Card */}
-          <div className="w-[200px] bg-orange-50 rounded-xl border border-orange-100 p-4 relative overflow-hidden flex flex-col justify-center">
-            <div className="absolute top-0 right-0 p-2">
-              <div className="bg-orange-100 rounded-full p-1">
-                <Check size={12} className="text-[#f76a23]" strokeWidth={3} />
-              </div>
+            <div className="flex-1">
+              <StatItem
+                label="Publications"
+                value="234"
+                change=""
+                isPositive={true}
+                isHighlight={true}
+              />
             </div>
-            <span className="text-[14px] font-medium leading-[20px] text-[#525866] mb-1">
-              Publications
-            </span>
-            <span className="text-[32px] font-semibold leading-tight text-[#f76a23]">
-              234
-            </span>
-            {/* Decorative gradient overlay */}
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-200 to-transparent rounded-full opacity-50 blur-xl"></div>
           </div>
         </div>
 
         {/* Middle Section: Chart + Profile */}
-        <div className="grid grid-cols-12 gap-6 mb-8">
+        <div className="grid grid-cols-12 gap-4 mb-5">
           {/* Chart */}
           <HIndexChart data={chartData} />
 
@@ -177,6 +173,12 @@ export default function ResearchersPage() {
           rejectedCount={1}
         />
       </main>
+
+      {/* Create Ticket Modal */}
+      <CreateTicketModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
