@@ -39,7 +39,7 @@ export const TicketCard = ({ data }: TicketCardProps) => {
             className="w-10 h-10 rounded-full object-cover"
           />
           <div>
-            <h5 className="font-semibold text-gray-900 text-sm md:text-base">
+            <h5 className=" text-gray-900 ">
               {data.title}
             </h5>
             <span className="text-gray-500 text-xs">{data.id}</span>

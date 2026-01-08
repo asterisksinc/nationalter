@@ -86,7 +86,7 @@ export const AddPublicationModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -110,13 +110,24 @@ export const AddPublicationModal = ({
                   onChange={() => handleMethodSelect("doi")}
                   className="mt-1 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
                 />
-                <div>
+                <div className="flex-1">
                   <span className="text-sm font-medium text-gray-900">
                     Search by DOI / Publication URL{" "}
                     <span className="text-gray-500 font-normal italic">
                       (recommended)
                     </span>
                   </span>
+                  {formData.method === "doi" && (
+                    <input
+                      type="text"
+                      placeholder="Enter the DOI/ URL"
+                      value={formData.doiUrl || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, doiUrl: e.target.value })
+                      }
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm mt-2"
+                    />
+                  )}
                 </div>
               </label>
 
@@ -166,13 +177,13 @@ export const AddPublicationModal = ({
                 onChange={(e) =>
                   setFormData({ ...formData, doiUrl: e.target.value })
                 }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm"
               />
             </div>
 
             <button
               onClick={handleDoiNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-[16px] font-medium transition-colors"
             >
               Next
             </button>
@@ -205,10 +216,10 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                 />
 
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <input
                     type="text"
                     placeholder="Author(s)*"
@@ -216,7 +227,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, authors: e.target.value })
                     }
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                   />
                   <input
                     type="text"
@@ -225,7 +236,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, doi: e.target.value })
                     }
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                   />
                 </div>
 
@@ -236,10 +247,10 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, journal: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                 />
 
-                <div className="flex gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <input
                     type="text"
                     placeholder="Publisher Name"
@@ -247,7 +258,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, publisher: e.target.value })
                     }
-                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                   />
                   <input
                     type="text"
@@ -259,7 +270,7 @@ export const AddPublicationModal = ({
                         publicationType: e.target.value,
                       })
                     }
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                   />
                 </div>
 
@@ -270,14 +281,14 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, year: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] focus:outline-none focus:border-[#f76a23] text-sm placeholder:text-gray-400"
                 />
               </div>
             </div>
 
             <button
               onClick={handleManualNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-lg font-medium transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-3 rounded-[16px] font-medium transition-colors"
             >
               Next
             </button>
@@ -289,7 +300,7 @@ export const AddPublicationModal = ({
           <div className="p-6">
             <h4 className="mb-6">Add Missing Publication</h4>
 
-            <div className="border-2 border-dashed border-blue-300 rounded-lg p-12 flex flex-col items-center justify-center">
+            <div className="border-2 border-dashed border-blue-300 rounded-[16px] p-12 flex flex-col items-center justify-center">
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-3" />
               <p className="text-sm text-gray-500">
                 Fetching Data (Loading symbol)
@@ -360,7 +371,7 @@ export const AddPublicationModal = ({
             <button
               onClick={handleSubmit}
               disabled={!confirmed}
-              className={`w-full py-3 rounded-lg font-medium transition-colors ${
+              className={`w-full py-3 rounded-[16px] font-medium transition-colors ${
                 confirmed
                   ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"
