@@ -30,7 +30,7 @@ export default function HomePage() {
    
 
       {/* Main content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]">
+      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]" style={{paddingLeft:'0px',paddingTop:'0px', paddingRight:'0px'}}>
         {/* Top bar */}
       <DashboardHeader
                breadcrumbItems={[
@@ -40,14 +40,14 @@ export default function HomePage() {
              />
 
         {/* Content area */}
-   <section className="admin-content">
+   <section className="admin-content" >
      {activePage === 'dashboard' && (
             <>
   {/* Breadcrumb + title row */}
   <div className="content-header">
     <div>
    <h3 className='main-ct'>Command Center</h3>
-      <p className="breadcrumb-current sub-ct">Real-time visibility into the NationCite data ecosystem.<br/> Monitor entity status and system health.</p>
+      <p className="breadcrumb-current sub-ct">Real-time visibility into the NationCite data ecosystem. Monitor entity status and system health.</p>
       </div>
 <div className="content-header-right">
   <div className='frxd'>
@@ -56,7 +56,7 @@ export default function HomePage() {
     </div>
     <div className="last-sync">Last synced: Oct 24, 2023 · 14:02 UTC</div>
   </div>
-  <button className="primary-btn" aria-label="Upload new dataset">
+  <button className="primary-btn" aria-label="Upload new dataset" style={{borderRadius:'6px'}}>
     <Image
       src="/logos/upload.png"
       alt="Upload icon"
@@ -71,15 +71,16 @@ export default function HomePage() {
   </div>
 
   {/* Command center summary cards */}
-<div className="cards-row">
+<div className="cards-row" style={{paddingLeft:'32px', paddingRight:'32px'}}>
                 <div className="summary-card summary-card-compact">
                   <div className="card-top-section">
                     <div className="left-section">
                       <Image
                         src="/logos/R1.png"
                         alt="Researchers icon"
-                        width={40}
-                        height={40}
+                        width={55}
+                        height={55}
+                        style={{borderRadius:'6px'}}
                         priority
                       />
 
@@ -89,10 +90,19 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="status-badge">
-                      <span className="status-dot"></span>
-                      Live
-                    </div>
+                   <div style={{ display: 'flex' }}>
+                      <div className="status-badge">
+                        <span className="status-dot"></span>
+                        Live
+                      </div>
+                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
+                        <Image
+                          src="/arrow.png"
+                          alt="Researchers icon"
+                          width={13}
+                          height={13}
+                          priority
+                        /></div></div>
                   </div>
                   <div className='line'></div>
                   <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
@@ -112,9 +122,11 @@ export default function HomePage() {
                       <Image
                         src="/logos/M.png"
                         alt="Researchers icon"
-                        width={40}
-                        height={40}
+                        width={55}
+                        height={55}
                         priority
+                      style={{borderRadius:'6px'}}
+
                       />
 
                       <div className="title-value-column">
@@ -122,11 +134,19 @@ export default function HomePage() {
                         <div className="card-main-value">850</div>
                       </div>
                     </div>
-
-                    <div className="status-badge">
-                      <span className="status-dot"></span>
-                      Live
-                    </div>
+                    <div style={{ display: 'flex' }}>
+                      <div className="status-badge">
+                        <span className="status-dot"></span>
+                        Live
+                      </div>
+                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
+                        <Image
+                          src="/arrow.png"
+                          alt="Researchers icon"
+                          width={13}
+                          height={13}
+                          priority
+                        /></div></div>
                   </div>
                   <div className='line'></div>
                   <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
@@ -145,9 +165,11 @@ export default function HomePage() {
                       <Image
                         src="/logos/U.png"
                         alt="Researchers icon"
-                        width={40}
-                        height={40}
+                        width={55}
+                        height={55}
                         priority
+                        style={{borderRadius:'6px'}}
+
                       />
 
                       <div className="title-value-column">
@@ -156,10 +178,20 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="status-badge1">
+                   
+                    <div style={{ display: 'flex' }}>
+                      <div className="status-badge1">
                       <span className="dot1"></span>
                       Pending
                     </div>
+                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
+                        <Image
+                          src="/arrow.png"
+                          alt="Researchers icon"
+                          width={13}
+                          height={13}
+                          priority
+                        /></div></div>
                   </div>
                   <div className='line'></div>
                   <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
@@ -176,11 +208,11 @@ export default function HomePage() {
 
 
   {/* Ecosystem metrics row */}
-  <div className='fle'>
+  <div className='fle' style={{paddingLeft:'32px', paddingRight:'32px'}}>
             <div className="panel-title">Ecosystem Metrics</div>
             <div className="panel-title1">View All Reports</div>
 </div>
- <div className="cards-row1">
+ <div className="cards-row1" style={{paddingLeft:'32px', paddingRight:'32px'}}>
   {/* Left card */}
   <div className="panel-card">
     <div className="panel-header">
@@ -252,7 +284,7 @@ export default function HomePage() {
 
 
   {/* Bottom row: alerts + activity + right metrics */}
-  <div className="cards-row cards-row--stretch">
+  <div className="cards-row cards-row--stretch" style={{paddingLeft:'32px', paddingRight:'32px'}}>
     {/* System alerts */}
     <div className="panel-card">
       <div className="panel-header3">
@@ -334,8 +366,8 @@ export default function HomePage() {
       <div className="metric-icon purple-icon">   <Image
                         src="/logos/db.png"
                         alt="Researchers icon"
-                        width={18}
-                        height={18}
+                        width={24}
+                        height={24}
                         priority
                       /></div>
       <div className="metric-title-group">
@@ -358,8 +390,8 @@ export default function HomePage() {
       <div className="metric-icon violet-icon"> <Image
                         src="/logos/s.png"
                         alt="Researchers icon"
-                        width={18}
-                        height={18}
+                        width={24}
+                        height={24}
                         priority
                       /></div>
       <div className="metric-title-group">

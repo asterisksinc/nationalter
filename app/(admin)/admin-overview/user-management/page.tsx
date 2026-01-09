@@ -63,6 +63,23 @@ const users = [
     lastLogin: "6 Hours Ago",
     avatar: "/logos/user.png",
   },
+   {
+    name: "Dianne Russell",
+    email: "debra.holt@example.com",
+    role: "Admin",
+    status: "Active",
+    plan: "Enterprise",
+    lastLogin: "2 Min Ago",
+    avatar: "/logos/user.png",
+  }, {
+    name: "Dianne Russell",
+    email: "debra.holt@example.com",
+    role: "Admin",
+    status: "Active",
+    plan: "Enterprise",
+    lastLogin: "2 Min Ago",
+    avatar: "/logos/user.png",
+  },
 ];
 function AddUserDrawer({ onClose }: { onClose: () => void }) {
   return (
@@ -166,7 +183,7 @@ const [selectedUser, setSelectedUser] = useState<any>(null);
    
 
       {/* Main content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]">
+      <main className="flex-1 ml-[260px]  min-w-[1000px]">
         {/* Top bar */}
       <DashboardHeader
                breadcrumbItems={[
@@ -189,7 +206,7 @@ const [selectedUser, setSelectedUser] = useState<any>(null);
               </div>
 
               {/* Search and filters */}
-              <div className="users-filters">
+              <div className="users-filters" style={{paddingLeft:'32px', paddingRight:'32px'}}>
                 <input 
                   type="text" 
                   placeholder="Search by name, email or ID" 
@@ -216,7 +233,7 @@ const [selectedUser, setSelectedUser] = useState<any>(null);
               </div>
 
               {/* Users table */}
-          <div className="users-table-wrapper">
+          <div className="users-table-wrapper" style={{marginLeft:'32px', marginRight:'32px'}}>
       <table className="users-table">
         <thead>
           <tr>
