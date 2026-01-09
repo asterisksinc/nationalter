@@ -15,8 +15,8 @@ export const SidebarItem = ({
   href,
 }: SidebarItemProps) => {
   const content = (
-    <div
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-colors mb-1 ${
+    <div style={{borderRadius:'8px'}}
+      className={`flex items-center gap-3 px-4 py-3  cursor-pointer transition-colors mb-1 ${
         active
           ? "bg-orange-50/50 text-[#f76a23]"
           : "text-gray-500 hover:bg-gray-50"

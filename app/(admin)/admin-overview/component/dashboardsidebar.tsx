@@ -21,8 +21,8 @@ export const DashboardSidebar = ({
   activePage = "overview",
 }: DashboardSidebarProps) => {
   return (
-    <aside className="w-[260px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-20">
-      <div className="h-20 flex items-center px-6 border-b border-gray-100">
+    <aside className="w-[260px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-20" style={{backgroundColor:'#f6f6f6'}}>
+      <div className="h-20 flex items-center px-6 border-b border-gray-100" style={{paddingLeft:'0px', borderColor:'#e5e5e5'}}>
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="NationCite Logo" className="h-28 w-auto" />
         </div>
