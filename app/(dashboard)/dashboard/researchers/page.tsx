@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check } from "lucide-react";
 import {
-  DashboardSidebar,
-  DashboardHeader,
   StatItem,
   HIndexChart,
   ProfileCompleteness,
@@ -82,21 +79,8 @@ export default function ResearchersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9fa] font-sans text-[#1e1e1e]">
-      {/* Sidebar */}
-      <DashboardSidebar activePage="overview" />
-
-      {/* Main Content */}
-      <main className="flex-1 ml-[260px] p-6 min-w-[1000px]">
-        {/* Header */}
-        <DashboardHeader
-          breadcrumbItems={[
-            { label: "Home", href: "/" },
-            { label: "Dashboard" },
-          ]}
-          onRaiseTicket={() => setIsModalOpen(true)}
-        />
-
+    <>
+      <main>
         {/* Welcome */}
         <div className="mb-6 pb-4 border-b border-[#E1E4EA]">
           <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B]">
@@ -108,65 +92,38 @@ export default function ResearchersPage() {
         </div>
 
         {/* Stats Row */}
-        <div className="flex gap-3 mb-6">
-          {/* Main Metrics Group - All 5 stats together */}
-          <div className="flex-1 bg-white rounded-lg border border-[#E1E4EA] flex divide-x divide-[#E1E4EA]">
-            <div className="flex-1">
-              <StatItem
-                label="University Rank"
-                value="03"
-                change="5"
-                isPositive={true}
-              />
-            </div>
-            <div className="flex-1">
-              <StatItem
-                label="World Rank"
-                value="187"
-                change="9"
-                isPositive={true}
-              />
-            </div>
-            <div className="flex-1">
-              <StatItem
-                label="Country Rank"
-                value="08"
-                change="01"
-                isPositive={false}
-              />
-            </div>
-            <div className="flex-1">
-              <StatItem
-                label="H-Index"
-                value="145"
-                change="17"
-                isPositive={true}
-              />
-            </div>
-            <div className="flex-1">
-              <StatItem
-                label="Publications"
-                value="234"
-                change=""
-                isPositive={true}
-                isHighlight={true}
-              />
-            </div>
-          </div>
-        </div>
+       <div className="mb-6">
+  <div
+    className="
+      bg-white rounded-lg border border-[#E1E4EA]
+      grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5
+      divide-x divide-y divide-[#E1E4EA]
+    "
+  >
+    <StatItem label="University Rank" value="03" change="5" isPositive />
+    <StatItem label="World Rank" value="187" change="9" isPositive />
+    <StatItem label="Country Rank" value="08" change="01" isPositive={false} />
+    <StatItem label="H-Index" value="145" change="17" isPositive />
+    <StatItem
+      label="Publications"
+      value="234"
+      change=""
+      isPositive
+      isHighlight
+    />
+  </div>
+</div>
 
-        {/* Middle Section: Chart + Profile */}
+
+        {/* Middle Section */}
         <div className="grid grid-cols-12 gap-6 mb-6">
-          {/* Chart */}
           <HIndexChart data={chartData} />
-
-          {/* Profile Completeness */}
           <div className="col-span-4">
             <ProfileCompleteness percentage={76} missingPublications={5} />
           </div>
         </div>
 
-        {/* Tickets Section */}
+        {/* Tickets */}
         <TicketsTable
           tickets={tickets}
           openCount={4}
@@ -181,6 +138,6 @@ export default function ResearchersPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    </div>
+    </>
   );
 }
