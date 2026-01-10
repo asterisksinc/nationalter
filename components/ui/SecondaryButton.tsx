@@ -26,7 +26,7 @@ export default function SecondaryButton({
     lg: "px-8 py-3 text-lg",
   };
 
-  const buttonStyles = `${baseStyles} ${sizeStyles[size]} bg-[#1E1E1E] text-white shadow-sm hover:bg-black ${className}`;
+  const buttonStyles = `${baseStyles} ${sizeStyles[size]} bg-[#1E1E1E] text-white shadow-none hover:bg-black ${className}`;
 
   if (href) {
     return (

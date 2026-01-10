@@ -1,16 +1,18 @@
 import React from "react";
 import Link from "next/link";
-import { Search, Bell, Plus, ChevronRight } from "lucide-react";
+import { Search, Bell, Plus, ChevronRight, Menu } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 interface DashboardHeaderProps {
   breadcrumbItems: { label: string; href?: string }[];
   onRaiseTicket?: () => void;
+  onMenuClick?: () => void;
 }
 
 export const DashboardHeader = ({
   breadcrumbItems,
   onRaiseTicket,
+  onMenuClick,
 }: DashboardHeaderProps) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -30,36 +32,63 @@ export const DashboardHeader = ({
   };
 
   return (
-    <header className="flex justify-between items-center mb-[16px] h-[48px]">
-      <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
-        {breadcrumbItems.map((item, index) => (
-          <React.Fragment key={index}>
-            {item.href ? (
-              <Link
-                href={item.href}
-                className="hover:text-[#0E121B] cursor-pointer"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span
-                className={
-                  index === breadcrumbItems.length - 1
-                    ? "text-[#0E121B] font-medium"
-                    : ""
-                }
-              >
-                {item.label}
-              </span>
-            )}
-            {index < breadcrumbItems.length - 1 && (
-              <ChevronRight size={12} className="mx-[6px] text-[#8E8E93]" />
-            )}
-          </React.Fragment>
-        ))}
+    <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-[16px] gap-3 md:gap-0 md:h-[48px]">
+      {/* Top row: Menu + Breadcrumbs + Search/Bell on mobile */}
+      <div className="flex items-center justify-between w-full md:w-auto">
+        <div className="flex items-center gap-3">
+          {/* Hamburger menu for mobile */}
+          <button
+            onClick={onMenuClick}
+            className="md:hidden p-2 hover:bg-[#E1E4EA] rounded-lg transition-colors -ml-2"
+          >
+            <Menu size={20} className="text-[#525866]" />
+          </button>
+
+          {/* Breadcrumbs */}
+          <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
+            {breadcrumbItems.map((item, index) => (
+              <React.Fragment key={index}>
+                {item.href ? (
+                  <Link
+                    href={item.href}
+                    className="hover:text-[#0E121B] cursor-pointer"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <span
+                    className={
+                      index === breadcrumbItems.length - 1
+                        ? "text-[#0E121B] font-medium"
+                        : ""
+                    }
+                  >
+                    {item.label}
+                  </span>
+                )}
+                {index < breadcrumbItems.length - 1 && (
+                  <ChevronRight size={12} className="mx-[6px] text-[#8E8E93]" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: Search icon and User avatar */}
+        <div className="flex md:hidden items-center gap-2">
+          <button className="p-2 hover:bg-[#E1E4EA] rounded-lg transition-colors">
+            <Search size={20} className="text-[#525866]" />
+          </button>
+          <img
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            alt="User"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        </div>
       </div>
 
-      <div className="flex items-center gap-[12px]">
+      {/* Desktop: Search, Bell, Raise Ticket */}
+      <div className="hidden md:flex items-center gap-[12px]">
         <div className="relative w-[220px] h-[40px]">
           <Search
             className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[#525866]"

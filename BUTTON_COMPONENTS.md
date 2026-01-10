@@ -26,7 +26,7 @@ This document outlines the button patterns discovered across the Nationcite proj
 - **Colors**: Dark gray/black (#1E1E1E) background, white text
 - **Border Radius**: 7px (rounded-[7px]) or 8px (rounded-lg)
 - **Padding**: px-2 py-1.5 or px-6 py-3
-- **Shadow**: `shadow-sm`
+- **Shadow**: `shadow-none`
 - **Hover**: bg-black
 - **Found In**:
   - FinalCTA component (Request Institution Dashboard, Claim Your Profile)
@@ -49,7 +49,7 @@ This document outlines the button patterns discovered across the Nationcite proj
 - **Colors**: White background with text (#FF7A00) or slate-500
 - **Border Radius**: rounded-md or rounded-lg
 - **Size**: w-8 h-8 or w-9 h-9 (small square buttons)
-- **Shadow**: shadow-sm
+- **Shadow**: shadow-none
 - **Found In**:
   - LeaderboardTable pagination
   - Tab controls

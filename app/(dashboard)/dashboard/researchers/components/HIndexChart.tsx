@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Download } from "lucide-react";
+import { Download, ChevronDown } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -22,13 +22,14 @@ interface HIndexChartProps {
 
 export const HIndexChart = ({ data }: HIndexChartProps) => {
   return (
-    <div className="col-span-8 p-4 bg-white rounded-lg border border-[#E1E4EA]">
-      <div className="flex mt-3 justify-between items-center mb-4">
-        <div className="text-[16px]  font-medium leading-5 tracking-[-0.006em] text-[#0E121B]">
+    <div className="col-span-12 lg:col-span-8 p-3 md:p-4 bg-white rounded-lg border border-[#E1E4EA]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 md:mb-4 gap-2 sm:gap-0">
+        <div className="text-[14px] md:text-[16px] font-medium leading-[120%] tracking-[-0.006em] text-[#0E121B]">
           H-Index Performance
         </div>
-        <div className="flex items-center gap-2">
-          <div className="bg-gray-100 rounded-md p-0.5 flex text-[12px] font-medium leading-[120%]">
+        <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+          {/* Desktop Controls */}
+          <div className="hidden sm:flex bg-gray-100 rounded-md p-0.5 text-[12px] font-medium leading-[120%]">
             <button className="px-2.5 py-1 bg-white text-gray-900 rounded">
               1Y
             </button>
@@ -42,13 +43,23 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
               All
             </button>
           </div>
-          <button className="flex items-center gap-1.5 px-2.5 py-1 border border-gray-200 rounded-md text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-7">
-            <Download size={13} strokeWidth={1.5} /> Export Report
+
+          {/* Mobile Year Selector */}
+          <div className="flex sm:hidden relative">
+            <button className="px-3 py-1 bg-white border border-[#E1E4EA] rounded text-gray-900 text-[12px] font-medium flex items-center justify-between h-7 gap-2">
+              1Y
+              <ChevronDown size={14} className="text-gray-500" />
+            </button>
+          </div>
+
+          <button className="flex items-center gap-1.5 px-2.5 py-1 border border-[#E1E4EA] rounded-md text-[11px] md:text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-7 whitespace-nowrap">
+            <Download size={13} strokeWidth={1.5} />
+            <span>Export Report</span>
           </button>
         </div>
       </div>
 
-      <div className="h-[450px] w-full">
+      <div className="h-[240px] md:h-[450px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}

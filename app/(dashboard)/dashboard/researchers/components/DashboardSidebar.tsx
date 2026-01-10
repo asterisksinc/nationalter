@@ -6,19 +6,31 @@ import {
   Ticket,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
   activePage?: "overview" | "publications" | "tickets" | "settings";
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export const DashboardSidebar = ({
   activePage = "overview",
+  isOpen = false,
+  onClose,
 }: DashboardSidebarProps) => {
   return (
-    <aside className="w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-20">
-      <div className="h-[72px] flex items-center px-5 border-b border-[#E1E4EA]">
+    <aside
+      className={`
+        w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-40
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+      `}
+    >
+      <div className="h-[72px] flex items-center justify-between px-5 border-b border-[#E1E4EA]">
         <div className="flex items-center gap-2">
           <img
             src="/logo.png"
@@ -26,6 +38,13 @@ export const DashboardSidebar = ({
             className="h-[90px] w-auto"
           />
         </div>
+        {/* Close button for mobile */}
+        <button
+          onClick={onClose}
+          className="md:hidden p-2 hover:bg-[#E1E4EA] rounded-lg transition-colors"
+        >
+          <X size={20} className="text-[#525866]" />
+        </button>
       </div>
 
       <nav className="flex-1 px-4 py-6 space-y-1">

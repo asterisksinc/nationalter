@@ -79,7 +79,7 @@ export default function AboutPage() {
   rounded-[7px]
   font-medium text-xs sm:text-sm md:text-sm lg:text-sm
   tracking-wide uppercase
-  shadow-sm mb-3 sm:mb-4 md:mb-4 lg:mb-4  
+  shadow-none mb-3 sm:mb-4 md:mb-4 lg:mb-4  
 "
           >
             Who we are
@@ -228,7 +228,7 @@ export default function AboutPage() {
           ].map((reason, i) => (
             <div
               key={i}
-              className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-none hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-2 sm:gap-3 md:gap-3 lg:gap-3">
                 <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0">

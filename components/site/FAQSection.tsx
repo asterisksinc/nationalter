@@ -82,7 +82,7 @@ export default function FAQSection({
       </div>
 
       {/* FAQ Items - Centered vertical list with white border */}
-      <div className="w-full border border-white rounded-md sm:rounded-lg bg-white shadow-sm p-6 md:p-8">
+      <div className="w-full border border-white rounded-md sm:rounded-lg bg-white shadow-none p-6 md:p-8">
         <div className="space-y-0">
           {displayItems.map((item, i) => (
             <div key={i} className="border-b border-gray-200 last:border-b-0">

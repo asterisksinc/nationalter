@@ -154,7 +154,7 @@ export default function BlogPage() {
             {Array.from({ length: 9 }).map((_, i) => (
               <article
                 key={i}
-                className="group cursor-pointer rounded-md sm:rounded-lg bg-white shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group cursor-pointer rounded-md sm:rounded-lg bg-white shadow-none hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 <div className="w-full bg-[#f5f5f5]">
                   <img

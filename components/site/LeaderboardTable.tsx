@@ -87,7 +87,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
             {data.map((row) => (
               <div
                 key={row.id}
-                className="group flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-3 items-start md:items-center p-4 md:px-6 md:py-3 bg-white rounded-lg sm:rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-orange-100 transition-all duration-300 relative"
+                className="group flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-3 items-start md:items-center p-4 md:px-6 md:py-3 bg-white rounded-lg sm:rounded-xl border border-slate-100 shadow-none hover:shadow-md hover:border-orange-100 transition-all duration-300 relative"
               >
                 {/* Rank */}
                 <div className="md:col-span-1 absolute top-4 right-4 md:static">
@@ -207,7 +207,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
           </button>
 
           <div className="flex items-center bg-slate-50 rounded-md sm:rounded-lg p-1">
-            <button className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow-sm font-medium text-sm text-[#FF7A00] font-inter">
+            <button className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow-none font-medium text-sm text-[#FF7A00] font-inter">
               1
             </button>
             <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/50 font-medium text-sm text-slate-500 transition-colors font-inter">

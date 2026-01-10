@@ -70,38 +70,41 @@ export default function RegisterPage() {
         <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
           {/* Left Panel - Branding */}
           <div
-            className="hidden md:flex md:w-[35%] h-full bg-orange-50 items-center justify-center relative overflow-hidden"
+            className="hidden md:flex md:w-[355px] h-full bg-orange-50 items-center justify-center relative overflow-hidden"
             style={{
               background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
             }}
           >
-            <div className="z-10 flex flex-col items-center">
-              <div className="text-5xl font-bold tracking-tight text-black mb-3">
-                NATIONCITE
+            <div className="mb-10">
+              <div className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-inherit">
+                <img
+                  src="/logo.png"
+                  alt="NationCite Logo"
+                  className="h-[200px] w-auto"
+                />
               </div>
-              <p className="text-xs text-black font-semibold tracking-[0.2em] uppercase">
-                Powering India&apos;s Research Future
-              </p>
             </div>
           </div>
 
           {/* Right Panel - Scrollable Form Area */}
           <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
-            <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
-              <div className="md:hidden mb-6 flex items-center gap-2">
-                <div className="text-xl font-bold tracking-tight text-black">
-                  NATIONCITE
-                </div>
+            <div className="w-full h-full overflow-y-auto px-4 py-4 md:p-10 flex flex-col">
+              {/* Mobile Logo */}
+              <div className="md:hidden mb-4 flex justify-center">
+                <img src="/logo.png" alt="NationCite" className="h-20 w-auto" />
               </div>
 
-              <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-center">
-                <div className="w-full bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col">
-                  <div className="mb-4 text-center md:text-left">
-                    <h4 className="mb-1 text-neutral-800 font-medium text-base">
-                      Create New Account
-                    </h4>
-                    <p className="text-xs text-neutral-500">Sign Up as:</p>
+              <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
+                {/* Heading Section - Separated and Centered */}
+                <div className="text-center mb-4 md:mb-8">
+                  <div className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
+                    Create New Account
                   </div>
+                  <p className="text-sm text-neutral-600">Sign Up as:</p>
+                </div>
+
+                {/* Form Container */}
+                <div className="w-full bg-white border border-neutral-200 rounded-2xl p-4 md:p-8 shadow-sm md:shadow-none flex flex-col">
                   <div className="space-y-2.5 mb-6">
                     <UserTypeCard
                       type={UserType.Medical}
@@ -125,26 +128,26 @@ export default function RegisterPage() {
                       onClick={() => setUserType(UserType.Researcher)}
                     />
                   </div>
-                  <div>
-                    <button
-                      onClick={handleNextStep}
-                      disabled={!userType}
-                      className="w-full bg-[var(--color-primary)] text-white py-3 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                  <button
+                    onClick={handleNextStep}
+                    disabled={!userType}
+                    className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 text-sm md:text-base font-semibold rounded-xl hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                  >
+                    Next
+                  </button>
+                </div>
+
+                {/* Already User Link - Below form */}
+                <div className="mt-4 md:mt-6 text-center">
+                  <p className="text-xs md:text-sm text-neutral-600">
+                    Already a User?{" "}
+                    <Link
+                      href="/signin"
+                      className="text-[var(--color-primary)] font-semibold hover:underline"
                     >
-                      Next
-                    </button>
-                    <div className="mt-4 text-center md:text-left">
-                      <p className="text-xs text-neutral-500 font-medium">
-                        Already a User?{" "}
-                        <Link
-                          href="/signin"
-                          className="text-blue-600 hover:underline font-bold"
-                        >
-                          Login
-                        </Link>
-                      </p>
-                    </div>
-                  </div>
+                      Login
+                    </Link>
+                  </p>
                 </div>
               </div>
             </div>
@@ -158,9 +161,36 @@ export default function RegisterPage() {
   return (
     <>
       <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
-        {/* Left Sidebar */}
+        {/* Mobile Progress Bar */}
+        <div className="md:hidden w-full px-4 pt-5 pb-4 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50 border-b border-orange-200">
+          <div className="flex gap-1.5 mb-3">
+            {[1, 2, 3, 4].map((step) => (
+              <div
+                key={step}
+                className={`h-1 flex-1 rounded-full transition-all ${
+                  currentStep >= step
+                    ? "bg-[var(--color-primary)]"
+                    : "bg-neutral-200"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="text-center">
+            <p className="text-[11px] text-neutral-500 mb-0.5">
+              Step {currentStep}
+            </p>
+            <h3 className="text-sm font-semibold text-neutral-900">
+              {currentStep === 1 && "Identity Verification"}
+              {currentStep === 2 && "Authentication"}
+              {currentStep === 3 && "Profile Enrichment"}
+              {currentStep === 4 && "Welcome onboard!"}
+            </h3>
+          </div>
+        </div>
+
+        {/* Left Sidebar - Hidden on Mobile */}
         <div
-          className="w-full md:w-[35%] h-auto md:h-full shrink-0 transition-all duration-500 relative z-20"
+          className="hidden md:flex md:w-[355px] h-full shrink-0 transition-all duration-500 relative z-20"
           style={{
             background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
           }}
@@ -170,14 +200,12 @@ export default function RegisterPage() {
 
         {/* Right Panel - Scrollable Form Area */}
         <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
-          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
-            {/* Back Button positioned relative to the content area or absolute if desired. 
-                Keeping it layout-safe by putting it inside the flux but absolute to the panel.
-            */}
+          <div className="w-full h-full overflow-y-auto px-4 py-4 md:p-10 flex flex-col">
+            {/* Back Button - Hidden on mobile (use browser back) */}
             {!isDashboardStep && (
               <button
                 onClick={handleBack}
-                className="absolute top-4 left-4 md:top-6 md:left-6 p-2 hover:bg-neutral-100 rounded-full transition-colors z-30"
+                className="hidden md:flex absolute top-6 left-6 p-2 hover:bg-neutral-100 rounded-full transition-colors z-30"
                 aria-label="Go Back"
               >
                 <Icon
@@ -188,9 +216,9 @@ export default function RegisterPage() {
               </button>
             )}
 
-            <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-center">
+            <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
               {isDashboardStep ? (
-                <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-sm flex flex-col justify-center">
+                <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-none flex flex-col justify-center">
                   <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Icon name="check" size={24} />
                   </div>
@@ -209,41 +237,51 @@ export default function RegisterPage() {
                   </button>
                 </div>
               ) : (
-                <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col h-full">
-                  <div className="mb-4 text-center md:text-left shrink-0">
-                    <h4 className="mb-0.5 text-neutral-800 font-medium text-base">
+                <>
+                  {/* Heading Section - Separated and Centered */}
+                  <div className="text-center mb-4 md:mb-8">
+                    <h1 className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
                       Create New Account
-                    </h4>
-                    <p className="text-xs text-neutral-500">
+                    </h1>
+                    <p className="text-sm text-neutral-600">
                       Sign Up as:{" "}
-                      <span className="text-[var(--color-accent)] font-medium">
+                      <span className="text-[var(--color-primary)] font-semibold">
                         {userType}
                       </span>
                     </p>
                   </div>
-                  <div className="flex-1 flex flex-col min-h-0">
-                    {userType && (
-                      <FlowRenderer
-                        userType={userType}
-                        step={currentStep}
-                        onNext={handleNextStep}
-                        otpSent={otpSent}
-                        setOtpSent={setOtpSent}
-                        timer={timer}
-                      />
-                    )}
+
+                  {/* Form Container */}
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-4 md:p-8 shadow-sm md:shadow-none flex flex-col h-full">
+                    <div className="flex-1 flex flex-col min-h-0">
+                      {userType && (
+                        <FlowRenderer
+                          userType={userType}
+                          step={currentStep}
+                          onNext={handleNextStep}
+                          otpSent={otpSent}
+                          setOtpSent={setOtpSent}
+                          timer={timer}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-              {!isDashboardStep && (
-                <div className="mt-4 text-center md:text-left">
-                  <p className="text-xs font-medium text-neutral-900">
-                    Already a User?{" "}
-                    <Link href="/signin" className="text-blue-500 underline">
-                      Login
-                    </Link>
-                  </p>
-                </div>
+
+                  {/* Already User Link - Below form */}
+                  {!isDashboardStep && (
+                    <div className="mt-4 md:mt-6 text-center">
+                      <p className="text-xs md:text-sm text-neutral-600">
+                        Already a User?{" "}
+                        <Link
+                          href="/signin"
+                          className="text-[var(--color-primary)] font-semibold hover:underline"
+                        >
+                          Login
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

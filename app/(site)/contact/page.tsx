@@ -10,7 +10,7 @@ export default function ContactPage() {
           {/* Left Column - Content */}
           <div className="flex flex-col justify-center text-center md:text-left">
             {/* BADGE */}
-            <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-sm mb-4 sm:mb-6 md:mb-6 lg:mb-8 w-fit md:w-fit mx-auto md:mx-0">
+            <span className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-2 sm:px-3 md:px-3 lg:px-3 py-1 rounded-[6px] font-medium text-xs sm:text-sm md:text-sm lg:text-sm tracking-wide uppercase shadow-none mb-4 sm:mb-6 md:mb-6 lg:mb-8 w-fit md:w-fit mx-auto md:mx-0">
               Get in Touch with Nationcite
             </span>
 
