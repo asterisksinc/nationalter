@@ -68,7 +68,7 @@ export const AccountSettings = () => {
           </span>
           {/* Toggle Switch */}
           <button className="w-[32px] h-[16px] bg-[#E8E8ED] border border-[#D1D1D6] rounded-[20px] relative transition-colors focus:outline-none flex items-center">
-            <span className="absolute left-[1px] w-[14px] h-[14px] bg-[#FFFFFF] rounded-full shadow-sm transition-transform"></span>
+            <span className="absolute left-[1px] w-[14px] h-[14px] bg-[#FFFFFF] rounded-full transition-transform"></span>
           </button>
           <span className="text-[14px] font-medium text-[#525866]">Enable</span>
         </div>

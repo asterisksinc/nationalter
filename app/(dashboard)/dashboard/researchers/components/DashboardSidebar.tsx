@@ -61,7 +61,7 @@ export const DashboardSidebar = ({
           <img
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
             alt="John Doe"
-            className="w-[40px] h-[40px] rounded-full object-cover ring-2 ring-white shadow-sm"
+            className="w-[40px] h-[40px] rounded-full object-cover ring-2 ring-white"
           />
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-[14px] font-semibold leading-[120%] text-[#181B25] truncate">

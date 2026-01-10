@@ -110,13 +110,14 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
   const handleTicketTypeSelect = (type: TicketType) => {
     setFormData({ ...formData, ticketType: type });
-    if (type === "publications-citations") {
+  };
+
+  const handleCategoryNext = () => {
+    if (!formData.ticketType) return;
+
+    if (formData.ticketType === "publications-citations") {
       pushStep(TicketStep.SEARCH);
     } else {
-      // For Profile, Affiliation, Credentials, Other -> go to Sub-category/Notes
-      // Note: Design implies some have sub-categories, others might go straight to a text area.
-      // Based on Flow 1 (Profile & Identity), it goes to a sub-cat dropdown.
-      // We will map them generally to SUB_CATEGORY
       pushStep(TicketStep.SUB_CATEGORY);
     }
   };
@@ -157,7 +158,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto relative flex flex-col">
+      <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto relative flex flex-col">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
           {history.length > 1 && currentStep !== TicketStep.SUCCESS ? (
@@ -171,7 +172,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             <div className="w-7" /> /* Spacer to keep title centered */
           )}
 
-          <div className="flex-1 text-center text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+          <div className="flex-1 text-center text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B]">
             {currentStep === TicketStep.SUCCESS
               ? "Ticket Created 🎉"
               : "Create a New Ticket"}
@@ -195,7 +196,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 <span className="text-[#f76a23] font-medium">Researcher</span>
               </p>
 
-              <div className="space-y-2">
+              <div className="space-y-2 mb-4">
                 {[
                   { id: "profile-identity", label: "Profile & Identity" },
                   {
@@ -229,6 +230,14 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   </label>
                 ))}
               </div>
+
+              <button
+                onClick={handleCategoryNext}
+                disabled={!formData.ticketType}
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
+              >
+                Next
+              </button>
             </div>
           )}
 
@@ -275,12 +284,20 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 </select>
               )}
 
-              <button
-                onClick={() => pushStep(TicketStep.NOTES)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
-              >
-                Next
-              </button>
+              <div className="pt-2">
+                <button
+                  onClick={() => pushStep(TicketStep.SEARCH)}
+                  className="w-full bg-white border-2 border-[#f76a23] text-[#f76a23] hover:bg-orange-50 text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors mb-3"
+                >
+                  Search & Attach Publication
+                </button>
+                <button
+                  onClick={() => pushStep(TicketStep.NOTES)}
+                  className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
+                >
+                  Continue Without Publication
+                </button>
+              </div>
             </div>
           )}
 
@@ -304,7 +321,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <button
                 onClick={handlePaperSearch}
                 disabled={!searchQuery.trim()}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
               >
                 Search
               </button>
@@ -375,7 +392,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
                 <button
                   onClick={() => pushStep(TicketStep.ISSUE_REASON)}
-                  className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                  className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
                 >
                   Next
                 </button>
@@ -478,7 +495,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <button
                 onClick={() => pushStep(TicketStep.IMPACT)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
               >
                 Next
               </button>
@@ -566,7 +583,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <button
                 onClick={() => pushStep(TicketStep.NOTES)}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
               >
                 Next
               </button>
@@ -615,7 +632,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <button
                 onClick={handleSubmit}
                 disabled={!formData.consent}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                className={`w-full py-3 rounded-[8px] font-medium transition-colors ${
                   formData.consent
                     ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
@@ -679,13 +696,13 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <div className="flex gap-3">
                 <button
                   onClick={handleClose}
-                  className="flex-1 py-2.5 border border-gray-300 rounded-lg text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 transition-colors"
+                  className="flex-1 py-2.5 border border-gray-300 rounded-[8px] text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 transition-colors"
                 >
                   Back to Dashboard
                 </button>
                 <button
                   onClick={handleClose}
-                  className="flex-1 bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors"
+                  className="flex-1 bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-[8px] text-[14px] font-semibold leading-[120%] transition-colors"
                 >
                   View Ticket Details
                 </button>

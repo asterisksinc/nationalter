@@ -98,8 +98,8 @@ export default function ResearchersPage() {
         />
 
         {/* Welcome */}
-        <div className="mb-5 pb-4 border-b border-[#E1E4EA]">
-          <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+        <div className="mb-6 pb-4 border-b border-[#E1E4EA]">
+          <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B]">
             Good Evening, Dr. Sarah Mitchell!
           </div>
           <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mt-1">
@@ -108,7 +108,7 @@ export default function ResearchersPage() {
         </div>
 
         {/* Stats Row */}
-        <div className="flex gap-3 mb-5">
+        <div className="flex gap-3 mb-6">
           {/* Main Metrics Group - All 5 stats together */}
           <div className="flex-1 bg-white rounded-lg border border-[#E1E4EA] flex divide-x divide-[#E1E4EA]">
             <div className="flex-1">
@@ -156,12 +156,14 @@ export default function ResearchersPage() {
         </div>
 
         {/* Middle Section: Chart + Profile */}
-        <div className="grid grid-cols-12 gap-4 mb-5">
+        <div className="grid grid-cols-12 gap-6 mb-6">
           {/* Chart */}
           <HIndexChart data={chartData} />
 
           {/* Profile Completeness */}
-          <ProfileCompleteness percentage={76} missingPublications={5} />
+          <div className="col-span-4">
+            <ProfileCompleteness percentage={76} missingPublications={5} />
+          </div>
         </div>
 
         {/* Tickets Section */}

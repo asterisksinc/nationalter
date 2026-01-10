@@ -86,7 +86,7 @@ export const AddPublicationModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-[16px] w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -98,7 +98,7 @@ export const AddPublicationModal = ({
         {/* Step 1: Choose Method */}
         {step === "choose" && (
           <div className="p-6">
-            <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
             <div className="space-y-4">
@@ -156,7 +156,7 @@ export const AddPublicationModal = ({
         {/* Step 2: DOI Input */}
         {step === "doi-input" && (
           <div className="p-6">
-            <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -189,7 +189,7 @@ export const AddPublicationModal = ({
 
             <button
               onClick={handleDoiNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[16px] transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
             >
               Next
             </button>
@@ -199,7 +199,7 @@ export const AddPublicationModal = ({
         {/* Step 3: Manual Form */}
         {step === "manual-form" && (
           <div className="p-6">
-            <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -296,7 +296,7 @@ export const AddPublicationModal = ({
 
             <button
               onClick={handleManualNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[16px] transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
             >
               Next
             </button>
@@ -306,7 +306,7 @@ export const AddPublicationModal = ({
         {/* Step 4: Fetching */}
         {step === "fetching" && (
           <div className="p-6">
-            <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -322,7 +322,7 @@ export const AddPublicationModal = ({
         {/* Step 5: Review & Submit */}
         {step === "review" && (
           <div className="p-6">
-            <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -403,7 +403,7 @@ export const AddPublicationModal = ({
             <button
               onClick={handleSubmit}
               disabled={!confirmed}
-              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-[16px] transition-colors ${
+              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors ${
                 confirmed
                   ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"
