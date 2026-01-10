@@ -86,7 +86,7 @@ export const AddPublicationModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-[16px] w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -98,7 +98,7 @@ export const AddPublicationModal = ({
         {/* Step 1: Choose Method */}
         {step === "choose" && (
           <div className="p-6">
-            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
             <div className="space-y-4">
@@ -129,7 +129,7 @@ export const AddPublicationModal = ({
                       onChange={(e) =>
                         setFormData({ ...formData, doiUrl: e.target.value })
                       }
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23] mt-2"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23] mt-2"
                     />
                   )}
                 </div>
@@ -156,7 +156,7 @@ export const AddPublicationModal = ({
         {/* Step 2: DOI Input */}
         {step === "doi-input" && (
           <div className="p-6">
-            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -183,13 +183,13 @@ export const AddPublicationModal = ({
                 onChange={(e) =>
                   setFormData({ ...formData, doiUrl: e.target.value })
                 }
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
               />
             </div>
 
             <button
               onClick={handleDoiNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
             >
               Next
             </button>
@@ -199,7 +199,7 @@ export const AddPublicationModal = ({
         {/* Step 3: Manual Form */}
         {step === "manual-form" && (
           <div className="p-6">
-            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -224,7 +224,7 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                 />
 
                 <div className="grid grid-cols-2 gap-3">
@@ -235,7 +235,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, authors: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                   <input
                     type="text"
@@ -244,7 +244,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, doi: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                 </div>
 
@@ -255,7 +255,7 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, journal: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                 />
 
                 <div className="grid grid-cols-2 gap-3">
@@ -266,7 +266,7 @@ export const AddPublicationModal = ({
                     onChange={(e) =>
                       setFormData({ ...formData, publisher: e.target.value })
                     }
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                   <input
                     type="text"
@@ -278,7 +278,7 @@ export const AddPublicationModal = ({
                         publicationType: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                 </div>
 
@@ -289,14 +289,14 @@ export const AddPublicationModal = ({
                   onChange={(e) =>
                     setFormData({ ...formData, year: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-[16px] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                 />
               </div>
             </div>
 
             <button
               onClick={handleManualNext}
-              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors"
+              className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
             >
               Next
             </button>
@@ -306,11 +306,11 @@ export const AddPublicationModal = ({
         {/* Step 4: Fetching */}
         {step === "fetching" && (
           <div className="p-6">
-            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
-            <div className="border-2 border-dashed border-blue-300 rounded-[16px] p-12 flex flex-col items-center justify-center">
+            <div className="border-2 border-dashed border-blue-300 rounded-2xl p-12 flex flex-col items-center justify-center">
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-3" />
               <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
                 Fetching Data (Loading symbol)
@@ -322,7 +322,7 @@ export const AddPublicationModal = ({
         {/* Step 5: Review & Submit */}
         {step === "review" && (
           <div className="p-6">
-            <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-6">
+            <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
             </div>
 
@@ -403,7 +403,7 @@ export const AddPublicationModal = ({
             <button
               onClick={handleSubmit}
               disabled={!confirmed}
-              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-[8px] transition-colors ${
+              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors ${
                 confirmed
                   ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"

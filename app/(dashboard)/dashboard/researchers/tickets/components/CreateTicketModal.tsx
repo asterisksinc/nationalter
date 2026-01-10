@@ -222,7 +222,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       name="ticketType"
                       checked={formData.ticketType === type.id}
                       onChange={() => {}}
-                      className="w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                      style={{ accentColor: "#FF8D28" }}
+                      className="w-4 h-4 shrink-0 focus:ring-1 focus:ring-offset-0 focus:ring-[#FF8D28] cursor-pointer"
                     />
                     <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
                       {type.label}
@@ -249,7 +250,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   type="radio"
                   checked
                   readOnly
-                  className="mt-1 w-4 h-4 text-[#f76a23]"
+                  style={{ accentColor: "#FF8D28" }}
+                  className="mt-1 w-4 h-4 shrink-0 cursor-pointer"
                 />
                 <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] capitalize">
                   {formData.ticketType?.replace("-", " & ")}
@@ -430,7 +432,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       name="issueReason"
                       checked={formData.issueReason === reason.id}
                       onChange={() => {}}
-                      className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                      style={{ accentColor: "#FF8D28" }}
+                      className="mt-0.5 w-4 h-4 shrink-0 focus:ring-1 focus:ring-offset-0 focus:ring-[#FF8D28] cursor-pointer"
                     />
                     <span className="text-[14px] font-normal leading-[120%] text-[#0E121B]">
                       {reason.label}
@@ -546,7 +549,8 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       name="impact"
                       checked={formData.impactLevel === level.id}
                       onChange={() => {}}
-                      className="mt-0.5 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                      style={{ accentColor: "#FF8D28" }}
+                      className="mt-0.5 w-4 h-4 shrink-0 focus:ring-1 focus:ring-offset-0 focus:ring-[#FF8D28] cursor-pointer"
                     />
                     <div className="flex-1">
                       <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] block">

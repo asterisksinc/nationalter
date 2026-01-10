@@ -84,10 +84,10 @@ export const TicketsTable = ({
       <div className="border border-[#E1E4EA] rounded-lg overflow-x-auto">
         <table className="w-full table-fixed text-left">
           <colgroup>
-            <col className="w-[22%]" />
-            <col className="w-[40%]" />
-            <col className="w-[22%]" />
-            <col className="w-[16%]" />
+            <col className="w-[23%]" />
+            <col className="w-[25%]" />
+            <col className="w-[27%]" />
+            <col className="w-[27%]" />
           </colgroup>
           <thead className="bg-[#F5F7FA]">
             <tr>
@@ -99,7 +99,7 @@ export const TicketsTable = ({
               ].map((h) => (
                 <th
                   key={h}
-                  className="h-9 px-4
+                  className="h-9 px-3
                                text-[12px] font-medium
                                text-[#525866]
                                border-b border-[#E1E4EA]"
@@ -117,16 +117,16 @@ export const TicketsTable = ({
                 className="h-[54px] border-b border-[#E1E4EA]
                            hover:bg-[#F9FAFB]"
               >
-                <td className="px-4 text-[14px] font-medium text-[#222530]">
+                <td className="px-3 text-[14px] font-medium text-[#222530]">
                   {ticket.id}
                 </td>
-                <td className="px-4 text-[14px] text-[#525866]">
+                <td className="px-3 text-[14px] text-[#525866]">
                   {ticket.type}
                 </td>
-                <td className="px-4">
+                <td className="px-3">
                   <StatusBadge status={ticket.status} />
                 </td>
-                <td className="px-4 text-[14px] text-[#525866]">
+                <td className="px-3 text-[14px] text-[#525866]">
                   {ticket.date}
                 </td>
               </tr>

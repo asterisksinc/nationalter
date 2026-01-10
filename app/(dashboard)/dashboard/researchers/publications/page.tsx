@@ -140,8 +140,8 @@ export default function PublicationsPage() {
   return (
     <>
       {/* Page Title */}
-      <div className="mb-6">
-        <div className="text-[16px] font-semibold leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-1">
+      <div className="mb-6 border-b border-[#E1E4EA] pb-2">
+        <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-1">
           My Publications
         </div>
         <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
@@ -150,28 +150,28 @@ export default function PublicationsPage() {
       </div>
 
       {/* Search Bar & Actions */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 gap-4">
         <div className="relative flex-1 max-w-2xl">
           <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            size={18}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#525866]"
+            size={20}
           />
           <input
             type="text"
             placeholder="Search by ORCID, DOI..."
-            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] text-[#333333] placeholder-[#8E8E93]"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E1E4EA] rounded text-[14px] font-normal leading-[120%] tracking-[-0.02em] focus:outline-none focus:border-[#FF8D28] text-[#333333] placeholder-[#525866]"
           />
         </div>
 
-        <div className="flex items-center gap-3 ml-4">
-          <button className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-[8px] text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 bg-white">
-            <Filter size={16} /> Filter
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-2 px-2.5 py-2.5 border border-[#E1E4EA] rounded bg-white text-[14px] font-medium leading-[120%] text-[#222530] hover:bg-gray-50">
+            <Filter size={20} /> Filter
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 border-2 border-[#f76a23] rounded-[8px] text-[14px] font-semibold leading-[120%] text-[#f76a23] hover:bg-orange-50 bg-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 border border-[#FF8D28] rounded bg-white text-[14px] font-semibold leading-[120%] text-[#FF8D28] hover:bg-orange-50 transition-colors"
           >
-            <Plus size={16} /> Add Missing Publication
+            <Plus size={20} /> Add Missing Publication
           </button>
         </div>
       </div>

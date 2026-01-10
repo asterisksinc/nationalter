@@ -56,12 +56,13 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
           >
             <defs>
               <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f76a23" stopOpacity={0.15} />
+                <stop offset="5%" stopColor="#f76a23" stopOpacity={0.25} />
+                <stop offset="50%" stopColor="#f76a23" stopOpacity={0.12} />
                 <stop offset="95%" stopColor="#f76a23" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid
-              vertical={false}
+              vertical={true}
               horizontal={true}
               strokeDasharray="0"
               stroke="#E1E4EA"
@@ -100,16 +101,16 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
               type="linear"
               dataKey="value"
               stroke="#f76a23"
-              strokeWidth={2}
+              strokeWidth={2.5}
               fill="url(#colorValue)"
               dot={{
-                r: 3,
+                r: 4,
                 fill: "#f76a23",
                 stroke: "#fff",
-                strokeWidth: 1.5,
+                strokeWidth: 2,
               }}
               activeDot={{
-                r: 5,
+                r: 6,
                 fill: "#f76a23",
                 stroke: "#fff",
                 strokeWidth: 2,

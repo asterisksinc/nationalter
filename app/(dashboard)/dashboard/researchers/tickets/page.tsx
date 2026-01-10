@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Plus, Filter } from "lucide-react";
 import { StatCard, TicketTable, CreateTicketModal } from "./components";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 // --- Types ---
 
@@ -129,6 +130,23 @@ const tickets: TicketData[] = [
 
 export default function TicketsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (searchParams?.get("openCreate") === "true") {
+      setIsModalOpen(true);
+    }
+  }, [searchParams]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Remove query param if present
+    if (searchParams?.get("openCreate") === "true") {
+      router.replace(pathname);
+    }
+  };
 
   return (
     <>
@@ -143,12 +161,32 @@ export default function TicketsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-5 gap-4 mb-6">
-        <StatCard label="Open Tickets" value="01" />
-        <StatCard label="In Review Tickets" value="04" />
-        <StatCard label="Approved Tickets" value="03" />
-        <StatCard label="Active Tickets" value="02" />
-        <StatCard label="Rejected" value="00" />
+      <div className="w-full bg-white border mb-[24px] border-[#E1E4EA] rounded-xl px-6 py-4 flex items-center justify-between">
+        <div className="flex flex-col">
+          <span className="text-sm text-[#525866]">Open Tickets</span>
+          <span className="text-2xl font-semibold text-[#0E121B]">01</span>
+        </div>
+
+        <div className="w-px h-10 bg-[#D9D9D9]" />
+
+        <div className="flex flex-col">
+          <span className="text-sm text-[#525866]">In Review Tickets</span>
+          <span className="text-2xl font-semibold text-[#0E121B]">04</span>
+        </div>
+
+        <div className="w-px h-10 bg-[#D9D9D9]" />
+
+        <div className="flex flex-col">
+          <span className="text-sm text-[#525866]">Approved Tickets</span>
+          <span className="text-2xl font-semibold text-[#0E121B]">03</span>
+        </div>
+
+        <div className="w-px h-10 bg-[#D9D9D9]" />
+
+        <div className="flex flex-col">
+          <span className="text-sm text-[#525866]">Rejected</span>
+          <span className="text-2xl font-semibold text-[#0E121B]">00</span>
+        </div>
       </div>
 
       {/* Search Bar */}
@@ -173,10 +211,7 @@ export default function TicketsPage() {
       <TicketTable tickets={tickets} />
 
       {/* Create Ticket Modal */}
-      <CreateTicketModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <CreateTicketModal isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 }
