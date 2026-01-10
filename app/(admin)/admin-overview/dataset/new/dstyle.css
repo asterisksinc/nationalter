@@ -65,7 +65,7 @@
 .upload-btn {
     margin: 20px auto 0;
     display: block;
-    background: #f97316;
+    background: #ea580c;
     color: #fff;
     border: none;
     padding: 8px 18px;
@@ -76,6 +76,162 @@
 
 .upload-btn:hover {
     background: #ea580c;
+}
+.validation-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #eef1f6;
+  font-family: Inter, sans-serif;
+}
+
+/* ===== Summary ===== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.success-card {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.error-card {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.summary-title {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.summary-count {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.summary-percent {
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+.summary-sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.summary-icon {
+  font-size: 20px;
+}
+
+/* ===== Header ===== */
+.error-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.error-title {
+  font-weight: 600;
+}
+
+.error-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ghost-btn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===== Table ===== */
+.error-table-wrapper {
+  border: 1px solid #eef1f6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.error-table th {
+  background: #f9fafb;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: left;
+  padding: 10px;
+}
+
+.error-table td {
+  padding: 10px;
+  border-top: 1px solid #eef1f6;
+  font-size: 13px;
+}
+
+/* ===== Badges ===== */
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.badge-red { background: #fee2e2; color: #b91c1c; }
+.badge-orange { background: #ffedd5; color: #c2410c; }
+.badge-pink { background: #fce7f3; color: #be185d; }
+.badge-purple { background: #ede9fe; color: #6d28d9; }
+.badge-blue { background: #e0f2fe; color: #0369a1; }
+
+/* ===== Highlights ===== */
+.highlight {
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.warning { background: #ffedd5; }
+.error { background: #fee2e2; }
+.info { background: #e0f2fe; }
+
+/* ===== Actions ===== */
+.action-col {
+  display: flex;
+  gap: 10px;
+}
+
+.action-ok {
+  color: #22c55e;
+  cursor: pointer;
+}
+
+.action-delete {
+  color: #ef4444;
+  cursor: pointer;
+}
+
+/* ===== Footer ===== */
+.scroll-hint {
+  text-align: center;
+  font-size: 12px;
+  color: #9ca3af;
+  padding: 10px;
 }
 
 
@@ -291,29 +447,47 @@
 }
 
 /* Circle */
+/* Default circle (inactive/future steps) */
 .step-circle {
     width: 36px;
     height: 36px;
     border-radius: 6px;
     border: 2px solid #e5e7eb;
-    background: #fff;
+    background: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.step-circle1 {
-    width: 14px;
-    height: 14px;
-    border-radius: 2px;
-    background: #fff;
-    margin: 10px 10px;
+/* Completed steps (before active) - ORANGE BG + WHITE TICK */
+.step.active .step-circle:not(.active) {
+    background: #f97316 !important;
+    border-color: #f97316 !important;
 }
 
-/* Active step */
+/* Current active step */
 .step-circle.active {
     background: #f97316;
     border-color: #f97316;
 }
 
-/* Line */
+/* White square/tick for ALL orange circles */
+.step-circle1 {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #ffffff;
+    margin: 11px;
+}
+
+/* Gray square for inactive steps only */
+.step:not(.active) .step-circle .step-circle1 {
+    background: #e5e7eb;
+    border: 1px solid #9ca3af;
+}
+
+/* Lines */
 .step-line {
     flex: 1;
     height: 2px;
@@ -324,6 +498,7 @@
 .step-line.active {
     background: #f97316;
 }
+
 
 /* Text */
 .step-title {
@@ -419,4 +594,261 @@
     letter-spacing: 0;
     color: #222530;
     display: flex;
+}
+.confirm-step-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #eef1f6;
+  font-family: Inter, sans-serif;
+}
+
+/* ===== Action Cards ===== */
+.import-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.import-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.import-card:hover {
+  border-color: #fb923c;
+}
+
+.active-card {
+  border: 2px solid #fb923c;
+  background: #fff7ed;
+}
+
+.danger-card {
+  background: #fff5f5;
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.success-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.danger-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.info-icon {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.danger-label {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* ===== Version Control ===== */
+.version-control-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eef1f6;
+  padding-top: 20px;
+}
+
+.version-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.version-desc {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.version-note {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.version-note span {
+  color: #fb923c;
+  cursor: pointer;
+}
+
+.version-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-pill {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.active-version {
+  background: #fff7ed;
+  border-color: #fb923c;
+  color: #ea580c;
+}
+
+.pill-label {
+  display: block;
+  font-size: 10px;
+  color: #6b7280;
+}
+
+.version-arrow {
+  font-size: 16px;
+  color: #9ca3af;
+}
+.import-action-grid {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.import-radio-card {
+  flex: 1;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: white;
+}
+
+.import-radio-card:hover {
+  border-color: #d1d5db;
+}
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio-input:checked + .radio-content {
+  border-color: #f97316;
+}
+
+.radio-input:checked + .radio-content ~ * {
+  border-color: #f97316;
+}
+
+.selected-radio {
+  border-color: #f97316 !important;
+  background: #fff7ed;
+}
+
+.danger-radio .danger-icon {
+  color: #ef4444;
+}
+
+.active-radio .success-icon {
+  color: #10b981;
+}
+
+.info-radio .info-icon {
+  color: #3b82f6;
+}
+
+.card-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.danger-icon {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.success-icon {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.info-icon {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.danger-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  align-self: flex-start;
+}
+
+.radio-content {
+  padding: 20px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
