@@ -24,7 +24,7 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
   return (
     <div className="col-span-8 p-4 bg-white rounded-lg border border-[#E1E4EA]">
       <div className="flex mt-3 justify-between items-center mb-4">
-        <div className="text-[16px]  font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+        <div className="text-[16px]  font-medium leading-5 tracking-[-0.006em] text-[#0E121B]">
           H-Index Performance
         </div>
         <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
               All
             </button>
           </div>
-          <button className="flex items-center gap-1.5 px-2.5 py-1 border border-gray-200 rounded-md text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-[28px]">
+          <button className="flex items-center gap-1.5 px-2.5 py-1 border border-gray-200 rounded-md text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-7">
             <Download size={13} strokeWidth={1.5} /> Export Report
           </button>
         </div>

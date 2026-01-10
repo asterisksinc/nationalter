@@ -18,7 +18,7 @@ export const DashboardSidebar = ({
 }: DashboardSidebarProps) => {
   return (
     <aside className="w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-20">
-      <div className="h-[72px] flex items-center px-[20px] border-b border-[#E1E4EA]">
+      <div className="h-[72px] flex items-center px-5 border-b border-[#E1E4EA]">
         <div className="flex items-center gap-2">
           <img
             src="/logo.png"
@@ -56,12 +56,12 @@ export const DashboardSidebar = ({
         />
       </nav>
 
-      <div className="p-[20px] border-t border-[#E1E4EA] mt-auto">
-        <div className="flex items-center gap-[12px] p-[8px] rounded-[8px] hover:bg-[#E1E4EA] cursor-pointer transition-colors">
+      <div className="p-5 border-t border-[#E1E4EA] mt-auto">
+        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#E1E4EA] cursor-pointer transition-colors">
           <img
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
             alt="John Doe"
-            className="w-[40px] h-[40px] rounded-full object-cover ring-2 ring-white"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-white"
           />
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-[14px] font-semibold leading-[120%] text-[#181B25] truncate">

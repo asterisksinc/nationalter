@@ -28,7 +28,7 @@ export const StatItem = ({
         </div>
       </div>
     )}
-    <span className="text-[14px] font-medium leading-[20px] text-[#525866] mb-0.5">
+    <span className="text-[14px] font-medium leading-5 text-[#525866] mb-0.5">
       {label}
     </span>
     <div className="flex items-center gap-1.5">

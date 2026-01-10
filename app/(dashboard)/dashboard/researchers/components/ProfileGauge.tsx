@@ -68,7 +68,7 @@ export const ProfileGauge = ({ percentage }: ProfileGaugeProps) => {
       </div>
 
       {/* Text Position - Centered inside the gauge area */}
-     <div className="absolute top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-[4px]">
+     <div className="absolute top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
         <span className="font-sans font-semibold text-[24px] leading-[120%] text-[#FF7A00]">
           {percentage}%
         </span>

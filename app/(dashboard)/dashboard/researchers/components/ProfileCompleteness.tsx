@@ -12,13 +12,13 @@ export const ProfileCompleteness = ({
   missingPublications = 0,
 }: ProfileCompletenessProps) => {
   return (
-    <div className="w-full bg-white rounded-[12px] border border-[#E1E4EA] p-6 flex flex-col box-border font-sans">
+    <div className="w-full bg-white rounded-xl border border-[#E1E4EA] p-6 flex flex-col box-border font-sans">
       {/* Title Section */}
       <div className="flex flex-col gap-3 mb-6">
         <div className="text-[16px] font-semibold leading-[120%] text-[#0E121B]">
           Profile Completeness
         </div>
-        <div className="h-[1px] w-full bg-[#E1E4EA]" />
+        <div className="h-px w-full bg-[#E1E4EA]" />
       </div>
 
       {/* Gauge Section */}
@@ -81,7 +81,7 @@ export const ProfileCompleteness = ({
       </div>
 
       {/* Action Button */}
-      <button className="mt-auto w-full h-[40px] flex items-center justify-center gap-2 rounded-[6px] border border-[#FF8D28] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer">
+      <button className="mt-auto w-full h-10 flex items-center justify-center gap-2 rounded-md border border-[#FF8D28] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer">
         <span className="text-[14px] font-semibold leading-[120%]">
           Complete Your Profile
         </span>

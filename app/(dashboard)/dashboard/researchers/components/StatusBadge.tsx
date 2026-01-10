@@ -39,16 +39,16 @@ export const StatusBadge = ({ status }: { status: Status }) => {
   const { Icon, color } = STATUS_CONFIG[status];
   
   return (
-    <div className="inline-flex items-center gap-[4px] h-[24px] px-[8px] py-[4px] border border-[#E1E4EA] rounded-[6px] bg-white">
+    <div className="inline-flex items-center gap-1 h-6 px-2 py-1 border border-[#E1E4EA] rounded-md bg-white">
       <div
-        className="w-[16px] h-[16px] rounded-full flex items-center justify-center shrink-0"
+        className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
         style={{ background: color }}
       >
         {/* strokeWidth is increased to simulate the solid appearance in the images */}
         <Icon size={10} color="#ffffff" strokeWidth={3} />
       </div>
 
-      <span className="text-[12px] font-medium leading-[16px] text-[#525866] whitespace-nowrap">
+      <span className="text-[12px] font-medium leading-4 text-[#525866] whitespace-nowrap">
         {status}
       </span>
     </div>
