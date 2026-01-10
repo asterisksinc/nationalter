@@ -2,7 +2,7 @@
 'use client';  // ← This line is already there
 import Image from 'next/image';
 import './adminstyle.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DashboardSidebar } from './component/dashboardsidebar';
 import { DashboardHeader } from './component/DashboardHeader';
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ const users = [
 ];
 export default function HomePage() {
   const router = useRouter();
+
 
   const [activePage, setActivePage] = useState('dashboard');
   return (
