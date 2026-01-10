@@ -14,7 +14,7 @@ import {
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
-  activePage?: "overview" | "usermanagement" | "tickets";
+  activePage?: "overview" | "usermanagement" | "tickets" | "datasets";
 }
 
 export const DashboardSidebar = ({

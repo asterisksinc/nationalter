@@ -5,6 +5,7 @@ import './adminstyle.css';
 import { useState } from 'react';
 import { DashboardSidebar } from './component/dashboardsidebar';
 import { DashboardHeader } from './component/DashboardHeader';
+import { useRouter } from "next/navigation";
 const menuItems = [
   { label: 'Dashboard', icon: 'one', key: 'dashboard' },
   { label: 'User Management', icon: '2', key: 'users' },
@@ -22,56 +23,59 @@ const users = [
   { name: 'Martin Murphy', email: 'martin@example.com', status: 'Active', plan: 'Enterprise', lastActive: '2 weeks ago' },
 ];
 export default function HomePage() {
-    const [activePage, setActivePage] = useState('dashboard');
+  const router = useRouter();
+
+  const [activePage, setActivePage] = useState('dashboard');
   return (
     <div className="admin-layout">
       {/* Sidebar */}
-         <DashboardSidebar activePage="overview" />
-   
+      <DashboardSidebar activePage="overview" />
+
 
       {/* Main content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]" style={{paddingLeft:'0px',paddingTop:'0px', paddingRight:'0px'}}>
+      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]" style={{ paddingLeft: '0px', paddingTop: '0px', paddingRight: '0px' }}>
         {/* Top bar */}
-      <DashboardHeader
-               breadcrumbItems={[
-                 { label: "Home", href: "/" },
-                 { label: "Dashboard" },
-               ]}
-             />
+        <DashboardHeader
+          breadcrumbItems={[
+            { label: "Home", href: "/" },
+            { label: "Dashboard" },
+          ]}
+        />
 
         {/* Content area */}
-   <section className="admin-content" >
-     {activePage === 'dashboard' && (
+        <section className="admin-content" >
+          {activePage === 'dashboard' && (
             <>
-  {/* Breadcrumb + title row */}
-  <div className="content-header">
-    <div>
-   <h3 className='main-ct'>Command Center</h3>
-      <p className="breadcrumb-current sub-ct">Real-time visibility into the NationCite data ecosystem. Monitor entity status and system health.</p>
-      </div>
-<div className="content-header-right">
-  <div className='frxd'>
-    <div className="system-pill">
-      <span className='dot'></span> SYSTEM ONLINE
-    </div>
-    <div className="last-sync">Last synced: Oct 24, 2023 · 14:02 UTC</div>
-  </div>
-  <button className="primary-btn" aria-label="Upload new dataset" style={{borderRadius:'6px'}}>
-    <Image
-      src="/logos/upload.png"
-      alt="Upload icon"
-      width={20}
-      height={20}
-      priority
-    />
-    Upload New Dataset
-  </button>
-</div>
+              {/* Breadcrumb + title row */}
+              <div className="content-header">
+                <div>
+                  <h3 className='main-ct'>Command Center</h3>
+                  <p className="breadcrumb-current sub-ct">Real-time visibility into the NationCite data ecosystem. Monitor entity status and system health.</p>
+                </div>
+                <div className="content-header-right">
+                  <div className='frxd'>
+                    <div className="system-pill">
+                      <span className='dot'></span> SYSTEM ONLINE
+                    </div>
+                    <div className="last-sync">Last synced: Oct 24, 2023 · 14:02 UTC</div>
+                  </div>
+                  <button className="primary-btn" aria-label="Upload new dataset" style={{ borderRadius: '6px' }}
+                    onClick={() => router.push("admin-overview/dataset/new")}>
+                    <Image
+                      src="/logos/upload.png"
+                      alt="Upload icon"
+                      width={20}
+                      height={20}
+                      priority
+                    />
+                    Upload New Dataset
+                  </button>
+                </div>
 
-  </div>
+              </div>
 
-  {/* Command center summary cards */}
-<div className="cards-row" style={{paddingLeft:'32px', paddingRight:'32px'}}>
+              {/* Command center summary cards */}
+              <div className="cards-row" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
                 <div className="summary-card summary-card-compact">
                   <div className="card-top-section">
                     <div className="left-section">
@@ -80,7 +84,7 @@ export default function HomePage() {
                         alt="Researchers icon"
                         width={55}
                         height={55}
-                        style={{borderRadius:'6px'}}
+                        style={{ borderRadius: '6px' }}
                         priority
                       />
 
@@ -90,7 +94,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                   <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>
                       <div className="status-badge">
                         <span className="status-dot"></span>
                         Live
@@ -116,7 +120,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-   <div className="summary-card summary-card-compact">
+                <div className="summary-card summary-card-compact">
                   <div className="card-top-section">
                     <div className="left-section">
                       <Image
@@ -125,7 +129,7 @@ export default function HomePage() {
                         width={55}
                         height={55}
                         priority
-                      style={{borderRadius:'6px'}}
+                        style={{ borderRadius: '6px' }}
 
                       />
 
@@ -159,7 +163,7 @@ export default function HomePage() {
                     <span className="meta-value">institutions_rankings_q2.csv</span>
                   </div>
                 </div>
-   <div className="summary-card summary-card-compact">
+                <div className="summary-card summary-card-compact">
                   <div className="card-top-section">
                     <div className="left-section">
                       <Image
@@ -168,7 +172,7 @@ export default function HomePage() {
                         width={55}
                         height={55}
                         priority
-                        style={{borderRadius:'6px'}}
+                        style={{ borderRadius: '6px' }}
 
                       />
 
@@ -178,12 +182,12 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                   
+
                     <div style={{ display: 'flex' }}>
                       <div className="status-badge1">
-                      <span className="dot1"></span>
-                      Pending
-                    </div>
+                        <span className="dot1"></span>
+                        Pending
+                      </div>
                       <div style={{ marginLeft: '17px', marginTop: '7px' }}>
                         <Image
                           src="/arrow.png"
@@ -200,217 +204,217 @@ export default function HomePage() {
                   </div>
 
                   <div className="card-meta-row">
-                    <span className="meta-label" style={{color:'#FF7A00'}}>Awaiting publish approval</span>
+                    <span className="meta-label" style={{ color: '#FF7A00' }}>Awaiting publish approval</span>
                     <span className="meta-value"></span>
                   </div>
                 </div>
-</div>
+              </div>
 
 
-  {/* Ecosystem metrics row */}
-  <div className='fle' style={{paddingLeft:'32px', paddingRight:'32px'}}>
-            <div className="panel-title">Ecosystem Metrics</div>
-            <div className="panel-title1">View All Reports</div>
-</div>
- <div className="cards-row1" style={{paddingLeft:'32px', paddingRight:'32px'}}>
-  {/* Left card */}
-  <div className="panel-card">
-    <div className="panel-header">
-      <div className="panel-header-left">
-        <div className="panel-subtitle">Total Records</div>
-      </div>
-      <div className="system-pill">
-        <span className="panel-badge">↑ 2.1%</span>
-      </div>
-    </div>
-<div>
-    <div className="panel-value">14.5M</div></div>
+              {/* Ecosystem metrics row */}
+              <div className='fle' style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+                <div className="panel-title">Ecosystem Metrics</div>
+                <div className="panel-title1">View All Reports</div>
+              </div>
+              <div className="cards-row1" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+                {/* Left card */}
+                <div className="panel-card">
+                  <div className="panel-header">
+                    <div className="panel-header-left">
+                      <div className="panel-subtitle">Total Records</div>
+                    </div>
+                    <div className="system-pill">
+                      <span className="panel-badge">↑ 2.1%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="panel-value">14.5M</div></div>
 
-    <div className="fake-bar-chart">
-      <div className="bar bar-1" />
-      <div className="bar bar-2" />
-      <div className="bar bar-3" />
-      <div className="bar bar-4" />
-      <div className="bar bar-5" />
-      <div className="bar bar-6" />
-      <div className="bar bar-7" />
+                  <div className="fake-bar-chart">
+                    <div className="bar bar-1" />
+                    <div className="bar bar-2" />
+                    <div className="bar bar-3" />
+                    <div className="bar bar-4" />
+                    <div className="bar bar-5" />
+                    <div className="bar bar-6" />
+                    <div className="bar bar-7" />
 
-    </div>
+                  </div>
 
-    <div className="panel-footer">Data Growth Over Last 7 Days</div>
-  </div>
+                  <div className="panel-footer">Data Growth Over Last 7 Days</div>
+                </div>
 
-  {/* Right card */}
-  <div className="panel-card">
-    <div className="panel-header">
-      <div>
-        <div className="panel-subtitle">Active Subscribers</div>
-      </div>
-      <div className="panel-header-right">
-        <span className="system-pill">↑ 2.1%</span>
-      </div>
-    </div>
+                {/* Right card */}
+                <div className="panel-card">
+                  <div className="panel-header">
+                    <div>
+                      <div className="panel-subtitle">Active Subscribers</div>
+                    </div>
+                    <div className="panel-header-right">
+                      <span className="system-pill">↑ 2.1%</span>
+                    </div>
+                  </div>
 
-    <div className="panel-value">842</div>
+                  <div className="panel-value">842</div>
 
-    <div className="donut-row">
-      <div className="fake-donut" />
-      <div className="donut-legend">
-        <div className="legend-item">
-          <div className="legend-left">
-            <span className="legend-dot legend-orange" />
-           <span className='ms-2'> Enterprise</span>
-          </div>
-          <span className="legend-count">280</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-left">
-            <span className="legend-dot legend-gold" />
-          <span className='ms-2'>  Standard</span>
-          </div>
-          <span className="legend-count">280</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-left">
-            <span className="legend-dot legend-yellow" />
-           <span className='ms-2'> Free</span>
-          </div>
-          <span className="legend-count">290</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                  <div className="donut-row">
+                    <div className="fake-donut" />
+                    <div className="donut-legend">
+                      <div className="legend-item">
+                        <div className="legend-left">
+                          <span className="legend-dot legend-orange" />
+                          <span className='ms-2'> Enterprise</span>
+                        </div>
+                        <span className="legend-count">280</span>
+                      </div>
+                      <div className="legend-item">
+                        <div className="legend-left">
+                          <span className="legend-dot legend-gold" />
+                          <span className='ms-2'>  Standard</span>
+                        </div>
+                        <span className="legend-count">280</span>
+                      </div>
+                      <div className="legend-item">
+                        <div className="legend-left">
+                          <span className="legend-dot legend-yellow" />
+                          <span className='ms-2'> Free</span>
+                        </div>
+                        <span className="legend-count">290</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
-  {/* Bottom row: alerts + activity + right metrics */}
-  <div className="cards-row cards-row--stretch" style={{paddingLeft:'32px', paddingRight:'32px'}}>
-    {/* System alerts */}
-    <div className="panel-card">
-      <div className="panel-header3">
-        <div className="panel-title">System Alerts</div>
-        <span className="chip chip-soft-orange">3 Active</span>
-      </div>
-      <div className="alert-list">
-        <div className="alert-item">
-          <span className="chip chip-critical">CRITICAL</span>
-          <div className="fgg"> <div className="alert-text">API Latency Spike (EU-West)</div>
-          <div className="alert-meta">2m ago</div></div>
-         
-        </div>
-        <div className="alert-item">
-          <span className="chip chip-warning">WARNING</span>
-           <div className="fgg">
-          <div className="alert-text">Data Sync Delayed: Universities</div>
-          <div className="alert-meta">45m ago</div></div>
-        </div>
-        <div className="alert-item">
-          <span className="chip chip-info">INFO</span>
-          <div className="fgg"><div className="alert-text">Scheduled Maintenance: Tomorrow</div>
-          <div className="alert-meta">2h ago</div></div>
-        </div>
-      </div>
-    </div>
+              {/* Bottom row: alerts + activity + right metrics */}
+              <div className="cards-row cards-row--stretch" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+                {/* System alerts */}
+                <div className="panel-card">
+                  <div className="panel-header3">
+                    <div className="panel-title">System Alerts</div>
+                    <span className="chip chip-soft-orange">3 Active</span>
+                  </div>
+                  <div className="alert-list">
+                    <div className="alert-item">
+                      <span className="chip chip-critical">CRITICAL</span>
+                      <div className="fgg"> <div className="alert-text">API Latency Spike (EU-West)</div>
+                        <div className="alert-meta">2m ago</div></div>
 
-    {/* Recent admin activity */}
-    <div className="panel-card">
-      <div className="panel-header3">
-        <div className="panel-title">Recent Admin Activity</div>
-      </div>
-      <ul className="timeline-list">
-        <li className="timeline-item">
-          <span className="timeline-dot" />
-          <div>
-            <div className="timeline-text">Uploaded researchers_v4_2025.csv</div>
-            <div className="timeline-meta">Today at 09:55 AM</div>
-          </div>
-        </li>
-        <li className="timeline-item">
-          <span className="timeline-dot" />
-          <div>
-            <div className="timeline-text">System auto-fixed 48 invalid rows</div>
-            <div className="timeline-meta">Today at 09:56 AM</div>
-          </div>
-        </li>
-          <li className="timeline-item">
-          <span className="timeline-dot" />
-          <div>
-            <div className="timeline-text">Dataset published (Overwrite mode)</div>
-            <div className="timeline-meta">Today at 09:55 AM</div>
-          </div>
-        </li>
-          <li className="timeline-item">
-          <span className="timeline-dot" />
-          <div>
-            <div className="timeline-text">Dataset published (Overwrite mode)</div>
-            <div className="timeline-meta">Today at 09:55 AM</div>
-          </div>
-        </li>
-          <li className="timeline-item">
-          <span className="timeline-dot" />
-          <div>
-            <div className="timeline-text">Dataset published (Overwrite mode)</div>
-            <div className="timeline-meta">Today at 09:55 AM</div>
-          </div>
-        </li>
-        {/* add more li items as needed */}
-      </ul>
-    </div>
+                    </div>
+                    <div className="alert-item">
+                      <span className="chip chip-warning">WARNING</span>
+                      <div className="fgg">
+                        <div className="alert-text">Data Sync Delayed: Universities</div>
+                        <div className="alert-meta">45m ago</div></div>
+                    </div>
+                    <div className="alert-item">
+                      <span className="chip chip-info">INFO</span>
+                      <div className="fgg"><div className="alert-text">Scheduled Maintenance: Tomorrow</div>
+                        <div className="alert-meta">2h ago</div></div>
+                    </div>
+                  </div>
+                </div>
 
-    {/* Right column – two stacked cards */}
-   <div className="metrics-column">
-  {/* Data Processing */}
-  <div className="metric-card">
-    <div className="metric-header">
-        
-      <div className="metric-icon purple-icon">   <Image
+                {/* Recent admin activity */}
+                <div className="panel-card">
+                  <div className="panel-header3">
+                    <div className="panel-title">Recent Admin Activity</div>
+                  </div>
+                  <ul className="timeline-list">
+                    <li className="timeline-item">
+                      <span className="timeline-dot" />
+                      <div>
+                        <div className="timeline-text">Uploaded researchers_v4_2025.csv</div>
+                        <div className="timeline-meta">Today at 09:55 AM</div>
+                      </div>
+                    </li>
+                    <li className="timeline-item">
+                      <span className="timeline-dot" />
+                      <div>
+                        <div className="timeline-text">System auto-fixed 48 invalid rows</div>
+                        <div className="timeline-meta">Today at 09:56 AM</div>
+                      </div>
+                    </li>
+                    <li className="timeline-item">
+                      <span className="timeline-dot" />
+                      <div>
+                        <div className="timeline-text">Dataset published (Overwrite mode)</div>
+                        <div className="timeline-meta">Today at 09:55 AM</div>
+                      </div>
+                    </li>
+                    <li className="timeline-item">
+                      <span className="timeline-dot" />
+                      <div>
+                        <div className="timeline-text">Dataset published (Overwrite mode)</div>
+                        <div className="timeline-meta">Today at 09:55 AM</div>
+                      </div>
+                    </li>
+                    <li className="timeline-item">
+                      <span className="timeline-dot" />
+                      <div>
+                        <div className="timeline-text">Dataset published (Overwrite mode)</div>
+                        <div className="timeline-meta">Today at 09:55 AM</div>
+                      </div>
+                    </li>
+                    {/* add more li items as needed */}
+                  </ul>
+                </div>
+
+                {/* Right column – two stacked cards */}
+                <div className="metrics-column">
+                  {/* Data Processing */}
+                  <div className="metric-card">
+                    <div className="metric-header">
+
+                      <div className="metric-icon purple-icon">   <Image
                         src="/logos/db.png"
                         alt="Researchers icon"
                         width={24}
                         height={24}
                         priority
                       /></div>
-      <div className="metric-title-group">
-        <div className="metric-title">Data Processing</div>
-        <div className="metric-value">12.4s</div>
-      </div>
-    </div>
+                      <div className="metric-title-group">
+                        <div className="metric-title">Data Processing</div>
+                        <div className="metric-value">12.4s</div>
+                      </div>
+                    </div>
 
-    <div className="metric-description">Avg CSV validation time</div>
+                    <div className="metric-description">Avg CSV validation time</div>
 
-    <div className="metric-footer">
-      <span>Publish Time</span>
-      <span className="metric-footer-value">18.9s</span>
-    </div>
-  </div>
+                    <div className="metric-footer">
+                      <span>Publish Time</span>
+                      <span className="metric-footer-value">18.9s</span>
+                    </div>
+                  </div>
 
-  {/* Search Usage */}
-  <div className="metric-card">
-    <div className="metric-header">
-      <div className="metric-icon violet-icon"> <Image
+                  {/* Search Usage */}
+                  <div className="metric-card">
+                    <div className="metric-header">
+                      <div className="metric-icon violet-icon"> <Image
                         src="/logos/s.png"
                         alt="Researchers icon"
                         width={24}
                         height={24}
                         priority
                       /></div>
-      <div className="metric-title-group">
-        <div className="metric-title">Search Usage (24h)</div>
-        <div className="metric-value">9,482</div>
-      </div>
-    </div>
+                      <div className="metric-title-group">
+                        <div className="metric-title">Search Usage (24h)</div>
+                        <div className="metric-value">9,482</div>
+                      </div>
+                    </div>
 
-    <ul className="metric-list">
-      <li>Oncology H-index</li>
-      <li>Top AI universities India</li>
-      <li>Cardiology citation score</li>
-    </ul>
-  </div>
-</div>
+                    <ul className="metric-list">
+                      <li>Oncology H-index</li>
+                      <li>Top AI universities India</li>
+                      <li>Cardiology citation score</li>
+                    </ul>
+                  </div>
+                </div>
 
-  </div>
-  </>     )}
-  {activePage === 'users' && (
+              </div>
+            </>)}
+          {activePage === 'users' && (
             <>
               <div className="content-header">
                 <div>
@@ -424,9 +428,9 @@ export default function HomePage() {
 
               {/* Search and filters */}
               <div className="users-filters">
-                <input 
-                  type="text" 
-                  placeholder="Search by name, email or ID" 
+                <input
+                  type="text"
+                  placeholder="Search by name, email or ID"
                   className="users-search"
                 />
                 <select className="users-filter">
@@ -480,7 +484,7 @@ export default function HomePage() {
               </div>
             </>
           )}
-</section>
+        </section>
 
       </main>
     </div>
