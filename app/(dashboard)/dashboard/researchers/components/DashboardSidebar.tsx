@@ -30,7 +30,7 @@ export const DashboardSidebar = ({
         md:translate-x-0
       `}
     >
-      <div className="h-[72px] flex items-center justify-between px-5 border-b border-[#E1E4EA]">
+      <div className="h-[72px] flex items-center justify-between pr-5 pb-3 border-b border-[#E1E4EA]">
         <div className="flex items-center gap-2">
           <img
             src="/logo.png"

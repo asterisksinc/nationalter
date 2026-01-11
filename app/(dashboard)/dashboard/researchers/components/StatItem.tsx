@@ -19,9 +19,14 @@ export const StatItem = ({
   className = "",
 }: StatItemProps) => (
   <div
-    className={`flex flex-col px-3 md:px-4 py-3 relative ${
+    className={`flex flex-col h-full justify-center px-3 md:px-4 py-3 relative border-r border-[#E1E4EA] ${
       isHighlight ? "bg-[#FFF4ED]" : "bg-white"
-    } ${className}`}
+    } last:border-r-0 ${className}`}
+    style={{
+      borderImageSource:
+        "linear-gradient(to bottom, transparent 15%, #E1E4EA 15%, #E1E4EA 85%, transparent 85%)",
+      borderImageSlice: "1",
+    }}
   >
     {isHighlight && (
       <div className="absolute top-2 right-2">
@@ -30,7 +35,7 @@ export const StatItem = ({
         </div>
       </div>
     )}
-    <span className="text-[12px] md:text-[14px] font-medium leading-[120%] text-[#525866] mb-1">
+    <span className="text-[12px] flex align-middle md:text-[14px] font-medium leading-[120%] text-[#525866] mb-1">
       {label}
     </span>
     <div className="flex items-center gap-1.5">

@@ -32,7 +32,7 @@ export const DashboardHeader = ({
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-[16px] gap-3 md:gap-0 md:h-[48px]">
+    <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-[16px] gap-3 md:gap-0 md:h-[48px] border-b border-[#E1E4EA]">
       {/* Top row: Menu + Breadcrumbs + Search/Bell on mobile */}
       <div className="flex items-center justify-between w-full md:w-auto">
         <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ export const DashboardHeader = ({
       </div>
 
       {/* Desktop: Search, Bell, Raise Ticket */}
-      <div className="hidden md:flex items-center gap-[12px]">
+      <div className="hidden md:flex items-center  mb-4 gap-[12px]">
         <div className="relative w-[220px] h-[40px]">
           <Search
             className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[#525866]"
@@ -113,6 +113,7 @@ export const DashboardHeader = ({
           <Plus size={14} strokeWidth={2.5} /> Raise Ticket
         </button>
       </div>
+
     </header>
   );
 };

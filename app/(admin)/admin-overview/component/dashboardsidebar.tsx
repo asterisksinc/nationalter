@@ -54,8 +54,7 @@ export const DashboardSidebar = ({
         <SidebarItem
           icon={<Landmark size={18} />}
           label="Monetization"
-          active={activePage === "tickets"}
-          href="/dashboard/researchers/tickets"
+         
         />
         <SidebarItem icon={<File size={18} />} label="Compliance" />
       </nav>

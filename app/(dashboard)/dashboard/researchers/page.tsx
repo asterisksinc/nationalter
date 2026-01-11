@@ -114,9 +114,9 @@ export default function ResearchersPage() {
         <div className="mb-4 md:mb-6">
           <div
             className="
-              rounded-lg border border-[#E1E4EA]
+              rounded-lg h-[100px] border border-[#E1E4EA]
               grid grid-cols-2 lg:grid-cols-5
-              gap-[1px] bg-[#E1E4EA] overflow-hidden
+              bg-transparent overflow-hidden items-center
             "
           >
             <StatItem
