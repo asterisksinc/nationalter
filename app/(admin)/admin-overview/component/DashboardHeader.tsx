@@ -12,7 +12,7 @@ export const DashboardHeader = ({
   onRaiseTicket,
 }: DashboardHeaderProps) => {
   return (
-    <header className="flex justify-between items-center mb-3" style={{borderBottom:"1px solid",     padding: "18px 32px"}}>
+    <header className="flex justify-between items-center mb-3" style={{borderBottom:"1px solid  #E1E4EA",     padding: "18px 32px"}}>
       <div className="flex items-center text-sm text-gray-500">
         {breadcrumbItems.map((item, index) => (
           <React.Fragment key={index}>
