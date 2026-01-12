@@ -14,7 +14,7 @@ import {
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
-  activePage?: "overview" | "usermanagement" | "tickets" | "datasets";
+  activePage?: "overview" | "usermanagement" | "tickets" | "datasets" | "monetization";
 }
 
 export const DashboardSidebar = ({
@@ -54,6 +54,8 @@ export const DashboardSidebar = ({
         <SidebarItem
           icon={<Landmark size={18} />}
           label="Monetization"
+          active={activePage === "monetization"}
+          href="/admin-overview/monetization"
          
         />
         <SidebarItem icon={<File size={18} />} label="Compliance" />
