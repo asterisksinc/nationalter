@@ -45,7 +45,7 @@ export const DashboardSidebar = ({
         <SidebarItem
           icon={<Landmark size={18} />}
           label="Monetization"
-          active={activePage === "tickets"}
+          active={activePage === "monetization"}
           href="/admin-overview/monetization"
         />
         <SidebarItem icon={<File  size={18} />} label="Compliance" />
