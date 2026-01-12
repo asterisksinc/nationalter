@@ -56,10 +56,10 @@ export const FlowRenderer = ({
               />
               <FormSelect label="Select Institution" options={INSTITUTIONS} />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Continue to Next Step
               </button>
@@ -84,10 +84,10 @@ export const FlowRenderer = ({
                 subLabel="Upload a clear scan of your ID card."
               />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Verify Identity
               </button>
@@ -117,10 +117,10 @@ export const FlowRenderer = ({
                 subLabel="Upload a professional headshot."
               />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Complete Profile
               </button>
@@ -136,7 +136,7 @@ export const FlowRenderer = ({
                   Impact Card Preview
                 </label>
                 <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-                  <div className="bg-white p-2 rounded-full mb-2 text-neutral-500 shadow-sm">
+                  <div className="bg-white p-2 rounded-full mb-2 text-neutral-500 shadow-none">
                     <Icon name="upload" size={16} />
                   </div>
                   <p className="text-xs font-medium mb-1 text-neutral-700">
@@ -203,10 +203,10 @@ export const FlowRenderer = ({
                 ]}
               />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Next
               </button>
@@ -246,10 +246,10 @@ export const FlowRenderer = ({
                 ]}
               />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Next
               </button>
@@ -259,7 +259,7 @@ export const FlowRenderer = ({
       case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 pb-2">
+            <div className="space-y-3 md:space-y-4 pb-2">
               <FileUpload
                 label="Medical Degree"
                 subLabel="Upload your MBBS/MD/MS degree certificate."
@@ -269,10 +269,10 @@ export const FlowRenderer = ({
                 subLabel="Upload your Medical Council Registration certificate."
               />
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Next
               </button>
@@ -282,47 +282,47 @@ export const FlowRenderer = ({
       case FlowStep.Welcome:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
-              <label className="flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[var(--color-primary)] transition-all bg-white group hover:shadow-lg">
+            <div className="space-y-3 md:space-y-4 pb-2">
+              <label className="flex items-start gap-3 md:gap-4 p-3.5 md:p-4 border-2 rounded-xl cursor-pointer hover:border-[var(--color-primary)] active:border-[var(--color-primary)] transition-all bg-white group hover:shadow-lg touch-manipulation">
                 <div className="mt-0.5">
                   <input
                     type="radio"
                     name="plan"
-                    className="w-4 h-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
+                    className="w-5 h-5 md:w-4 md:h-4 accent-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
                     defaultChecked
                   />
                 </div>
                 <div>
-                  <span className="block font-medium text-neutral-800 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                  <span className="block font-semibold md:font-medium text-neutral-800 text-sm md:text-base group-hover:text-[var(--color-primary)] transition-colors">
                     Standard (Free)
                   </span>
-                  <span className="text-xs text-neutral-500">
+                  <span className="text-xs md:text-sm text-neutral-500">
                     Basic Listing
                   </span>
                 </div>
               </label>
-              <label className="flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer hover:border-[var(--color-primary)] transition-all bg-white group hover:shadow-lg">
+              <label className="flex items-start gap-3 md:gap-4 p-3.5 md:p-4 border-2 rounded-xl cursor-pointer hover:border-[var(--color-primary)] active:border-[var(--color-primary)] transition-all bg-white group hover:shadow-lg touch-manipulation">
                 <div className="mt-0.5">
                   <input
                     type="radio"
                     name="plan"
-                    className="w-4 h-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
+                    className="w-5 h-5 md:w-4 md:h-4 accent-[var(--color-primary)] border-gray-100"
                   />
                 </div>
                 <div>
-                  <span className="block font-medium text-neutral-800 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                  <span className="block font-semibold md:font-medium text-neutral-800 text-sm md:text-base group-hover:text-[var(--color-primary)] transition-colors">
                     Premium (Paid)
                   </span>
-                  <span className="text-xs text-neutral-500">
+                  <span className="text-xs md:text-sm text-neutral-500">
                     Enhanced Patient Visibility & Analytics.
                   </span>
                 </div>
               </label>
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 touch-manipulation"
               >
                 Complete Registration <Icon name="chevron-right" size={18} />
               </button>
@@ -338,19 +338,19 @@ export const FlowRenderer = ({
       case FlowStep.Identity:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-3 md:space-y-4 pb-2">
               <FormInput
                 label="Official Domain Name"
                 placeholder="www.university.ac.in"
               />
-              <p className="text-[10px] text-neutral-500 -mt-2 ml-1">
+              <p className="text-[10px] md:text-xs text-neutral-500 -mt-1 ml-1">
                 We will verify the domain DNS records automatically.
               </p>
             </div>
-            <div className="mt-auto pt-4">
+            <div className="mt-auto pt-6 md:pt-4">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Verify Domain
               </button>
@@ -361,7 +361,7 @@ export const FlowRenderer = ({
         if (!otpSent) {
           return (
             <div className="flex flex-col h-full justify-between">
-              <div className="space-y-4 pb-2">
+              <div className="space-y-3 md:space-y-4 pb-2">
                 <FormInput
                   label="Administrator Full Name"
                   placeholder="e.g. Registrar Name"
@@ -377,10 +377,10 @@ export const FlowRenderer = ({
                   type="tel"
                 />
               </div>
-              <div className="mt-auto pt-4">
+              <div className="mt-auto pt-6 md:pt-4">
                 <button
                   onClick={() => setOtpSent(true)}
-                  className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                  className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
                 >
                   Send Verification OTP
                 </button>
@@ -391,19 +391,20 @@ export const FlowRenderer = ({
           return (
             <div className="flex flex-col h-full text-center">
               <div className="flex-1 flex flex-col justify-center py-3">
-                <h5 className="mb-2 text-neutral-800 text-base font-medium">
+                <h5 className="mb-2 text-neutral-800 text-base md:text-lg font-semibold md:font-medium">
                   Enter Verification Code
                 </h5>
-                <p className="text-xs mb-5 text-neutral-500">
+                <p className="text-xs md:text-sm mb-6 md:mb-5 text-neutral-500 px-4">
                   We sent a 4-digit code to your registered mobile number.
                 </p>
-                <div className="flex justify-center gap-3 mb-5">
+                <div className="flex justify-center gap-2.5 md:gap-3 mb-6 md:mb-5">
                   {[1, 2, 3, 4].map((i) => (
                     <input
                       key={i}
                       type="text"
                       maxLength={1}
-                      className="w-9 h-9 border-2 border-neutral-300 rounded-xl text-center text-base font-medium text-[var(--color-primary)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all shadow-sm"
+                      inputMode="numeric"
+                      className="w-12 h-12 md:w-9 md:h-9 border-2 border-neutral-300 rounded-xl text-center text-lg md:text-base font-semibold md:font-medium text-[var(--color-primary)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all shadow-none touch-manipulation"
                     />
                   ))}
                 </div>
@@ -426,16 +427,16 @@ export const FlowRenderer = ({
                   </button>
                 </div>
               </div>
-              <div className="mt-auto pt-4 flex flex-col gap-2.5">
+              <div className="mt-auto pt-6 md:pt-4 flex flex-col gap-3 md:gap-2.5">
                 <button
                   onClick={onNext}
-                  className="w-full bg-[var(--color-primary)] text-white py-3 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                  className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
                 >
                   Verify & Proceed
                 </button>
                 <button
                   onClick={() => setOtpSent(false)}
-                  className="w-full border-2 border-neutral-200 py-2.5 px-6 text-sm rounded-xl font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700 transition-all"
+                  className="w-full border-2 border-neutral-200 py-3 md:py-2.5 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl text-neutral-600 hover:bg-neutral-50 hover:text-neutral-700 active:scale-[0.98] transition-all touch-manipulation"
                 >
                   Change Contact Details
                 </button>
@@ -446,7 +447,7 @@ export const FlowRenderer = ({
       case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 pb-2">
+            <div className="space-y-3 md:space-y-4 pb-2">
               <FileUpload
                 label="Letter of Authorization"
                 subLabel="Signed by the Head of Institution"
@@ -456,7 +457,7 @@ export const FlowRenderer = ({
             <div className="mt-auto pt-6">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3.5 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Submit for Review
               </button>
@@ -466,7 +467,7 @@ export const FlowRenderer = ({
       case FlowStep.Welcome:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-3 md:space-y-4 pb-2">
               <FormSelect
                 label="Add your key departments"
                 options={[
@@ -481,7 +482,7 @@ export const FlowRenderer = ({
             <div className="mt-auto pt-6">
               <button
                 onClick={onNext}
-                className="w-full bg-[var(--color-primary)] text-white py-3.5 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 touch-manipulation"
               >
                 Go to Dashboard <Icon name="chevron-right" size={20} />
               </button>

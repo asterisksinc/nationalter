@@ -18,7 +18,7 @@ export default function ArticleCard({
       {hasImage && (
         <div className="w-full h-96 bg-gray-50 rounded-md sm:rounded-lg border border-dashed border-gray-200 flex flex-col items-center justify-center relative overflow-hidden mb-6 transition-colors">
           <div className="text-gray-300 flex flex-col items-center gap-3">
-            <div className="p-3 bg-white rounded-full shadow-sm">
+            <div className="p-3 bg-white rounded-full shadow-none">
               <svg
                 width="32"
                 height="32"

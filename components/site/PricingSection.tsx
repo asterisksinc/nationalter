@@ -93,7 +93,7 @@ export default function PricingSection({
                 onClick={() => setBillingCycle("monthly")}
                 className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${
                   billingCycle === "monthly"
-                    ? "bg-white text-black shadow-sm"
+                    ? "bg-white text-black shadow-none"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -103,7 +103,7 @@ export default function PricingSection({
                 onClick={() => setBillingCycle("switch")}
                 className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${
                   billingCycle === "switch"
-                    ? "bg-white text-black shadow-sm"
+                    ? "bg-white text-black shadow-none"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -121,7 +121,7 @@ export default function PricingSection({
               className={`rounded-md sm:rounded-lg overflow-hidden transition-all duration-300 flex flex-col ${
                 plan.highlight
                   ? "border border-[#FF9534] shadow-[0_0_40px_-5px_rgba(255,149,52,0.3)] scale-100 z-10"
-                  : "border border-gray-200 shadow-sm hover:shadow-md"
+                  : "border border-gray-200 shadow-none hover:shadow-md"
               }`}
             >
               {/* Top Section (Colored Background) */}

@@ -54,7 +54,7 @@ export default function TabContentToggle({
         {/* Content Container with Tabs */}
         <div className="relative">
           {/* Main Content Area */}
-          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex items-center justify-center p-6 md:p-8 lg:p-12">
+          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex items-center justify-center p-6 md:p-8 lg:p-12">
             {activeTabContent ? (
               <div className="w-full">{activeTabContent.content}</div>
             ) : (

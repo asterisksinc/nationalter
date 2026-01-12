@@ -1,55 +1,56 @@
-import React from "react";
-import { Ban, CheckCircle2, Clock, Star } from "lucide-react";
+import { Check, Clock, Ban, Star, ShieldCheck } from "lucide-react";
 
-type TicketStatus =
+type Status =
   | "Approved"
   | "Awaiting Review"
   | "Rejected"
   | "Under Review"
   | "Active";
 
-interface StatusBadgeProps {
-  status: TicketStatus;
-}
+const STATUS_CONFIG: Record<Status, { Icon: any; color: string }> = {
+  Approved: {
+    // Solid check icon as seen in image_61834f.png
+    Icon: Check, 
+    color: "#1FC16B",
+  },
+  "Awaiting Review": {
+    // Standard clock icon
+    Icon: Clock,
+    color: "#FF7A00",
+  },
+  Rejected: {
+    // Diagonal bar icon for rejection
+    Icon: Ban,
+    color: "#E82222",
+  },
+  "Under Review": {
+    // Star icon for review status
+    Icon: Star,
+    color: "#FFE100",
+  },
+  Active: {
+    // Shield with check for active/verified status
+    Icon: ShieldCheck,
+    color: "#1FC16B",
+  },
+};
 
-export const StatusBadge = ({ status }: StatusBadgeProps) => {
-  const styles = {
-    Approved: {
-      text: "text-[#0E121B]",
-      icon: CheckCircle2,
-      iconColor: "text-[#27B973]",
-    },
-    Active: {
-      text: "text-[#0E121B]",
-      icon: CheckCircle2,
-      iconColor: "text-[#27B973]",
-    },
-    "Awaiting Review": {
-      text: "text-[#0E121B]",
-      icon: Clock,
-      iconColor: "text-[#FF7A00]",
-    },
-    "Under Review": {
-      text: "text-[#0E121B]",
-      icon: Star,
-      iconColor: "text-[#F5A623]",
-    },
-    Rejected: {
-      text: "text-[#0E121B]",
-      icon: Ban,
-      iconColor: "text-[#E82323]",
-    },
-  };
-
-  const config = styles[status];
-  const Icon = config.icon;
-
+export const StatusBadge = ({ status }: { status: Status }) => {
+  const { Icon, color } = STATUS_CONFIG[status];
+  
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#E1E4EA] rounded-[5px] text-[14px] font-normal leading-[120%] bg-white ${config.text}`}
-    >
-      <Icon size={14} className={config.iconColor} strokeWidth={2} />
-      {status}
-    </span>
+    <div className="inline-flex items-center gap-1 h-6 px-2 py-1 border border-[#E1E4EA] rounded-md bg-white">
+      <div
+        className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+        style={{ background: color }}
+      >
+        {/* strokeWidth is increased to simulate the solid appearance in the images */}
+        <Icon size={10} color="#ffffff" strokeWidth={3} />
+      </div>
+
+      <span className="text-[12px] font-medium leading-4 text-[#525866] whitespace-nowrap">
+        {status}
+      </span>
+    </div>
   );
 };

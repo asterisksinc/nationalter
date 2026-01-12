@@ -48,12 +48,16 @@ export const DashboardHeader = ({
             size={16}
           />
           <input
-            type="text" style={{paddingLeft:'32px!important'}}
+            type="text"
+            style={{ paddingLeft: "32px!important" }}
             placeholder="Search"
             className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-sm focus:outline-none w-64 text-gray-700 placeholder:text-gray-400 transition-all"
           />
         </div>
-        <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-sm" style={{borderRadius:'6px'}}>
+        <button
+          className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-none"
+          style={{ borderRadius: "6px" }}
+        >
           <Bell size={25} />
           <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
         </button>

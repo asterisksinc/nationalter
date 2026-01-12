@@ -12,7 +12,7 @@ export default function MethodologyCard({
   ctaHref = "#",
 }: MethodologyCardProps) {
   return (
-    <div className="group flex flex-col items-center text-center p-6 rounded-md sm:rounded-lg border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="group flex flex-col items-center text-center p-6 rounded-md sm:rounded-lg border border-gray-100 bg-white shadow-none hover:shadow-md transition-all duration-300">
       {/* Image Placeholder */}
       <div className="w-full aspect-square mb-8 bg-gray-50 rounded-xl sm:rounded-2xl border border-dashed border-gray-200 flex flex-col items-center justify-center relative overflow-hidden">
         <div className="text-gray-300 flex flex-col items-center gap-2">

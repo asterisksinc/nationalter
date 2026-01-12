@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { Search, Bell, Plus, ChevronRight, Filter } from "lucide-react";
-import { DashboardSidebar } from "../components/DashboardSidebar";
+import { Search, Plus, Filter } from "lucide-react";
 import { AddPublicationModal, PublicationsTable } from "./components";
 import type { PublicationData } from "./components";
 
@@ -140,94 +138,52 @@ export default function PublicationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9fa] font-sans text-[#1e1e1e]">
-      {/* Sidebar */}
-      <DashboardSidebar activePage="publications" />
+    <>
+      {/* Page Title */}
+      <div className="mb-6 border-b border-[#E1E4EA] pb-2">
+        <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-1">
+          My Publications
+        </div>
+        <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
+          Manage and track your research publications and their impact metrics.
+        </p>
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
-            <Link
-              href="/dashboard/researchers"
-              className="hover:text-[#0E121B] cursor-pointer"
-            >
-              Home
-            </Link>
-            <ChevronRight size={14} className="mx-2 text-gray-400" />
-            <span className="text-[#0E121B] font-medium">My Publications</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                size={16}
-              />
-              <input
-                type="text"
-                placeholder="Search"
-                className="pl-9 pr-4 py-2 bg-gray-100 border border-transparent focus:bg-white focus:border-gray-200 rounded-lg text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none w-64 text-[#333333] placeholder-[#8E8E93] transition-all"
-              />
-            </div>
-            <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-sm">
-              <Bell size={18} />
-              <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-            </button>
-            <button className="flex items-center gap-2 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-4 py-2 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors shadow-sm">
-              Raise Ticket <Plus size={16} />
-            </button>
-          </div>
-        </header>
-
-        {/* Page Title */}
-        <div className="mb-6">
-          <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B] mb-1">
-            My Publications
-          </div>
-          <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
-            Manage and track your research publications and their impact
-            metrics.
-          </p>
+      {/* Search Bar & Actions */}
+      <div className="flex justify-between items-center mb-6 gap-4">
+        <div className="relative flex-1 max-w-2xl">
+          <Search
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#525866]"
+            size={20}
+          />
+          <input
+            type="text"
+            placeholder="Search by ORCID, DOI..."
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E1E4EA] rounded text-[14px] font-normal leading-[120%] tracking-[-0.02em] focus:outline-none focus:border-[#FF8D28] text-[#333333] placeholder-[#525866]"
+          />
         </div>
 
-        {/* Search Bar & Actions */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="relative flex-1 max-w-2xl">
-            <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              size={18}
-            />
-            <input
-              type="text"
-              placeholder="Search by ORCID, DOI..."
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] text-[#333333] placeholder-[#8E8E93]"
-            />
-          </div>
-
-          <div className="flex items-center gap-3 ml-4">
-            <button className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 bg-white">
-              <Filter size={16} /> Filter
-            </button>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 border-2 border-[#f76a23] rounded-lg text-[14px] font-semibold leading-[120%] text-[#f76a23] hover:bg-orange-50 bg-white transition-colors"
-            >
-              <Plus size={16} /> Add Missing Publication
-            </button>
-          </div>
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-2 px-2.5 py-2.5 border border-[#E1E4EA] rounded bg-white text-[14px] font-medium leading-[120%] text-[#222530] hover:bg-gray-50">
+            <Filter size={20} /> Filter
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 border border-[#FF8D28] rounded bg-white text-[14px] font-semibold leading-[120%] text-[#FF8D28] hover:bg-orange-50 transition-colors"
+          >
+            <Plus size={20} /> Add Missing Publication
+          </button>
         </div>
+      </div>
 
-        {/* Publications Table */}
-        <PublicationsTable publications={publications} />
-      </main>
+      {/* Publications Table */}
+      <PublicationsTable publications={publications} />
 
       {/* Add Publication Modal */}
       <AddPublicationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    </div>
+    </>
   );
 }

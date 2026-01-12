@@ -5,67 +5,76 @@ interface ProfileGaugeProps {
 }
 
 export const ProfileGauge = ({ percentage }: ProfileGaugeProps) => {
-  const radius = 65;
-  const stroke = 28;
-  const centerX = radius + stroke;
-  const centerY = radius + stroke;
-  const normalizedRadius = radius;
-  const circumference = 2 * Math.PI * normalizedRadius;
-  const semiCircumference = circumference / 2;
+  // Dimensions
+  const width = 250;
+  const strokeWidth = 38; // Increased width for the bar (was 28)
+  const radius = (width - strokeWidth) / 2;
+  const centerX = width / 2;
+  const centerY = width / 2;
 
-  const dashOffset = semiCircumference - (percentage / 100) * semiCircumference;
+  // Math for a semi-circle (180 degrees)
+  const circumference = Math.PI * radius;
+  const dashOffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full pt-2">
+  <div className="relative flex flex-col items-center w-[272px] h-[150px]">
+      {/* SVG Container: Semi-circle
+        "overflow-hidden" crops the circle perfectly in half 
+      */}
       <div
-        className="relative flex items-center justify-center"
-        style={{ width: radius * 2 + stroke * 2, height: radius + stroke * 2 }}
+        className="relative overflow-hidden w-full"
+        style={{ width: `${width}px`, height: `${width / 2}px` }}
       >
         <svg
-          width={radius * 2 + stroke * 2}
-          height={radius + stroke * 2}
-          viewBox={`0 0 ${radius * 2 + stroke * 2} ${radius + stroke * 2}`}
+          width={width}
+          height={width}
+          viewBox={`0 0 ${width} ${width}`}
+          className="block"
         >
-          <g transform={`rotate(-180 ${centerX} ${centerY})`}>
-            {/* Background arc */}
+          {/* Rotate 180deg to make it a Top Arch */}
+          <g transform={`rotate(180 ${centerX} ${centerY})`}>
+            {/* Background Track - Lighter Orange 
+                Matches CSS: rgba(255, 173, 50, 0.1)
+            */}
             <circle
               cx={centerX}
               cy={centerY}
-              r={normalizedRadius}
-              fill="transparent"
-              stroke="#FFE5D0"
-              strokeWidth={stroke}
-              strokeDasharray={`${semiCircumference} ${circumference}`}
+              r={radius}
+              fill="none"
+              stroke="rgba(255, 173, 50, 0.1)"
+              strokeWidth={strokeWidth}
+              strokeDasharray={`${circumference} ${circumference * 2}`}
               strokeLinecap="butt"
             />
 
-            {/* Progress arc */}
+            {/* Progress Bar - Soft/Lighter Active Orange
+                Matches CSS: rgba(255, 122, 0, 0.37)
+                This creates the "lighter" look you requested compared to solid #FF7A00
+            */}
             <circle
               cx={centerX}
               cy={centerY}
-              r={normalizedRadius}
-              fill="transparent"
-              stroke="#FFB366"
-              strokeWidth={stroke}
-              strokeDasharray={`${semiCircumference} ${circumference}`}
+              r={radius}
+              fill="none"
+              stroke="rgba(255, 122, 0, 0.37)"
+              strokeWidth={strokeWidth}
+              strokeDasharray={`${circumference} ${circumference * 2}`}
               strokeDashoffset={dashOffset}
               strokeLinecap="butt"
-              style={{
-                transition: "stroke-dashoffset 0.6s ease",
-              }}
+              className="transition-all duration-700 ease-out"
             />
           </g>
         </svg>
+      </div>
 
-        {/* Text */}
-        <div className="absolute flex flex-col items-center justify-center bottom-[-1px]">
-          <span className="text-[24px] font-semibold text-[#FF9A3C] leading-none mb-1">
-            {percentage}%
-          </span>
-          <span className="text-[10px] font-medium leading-[120%] text-[#525866] uppercase tracking-wide">
-            Profile Completed
-          </span>
-        </div>
+      {/* Text Position - Centered inside the gauge area */}
+     <div className="absolute top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
+        <span className="font-sans font-semibold text-[24px] leading-[120%] text-[#FF7A00]">
+          {percentage}%
+        </span>
+        <span className="font-sans font-semibold text-[12px] leading-[120%] text-[#0E121B] whitespace-nowrap">
+          Profile Completed
+        </span>
       </div>
     </div>
   );

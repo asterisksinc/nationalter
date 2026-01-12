@@ -15,7 +15,7 @@ export default function LeaderboardFinalCTA() {
             CTA Button
           </button>
 
-          <button className="font-inter bg-[#1E1E1E] text-white px-6 py-3 rounded-[7px] font-medium hover:bg-black transition-colors shadow-sm whitespace-nowrap min-w-[120px]">
+          <button className="font-inter bg-[#1E1E1E] text-white px-6 py-3 rounded-[7px] font-medium hover:bg-black transition-colors shadow-none whitespace-nowrap min-w-[120px]">
             CTA Button
           </button>
         </div>

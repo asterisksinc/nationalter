@@ -19,82 +19,133 @@ interface PublicationsTableProps {
 
 export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-lg border border-[#E1E4EA] overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-[14px]">
-          <thead className="bg-gray-50 border-b border-gray-200">
+        <table className="w-full text-sm table-fixed">
+          <thead className="bg-[#F5F7FA] border-b border-[#E1E4EA]">
             <tr>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[220px]">
                 Paper Title
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[180px]">
                 Authors
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[80px]">
                 Citations
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[120px]">
                 Publication Type
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[70px]">
                 Year
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[110px]">
                 Publisher
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-[#525866] uppercase tracking-wider w-[140px]">
                 DOI
               </th>
-              <th className="px-6 py-3 text-left text-[12px] font-medium leading-[120%] text-[#525866] uppercase tracking-wider">
+              <th className="px-4 py-2.5 text-right text-xs font-medium text-[#525866] uppercase tracking-wider w-[90px]">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-100">
+
+          <tbody className="bg-white divide-y divide-[#E1E4EA]">
             {publications.map((pub) => (
-              <tr key={pub.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#0E121B]">
-                  {pub.title}
+              <tr
+                key={pub.id}
+                className="bg-[#FDFDFD] hover:bg-gray-50 transition-colors"
+                style={{ height: 54 }}
+              >
+                {/* Title */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-medium text-[#0E121B] truncate max-w-full overflow-hidden whitespace-nowrap">
+                    {pub.title}
+                  </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
+
+                {/* Author */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="flex items-center gap-3 overflow-hidden">
                     <img
                       src={pub.authorImg}
                       alt={pub.author}
-                      className="w-6 h-6 rounded-full object-cover"
+                      className="w-8 h-8 rounded-full object-cover shrink-0"
                     />
-                    <span className="text-[14px] font-normal leading-[120%] text-[#0E121B]">
+                    <div className="text-[14px] font-medium text-[#222530] truncate max-w-full overflow-hidden whitespace-nowrap">
                       {pub.author}
-                    </span>
+                    </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#333333]">
-                  {pub.citations}
+
+                {/* Citations */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-medium text-[#525866]">
+                    {pub.citations}
+                  </div>
                 </td>
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#333333]">
-                  {pub.publicationType}
+
+                {/* Publication Type */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
+                    {pub.publicationType}
+                  </div>
                 </td>
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#333333]">
-                  {pub.year}
+
+                {/* Year */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-normal text-[#525866]">
+                    {pub.year}
+                  </div>
                 </td>
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#333333]">
-                  {pub.publisher}
+
+                {/* Publisher */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
+                    {pub.publisher}
+                  </div>
                 </td>
-                <td className="px-6 py-4 text-[14px] font-normal leading-[120%] text-[#333333]">
-                  {pub.doi}
+
+                {/* DOI */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
+                    {pub.doi}
+                  </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <button className="p-1.5 text-gray-400 hover:text-gray-600 transition-colors">
+
+                {/* Actions */}
+                <td className="px-4 py-3 align-middle">
+                  <div className="flex justify-end items-center gap-3">
+                    <button
+                      aria-label={`Edit ${pub.title}`}
+                      title="Edit"
+                      className="p-1.5 text-black hover:text-[#1D4ED8] transition-colors"
+                    >
                       <Edit2 size={16} />
                     </button>
-                    <button className="p-1.5 text-gray-400 hover:text-red-500 transition-colors">
+                    <button
+                      aria-label={`Delete ${pub.title}`}
+                      title="Delete"
+                      className="p-1.5 text-[#DC2626] hover:text-[#B91C1C] transition-colors"
+                    >
                       <Trash2 size={16} />
                     </button>
                   </div>
                 </td>
               </tr>
             ))}
+
+            {publications.length === 0 && (
+              <tr>
+                <td
+                  colSpan={8}
+                  className="px-4 py-6 text-center text-[#525866]"
+                >
+                  No publications found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

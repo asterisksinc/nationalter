@@ -18,7 +18,7 @@ export default function ThreeBlocksSection() {
         {/* MOBILE LAYOUT - Single column (Visible on Mobile & Tablet) */}
         <div className="lg:hidden flex flex-col gap-6 mb-10">
           {/* Card 1 */}
-          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
               <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
@@ -38,7 +38,7 @@ export default function ThreeBlocksSection() {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
               <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
@@ -58,7 +58,7 @@ export default function ThreeBlocksSection() {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col">
             <div className="w-full h-[200px] bg-gray-100 flex-shrink-0"></div>
             <div className="p-6 flex flex-col flex-1">
               <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
@@ -83,7 +83,7 @@ export default function ThreeBlocksSection() {
           {/* Left Column - 60% width - 2 Stacked Cards */}
           <div className="lg:col-span-3 flex flex-col gap-8 h-full">
             {/* Card 1 */}
-            <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+            <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-full">
               <div className="w-full h-[260px] bg-gray-100 flex-shrink-0 md:order-last"></div>
               <div className="p-8 flex flex-col flex-1">
                 <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
@@ -103,7 +103,7 @@ export default function ThreeBlocksSection() {
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+            <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-full">
               <div className="w-full h-[260px] bg-gray-100 flex-shrink-0 lg:order-last"></div>
               <div className="p-8 flex flex-col flex-1">
                 <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">
@@ -124,7 +124,7 @@ export default function ThreeBlocksSection() {
           </div>
 
           {/* Right Column - 40% width - 1 Tall Card */}
-          <div className="lg:col-span-2 bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+          <div className="lg:col-span-2 bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-full">
             <div className="w-full flex-1 bg-gray-100 lg:order-last lg:flex-[2]"></div>
             <div className="p-8 flex flex-col flex-shrink-0">
               <h5 className="text-base font-semibold text-[#1E1E1E] mb-3 leading-snug">

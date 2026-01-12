@@ -25,7 +25,7 @@ export default function Navbar() {
     >
       {/* Desktop: Centered white container */}
       <div className="hidden md:flex md:justify-center md:py-4">
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-none border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"

@@ -19,8 +19,8 @@ export default function SmallButton({
     "flex items-center justify-center font-inter font-medium rounded-md transition-colors";
 
   const variantStyles = {
-    default: "w-8 h-8 bg-white text-[#FF7A00] shadow-sm hover:bg-white/80",
-    orange: "w-8 h-8 bg-[#FF7A00] text-white shadow-sm hover:bg-[#E66A00]",
+    default: "w-8 h-8 bg-white text-[#FF7A00] shadow-none hover:bg-white/80",
+    orange: "w-8 h-8 bg-[#FF7A00] text-white shadow-none hover:bg-[#E66A00]",
     slate: "w-8 h-8 text-slate-500 hover:bg-white/50 border border-slate-200",
   };
 

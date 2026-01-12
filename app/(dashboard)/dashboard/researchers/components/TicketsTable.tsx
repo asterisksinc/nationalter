@@ -2,127 +2,160 @@ import React from "react";
 import { Search, Filter, Plus } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 
-interface TicketData {
-  id: string;
-  type: string;
-  status:
-    | "Approved"
-    | "Awaiting Review"
-    | "Rejected"
-    | "Under Review"
-    | "Active";
-  date: string;
-}
-
-interface TicketsTableProps {
-  tickets: TicketData[];
-  openCount: number;
-  reviewCount: number;
-  approvedCount: number;
-  rejectedCount: number;
-}
-
 export const TicketsTable = ({
   tickets,
   openCount,
   reviewCount,
   approvedCount,
   rejectedCount,
-}: TicketsTableProps) => {
+}: any) => {
+  const StatsGrid = ({ isMobile = false }) => (
+    <div
+      className={`border-y border-[#E1E4EA] py-3 md:py-4 mb-4 md:mb-6 ${
+        isMobile ? "block lg:hidden" : "hidden lg:block "
+      }`}
+    >
+      <div className="grid grid-cols-2 lg:grid-cols-4">
+        {[
+          ["Open Tickets", openCount],
+          ["In Review Tickets", reviewCount],
+          ["Approved Tickets", approvedCount],
+          ["Rejected", rejectedCount],
+        ].map(([label, value], i) => (
+          <div
+            key={label}
+            className={`flex flex-col gap-1.5 md:gap-2 px-3 md:px-4 ${
+              // Desktop borders
+              i < 3 ? "lg:border-r lg:border-[#D9D9D9]" : ""
+            } ${
+              // Mobile borders
+              isMobile && i % 2 === 0 ? "border-r border-[#E1E4EA]" : ""
+            } ${
+              isMobile && i < 2 ? "border-b border-[#E1E4EA] pb-3 mb-3" : ""
+            }`}
+          >
+            <span className="text-[12px] md:text-[14px] font-normal text-[#6B7280]">
+              {label}
+            </span>
+            <span className="text-[20px] md:text-[24px] font-semibold leading-[120%] text-[#0E121B]">
+              {String(value).padStart(2, "0")}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
-    <section className="bg-white rounded-lg border border-[#E1E4EA] p-4">
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-[16px] font-medium leading-[20px] tracking-[-0.006em] text-[#0E121B]">
+    <section className="bg-white border border-[#E1E4EA] rounded-xl p-4 md:p-6 w-full">
+      {/* HEADER */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 md:gap-4 mb-4 md:mb-6 lg:h-10">
+        <div className="text-[14px] md:text-[16px] font-semibold leading-[120%] text-[#0E121B] w-full lg:w-auto">
           On-Going Tickets
         </div>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+
+        {/* Mobile Stats (Between Title and Controls) */}
+        <StatsGrid isMobile={true} />
+
+        <div className="flex flex-wrap items-center gap-3 md:gap-4 w-full lg:w-auto">
+          {/* Search */}
+          <div className="relative w-full sm:w-[273px] h-10">
             <Search
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"
-              size={14}
-              strokeWidth={1.5}
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#525866]"
             />
             <input
-              type="text"
               placeholder="Search by ticket id or type..."
-              className="pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-md text-[14px] font-normal leading-[150%] tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] w-56 h-[32px] text-[#333333] placeholder-[#8E8E93]"
+              className="w-full h-full pl-10 pr-3 bg-white
+                         text-[13px] md:text-[14px] font-normal leading-[120%]
+                         border border-[#E1E4EA] rounded-md
+                         placeholder-[#525866]
+                         focus:outline-none focus:bg-[#F9FAFB]"
             />
           </div>
-          <button className="flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-200 rounded-md text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-[32px]">
-            <Filter size={14} strokeWidth={1.5} /> Filter
-          </button>
-          <button className="flex items-center gap-1.5 bg-[#f76a23] hover:bg-[#e05a1a] text-white px-3 py-1.5 rounded-md text-[14px] font-semibold leading-[120%] tracking-[-0.04em] transition-colors h-[32px]">
-            <Plus size={14} strokeWidth={2.5} /> Add New
-          </button>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            {/* Filter */}
+            <button
+              className="flex-1 sm:flex-none h-10 px-3 flex items-center justify-center gap-2
+                                border border-[#E1E4EA] rounded-md
+                                text-[13px] md:text-[14px] font-medium text-[#222530] hover:bg-gray-50"
+            >
+              <Filter size={16} /> Filter
+            </button>
+
+            {/* Add (Desktop) */}
+            <button
+              className="hidden lg:flex h-10 w-10
+                                flex items-center justify-center
+                                bg-[#FF7A00] rounded-md hover:bg-[#FF8A1A]"
+            >
+              <Plus size={18} className="text-white" />
+            </button>
+
+            {/* Add (Mobile) */}
+            <button
+              className="flex lg:hidden flex-1 sm:flex-none h-10 px-4
+                                items-center justify-center gap-2
+                                bg-[#FF7A00] rounded-md text-white font-medium text-[13px] md:text-[14px] hover:bg-[#FF8A1A]"
+            >
+              <Plus size={16} className="text-white" />
+              Raise Ticket
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-4 pb-4 border-b border-[#E1E4EA]">
-        <div>
-          <span className="block text-[14px] font-normal leading-[120%] text-[#525866] mb-0.5">
-            Open Tickets
-          </span>
-          <span className="text-[24px] font-semibold leading-tight text-[#0E121B]">
-            {String(openCount).padStart(2, "0")}
-          </span>
-        </div>
-        <div>
-          <span className="block text-[14px] font-normal leading-[120%] text-[#525866] mb-0.5">
-            In Review Tickets
-          </span>
-          <span className="text-[24px] font-semibold leading-tight text-[#0E121B]">
-            {reviewCount}
-          </span>
-        </div>
-        <div>
-          <span className="block text-[14px] font-normal leading-[120%] text-[#525866] mb-0.5">
-            Approved Tickets
-          </span>
-          <span className="text-[24px] font-semibold leading-tight text-[#0E121B]">
-            {approvedCount}
-          </span>
-        </div>
-        <div>
-          <span className="block text-[14px] font-normal leading-[120%] text-[#525866] mb-0.5">
-            Rejected
-          </span>
-          <span className="text-[24px] font-semibold leading-tight text-[#0E121B]">
-            {String(rejectedCount).padStart(2, "0")}
-          </span>
-        </div>
-      </div>
+      {/* STATS (Desktop) */}
+      <StatsGrid isMobile={false} />
 
-      <div className="overflow-x-auto rounded-md border border-[#E1E4EA]">
-        <table className="w-full text-[14px] text-left">
-          <thead className="bg-gray-50 text-[#525866] font-medium leading-[120%]">
+      {/* TABLE */}
+      <div className="border border-[#E1E4EA] rounded-lg overflow-x-auto">
+        <table className="w-full text-left" style={{ minWidth: "600px" }}>
+          <colgroup>
+            <col style={{ width: "110px", minWidth: "110px" }} />
+            <col style={{ width: "180px", minWidth: "150px" }} />
+            <col style={{ width: "150px", minWidth: "130px" }} />
+            <col style={{ width: "120px", minWidth: "100px" }} />
+          </colgroup>
+          <thead className="bg-[#F9FAFB]">
             <tr>
-              <th className="px-4 py-2.5 border-b border-[#E1E4EA] w-[20%]">
-                Ticket ID
-              </th>
-              <th className="px-4 py-2.5 border-b border-[#E1E4EA] w-[30%]">
-                Ticket Type
-              </th>
-              <th className="px-4 py-2.5 border-b border-[#E1E4EA] w-[25%]">
-                Current Status
-              </th>
-              <th className="px-4 py-2.5 border-b border-[#E1E4EA] w-[25%]">
-                Submitted On
-              </th>
+              {[
+                "Ticket ID",
+                "Ticket Type",
+                "Current Status",
+                "Submitted On",
+              ].map((h) => (
+                <th
+                  key={h}
+                  className="h-9 px-3
+                               text-[11px] md:text-[12px] font-medium
+                               text-[#6B7280]
+                               border-b border-[#E1E4EA]"
+                >
+                  {h}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#F2F2F7] bg-white">
-            {tickets.map((ticket, index) => (
-              <tr key={index} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-[14px] font-medium leading-[120%] text-[#0E121B]">
+
+          <tbody>
+            {tickets.map((ticket: any, i: number) => (
+              <tr
+                key={i}
+                className="h-[48px] md:h-[54px] border-b border-[#E1E4EA]
+                           hover:bg-[#F9FAFB]"
+              >
+                <td className="px-3 text-[13px] md:text-[14px] font-medium text-[#222530]">
                   {ticket.id}
                 </td>
-                <td className="px-4 py-3 text-[14px] font-normal leading-[120%] text-[#333333]">
+                <td className="px-3 text-[13px] md:text-[14px] text-[#525866]">
                   {ticket.type}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3">
                   <StatusBadge status={ticket.status} />
                 </td>
-                <td className="px-4 py-3 text-[14px] font-normal leading-[120%] text-[#525866]">
+                <td className="px-3 text-[13px] md:text-[14px] text-[#525866]">
                   {ticket.date}
                 </td>
               </tr>

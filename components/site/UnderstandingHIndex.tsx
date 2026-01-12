@@ -66,7 +66,7 @@ export default function UnderstandingHIndex() {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+              className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden"
             >
               <CheckerboardPattern className="w-full h-40" />
               <div className="p-4">
@@ -88,7 +88,7 @@ export default function UnderstandingHIndex() {
             {cards.slice(0, 3).map((card, index) => (
               <div
                 key={index}
-                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
+                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-[420px]"
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">
@@ -108,7 +108,7 @@ export default function UnderstandingHIndex() {
             {cards.slice(3, 5).map((card, index) => (
               <div
                 key={index}
-                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[420px]"
+                className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-[420px]"
               >
                 <CheckerboardPattern className="w-full flex-1" />
                 <div className="p-5 pb-6">

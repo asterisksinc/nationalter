@@ -10,7 +10,7 @@ export const StatCard: React.FC<StatCardProps> = ({ label, value }) => (
     <span className="text-[14px] font-normal leading-[120%] text-[#525866] mb-1">
       {label}
     </span>
-    <span className="text-[32px] font-semibold leading-tight text-[#0E121B]">
+    <span className="text-[24px] font-semibold leading-tight text-[#0E121B]">
       {value}
     </span>
   </div>
