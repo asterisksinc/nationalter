@@ -112,7 +112,7 @@ export const AddPublicationModal = ({
                   name="method"
                   checked={formData.method === "doi"}
                   onChange={() => handleMethodSelect("doi")}
-                  className="mt-1 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                  className="mt-1 w-4 h-4 accent-[#f76a23]"
                 />
                 <div className="flex-1">
                   <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
@@ -141,7 +141,7 @@ export const AddPublicationModal = ({
                   name="method"
                   checked={formData.method === "manual"}
                   onChange={() => handleMethodSelect("manual")}
-                  className="mt-1 w-4 h-4 text-[#f76a23] focus:ring-[#f76a23]"
+                  className="mt-1 w-4 h-4 accent-[#f76a23]"
                 />
                 <div>
                   <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
@@ -166,7 +166,7 @@ export const AddPublicationModal = ({
                   type="radio"
                   checked
                   readOnly
-                  className="mt-1 w-4 h-4 text-[#f76a23]"
+                  className="mt-1 w-4 h-4 accent-[#f76a23]"
                 />
                 <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
                   Search by DOI / Publication URL{" "}
@@ -209,7 +209,7 @@ export const AddPublicationModal = ({
                   type="radio"
                   checked
                   readOnly
-                  className="mt-1 w-4 h-4 text-[#f76a23]"
+                  className="mt-1 w-4 h-4 accent-[#f76a23]"
                 />
                 <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
                   Add Manually

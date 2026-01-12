@@ -19,14 +19,10 @@ export const StatItem = ({
   className = "",
 }: StatItemProps) => (
   <div
-    className={`flex flex-col h-full justify-center px-3 md:px-4 py-3 relative border-r border-[#E1E4EA] ${
-      isHighlight ? "bg-[#FFF4ED]" : "bg-white"
-    } last:border-r-0 ${className}`}
-    style={{
-      borderImageSource:
-        "linear-gradient(to bottom, transparent 15%, #E1E4EA 15%, #E1E4EA 85%, transparent 85%)",
-      borderImageSlice: "1",
-    }}
+    className={`flex flex-col h-full justify-center px-3 md:px-4 py-3 relative ${isHighlight
+        ? "bg-[#FFF4ED] border-0 rounded-[12px] px-6 md:px-8 py-5 md:py-6"
+        : "bg-white lg:after:content-[''] lg:after:absolute lg:after:right-0 lg:after:top-[15%] lg:after:bottom-[15%] lg:after:w-[1px] lg:after:bg-gradient-to-b lg:after:from-transparent lg:after:via-[#E1E4EA] lg:after:to-transparent last:after:hidden"
+      } ${className}`}
   >
     {isHighlight && (
       <div className="absolute top-2 right-2">
@@ -40,17 +36,15 @@ export const StatItem = ({
     </span>
     <div className="flex items-center gap-1.5">
       <span
-        className={`text-[20px] md:text-[24px] font-semibold leading-tight ${
-          isHighlight ? "text-[#FF7A00]" : "text-[#0E121B]"
-        }`}
+        className={`text-[20px] md:text-[24px] font-semibold leading-tight ${isHighlight ? "text-[#FF7A00]" : "text-[#0E121B]"
+          }`}
       >
         {value}
       </span>
       {change && (
         <span
-          className={`text-[10px] md:text-[11px] font-semibold leading-[120%] px-1 py-0.5 rounded flex items-center gap-0.5 ${
-            isPositive ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50"
-          }`}
+          className={`text-[10px] md:text-[11px] font-semibold leading-[120%] px-1 py-0.5 rounded flex items-center gap-0.5 ${isPositive ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50"
+            }`}
         >
           {isPositive ? "+" : ""}
           {change}

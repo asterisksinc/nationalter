@@ -12,11 +12,11 @@ export default function SettingsPage() {
   return (
     <>
       {/* Page Title */}
-      <div className="mb-[20px]">
-        <div className="font-medium text-[16px] leading-[20px] text-[#0E121B] mb-[6px] tracking-[-0.006em]">
+      <div className="mb-4 md:mb-6 pb-3 md:pb-4 border-b border-[#E1E4EA] -mx-4 md:-mx-6 px-4 md:px-6">
+        <div className="font-bold md:font-medium text-[18px] md:text-[16px] leading-[20px] text-[#0E121B] mb-[6px] tracking-[-0.006em]">
           Settings & Privacy
         </div>
-        <p className="text-[14px] leading-[120%] text-[#8E8E93]">
+        <p className="text-[13px] md:text-[14px] leading-[120%] text-[#8E8E93]">
           Manage your account settings and privacy preferences.
         </p>
       </div>
@@ -25,7 +25,7 @@ export default function SettingsPage() {
       <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       {/* Tab Content */}
-      <div className="pt-[20px]">
+      <div className="pt-4 md:pt-[20px]">
         {activeTab === "account" && <AccountSettings />}
         {activeTab === "linked" && <LinkedAccounts />}
         {activeTab === "data" && <DataPrivacy />}

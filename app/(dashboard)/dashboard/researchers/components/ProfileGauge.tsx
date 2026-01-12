@@ -17,7 +17,7 @@ export const ProfileGauge = ({ percentage }: ProfileGaugeProps) => {
   const dashOffset = circumference - (percentage / 100) * circumference;
 
   return (
-  <div className="relative flex flex-col items-center w-[272px] h-[150px]">
+    <div className="relative flex flex-col items-center w-[272px] h-[150px]">
       {/* SVG Container: Semi-circle
         "overflow-hidden" crops the circle perfectly in half 
       */}
@@ -68,8 +68,8 @@ export const ProfileGauge = ({ percentage }: ProfileGaugeProps) => {
       </div>
 
       {/* Text Position - Centered inside the gauge area */}
-     <div className="absolute top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
-        <span className="font-sans font-semibold text-[24px] leading-[120%] text-[#FF7A00]">
+      <div className="absolute top-[85px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-0">
+        <span className="font-sans font-bold text-[32px] leading-[120%] text-[#FF7A00]">
           {percentage}%
         </span>
         <span className="font-sans font-semibold text-[12px] leading-[120%] text-[#0E121B] whitespace-nowrap">

@@ -23,7 +23,6 @@ export const DashboardHeader = ({
       return;
     }
 
-    // If we're already on the tickets page, open modal via query param; otherwise navigate to tickets page with param
     const target = pathname?.includes("/tickets")
       ? `${pathname}?openCreate=true`
       : "/dashboard/researchers/tickets?openCreate=true";
@@ -32,19 +31,61 @@ export const DashboardHeader = ({
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-[16px] gap-3 md:gap-0 md:h-[48px] border-b border-[#E1E4EA]">
-      {/* Top row: Menu + Breadcrumbs + Search/Bell on mobile */}
-      <div className="flex items-center justify-between w-full md:w-auto">
-        <div className="flex items-center gap-3">
-          {/* Hamburger menu for mobile */}
-          <button
-            onClick={onMenuClick}
-            className="md:hidden p-2 hover:bg-[#E1E4EA] rounded-lg transition-colors -ml-2"
-          >
-            <Menu size={20} className="text-[#525866]" />
-          </button>
+    <>
+      {/* MOBILE HEADER STRUCTURE */}
+      <div className="md:hidden flex flex-col w-full mb-6">
+        {/* Row 1: Top Bar (Menu, Logo, Icons) */}
+        <div className="flex items-center justify-between w-full h-[40px] mb-4">
+          <div className="flex items-center gap-3">
+            <button onClick={onMenuClick} className="p-1 -ml-1">
+              <Menu size={24} className="text-[#0E121B]" />
+            </button>
+            <div className="flex flex-col">
+              <img
+                src="/logo.png"
+                alt="NationCite"
+                className="h-[40px] w-auto object-contain"
+              />
+            </div>
+          </div>
 
-          {/* Breadcrumbs */}
+          <div className="flex items-center gap-3">
+           
+            <button className="relative">
+              <Bell size={20} className="text-[#0E121B]" />
+              <span className="absolute top-0 right-0 w-2 h-2 bg-[#DF120B] rounded-full border border-white"></span>
+            </button>
+            <button
+              onClick={handleRaise}
+              className="w-8 h-8 bg-[#FF7A00] rounded-md flex items-center justify-center"
+            >
+              <Plus size={18} className="text-white" />
+            </button>
+          </div>
+        </div>
+
+        {/* Row 2: Breadcrumbs */}
+        <div className="flex items-center text-[13px] font-normal text-[#525866]">
+          {breadcrumbItems.map((item, index) => (
+            <React.Fragment key={index}>
+              {item.href ? (
+                <Link href={item.href} className="text-[#9ea3ae]">
+                  {item.label}
+                </Link>
+              ) : (
+                <span className="text-[#0E121B] font-medium">{item.label}</span>
+              )}
+              {index < breadcrumbItems.length - 1 && (
+                <ChevronRight size={14} className="mx-2 text-[#9ea3ae]" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* DESKTOP HEADER STRUCTURE (Unchanged logic, verified) */}
+      <header className="hidden md:flex flex-row justify-between items-start mb-[26px] h-[48px] border-b border-[#E1E4EA] -mx-6 px-6">
+        <div className="flex items-center h-full">
           <div className="flex items-center text-[12px] font-normal leading-[120%] text-[#525866]">
             {breadcrumbItems.map((item, index) => (
               <React.Fragment key={index}>
@@ -74,46 +115,22 @@ export const DashboardHeader = ({
           </div>
         </div>
 
-        {/* Mobile: Search icon and User avatar */}
-        <div className="flex md:hidden items-center gap-2">
-          <button className="p-2 hover:bg-[#E1E4EA] rounded-lg transition-colors">
-            <Search size={20} className="text-[#525866]" />
+        <div className="flex items-start  gap-[12px] h-full">
+        
+
+          <button className="p-2.5 bg-white border border-[#E1E4EA] rounded-md text-[#525866] hover:text-[#0E121B] hover:bg-[#F5F7FA] relative h-10 w-10 flex items-center justify-center">
+            <Bell size={20} strokeWidth={1.5} />
+            <span className="absolute top-1 right-3 w-1.5 h-1.5 bg-[#DF120B] rounded-full"></span>
           </button>
-          <img
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt="User"
-            className="w-8 h-8 rounded-full object-cover"
-          />
+
+          <button
+            onClick={handleRaise}
+            className="flex items-center gap-[6px] bg-[#FF7A00] hover:bg-[#FF8D28] text-white px-[14px] py-[7px] rounded-[8px] text-[14px] font-semibold leading-[120%] tracking-[-0.04em] transition-colors w-[142px] h-[40px] justify-center"
+          >
+            <Plus size={14} strokeWidth={2.5} /> Raise Ticket
+          </button>
         </div>
-      </div>
-
-      {/* Desktop: Search, Bell, Raise Ticket */}
-      <div className="hidden md:flex items-center  mb-4 gap-[12px]">
-        <div className="relative w-[220px] h-[40px]">
-          <Search
-            className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[#525866]"
-            size={20}
-          />
-          <input
-            type="text"
-            placeholder="Search"
-            className="pl-[38px] pr-3 py-[10px] w-full h-full bg-[#F2F5F8] border border-[#E1E4EA] rounded-[6px] text-[14px] font-normal leading-[120%] text-[#525866] placeholder-[#525866] focus:bg-white focus:border-[#E1E4EA] focus:outline-none transition-all"
-          />
-        </div>
-
-        <button className="p-2.5 bg-white border border-[#E1E4EA] rounded-md text-[#525866] hover:text-[#0E121B] hover:bg-[#F5F7FA] relative h-10 w-10 flex items-center justify-center">
-          <Bell size={20} strokeWidth={1.5} />
-          <span className="absolute top-1 right-3 w-1.5 h-1.5 bg-[#DF120B] rounded-full"></span>
-        </button>
-
-        <button
-          onClick={handleRaise}
-          className="flex items-center gap-[6px] bg-[#FF7A00] hover:bg-[#FF8D28] text-white px-[14px] py-[7px] rounded-[8px] text-[14px] font-semibold leading-[120%] tracking-[-0.04em] transition-colors w-[142px] h-[40px] justify-center"
-        >
-          <Plus size={14} strokeWidth={2.5} /> Raise Ticket
-        </button>
-      </div>
-
-    </header>
+      </header>
+    </>
   );
 };

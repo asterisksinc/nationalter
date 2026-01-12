@@ -81,32 +81,14 @@ export default function ResearchersPage() {
 
   return (
     <>
-      <main>
-        {/* Mobile Search Bar */}
-        <div className="md:hidden mb-4 flex items-center gap-3">
-          <div className="relative flex-1 h-[40px]">
-            <Search
-              className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[#525866]"
-              size={20}
-            />
-            <input
-              type="text"
-              placeholder="Search"
-              className="pl-[38px] pr-3 py-[10px] w-full h-full bg-[#F2F5F8] border border-[#E1E4EA] rounded-[6px] text-[14px] font-normal leading-[120%] text-[#525866] placeholder-[#525866] focus:bg-white focus:border-[#E1E4EA] focus:outline-none transition-all"
-            />
-          </div>
-          <button className="w-[40px] h-[40px] bg-[#FF7A00] rounded-[6px] flex items-center justify-center shrink-0">
-            <Plus size={20} className="text-white" />
-          </button>
-        </div>
-
+      <main className="pb-8">
         {/* Welcome */}
-        <div className="mb-4 md:mb-6 pb-3 md:pb-4 border-b border-[#E1E4EA]">
-          <div className="text-[14px] md:text-[16px] font-semibold leading-[120%] tracking-[-0.006em] text-[#0E121B]">
-            Good Evening, Dr. Ashick Kumar!
+        <div className="mb-4 md:mb-6 pb-3 md:pb-4 border-b border-[#E1E4EA] -mx-4 md:-mx-6 px-4 md:px-6">
+          <div className="text-[18px] md:text-[16px] font-semibold leading-[120%] tracking-[-0.006em] text-[#0E121B]">
+            Good Evening, Dr. Ashok Kumar!
           </div>
-          <p className="text-[12px] md:text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mt-1">
-            Welcome back to your Research Impact Portal
+          <p className="text-[13px] md:text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mt-1">
+            Welcome back to your Research Impact Portal.
           </p>
         </div>
 
@@ -114,33 +96,54 @@ export default function ResearchersPage() {
         <div className="mb-4 md:mb-6">
           <div
             className="
-              rounded-lg h-[100px] border border-[#E1E4EA]
-              grid grid-cols-2 lg:grid-cols-5
-              bg-transparent overflow-hidden items-center
+              rounded-xl border border-[#E1E4EA] bg-white
+              flex flex-col lg:grid lg:grid-cols-5 lg:h-[100px] lg:items-center
+              overflow-hidden
             "
           >
-            <StatItem
-              label="University Rank"
-              value="01"
-              change="6"
-              isPositive
-            />
-            <StatItem label="World Rank" value="210" change="12" isPositive />
-            <StatItem
-              label="Country Rank"
-              value="11"
-              change="02"
-              isPositive={false}
-            />
-            <StatItem label="H-Index" value="129" change="13" isPositive />
-            <StatItem
-              label="Publications"
-              value="192"
-              change=""
-              isPositive
-              isHighlight
-              className="col-span-2 lg:col-span-1"
-            />
+            {/* Mobile: 2x2 Grid for first 4 items */}
+            <div className="grid grid-cols-2 lg:contents">
+              <StatItem
+                label="University Rank"
+                value="01"
+                change="8"
+                isPositive={true}
+                className="relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] lg:after:hidden"
+              />
+              <StatItem
+                label="World Rank"
+                value="210"
+                change="12"
+                isPositive={true}
+                className=""
+              />
+              <StatItem
+                label="Country Rank"
+                value="11"
+                change="02"
+                isPositive={false}
+                className="relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] lg:after:hidden"
+              />
+              <StatItem
+                label="H-Index"
+                value="129"
+                change="13"
+                isPositive={true}
+                className=""
+              />
+            </div>
+
+            {/* Mobile: Publications Full Width */}
+            <div className="col-span-2 lg:col-span-1 lg:border-t-0 border-[#E1E4EA] lg:h-full">
+              <StatItem
+                label="Publications"
+                value="192"
+                change=""
+                isPositive
+                isHighlight
+                className="h-full px-[20px] py-4 lg:py-3"
+              />
+            </div>
           </div>
         </div>
 
@@ -162,7 +165,7 @@ export default function ResearchersPage() {
         />
 
         {/* Mobile Profile Completeness */}
-        <div className="mt-4 lg:hidden">
+        <div className="mt-6 lg:hidden">
           <ProfileCompleteness percentage={82} missingPublications={3} />
         </div>
       </main>

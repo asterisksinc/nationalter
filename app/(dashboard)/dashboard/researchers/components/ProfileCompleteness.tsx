@@ -81,11 +81,11 @@ export const ProfileCompleteness = ({
       </div>
 
       {/* Action Button */}
-      <button className="mt-auto w-full h-10 flex items-center justify-center gap-2 rounded-md border border-[#FF7A00] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer">
-        <span className="text-[14px] font-semibold leading-[120%]">
+      <button className="mt-auto w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#FF7A00] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer shadow-sm">
+        <span className="text-[14px] font-bold leading-[120%]">
           Complete Your Profile
         </span>
-        <ArrowRight size={16} strokeWidth={2} />
+        <ArrowRight size={18} strokeWidth={2.5} />
       </button>
     </div>
   );
