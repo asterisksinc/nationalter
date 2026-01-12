@@ -97,7 +97,7 @@ export default function ResearchersPage() {
           <div
             className="
               rounded-xl border border-[#E1E4EA] bg-white
-              flex flex-col lg:grid lg:grid-cols-5 lg:h-[100px] lg:items-center
+              flex flex-col lg:grid lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr_auto_minmax(100px,0.8fr)] lg:h-[100px] lg:items-center
               overflow-hidden
             "
           >
@@ -110,6 +110,7 @@ export default function ResearchersPage() {
                 isPositive={true}
                 className="relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] lg:after:hidden"
               />
+              <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
               <StatItem
                 label="World Rank"
                 value="210"
@@ -117,6 +118,7 @@ export default function ResearchersPage() {
                 isPositive={true}
                 className=""
               />
+              <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
               <StatItem
                 label="Country Rank"
                 value="11"
@@ -124,6 +126,7 @@ export default function ResearchersPage() {
                 isPositive={false}
                 className="relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] lg:after:hidden"
               />
+              <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
               <StatItem
                 label="H-Index"
                 value="129"
@@ -132,16 +135,17 @@ export default function ResearchersPage() {
                 className=""
               />
             </div>
+            <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
 
             {/* Mobile: Publications Full Width */}
-            <div className="col-span-2 lg:col-span-1 lg:border-t-0 border-[#E1E4EA] lg:h-full">
+            <div className="col-span-2 lg:col-span-1 lg:border-t-0 border-[#E1E4EA] lg:h-auto lg:self-center lg:max-w-[140px]">
               <StatItem
                 label="Publications"
                 value="192"
                 change=""
                 isPositive
                 isHighlight
-                className="h-full px-[20px] py-4 lg:py-3"
+                className="h-full px-4 py-3 lg:px-5 lg:py-3"
               />
             </div>
           </div>
