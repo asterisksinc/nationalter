@@ -49,7 +49,7 @@ export const FlowRenderer = ({
       case FlowStep.Identity:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FormInput
                 label="Full Name"
                 placeholder="e.g. Dr. Aditi Sharma"
@@ -61,7 +61,7 @@ export const FlowRenderer = ({
                 onClick={onNext}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
-                Continue to Next Step
+                Next
               </button>
             </div>
           </div>
@@ -97,7 +97,7 @@ export const FlowRenderer = ({
       case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 pb-2">
+            <div className="space-y-5 pb-2">
               <FormSelect
                 label="Primary Research Domain"
                 options={[
@@ -130,12 +130,12 @@ export const FlowRenderer = ({
       case FlowStep.Welcome:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <div className="mb-2">
                 <label className="block text-xs font-medium text-neutral-700 mb-1.5 font-sans tracking-wide">
                   Impact Card Preview
                 </label>
-                <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-xl p-4 text-center flex flex-col items-center justify-center">
+                <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-xl p-4 text-center flex flex-col items-center ">
                   <div className="bg-white p-2 rounded-full mb-2 text-neutral-500 shadow-none">
                     <Icon name="upload" size={16} />
                   </div>
@@ -145,7 +145,7 @@ export const FlowRenderer = ({
                   <p className="text-[10px] text-neutral-400 mb-2">
                     Support for a single or bulk upload. Allowed: PDF, JPG, PNG.
                   </p>
-                  <button className="px-3 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs text-neutral-700 font-medium">
+                  <button className="px-3 py-1.5  bg-white border border-neutral-300 rounded-lg text-xs text-neutral-700 font-medium">
                     Browse File
                   </button>
                 </div>
@@ -188,7 +188,7 @@ export const FlowRenderer = ({
       case FlowStep.Identity:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FormInput label="Name" placeholder="e.g. Dr. Rajesh Kumar" />
               <FormSelect
                 label="Medical Council Registration Number"
@@ -216,7 +216,7 @@ export const FlowRenderer = ({
       case FlowStep.Authentication:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FormSelect
                 label="Primary Hospital/Clinic"
                 options={[
@@ -259,7 +259,7 @@ export const FlowRenderer = ({
       case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 md:space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FileUpload
                 label="Medical Degree"
                 subLabel="Upload your MBBS/MD/MS degree certificate."
@@ -282,7 +282,7 @@ export const FlowRenderer = ({
       case FlowStep.Welcome:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 md:space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <label className="flex items-start gap-3 md:gap-4 p-3.5 md:p-4 border-2 rounded-xl cursor-pointer hover:border-[var(--color-primary)] active:border-[var(--color-primary)] transition-all bg-white group hover:shadow-lg touch-manipulation">
                 <div className="mt-0.5">
                   <input
@@ -306,7 +306,7 @@ export const FlowRenderer = ({
                   <input
                     type="radio"
                     name="plan"
-                    className="w-5 h-5 md:w-4 md:h-4 accent-[var(--color-primary)] border-gray-100"
+                    className="w-5 h-5 md:w-4 md:h-4 accent-[var(--color-primary)] border-gray-300"
                   />
                 </div>
                 <div>
@@ -338,7 +338,7 @@ export const FlowRenderer = ({
       case FlowStep.Identity:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 md:space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FormInput
                 label="Official Domain Name"
                 placeholder="www.university.ac.in"
@@ -361,7 +361,7 @@ export const FlowRenderer = ({
         if (!otpSent) {
           return (
             <div className="flex flex-col h-full justify-between">
-              <div className="space-y-3 md:space-y-4 pb-2">
+              <div className="space-y-5 pb-2">
                 <FormInput
                   label="Administrator Full Name"
                   placeholder="e.g. Registrar Name"
@@ -390,25 +390,25 @@ export const FlowRenderer = ({
         } else {
           return (
             <div className="flex flex-col h-full text-center">
-              <div className="flex-1 flex flex-col justify-center py-3">
-                <h5 className="mb-2 text-neutral-800 text-base md:text-lg font-semibold md:font-medium">
+              <div className="flex-1 flex flex-col  py-6">
+                <h5 className="mb-3 text-neutral-800 text-base md:text-lg font-semibold md:font-medium">
                   Enter Verification Code
                 </h5>
-                <p className="text-xs md:text-sm mb-6 md:mb-5 text-neutral-500 px-4">
+                <p className="text-xs md:text-sm mb-8 md:mb-7 pt-2 text-neutral-500 px-4">
                   We sent a 4-digit code to your registered mobile number.
                 </p>
-                <div className="flex justify-center gap-2.5 md:gap-3 mb-6 md:mb-5">
+                <div className="flex justify-center pt-3 gap-2.5  md:gap-3 mb-8 md:mb-7">
                   {[1, 2, 3, 4].map((i) => (
                     <input
                       key={i}
                       type="text"
                       maxLength={1}
                       inputMode="numeric"
-                      className="w-12 h-12 md:w-9 md:h-9 border-2 border-neutral-300 rounded-xl text-center text-lg md:text-base font-semibold md:font-medium text-[var(--color-primary)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all shadow-none touch-manipulation"
+                      className="w-20 h-20 md:w-20 md:h-20 border-2 border-neutral-300 rounded-xl text-center text-2xl md:text-2xl font-semibold text-[var(--color-primary)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all shadow-none touch-manipulation"
                     />
                   ))}
                 </div>
-                <div className="flex justify-between items-center text-xs mb-6 px-3 bg-neutral-50 py-2.5 rounded-xl border border-neutral-100">
+                <div className="flex justify-between items-center text-xs mb-8 px-3 bg-neutral-50 py-2.5 rounded-xl border border-neutral-100">
                   <span
                     className={
                       timer > 0 ? "text-neutral-600" : "text-neutral-400"
@@ -444,10 +444,10 @@ export const FlowRenderer = ({
             </div>
           );
         }
-      case FlowStep.Profile:
+        case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 md:space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FileUpload
                 label="Letter of Authorization"
                 subLabel="Signed by the Head of Institution"
@@ -467,7 +467,7 @@ export const FlowRenderer = ({
       case FlowStep.Welcome:
         return (
           <div className="flex flex-col h-full justify-between">
-            <div className="space-y-3 md:space-y-4 pb-2">
+            <div className="space-y-5 pb-2">
               <FormSelect
                 label="Add your key departments"
                 options={[

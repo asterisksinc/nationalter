@@ -29,11 +29,12 @@ const STEPS_CONFIG = [
 
 interface SidebarProps {
   currentStep: number;
+  onStepClick?: (step: number) => void;
 }
 
-export const SignupSidebar = ({ currentStep }: SidebarProps) => {
+export const SignupSidebar = ({ currentStep, onStepClick }: SidebarProps) => {
   return (
-    <div className="w-[355px] h-[calc(100vh-4rem)] px-6 py-5 flex flex-col">
+    <div className="w-full h-full px-6 py-5 flex flex-col overflow-y-auto">
       {/* Logo — top left, blended */}
       <div className="mb-10">
         <div className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-inherit">
@@ -51,11 +52,15 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => {
           const isActive = currentStep === step.id;
           const isCompleted = currentStep > step.id;
           const isPending = currentStep < step.id;
+          const isClickable = isCompleted && onStepClick;
 
           return (
             <div key={step.id} className="flex flex-col">
               {/* Step Row */}
-              <div className="flex items-start gap-4">
+              <div
+                className={`flex items-start gap-4 ${isClickable ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
+                onClick={() => isClickable && onStepClick(step.id)}
+              >
                 {/* Icon Column */}
                 <div className="w-12 flex flex-col items-center">
                   <div
@@ -64,8 +69,8 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => {
                         isActive
                           ? "border-neutral-900 bg-neutral-100"
                           : isCompleted
-                          ? "border-[#FF7A00] bg-[#FFF4E6]"
-                          : "border-[#AEAEB2] bg-[#FFF4E6]"
+                            ? "border-[#FF7A00] bg-[#FFF4E6]"
+                            : "border-[#AEAEB2] bg-[#FFF4E6]"
                       }`}
                   >
                     <div
@@ -74,8 +79,8 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => {
                           isActive
                             ? "text-neutral-900"
                             : isCompleted
-                            ? "text-[#FF7A00]"
-                            : "text-[#FF7A00]"
+                              ? "text-[#FF7A00]"
+                              : "text-[#FF7A00]"
                         }`}
                     >
                       {isCompleted ? (
@@ -136,10 +141,10 @@ export const SignupSidebar = ({ currentStep }: SidebarProps) => {
       <div className="flex-1" />
 
       {/* Footer */}
-      <div className="text-[12px] text-[#525866]">
-        Already a user?
+      <div className="text-[16px] text-[#525866]">
+        Already a user?{" "}
         <span
-          className="ml-1 text-[#FF7A00] font-medium cursor-pointer hover:underline"
+          className="text-[#FF7A00] font-medium cursor-pointer hover:underline"
           onClick={() => (window.location.href = "/signin")}
         >
           Login

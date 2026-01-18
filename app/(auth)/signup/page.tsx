@@ -60,6 +60,13 @@ export default function RegisterPage() {
     }
   };
 
+  const handleStepClick = (step: number) => {
+    // Only allow clicking on completed steps
+    if (step < currentStep) {
+      setCurrentStep(step);
+    }
+  };
+
   const isSelectionStep = currentStep === 0;
   const isDashboardStep = currentStep === FlowStep.Dashboard;
 
@@ -87,8 +94,8 @@ export default function RegisterPage() {
           </div>
 
           {/* Right Panel - Scrollable Form Area */}
-          <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
-            <div className="w-full h-full overflow-y-auto px-4 py-4 md:p-10 flex flex-col">
+          <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
+            <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
               {/* Mobile Logo */}
               <div className="md:hidden mb-4 flex justify-center">
                 <img src="/logo.png" alt="NationCite" className="h-20 w-auto" />
@@ -97,15 +104,15 @@ export default function RegisterPage() {
               <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
                 {/* Heading Section - Separated and Centered */}
                 <div className="text-center mb-4 md:mb-8">
-                  <div className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
+                  <div className="text-[28px] font-medium text-neutral-900 mb-2">
                     Create New Account
                   </div>
                   <p className="text-sm text-neutral-600">Sign Up as:</p>
                 </div>
 
                 {/* Form Container */}
-                <div className="w-full bg-white border border-neutral-200 rounded-2xl p-4 md:p-8 shadow-sm md:shadow-none flex flex-col">
-                  <div className="space-y-2.5 mb-6">
+                <div className="w-full bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col">
+                  <div className="space-y-4 mb-6">
                     <UserTypeCard
                       type={UserType.Medical}
                       icon="medical"
@@ -137,18 +144,7 @@ export default function RegisterPage() {
                   </button>
                 </div>
 
-                {/* Already User Link - Below form */}
-                <div className="mt-4 md:mt-6 text-center">
-                  <p className="text-xs md:text-sm text-neutral-600">
-                    Already a User?{" "}
-                    <Link
-                      href="/signin"
-                      className="text-[var(--color-primary)] font-semibold hover:underline"
-                    >
-                      Login
-                    </Link>
-                  </p>
-                </div>
+                {/* Already User Link removed - moved to sidebar */}
               </div>
             </div>
           </div>
@@ -195,12 +191,15 @@ export default function RegisterPage() {
             background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
           }}
         >
-          <SignupSidebar currentStep={isDashboardStep ? 4 : currentStep} />
+          <SignupSidebar
+            currentStep={isDashboardStep ? 4 : currentStep}
+            onStepClick={handleStepClick}
+          />
         </div>
 
         {/* Right Panel - Scrollable Form Area */}
-        <div className="w-full md:w-[65%] h-full bg-white relative z-10 flex flex-col">
-          <div className="w-full h-full overflow-y-auto px-4 py-4 md:p-10 flex flex-col">
+        <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
+          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
             {/* Back Button - Hidden on mobile (use browser back) */}
             {!isDashboardStep && (
               <button
@@ -240,9 +239,9 @@ export default function RegisterPage() {
                 <>
                   {/* Heading Section - Separated and Centered */}
                   <div className="text-center mb-4 md:mb-8">
-                    <h1 className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
+                    <div className="text-[28px] font-medium text-neutral-900 mb-2 leading-tight">
                       Create New Account
-                    </h1>
+                    </div>
                     <p className="text-sm text-neutral-600">
                       Sign Up as:{" "}
                       <span className="text-[var(--color-primary)] font-semibold">
@@ -252,7 +251,7 @@ export default function RegisterPage() {
                   </div>
 
                   {/* Form Container */}
-                  <div className="bg-white border border-neutral-200 rounded-2xl p-4 md:p-8 shadow-sm md:shadow-none flex flex-col h-full">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col h-full">
                     <div className="flex-1 flex flex-col min-h-0">
                       {userType && (
                         <FlowRenderer
@@ -267,20 +266,7 @@ export default function RegisterPage() {
                     </div>
                   </div>
 
-                  {/* Already User Link - Below form */}
-                  {!isDashboardStep && (
-                    <div className="mt-4 md:mt-6 text-center">
-                      <p className="text-xs md:text-sm text-neutral-600">
-                        Already a User?{" "}
-                        <Link
-                          href="/signin"
-                          className="text-[var(--color-primary)] font-semibold hover:underline"
-                        >
-                          Login
-                        </Link>
-                      </p>
-                    </div>
-                  )}
+                  {/* Link removed - moved to sidebar */}
                 </>
               )}
             </div>

@@ -1,157 +1,224 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import "./style.css";
+import { useState } from "react";
 import Link from "next/link";
+import { SigninSidebar } from "./components/SigninSidebar";
+import { SigninFlowRenderer } from "./components/SigninFlowRenderer";
+import { UserTypeCard } from "../signup/components/UserTypeCard";
+import { Icon } from "../signup/components/Icon";
+
+// Reuse Types
+enum UserType {
+  Medical = "Medical Professional",
+  Institution = "Institution/ Organisation",
+  Researcher = "Researcher",
+}
 
 export default function LoginPage() {
-  const [step, setStep] = useState<1 | 2>(1);
-  const [role, setRole] = useState<"researcher" | "university" | "medical">();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState<UserType | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleRoleSelect = (value: "researcher" | "university" | "medical") => {
-    setRole(value);
-    setStep(2);
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+    } else {
+      setUserType(null);
+    }
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log({ role, email, password });
-  };
-
-  return (
-    <>
-      {/* Navbar */}
-      <nav className="auth-navbar">
-        <Link href="/" className="auth-logo">
-          <img src="/logos/pcLogo.png" alt="Nationcite" />
-        </Link>
-        <div className="auth-nav-right">
-          <span className="auth-nav-text">Don&apos;t have an account?</span>
-          <Link href="/signup" className="auth-nav-link">
-            Sign up
-          </Link>
+  // SUCCESS / DASHBOARD VIEW
+  if (isSuccess) {
+    return (
+      <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
+        {/* Left Sidebar */}
+        <div
+          className="hidden md:flex md:w-[355px] h-full shrink-0 relative z-20"
+          style={{
+            background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
+          }}
+        >
+          <SigninSidebar />
         </div>
-      </nav>
 
-      <div className="page">
-        <aside className="sidebar">{/* Empty elegant space */}</aside>
-
-        <main className="content">
-          {step === 1 && (
-            <div className="auth-content1">
-              <h1 className="title">Lorem ipsum dolor self amet consectetur</h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
+        {/* Right Content */}
+        <div className="flex-1 h-full bg-white relative z-10 flex flex-col">
+          <div className="w-full h-full flex flex-col items-center justify-center p-8">
+            <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-none flex flex-col justify-center max-w-md w-full">
+              <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Icon name="check" size={24} />
+              </div>
+              <h4 className="text-lg font-medium mb-2 text-neutral-800">
+                Welcome Back!
+              </h4>
+              <p className="text-xs text-neutral-500 mb-5">
+                You have successfully signed in as <br />
+                <span className="font-semibold text-[var(--color-primary)]">
+                  {userType}
+                </span>
               </p>
+              <button
+                className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full"
+                onClick={() => (window.location.href = "/dashboard")}
+              >
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-              <div className="card-list">
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("researcher")}
-                >
-                  <img src="./dummy/researcher.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">Researcher</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
+  // USER TYPE SELECTION VIEW (Step 0)
+  if (!userType) {
+    return (
+      <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
+        {/* Left Panel - Branding */}
+        <div
+          className="hidden md:flex md:w-[355px] h-full bg-orange-50 items-center justify-center relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
+          }}
+        >
+          <div className="mb-10">
+            <div className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-inherit">
+              <img
+                src="/logo.png"
+                alt="NationCite Logo"
+                className="h-[200px] w-auto"
+              />
+            </div>
+          </div>
+        </div>
 
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("university")}
-                >
-                  <img src="./dummy/university.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">University / Organisation</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
+        {/* Right Panel - Scrollable Form Area */}
+        <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
+          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
+            {/* Mobile Logo */}
+            <div className="md:hidden mb-4 flex justify-center">
+              <img src="/logo.png" alt="NationCite" className="h-20 w-auto" />
+            </div>
 
-                <button
-                  className="role-card"
-                  onClick={() => handleRoleSelect("medical")}
-                >
-                  <img src="./dummy/medical.jpg" className="role-thumb" />
-                  <div className="role-text">
-                    <div className="role-title">Medical Professional</div>
-                    <div className="role-desc">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </div>
-                  </div>
-                </button>
-                <div className="role-desc">
-                  Lorem ipsum dolor sit amet, consectetur{" "}
-                  <span style={{ color: "#FF8D28" }}>adipiscing elit…</span>
+            <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
+              {/* Heading */}
+              <div className="text-center mb-4 md:mb-8">
+                <div className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
+                  Login
+                </div>
+                <p className="text-sm text-neutral-600">
+                  Select your user type to continue
+                </p>
+              </div>
+
+              {/* Selection Cards */}
+              <div className="w-full bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col">
+                <div className="space-y-4 mb-6">
+                  <UserTypeCard
+                    type={UserType.Medical}
+                    icon="medical"
+                    description="Access Medical user dashboards"
+                    isSelected={false}
+                    onClick={() => setUserType(UserType.Medical)}
+                  />
+                  <UserTypeCard
+                    type={UserType.Institution}
+                    icon="building"
+                    description="Access Organisation dashboards"
+                    isSelected={false}
+                    onClick={() => setUserType(UserType.Institution)}
+                  />
+                  <UserTypeCard
+                    type={UserType.Researcher}
+                    icon="researcher"
+                    description="Access Researcher dashboards"
+                    isSelected={false}
+                    onClick={() => setUserType(UserType.Researcher)}
+                  />
                 </div>
               </div>
 
-              <p className="foot-note role-desc">
-                <span style={{ fontWeight: "500" }}>Do you know: </span>Lorem
-                ipsum dolor sit amet, consectetur \adipiscing elit…
-              </p>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="auth-content1">
-              <h1 className="title">Lorem ipsum dolor self amet consectetur</h1>
-              <p className="subtitle">
-                Lorem ipsum dolor sit amet, consectetur elite
-              </p>
-
-              <form className="auth-form" onSubmit={handleSubmit}>
-                <label className="field">
-                  <span className="field-label">Username / Email</span>
-                  <input
-                    type="email"
-                    placeholder="Placeholder"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="field">
-                  <span className="field-label">Password</span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <button type="submit" className="primary-btn">
-                  Sign in
-                </button>
-
-                <div className="form-footer">
-                  <label className="remember">
-                    <input type="checkbox" /> Remember me
-                  </label>
-                  <button type="button" className="link-btn">
-                    Forgot password?
-                  </button>
-                </div>
-
-                <div className="bottom-text">
-                  Don&apos;t have an account?{" "}
-                  <Link href="/signup" className="link-btn">
-                    Sign up here
+              {/* Create Account Link */}
+              <div className="mt-4 md:mt-6 text-center">
+                <p className="text-xs md:text-sm text-neutral-600">
+                  Don't have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-[var(--color-primary)] font-semibold hover:underline"
+                  >
+                    Create New
                   </Link>
-                </div>
-              </form>
+                </p>
+              </div>
             </div>
-          )}
-        </main>
+          </div>
+        </div>
       </div>
-    </>
+    );
+  }
+
+  // MAIN LOGIN FORM VIEW (Step 1 & 2)
+  return (
+    <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
+      {/* Sidebar */}
+      <div
+        className="hidden md:flex md:w-[355px] h-full shrink-0 relative z-20"
+        style={{
+          background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
+        }}
+      >
+        <SigninSidebar />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
+        <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="md:flex absolute top-6 left-6 p-2 hover:bg-neutral-100 rounded-full transition-colors z-30 hidden"
+            aria-label="Go Back"
+          >
+            <Icon name="arrow-left" className="text-neutral-600" size={20} />
+          </button>
+
+          {/* Mobile header (back + logo) */}
+          <div className="md:hidden flex justify-between items-center mb-6">
+            <button onClick={handleBack} className="p-2 -ml-2">
+              <Icon name="arrow-left" size={20} />
+            </button>
+            <img src="/logo.png" className="h-8" alt="Logo" />
+            <div className="w-8"></div>
+          </div>
+
+          <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
+            {/* Heading */}
+            <div className="text-center mb-4 md:mb-8">
+              <div className="text-[28px] font-semibold text-neutral-900 mb-2 leading-tight">
+                Login
+              </div>
+              <p className="text-sm text-neutral-600">
+                Sign In as:{" "}
+                <span className="text-[var(--color-primary)] font-semibold">
+                  {userType}
+                </span>
+              </p>
+            </div>
+
+            {/* Form Container */}
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col h-full md:h-auto">
+              <SigninFlowRenderer
+                userType={userType}
+                step={currentStep}
+                setStep={setCurrentStep}
+                onSuccess={() => setIsSuccess(true)}
+              />
+            </div>
+
+            {/* Link removed - moved to sidebar */}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
