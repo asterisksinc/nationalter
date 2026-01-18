@@ -11,7 +11,7 @@ export const SigninSidebar = () => {
 
       {/* Logo at top */}
       <div className="relative">
-        <img src="/logo.png" alt="NationCite Logo" className="h-16 w-auto" />
+        <img src="/logo.png" alt="NationCite Logo" className="h-30 w-auto" />
       </div>
 
       {/* Spacer */}
@@ -23,7 +23,7 @@ export const SigninSidebar = () => {
           Don't have an account?{" "}
           <Link
             href="/signup"
-            className="text-[#0EA5E9] font-medium hover:underline"
+            className="text-[#FF7A00] font-medium hover:underline"
           >
             Create New
           </Link>

@@ -113,12 +113,15 @@ export const SigninFlowRenderer = ({
 
   const renderOtpStep = (message: string) => (
     <div className="flex flex-col h-full text-center">
-      <div className="flex-1 flex flex-col justify-center py-3">
-        <h5 className="mb-2 text-neutral-800 text-lg font-semibold">
+      <div className="flex-1 flex flex-col justify-center py-4">
+        <h5 className="mb-4 text-neutral-800 text-lg font-semibold">
           OTP Verification
         </h5>
-        <p className="text-sm mb-6 text-neutral-500 px-4">{message}</p>
-        <div className="flex justify-center gap-3 mb-6">
+
+        <p className="text-sm mb-10 text-neutral-500 px-4">{message}</p>
+
+        {/* OTP BOXES */}
+        <div className="flex justify-center gap-3 mb-10">
           {otp.map((digit, i) => (
             <input
               key={i}
@@ -134,17 +137,31 @@ export const SigninFlowRenderer = ({
                   prev?.focus();
                 }
               }}
-              className="w-16 h-16 md:w-[80px] md:h-[80px] border-2 border-neutral-300 rounded-xl text-center text-2xl font-semibold text-[var(--color-primary)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all"
+              className="
+            w-12 h-12
+            md:w-[52px] md:h-[52px]
+            border border-neutral-300
+            rounded-xl mt-4
+            text-center
+            text-base font-semibold
+            text-[var(--color-primary)]
+            focus:border-[var(--color-primary)]
+            focus:ring-4 focus:ring-[var(--color-primary)]/10
+            outline-none transition-all
+          "
             />
           ))}
         </div>
-        <div className="flex justify-between items-center text-xs mb-6 px-3 bg-neutral-50 py-2.5 rounded-xl border border-neutral-100">
+
+        {/* TIMER */}
+        <div className="flex justify-between items-center text-xs mb-10 px-3 bg-neutral-50 py-2 rounded-xl border border-neutral-100">
           <span className={timer > 0 ? "text-neutral-600" : "text-neutral-400"}>
             Expires in:{" "}
             <span className="font-mono font-medium">
               00:{timer.toString().padStart(2, "0")}
             </span>
           </span>
+
           <button
             className="text-[var(--color-primary)] font-medium hover:underline disabled:opacity-50"
             disabled={timer > 0}
@@ -153,17 +170,20 @@ export const SigninFlowRenderer = ({
             Resend
           </button>
         </div>
-        <div className="flex flex-col gap-3">
+
+        {/* ACTION BUTTONS */}
+        <div className="flex flex-col gap-4">
           <button
             onClick={handleOtpSubmit}
             disabled={otp.some((d) => !d) || isLoading}
-            className="w-full bg-[var(--color-primary)] text-white py-3.5 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
+            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold transition-all shadow-md disabled:opacity-50"
           >
             {isLoading ? "Verifying..." : "Verify"}
           </button>
+
           <button
             onClick={() => setStep(1)}
-            className="w-full border border-neutral-200 text-neutral-600 py-3.5 rounded-xl font-medium hover:bg-neutral-50 transition-all"
+            className="w-full border border-neutral-200 text-neutral-600 py-3 rounded-xl font-medium hover:bg-neutral-50 transition-all"
           >
             Cancel
           </button>
@@ -247,7 +267,7 @@ export const SigninFlowRenderer = ({
       return renderOtpStep("For security, please verify your mobile number.");
 
     return (
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-4 mt-4">
         <div className="space-y-4">
           <FormInput label="Institutional SSO" placeholder="abc1234" />
           <Divider />
