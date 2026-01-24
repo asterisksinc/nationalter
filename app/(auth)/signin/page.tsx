@@ -101,17 +101,10 @@ export default function LoginPage() {
 
         {/* Right Panel - Scrollable Form Area */}
         <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
-          {/* Mobile Header */}
-          <div className="md:hidden w-full px-6 pt-6 pb-10 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
-            <div className="flex items-center justify-between">
-              <Link
-                href="/"
-                className="p-2 -ml-2 text-neutral-700 hover:text-neutral-900"
-              >
-                <Icon name="arrow-left" size={24} />
-              </Link>
-              <img src="/logo.png" alt="NationCite" className="h-30 w-auto" />
-              <div className="w-10"></div>
+          {/* Mobile Header - Logo Only */}
+          <div className="md:hidden w-full px-6 py-6 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
+            <div className="flex justify-center">
+              <img src="/logo.png" alt="NationCite" className="h-16 w-auto" />
             </div>
           </div>
 
@@ -156,7 +149,7 @@ export default function LoginPage() {
 
               {/* Create Account Link */}
               <div className="mt-4 md:mt-6 text-center">
-                <p className="text-xs md:text-sm text-neutral-600">
+                <p className="text-xs text-neutral-600">
                   Don't have an account?{" "}
                   <Link
                     href="/signup"
@@ -188,17 +181,10 @@ export default function LoginPage() {
 
       {/* Main Content */}
       <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
-        {/* Mobile Header */}
-        <div className="md:hidden w-full px-6 pt-6 pb-10 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBack}
-              className="p-2 -ml-2 text-neutral-700 hover:text-neutral-900"
-            >
-              <Icon name="arrow-left" size={24} />
-            </button>
-            <img src="/logo.png" className="h-16" alt="Logo" />
-            <div className="w-10"></div>
+        {/* Mobile Header - Logo Only */}
+        <div className="md:hidden w-full px-6 py-6 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
+          <div className="flex justify-center">
+            <img src="/logo.png" className="h-16" alt="NationCite" />
           </div>
         </div>
 
@@ -236,7 +222,18 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Link removed - moved to sidebar */}
+            {/* Create Account Link */}
+            <div className="mt-4 md:mt-6 text-center md:hidden">
+              <p className="text-xs text-neutral-600">
+                Don't have an account?{" "}
+                <Link
+                  href="/signup"
+                  className="text-[var(--color-primary)] font-semibold hover:underline"
+                >
+                  Create New
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
