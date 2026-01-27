@@ -9,7 +9,6 @@ import {
   UsersRound,
   ChartColumnIncreasing,
   Landmark,
-  File,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
@@ -58,7 +57,13 @@ export const DashboardSidebar = ({
           href="/admin-overview/monetization"
          
         />
-        <SidebarItem icon={<File size={18} />} label="Compliance" />
+        <SidebarItem
+          icon={<Ticket size={18} />}
+          label="Tickets"
+          active={activePage === "tickets"}
+          href="/admin-overview/tickets"
+         
+        />
       </nav>
 
       <div className="p-4 border-t border-gray-100 mt-auto">
