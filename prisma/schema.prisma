@@ -1,68 +1,169 @@
+// -------------------------------------------
+// Prisma Schema for NationCite System
+// -------------------------------------------
+
 generator client {
   provider = "prisma-client-js"
-  engineType = "binary"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")   
+  url      = env("DATABASE_URL")
 }
 
-// ENUMS
+// -------------------------------------------
+// PUBLIC SCHOLARS
+// -------------------------------------------
 
-enum PersonType {
-  DOCTOR
-  RESEARCHER
+model ScholarsPublic {
+  id               Int      @id @default(autoincrement())
+  nationciteId     String   @unique
+  worldRank        Int?
+  countryRank      Int?
+  universityRank   Int?
+  scholarName      String
+  orgName          String
+  mainSubject      String?
+  subField         String?
+  hIndexTotal      Int
+  hIndexLast5      Int
+  hIndexRatio      Float
 }
 
-enum OrganizationType {
-  HOSPITAL
-  CLINIC
-  INSTITUTE
-  UNIVERSITY
-  ORGANIZATION
-  RESEARCH_LAB
+// -------------------------------------------
+// PUBLIC ORGANIZATIONS
+// -------------------------------------------
+
+model OrgsPublic {
+  id             Int      @id @default(autoincrement())
+  nationciteId   String   @unique
+  worldRank      Int?
+  countryRank    Int?
+  orgName        String
+  hIndexTotal    Int
+  hIndexLast5    Int
 }
 
-// MODELS
+// -------------------------------------------
+// REGISTRATION TABLE (PARENT)
+// -------------------------------------------
 
-model Person {
-  id             Int          @id @default(autoincrement())
-  name           String
-  hIndex         Int
-  personType     PersonType
-  specialization String?       // only relevant for doctors; optional
-  field          String?       // only for researchers; optional
+model Registration {
+  id             Int      @id @default(autoincrement())
+  nationciteId   String
+  type           String
+  ticketId       String?  // FK to Ticket.ticketId
 
   // Relations
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId Int?
-
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-
-  // Indexes for fast queries
-  @@index([hIndex])
-  @@index([organizationId])
-  @@index([personType])
+  ticket         Tickets? @relation(fields: [ticketId], references: [ticketId])
+  medical        MedicalProfessional?
+  researcher     Researchers?
+  orgReg         OrgsRegistered?
 }
 
-model Organization {
-  id          Int              @id @default(autoincrement())
-  name        String
-  hIndex      Int
-  orgType     OrganizationType
-  location    String?           // City / State / Country if needed
-  website     String?
+// -------------------------------------------
+// MEDICAL PROFESSIONAL TABLE
+// -------------------------------------------
+
+model MedicalProfessional {
+  id                   Int     @id @default(autoincrement())
+  registrationId       Int     @unique      // 1-to-1
+  nationciteId         String?
+  name                 String
+  medCouncilRegNo      String
+  stateCouncil         String
+  mobile               String
+  email                String
+  primaryHospital      String
+  specialty            String
+  researchFocus        String
+  medicalDegreeUrl     String?
+  regCertificateUrl    String?
+  status               String
+  plan                 String
 
   // Relations
-  people      Person[]
+  registration Registration @relation(fields: [registrationId], references: [id])
+}
 
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+// -------------------------------------------
+// RESEARCHERS TABLE
+// -------------------------------------------
 
-  // Indexes
-  @@index([hIndex])
-  @@index([orgType])
-  @@unique([name])
+model Researchers {
+  id                        Int     @id @default(autoincrement())
+  registrationId            Int     @unique
+  nationciteId              String?
+  name                      String
+  institute                 String
+  instituteEmail            String
+  orcidId                   String
+  institutionalIdCardUrl    String
+  mobile                    String
+  email                     String
+  primaryDomain             String
+  googleScholarUrl          String
+  profilePhotoUrl           String
+  status                    String
+  plan                      String
+
+  // Relations
+  registration Registration @relation(fields: [registrationId], references: [id])
+}
+
+// -------------------------------------------
+// REGISTERED ORGANIZATION TABLE
+// -------------------------------------------
+
+model OrgsRegistered {
+  id                        Int     @id @default(autoincrement())
+  registrationId            Int     @unique
+  nationciteId              String?
+  domain                    String
+  name                      String
+  email                     String
+  number                    String
+  letterOfAuthorizationUrl  String
+  accreditationProofUrl     String
+  status                    String
+  plan                      String
+
+  // Relations
+  registration Registration @relation(fields: [registrationId], references: [id])
+}
+
+// -------------------------------------------
+// TICKETS
+// -------------------------------------------
+
+model Tickets {
+  id           Int       @id @default(autoincrement())
+  ticketId     String    @unique
+  nationciteId String
+  name         String
+  type         String
+  issueType    String
+  description  String
+  status       String
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  // Relations
+  registration Registration[]
+  comments     TicketComments[]
+}
+
+// -------------------------------------------
+// TICKET COMMENTS
+// -------------------------------------------
+
+model TicketComments {
+  id          Int      @id @default(autoincrement())
+  ticketId    String
+  comments    String
+  attachments String?
+  createdAt   DateTime
+
+  // Relations
+  ticket Tickets @relation(fields: [ticketId], references: [ticketId])
 }
