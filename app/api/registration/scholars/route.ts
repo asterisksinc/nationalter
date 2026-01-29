@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendRegistrationMail } from "@/lib/mailer";
 
 /**
  * Helper to generate temporary NationCite ID
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
       profilePhotoUrl,
     } = body;
 
+    // 🔐 Basic validation
     if (!type || !name || !email || !mobile) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
@@ -71,8 +73,9 @@ export async function POST(req: NextRequest) {
     const tempNationciteId = generateTempNationciteId();
     const ticketId = await generateTicketId();
 
+    // 🧠 DB transaction
     const result = await prisma.$transaction(async (tx) => {
-      // 1️⃣ Create Ticket
+      // 1️⃣ Ticket
       const ticket = await tx.tickets.create({
         data: {
           ticketId,
@@ -87,7 +90,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // 2️⃣ Create Registration
+      // 2️⃣ Registration
       const registration = await tx.registration.create({
         data: {
           nationciteId: tempNationciteId,
@@ -96,7 +99,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // 3️⃣ Create Type-specific record
+      // 3️⃣ Type-specific tables
       if (type === "MEDICAL") {
         await tx.medicalProfessional.create({
           data: {
@@ -145,6 +148,19 @@ export async function POST(req: NextRequest) {
         registrationId: registration.id,
       };
     });
+
+    // ✉️ Send registration mail (non-blocking logic is optional)
+    try {
+      await sendRegistrationMail({
+        to: email,
+        name,
+        ticketId: result.ticketId,
+        type: "SCHOLAR",
+      });
+    } catch (mailError) {
+      console.error("Registration mail failed:", mailError);
+      // intentionally not failing the request
+    }
 
     return NextResponse.json(
       {

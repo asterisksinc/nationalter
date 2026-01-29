@@ -8,15 +8,30 @@ export async function GET(req: NextRequest) {
     // Optional query params
     const orgName = searchParams.get("orgName") || undefined;
     const mainSubject = searchParams.get("mainSubject") || undefined;
+    const scholarName = searchParams.get("scholarName") || undefined;
+
     const top = Math.min(
       parseInt(searchParams.get("top") || "100", 10),
       500 // safety cap
     );
 
-    // Build the Prisma "where" filter dynamically
+    // Build Prisma where filter dynamically
     const where: any = {};
-    if (orgName) where.orgName = orgName;
-    if (mainSubject) where.mainSubject = mainSubject;
+
+    if (orgName) {
+      where.orgName = orgName;
+    }
+
+    if (mainSubject) {
+      where.mainSubject = mainSubject;
+    }
+
+    if (scholarName) {
+      where.scholarName = {
+        contains: scholarName,
+        mode: "insensitive", // case-insensitive search
+      };
+    }
 
     const scholars = await prisma.scholarsPublic.findMany({
       take: top,
