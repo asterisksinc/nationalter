@@ -1,108 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GraduationCap,
   Building2,
   Stethoscope,
   Search,
-  Sparkles,
 } from "lucide-react";
 import LeaderboardTable, { LeaderboardEntry } from "./LeaderboardTable";
-
-// --- Mock Data ---
-const MOCK_DATA: LeaderboardEntry[] = [
-  {
-    id: 1,
-    rank: "01",
-    name: "John doe",
-    institution: "SRM University, Chennai",
-    hIndex: 83,
-    articles: 129,
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    id: 2,
-    rank: "02",
-    name: "Sarah Jenkins",
-    institution: "Stanford University",
-    hIndex: 92,
-    articles: 145,
-    avatar: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    id: 3,
-    rank: "03",
-    name: "Aarav Mehta",
-    institution: "IIT Bombay",
-    hIndex: 78,
-    articles: 112,
-    avatar: "https://i.pravatar.cc/150?img=3",
-  },
-  {
-    id: 4,
-    rank: "04",
-    name: "Sanya Gupta",
-    institution: "NIT Delhi",
-    hIndex: 81,
-    articles: 132,
-    avatar: "https://i.pravatar.cc/150?img=9",
-  },
-  {
-    id: 5,
-    rank: "05",
-    name: "Rohan Sharma",
-    institution: "BITS Pilani",
-    hIndex: 75,
-    articles: 150,
-    avatar: "https://i.pravatar.cc/150?img=13",
-  },
-  {
-    id: 6,
-    rank: "06",
-    name: "Meera Suresh",
-    institution: "IISc Bangalore",
-    hIndex: 88,
-    articles: 148,
-    avatar: "https://i.pravatar.cc/150?img=24",
-  },
-  {
-    id: 7,
-    rank: "07",
-    name: "Anika Reddy",
-    institution: "VIT Vellore",
-    hIndex: 79,
-    articles: 135,
-    avatar: "https://i.pravatar.cc/150?img=20",
-  },
-  {
-    id: 8,
-    rank: "08",
-    name: "Karan Singh",
-    institution: "SRM University",
-    hIndex: 80,
-    articles: 142,
-    avatar: "https://i.pravatar.cc/150?img=53",
-  },
-  {
-    id: 9,
-    rank: "09",
-    name: "Simran Kaur",
-    institution: "LPU Jalandhar",
-    hIndex: 76,
-    articles: 138,
-    avatar: "https://i.pravatar.cc/150?img=42",
-  },
-  {
-    id: 10,
-    rank: "10",
-    name: "Nikhil Verma",
-    institution: "Panjab University",
-    hIndex: 77,
-    articles: 136,
-    avatar: "https://i.pravatar.cc/150?img=60",
-  },
-];
 
 const LeaderboardWidget = ({
   title = "Researched H-Index Portal",
@@ -113,11 +18,55 @@ const LeaderboardWidget = ({
     "Scholars" | "Universities" | "Doctors"
   >("Scholars");
   const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
-    // helpful for debugging mounting issues in devtools console
     console.log("LeaderboardWidget mounted", { activeTab });
   }, []);
+
+  // Fetch data from API
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch("http://localhost:3001/api/leaderboard");
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          // Transform API response to match LeaderboardEntry interface
+          const transformedData: LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
+            id: item.id,
+            rank: String(index + 1).padStart(2, "0"),
+            name: item.scholarName,
+            institution: item.orgName,
+            hIndex: item.hIndexTotal,
+            articles: item.hIndexLast5 * 3, // Approximate articles from hIndexLast5
+            avatar: `https://i.pravatar.cc/150?img=${(index % 60) + 1}`,
+          }));
+          
+          setData(transformedData);
+        } else {
+          throw new Error("API response invalid");
+        }
+      } catch (err) {
+        console.error("Failed to fetch leaderboard data:", err);
+        setError(err instanceof Error ? err.message : "Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboardData();
+  }, []); // Fetch once on mount
 
   const tabs = [
     { id: "Scholars", icon: GraduationCap, label: "Scholars" },
@@ -125,8 +74,28 @@ const LeaderboardWidget = ({
     { id: "Doctors", icon: Stethoscope, label: "Doctors" },
   ] as const;
 
+  // Filter data based on search term
+  const filteredData = data.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.institution.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-md sm:rounded-lg shadow-xl shadow-slate-200/60 w-full max-w-none flex flex-col border border-slate-100 overflow-hidden min-h-[700px]">
+        <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">
+          <h3 className="h3 flex items-center gap-3 justify-center md:justify-start">
+            {title}
+          </h3>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-slate-500 animate-pulse">Loading leaderboard...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    // allow the widget to stretch full width inside the 72px gutters
     <div className="bg-white rounded-md sm:rounded-lg shadow-xl shadow-slate-200/60 w-full max-w-none flex flex-col border border-slate-100 overflow-hidden min-h-[700px]">
       {/* HEADER SECTION: Title, Search, and Tabs on Top */}
       <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">
@@ -151,15 +120,11 @@ const LeaderboardWidget = ({
           </div>
         </div>
 
-        {/* Bottom Row: Tabs Selection
-            Mobile: grid with 2 columns, third tab spans both columns and is centered.
-            Desktop: keep existing inline pill buttons. */}
+        {/* Tabs Selection */}
         <div className="grid grid-cols-2 gap-3 md:flex md:flex-wrap md:items-center">
           {tabs.map((tab, idx) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
-
-            // make the third tab span both columns on small screens
             const mobileSpanClass = idx === 2 ? "col-span-2" : "";
 
             return (
@@ -180,7 +145,22 @@ const LeaderboardWidget = ({
         </div>
       </div>
 
-      <LeaderboardTable data={MOCK_DATA} type={activeTab} />
+      {error ? (
+        <div className="flex-1 flex items-center justify-center p-8 text-center">
+          <div className="text-red-600 bg-red-50 p-6 rounded-lg border border-red-200 max-w-md">
+            <div className="text-lg font-medium mb-2">Failed to load data</div>
+            <div className="text-sm">{error}</div>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      ) : (
+        <LeaderboardTable data={filteredData} type={activeTab} />
+      )}
     </div>
   );
 };
