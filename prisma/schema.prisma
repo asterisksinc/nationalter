@@ -28,10 +28,6 @@ model ScholarsPublic {
   hIndexTotal      Int
   hIndexLast5      Int
   hIndexRatio      Float
-
-  // Relations
-  medicals     MedicalProfessional[]
-  researchers  Researchers[]
 }
 
 // -------------------------------------------
@@ -46,9 +42,6 @@ model OrgsPublic {
   orgName        String
   hIndexTotal    Int
   hIndexLast5    Int
-
-  // Relations
-  registeredOrgs OrgsRegistered[]
 }
 
 // -------------------------------------------
@@ -75,7 +68,7 @@ model Registration {
 model MedicalProfessional {
   id                   Int     @id @default(autoincrement())
   registrationId       Int     @unique      // 1-to-1
-  nationciteId         String
+  nationciteId         String?
   name                 String
   medCouncilRegNo      String
   stateCouncil         String
@@ -91,7 +84,6 @@ model MedicalProfessional {
 
   // Relations
   registration Registration @relation(fields: [registrationId], references: [id])
-  scholar      ScholarsPublic @relation(fields: [nationciteId], references: [nationciteId])
 }
 
 // -------------------------------------------
@@ -101,7 +93,7 @@ model MedicalProfessional {
 model Researchers {
   id                        Int     @id @default(autoincrement())
   registrationId            Int     @unique
-  nationciteId              String
+  nationciteId              String?
   name                      String
   institute                 String
   instituteEmail            String
@@ -117,7 +109,6 @@ model Researchers {
 
   // Relations
   registration Registration @relation(fields: [registrationId], references: [id])
-  scholar      ScholarsPublic @relation(fields: [nationciteId], references: [nationciteId])
 }
 
 // -------------------------------------------
@@ -127,7 +118,7 @@ model Researchers {
 model OrgsRegistered {
   id                        Int     @id @default(autoincrement())
   registrationId            Int     @unique
-  nationciteId              String
+  nationciteId              String?
   domain                    String
   name                      String
   email                     String
@@ -139,7 +130,6 @@ model OrgsRegistered {
 
   // Relations
   registration Registration @relation(fields: [registrationId], references: [id])
-  org         OrgsPublic   @relation(fields: [nationciteId], references: [nationciteId])
 }
 
 // -------------------------------------------

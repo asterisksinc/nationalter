@@ -5,49 +5,68 @@ export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const { ticketId, status, comment, attachments } = body;
+    const {
+      ticketId,
+      status,
+      comment,
+      attachments,
+      nationciteId, // OPTIONAL: new nationciteId (real one after approval)
+    } = body;
 
     if (!ticketId) {
       return NextResponse.json(
-        { error: "ticketId is required" },
+        { success: false, message: "ticketId is required" },
         { status: 400 }
       );
     }
 
-    // Ensure ticket exists
-    const ticket = await prisma.tickets.findUnique({
-      where: { ticketId },
-    });
+    await prisma.$transaction(async (tx) => {
+      // 1️⃣ Fetch ticket with registrations
+      const ticket = await tx.tickets.findUnique({
+        where: { ticketId },
+        include: {
+          registration: true,
+        },
+      });
 
-    if (!ticket) {
-      return NextResponse.json(
-        { error: "Ticket not found" },
-        { status: 404 }
-      );
-    }
+      if (!ticket) {
+        throw new Error("Ticket not found");
+      }
 
-    // Update ticket status if provided
-    if (status) {
-      await prisma.tickets.update({
+      // 2️⃣ Update ticket fields
+      await tx.tickets.update({
         where: { ticketId },
         data: {
-          status,
+          status: status ?? ticket.status,
+          nationciteId: nationciteId ?? ticket.nationciteId,
           updatedAt: new Date(),
         },
       });
-    }
 
-    // Add comment if provided
-    if (comment || attachments) {
-      await prisma.ticketComments.create({
-        data: {
-          ticketId,
-          comments: comment || "",
-          attachments: attachments || null,
-          createdAt: new Date(),
-        },
-      });
-    }
+      // 3️⃣ Add comment if provided
+      if (comment || attachments) {
+        await tx.ticketComments.create({
+          data: {
+            ticketId,
+            comments: comment || "",
+            attachments: attachments || null,
+            createdAt: new Date(),
+          },
+        });
+      }
+
+      // 4️⃣ Update Registration nationciteId (if provided)
+      if (nationciteId && ticket.registration.length > 0) {
+        const registration = ticket.registration[0];
+
+        await tx.registration.update({
+          where: { id: registration.id },
+          data: {
+            nationciteId,
+          },
+        });
+      }
+    });
 
     return NextResponse.json(
       {
@@ -56,11 +75,14 @@ export async function PUT(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Ticket update error:", error);
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        success: false,
+        message: error.message || "Internal server error",
+      },
       { status: 500 }
     );
   }

@@ -7,8 +7,8 @@ CREATE TABLE "ScholarsPublic" (
     "universityRank" INTEGER,
     "scholarName" TEXT NOT NULL,
     "orgName" TEXT NOT NULL,
-    "mainSubject" TEXT NOT NULL,
-    "subField" TEXT NOT NULL,
+    "mainSubject" TEXT,
+    "subField" TEXT,
     "hIndexTotal" INTEGER NOT NULL,
     "hIndexLast5" INTEGER NOT NULL,
     "hIndexRatio" DOUBLE PRECISION NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE "Registration" (
 CREATE TABLE "MedicalProfessional" (
     "id" SERIAL NOT NULL,
     "registrationId" INTEGER NOT NULL,
-    "nationciteId" TEXT NOT NULL,
+    "nationciteId" TEXT,
     "name" TEXT NOT NULL,
     "medCouncilRegNo" TEXT NOT NULL,
     "stateCouncil" TEXT NOT NULL,
@@ -52,8 +52,8 @@ CREATE TABLE "MedicalProfessional" (
     "primaryHospital" TEXT NOT NULL,
     "specialty" TEXT NOT NULL,
     "researchFocus" TEXT NOT NULL,
-    "medicalDegreeUrl" TEXT NOT NULL,
-    "regCertificateUrl" TEXT NOT NULL,
+    "medicalDegreeUrl" TEXT,
+    "regCertificateUrl" TEXT,
     "status" TEXT NOT NULL,
     "plan" TEXT NOT NULL,
 
@@ -64,7 +64,7 @@ CREATE TABLE "MedicalProfessional" (
 CREATE TABLE "Researchers" (
     "id" SERIAL NOT NULL,
     "registrationId" INTEGER NOT NULL,
-    "nationciteId" TEXT NOT NULL,
+    "nationciteId" TEXT,
     "name" TEXT NOT NULL,
     "institute" TEXT NOT NULL,
     "instituteEmail" TEXT NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE "Researchers" (
 CREATE TABLE "OrgsRegistered" (
     "id" SERIAL NOT NULL,
     "registrationId" INTEGER NOT NULL,
-    "nationciteId" TEXT NOT NULL,
+    "nationciteId" TEXT,
     "domain" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -150,19 +150,10 @@ ALTER TABLE "Registration" ADD CONSTRAINT "Registration_ticketId_fkey" FOREIGN K
 ALTER TABLE "MedicalProfessional" ADD CONSTRAINT "MedicalProfessional_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MedicalProfessional" ADD CONSTRAINT "MedicalProfessional_nationciteId_fkey" FOREIGN KEY ("nationciteId") REFERENCES "ScholarsPublic"("nationciteId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Researchers" ADD CONSTRAINT "Researchers_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Researchers" ADD CONSTRAINT "Researchers_nationciteId_fkey" FOREIGN KEY ("nationciteId") REFERENCES "ScholarsPublic"("nationciteId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "OrgsRegistered" ADD CONSTRAINT "OrgsRegistered_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "OrgsRegistered" ADD CONSTRAINT "OrgsRegistered_nationciteId_fkey" FOREIGN KEY ("nationciteId") REFERENCES "OrgsPublic"("nationciteId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "TicketComments" ADD CONSTRAINT "TicketComments_ticketId_fkey" FOREIGN KEY ("ticketId") REFERENCES "Tickets"("ticketId") ON DELETE RESTRICT ON UPDATE CASCADE;
