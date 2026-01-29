@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendRegistrationMail } from "@/lib/mailer";
 
 /**
  * Generate temporary NationCite ID
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
       accreditationProofUrl,
     } = body;
 
+    // 🔐 Validation
     if (!name || !domain || !email || !number) {
       return NextResponse.json(
         {
@@ -47,76 +49,74 @@ export async function POST(req: NextRequest) {
     const tempNationciteId = generateTempNationciteId();
     const ticketId = await generateTicketId();
 
-    const { ticket, registration, orgRegistered } =
-      await prisma.$transaction(async (tx) => {
-        // 1️⃣ Create Ticket
-        const ticket = await tx.tickets.create({
-          data: {
-            ticketId,
-            nationciteId: tempNationciteId,
-            name,
-            type: "Organization",
-            issueType: "Registration Approval",
-            description:
-              "New organization registration awaiting admin approval",
-            status: "Pending",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        });
-
-        // 2️⃣ Create Registration
-        const registration = await tx.registration.create({
-          data: {
-            nationciteId: tempNationciteId,
-            type: "Organization",
-            ticketId: ticket.ticketId,
-          },
-        });
-
-        // 3️⃣ Create OrgsRegistered
-        const orgRegistered = await tx.orgsRegistered.create({
-          data: {
-            registrationId: registration.id,
-            nationciteId: tempNationciteId,
-            domain,
-            name,
-            email,
-            number,
-            letterOfAuthorizationUrl: letterOfAuthorizationUrl || "",
-            accreditationProofUrl: accreditationProofUrl || "",
-            status: "Pending",
-            plan: "Free", // billing APIs will handle upgrades
-          },
-        });
-
-        return { ticket, registration, orgRegistered };
+    // 🧠 Atomic DB transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // 1️⃣ Ticket
+      const ticket = await tx.tickets.create({
+        data: {
+          ticketId,
+          nationciteId: tempNationciteId,
+          name,
+          type: "ORG",
+          issueType: "NEW_REGISTRATION",
+          description: "New organization registration request",
+          status: "PENDING",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       });
+
+      // 2️⃣ Registration
+      const registration = await tx.registration.create({
+        data: {
+          nationciteId: tempNationciteId,
+          type: "ORG",
+          ticketId: ticket.ticketId,
+        },
+      });
+
+      // 3️⃣ Org record
+      const orgRegistered = await tx.orgsRegistered.create({
+        data: {
+          registrationId: registration.id,
+          nationciteId: tempNationciteId,
+          name,
+          domain,
+          email,
+          number,
+          letterOfAuthorizationUrl: letterOfAuthorizationUrl || null,
+          accreditationProofUrl: accreditationProofUrl || null,
+          status: "PENDING",
+          plan: "FREE", // billing APIs will update later
+        },
+      });
+
+      return {
+        ticketId: ticket.ticketId,
+        nationciteId: tempNationciteId,
+        registrationId: registration.id,
+        orgId: orgRegistered.id,
+      };
+    });
+
+    // ✉️ Send registration mail (non-blocking)
+    try {
+      await sendRegistrationMail({
+        to: email,
+        name,
+        ticketId: result.ticketId,
+        type: "ORG",
+      });
+    } catch (mailError) {
+      console.error("Organization registration mail failed:", mailError);
+      // do not fail registration
+    }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Organization registered successfully and ticket created",
-        data: {
-          registration: {
-            id: registration.id,
-            nationciteId: registration.nationciteId,
-            type: registration.type,
-            ticketId: registration.ticketId,
-          },
-          orgRegistered: {
-            id: orgRegistered.id,
-            registrationId: orgRegistered.registrationId,
-            name: orgRegistered.name,
-            domain: orgRegistered.domain,
-            status: orgRegistered.status,
-            plan: orgRegistered.plan,
-          },
-          ticket: {
-            ticketId: ticket.ticketId,
-            status: ticket.status,
-          },
-        },
+        message: "Organization registration submitted successfully",
+        data: result,
       },
       { status: 201 }
     );
