@@ -1,3 +1,20 @@
+-- CreateEnum
+CREATE TYPE "RegistrationStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+-- CreateTable
+CREATE TABLE "AuthUser" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
+    "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "lastLoginAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "AuthUser_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "ScholarsPublic" (
     "id" SERIAL NOT NULL,
@@ -34,6 +51,8 @@ CREATE TABLE "Registration" (
     "id" SERIAL NOT NULL,
     "nationciteId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
+    "status" "RegistrationStatus" NOT NULL DEFAULT 'PENDING',
+    "authUserId" INTEGER,
     "ticketId" TEXT,
 
     CONSTRAINT "Registration_pkey" PRIMARY KEY ("id")
@@ -42,7 +61,7 @@ CREATE TABLE "Registration" (
 -- CreateTable
 CREATE TABLE "MedicalProfessional" (
     "id" SERIAL NOT NULL,
-    "registrationId" INTEGER NOT NULL,
+    "registrationId" INTEGER,
     "nationciteId" TEXT,
     "name" TEXT NOT NULL,
     "medCouncilRegNo" TEXT NOT NULL,
@@ -63,13 +82,13 @@ CREATE TABLE "MedicalProfessional" (
 -- CreateTable
 CREATE TABLE "Researchers" (
     "id" SERIAL NOT NULL,
-    "registrationId" INTEGER NOT NULL,
+    "registrationId" INTEGER,
     "nationciteId" TEXT,
     "name" TEXT NOT NULL,
     "institute" TEXT NOT NULL,
     "instituteEmail" TEXT NOT NULL,
     "orcidId" TEXT NOT NULL,
-    "institutionalIdCardUrl" TEXT NOT NULL,
+    "institutionalIdCardUrl" TEXT,
     "mobile" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "primaryDomain" TEXT NOT NULL,
@@ -84,7 +103,7 @@ CREATE TABLE "Researchers" (
 -- CreateTable
 CREATE TABLE "OrgsRegistered" (
     "id" SERIAL NOT NULL,
-    "registrationId" INTEGER NOT NULL,
+    "registrationId" INTEGER,
     "nationciteId" TEXT,
     "domain" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -126,10 +145,16 @@ CREATE TABLE "TicketComments" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "AuthUser_email_key" ON "AuthUser"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ScholarsPublic_nationciteId_key" ON "ScholarsPublic"("nationciteId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "OrgsPublic_nationciteId_key" ON "OrgsPublic"("nationciteId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Registration_authUserId_key" ON "Registration"("authUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MedicalProfessional_registrationId_key" ON "MedicalProfessional"("registrationId");
@@ -144,16 +169,19 @@ CREATE UNIQUE INDEX "OrgsRegistered_registrationId_key" ON "OrgsRegistered"("reg
 CREATE UNIQUE INDEX "Tickets_ticketId_key" ON "Tickets"("ticketId");
 
 -- AddForeignKey
+ALTER TABLE "Registration" ADD CONSTRAINT "Registration_authUserId_fkey" FOREIGN KEY ("authUserId") REFERENCES "AuthUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Registration" ADD CONSTRAINT "Registration_ticketId_fkey" FOREIGN KEY ("ticketId") REFERENCES "Tickets"("ticketId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MedicalProfessional" ADD CONSTRAINT "MedicalProfessional_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MedicalProfessional" ADD CONSTRAINT "MedicalProfessional_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Researchers" ADD CONSTRAINT "Researchers_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Researchers" ADD CONSTRAINT "Researchers_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrgsRegistered" ADD CONSTRAINT "OrgsRegistered_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OrgsRegistered" ADD CONSTRAINT "OrgsRegistered_registrationId_fkey" FOREIGN KEY ("registrationId") REFERENCES "Registration"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "TicketComments" ADD CONSTRAINT "TicketComments_ticketId_fkey" FOREIGN KEY ("ticketId") REFERENCES "Tickets"("ticketId") ON DELETE RESTRICT ON UPDATE CASCADE;

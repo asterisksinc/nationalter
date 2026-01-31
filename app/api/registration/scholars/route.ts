@@ -96,6 +96,8 @@ export async function POST(req: NextRequest) {
           nationciteId: tempNationciteId,
           type,
           ticketId: ticket.ticketId,
+          authUserId: null, // ⚡ Required now, null until approval
+          status: "PENDING",
         },
       });
 
@@ -103,7 +105,6 @@ export async function POST(req: NextRequest) {
       if (type === "MEDICAL") {
         await tx.medicalProfessional.create({
           data: {
-            registrationId: registration.id,
             nationciteId: tempNationciteId,
             name,
             medCouncilRegNo,
@@ -117,6 +118,11 @@ export async function POST(req: NextRequest) {
             regCertificateUrl: regCertificateUrl || null,
             status: "PENDING",
             plan: "FREE",
+            registration: {
+              connect: {
+                id: registration.id,
+              },
+            },
           },
         });
       }
@@ -124,13 +130,12 @@ export async function POST(req: NextRequest) {
       if (type === "RESEARCHER") {
         await tx.researchers.create({
           data: {
-            registrationId: registration.id,
             nationciteId: tempNationciteId,
             name,
             institute,
             instituteEmail,
             orcidId,
-            institutionalIdCardUrl,
+            institutionalIdCardUrl: institutionalIdCardUrl || null,
             mobile,
             email,
             primaryDomain,
@@ -138,6 +143,11 @@ export async function POST(req: NextRequest) {
             profilePhotoUrl,
             status: "PENDING",
             plan: "FREE",
+            registration: {
+              connect: {
+                id: registration.id,
+              },
+            },
           },
         });
       }
@@ -149,7 +159,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // ✉️ Send registration mail (non-blocking logic is optional)
+    // ✉️ Send registration mail (non-blocking)
     try {
       await sendRegistrationMail({
         to: email,
@@ -159,7 +169,6 @@ export async function POST(req: NextRequest) {
       });
     } catch (mailError) {
       console.error("Registration mail failed:", mailError);
-      // intentionally not failing the request
     }
 
     return NextResponse.json(

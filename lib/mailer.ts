@@ -10,8 +10,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+/* ======================================================
+   REGISTRATION SUBMISSION MAIL
+   ====================================================== */
+
 /**
- * Builds mail subject + body for registration
+ * Builds mail subject + body for registration submission
  */
 function buildRegistrationMail(
   name: string,
@@ -42,7 +46,7 @@ NationCite Team
 }
 
 /**
- * Sends registration mail
+ * Sends registration submission mail
  */
 export async function sendRegistrationMail({
   to,
@@ -61,6 +65,78 @@ export async function sendRegistrationMail({
     from: `"NationCite" <${process.env.MAIL_USER}>`,
     to,
     subject,
-    text: body, // ✅ Plain text mail
+    text: body,
+  });
+}
+
+/* ======================================================
+   REGISTRATION APPROVAL + CREDENTIALS MAIL
+   ====================================================== */
+
+/**
+ * Builds approval mail with credentials
+ */
+function buildApprovalMail({
+  name,
+  username,
+  password,
+}: {
+  name: string;
+  username: string;
+  password: string;
+}) {
+  const subject = "NationCite | Registration Approved 🎉";
+
+  const body = `
+Hello ${name},
+
+🎉 Congratulations! Your NationCite registration has been approved.
+
+Here are your login credentials:
+
+👤 Username: ${username}
+🔑 Temporary Password: ${password}
+
+🔐 Important:
+• This is a temporary password
+• You will be asked to change it on your first login
+
+Login here:
+${process.env.APP_URL}/login
+
+If you face any issues, feel free to contact our support team.
+
+Warm regards,  
+NationCite Team
+`;
+
+  return { subject, body };
+}
+
+/**
+ * Sends approval mail with login credentials
+ */
+export async function sendApprovalCredentialsMail({
+  to,
+  name,
+  username,
+  password,
+}: {
+  to: string;
+  name: string;
+  username: string;
+  password: string;
+}) {
+  const { subject, body } = buildApprovalMail({
+    name,
+    username,
+    password,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    text: body,
   });
 }
