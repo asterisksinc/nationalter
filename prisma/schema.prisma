@@ -11,9 +11,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// -------------------------------------------
-// PUBLIC SCHOLARS
-// -------------------------------------------
+////////////////////////////////////////////////
+// ENUMS
+////////////////////////////////////////////////
+
+enum RegistrationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+////////////////////////////////////////////////
+// AUTH / CREDENTIALS
+////////////////////////////////////////////////
+
+model AuthUser {
+  id              Int      @id @default(autoincrement())
+
+  // Credentials
+  email           String   @unique
+  passwordHash    String
+
+  // Account state
+  isEmailVerified Boolean  @default(false)
+  isActive        Boolean  @default(true)
+
+  // Metadata
+  lastLoginAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  registration    Registration?
+}
+
+////////////////////////////////////////////////
+// PUBLIC SCHOLARS (NO LOGIN)
+////////////////////////////////////////////////
 
 model ScholarsPublic {
   id               Int      @id @default(autoincrement())
@@ -30,9 +64,9 @@ model ScholarsPublic {
   hIndexRatio      Float
 }
 
-// -------------------------------------------
-// PUBLIC ORGANIZATIONS
-// -------------------------------------------
+////////////////////////////////////////////////
+// PUBLIC ORGANIZATIONS (NO LOGIN)
+////////////////////////////////////////////////
 
 model OrgsPublic {
   id             Int      @id @default(autoincrement())
@@ -44,30 +78,34 @@ model OrgsPublic {
   hIndexLast5    Int
 }
 
-// -------------------------------------------
-// REGISTRATION TABLE (PARENT)
-// -------------------------------------------
+////////////////////////////////////////////////
+// REGISTRATION (PARENT + APPROVAL AUTHORITY)
+////////////////////////////////////////////////
 
 model Registration {
   id             Int      @id @default(autoincrement())
   nationciteId   String
   type           String
-  ticketId       String?  // FK to Ticket.ticketId
+  status         RegistrationStatus @default(PENDING)
+  authUserId     Int?     @unique
+  ticketId       String?
 
   // Relations
-  ticket         Tickets? @relation(fields: [ticketId], references: [ticketId])
+  authUser       AuthUser? @relation(fields: [authUserId], references: [id])
+  ticket         Tickets?  @relation(fields: [ticketId], references: [ticketId])
+
   medical        MedicalProfessional?
   researcher     Researchers?
   orgReg         OrgsRegistered?
 }
 
-// -------------------------------------------
-// MEDICAL PROFESSIONAL TABLE
-// -------------------------------------------
+////////////////////////////////////////////////
+// MEDICAL PROFESSIONAL
+////////////////////////////////////////////////
 
 model MedicalProfessional {
   id                   Int     @id @default(autoincrement())
-  registrationId       Int     @unique      // 1-to-1
+  registrationId       Int?     @unique
   nationciteId         String?
   name                 String
   medCouncilRegNo      String
@@ -83,22 +121,22 @@ model MedicalProfessional {
   plan                 String
 
   // Relations
-  registration Registration @relation(fields: [registrationId], references: [id])
+  registration Registration? @relation(fields: [registrationId], references: [id])
 }
 
-// -------------------------------------------
-// RESEARCHERS TABLE
-// -------------------------------------------
+////////////////////////////////////////////////
+// RESEARCHERS
+////////////////////////////////////////////////
 
 model Researchers {
   id                        Int     @id @default(autoincrement())
-  registrationId            Int     @unique
+  registrationId            Int?     @unique
   nationciteId              String?
   name                      String
   institute                 String
   instituteEmail            String
   orcidId                   String
-  institutionalIdCardUrl    String
+  institutionalIdCardUrl    String?
   mobile                    String
   email                     String
   primaryDomain             String
@@ -108,16 +146,16 @@ model Researchers {
   plan                      String
 
   // Relations
-  registration Registration @relation(fields: [registrationId], references: [id])
+  registration Registration? @relation(fields: [registrationId], references: [id])
 }
 
-// -------------------------------------------
-// REGISTERED ORGANIZATION TABLE
-// -------------------------------------------
+////////////////////////////////////////////////
+// REGISTERED ORGANIZATIONS
+////////////////////////////////////////////////
 
 model OrgsRegistered {
   id                        Int     @id @default(autoincrement())
-  registrationId            Int     @unique
+  registrationId            Int?     @unique
   nationciteId              String?
   domain                    String
   name                      String
@@ -129,12 +167,12 @@ model OrgsRegistered {
   plan                      String
 
   // Relations
-  registration Registration @relation(fields: [registrationId], references: [id])
+  registration Registration? @relation(fields: [registrationId], references: [id])
 }
 
-// -------------------------------------------
-// TICKETS
-// -------------------------------------------
+////////////////////////////////////////////////
+// TICKETS (ADMIN WORKFLOW)
+////////////////////////////////////////////////
 
 model Tickets {
   id           Int       @id @default(autoincrement())
@@ -153,9 +191,9 @@ model Tickets {
   comments     TicketComments[]
 }
 
-// -------------------------------------------
+////////////////////////////////////////////////
 // TICKET COMMENTS
-// -------------------------------------------
+////////////////////////////////////////////////
 
 model TicketComments {
   id          Int      @id @default(autoincrement())

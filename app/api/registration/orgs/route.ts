@@ -78,7 +78,6 @@ export async function POST(req: NextRequest) {
       // 3️⃣ Org record
       const orgRegistered = await tx.orgsRegistered.create({
         data: {
-          registrationId: registration.id,
           nationciteId: tempNationciteId,
           name,
           domain,
@@ -87,7 +86,12 @@ export async function POST(req: NextRequest) {
           letterOfAuthorizationUrl: letterOfAuthorizationUrl || null,
           accreditationProofUrl: accreditationProofUrl || null,
           status: "PENDING",
-          plan: "FREE", // billing APIs will update later
+          plan: "FREE",
+          registration: {
+            connect: {
+              id: registration.id,
+            },
+          },
         },
       });
 
