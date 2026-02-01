@@ -35,7 +35,7 @@ export default function UniversitiesLeaderboardPage() {
     setCurrentPage(1);
   }, [debouncedSearchTerm]);
 
-  const fetchUniversitiesData = useCallback(async (page: number, search: string = "") => {
+  const fetchUniversitiesData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -43,14 +43,12 @@ export default function UniversitiesLeaderboardPage() {
       const params = new URLSearchParams();
       
       if (page === 1) {
-        if (search) params.append("search", search);
       } else {
         params.append("top", ITEMS_PER_PAGE.toString());
         params.append("page", page.toString());
-        if (search) params.append("search", search);
       }
 
-      const response = await fetch(`http://localhost:3001/api/orgs?${params}`);
+      const response = await fetch(`http://localhost:3001/api/orgs`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -85,7 +83,7 @@ export default function UniversitiesLeaderboardPage() {
   }, []);
 
   useEffect(() => {
-    fetchUniversitiesData(currentPage, debouncedSearchTerm);
+    fetchUniversitiesData(currentPage);
   }, [currentPage, debouncedSearchTerm, fetchUniversitiesData]);
 
   const handlePageChange = (page: number) => {

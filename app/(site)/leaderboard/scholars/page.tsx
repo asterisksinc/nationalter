@@ -25,41 +25,31 @@ export default function ScholarsLeaderboardPage() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchScholarsData(currentPage, searchTerm);
+      fetchScholarsData(currentPage);
     }, 300);
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
   useEffect(() => {
     setCurrentPage(1);
-    fetchScholarsData(1, searchTerm);
+    fetchScholarsData(1,);
   }, []);
 
-  const fetchScholarsData = useCallback(async (page: number, search: string = "") => {
+  const fetchScholarsData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       setError(null);
       
       const params = new URLSearchParams();
       
-      if (search.includes("IISc Bangalore")) {
-        params.append("orgName", "IISc Bangalore");
-        const cleanSearch = search.replace(/IISc Bangalore/gi, "").trim();
-        if (cleanSearch) params.append("search", cleanSearch);
-      } else if (search.includes("Physics")) {
-        params.append("mainSubject", "Physics");
-        const cleanSearch = search.replace(/Physics/gi, "").trim();
-        if (cleanSearch) params.append("search", cleanSearch);
-      } else {
-        params.append("search", search);
-      }
+
 
       if (page !== 1) {
         params.append("top", ITEMS_PER_PAGE.toString());
         params.append("page", page.toString());
       }
 
-      const response = await fetch(`http://localhost:3001/api/scholars?${params}`);
+      const response = await fetch(`http://localhost:3001/api/scholars`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -95,7 +85,7 @@ export default function ScholarsLeaderboardPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    fetchScholarsData(page, searchTerm);
+    fetchScholarsData(page);
   };
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
