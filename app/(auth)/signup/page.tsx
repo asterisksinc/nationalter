@@ -95,12 +95,14 @@ export default function RegisterPage() {
 
           {/* Right Panel - Scrollable Form Area */}
           <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
-            <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
-              {/* Mobile Logo */}
-              <div className="md:hidden mb-4 flex justify-center">
-                <img src="/logo.png" alt="NationCite" className="h-20 w-auto" />
+            {/* Mobile Header - Logo Only */}
+            <div className="md:hidden w-full px-6 py-6 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
+              <div className="flex justify-center">
+                <img src="/logo.png" alt="NationCite" className="h-16 w-auto" />
               </div>
+            </div>
 
+            <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col">
               <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start pt-4 md:pt-0 md:justify-center">
                 {/* Heading Section - Separated and Centered */}
                 <div className="text-center mb-4 md:mb-8">
@@ -144,7 +146,18 @@ export default function RegisterPage() {
                   </button>
                 </div>
 
-                {/* Already User Link removed - moved to sidebar */}
+                {/* Login Link */}
+                <div className="mt-4 md:mt-6 text-center md:hidden">
+                  <p className="text-xs text-neutral-600">
+                    Already a User?{" "}
+                    <Link
+                      href="/signin"
+                      className="text-[var(--color-primary)] font-semibold hover:underline"
+                    >
+                      Login
+                    </Link>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -157,8 +170,16 @@ export default function RegisterPage() {
   return (
     <>
       <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
-        {/* Mobile Progress Bar */}
+        {/* Mobile Progress Bar with Back Button */}
         <div className="md:hidden w-full px-4 pt-5 pb-4 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50 border-b border-orange-200">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="p-2 -ml-2 mb-3 text-neutral-700 hover:text-neutral-900"
+          >
+            <Icon name="arrow-left" size={24} />
+          </button>
+          {/* Progress Indicator */}
           <div className="flex gap-1.5 mb-3">
             {[1, 2, 3, 4].map((step) => (
               <div
@@ -199,23 +220,7 @@ export default function RegisterPage() {
 
         {/* Right Panel - Scrollable Form Area */}
         <div className="flex-1 h-full bg-white relative z-10 flex flex-col overflow-hidden">
-          {/* Mobile Header with Back Button */}
-          {!isDashboardStep && (
-            <div className="md:hidden w-full px-6 pt-6 pb-10 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={handleBack}
-                  className="p-2 -ml-2 text-neutral-700 hover:text-neutral-900"
-                >
-                  <Icon name="arrow-left" size={24} />
-                </button>
-                <img src="/logo.png" className="h-16" alt="Logo" />
-                <div className="w-10"></div>
-              </div>
-            </div>
-          )}
-
-          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col rounded-t-[30px] md:rounded-t-none -mt-6 md:mt-0 bg-white">
+          <div className="w-full h-full overflow-y-auto p-6 md:p-10 flex flex-col bg-white">
             {/* Back Button - Desktop only */}
             {!isDashboardStep && (
               <button
@@ -282,7 +287,18 @@ export default function RegisterPage() {
                     </div>
                   </div>
 
-                  {/* Link removed - moved to sidebar */}
+                  {/* Login Link */}
+                  <div className="mt-4 md:mt-6 text-center md:hidden">
+                    <p className="text-xs text-neutral-600">
+                      Already a User?{" "}
+                      <Link
+                        href="/signin"
+                        className="text-[var(--color-primary)] font-semibold hover:underline"
+                      >
+                        Login
+                      </Link>
+                    </p>
+                  </div>
                 </>
               )}
             </div>

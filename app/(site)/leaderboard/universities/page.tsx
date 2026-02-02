@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Search, Sparkles } from "lucide-react";
 import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
@@ -8,146 +8,140 @@ import LeaderboardTable, {
   LeaderboardEntry,
 } from "@/components/site/LeaderboardTable";
 import ThreeCardsSection from "../components/ThreeCardsSection";
-import ConsultancySection from "../components/ConsultancySection";
 import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
 
-const MOCK_DATA: LeaderboardEntry[] = [
-  {
-    id: 1,
-    rank: "01",
-    name: "SRM University",
-    institution: "Chennai",
-    hIndex: 150,
-    articles: 5000,
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    id: 2,
-    rank: "02",
-    name: "Stanford University",
-    institution: "California",
-    hIndex: 200,
-    articles: 8000,
-    avatar: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    id: 3,
-    rank: "03",
-    name: "IIT Bombay",
-    institution: "Mumbai",
-    hIndex: 140,
-    articles: 4500,
-    avatar: "https://i.pravatar.cc/150?img=3",
-  },
-  {
-    id: 4,
-    rank: "04",
-    name: "NIT Delhi",
-    institution: "Delhi",
-    hIndex: 110,
-    articles: 3000,
-    avatar: "https://i.pravatar.cc/150?img=9",
-  },
-  {
-    id: 5,
-    rank: "05",
-    name: "BITS Pilani",
-    institution: "Pilani",
-    hIndex: 130,
-    articles: 4000,
-    avatar: "https://i.pravatar.cc/150?img=13",
-  },
-  {
-    id: 6,
-    rank: "06",
-    name: "IISc Bangalore",
-    institution: "Bangalore",
-    hIndex: 180,
-    articles: 6000,
-    avatar: "https://i.pravatar.cc/150?img=24",
-  },
-  {
-    id: 7,
-    rank: "07",
-    name: "VIT Vellore",
-    institution: "Vellore",
-    hIndex: 125,
-    articles: 3800,
-    avatar: "https://i.pravatar.cc/150?img=20",
-  },
-  {
-    id: 8,
-    rank: "08",
-    name: "LPU Jalandhar",
-    institution: "Jalandhar",
-    hIndex: 100,
-    articles: 2500,
-    avatar: "https://i.pravatar.cc/150?img=42",
-  },
-  {
-    id: 9,
-    rank: "09",
-    name: "Panjab University",
-    institution: "Chandigarh",
-    hIndex: 115,
-    articles: 3200,
-    avatar: "https://i.pravatar.cc/150?img=60",
-  },
-  {
-    id: 10,
-    rank: "10",
-    name: "Delhi University",
-    institution: "Delhi",
-    hIndex: 135,
-    articles: 4200,
-    avatar: "https://i.pravatar.cc/150?img=53",
-  },
-];
+const ITEMS_PER_PAGE = 10;
 
 export default function UniversitiesLeaderboardPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [data, setData] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm]);
+
+  const fetchUniversitiesData = useCallback(async (page: number) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const params = new URLSearchParams();
+      
+      if (page === 1) {
+      } else {
+        params.append("top", ITEMS_PER_PAGE.toString());
+        params.append("page", page.toString());
+      }
+
+      const response = await fetch(`http://localhost:3001/api/orgs`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.success && result.data) {
+        const transformedData: LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
+          id: item.id,
+          rank: String((page - 1) * ITEMS_PER_PAGE + index + 1).padStart(2, "0"),
+          name: item.orgName,
+          institution: item.nationciteId,
+          hIndex: item.hIndexTotal,
+          articles: item.hIndexLast5,
+          avatar: `https://i.pravatar.cc/150?img=${(item.id % 60) + 1}`,
+        }));
+        
+        setData(transformedData);
+        setTotalCount(result.count || transformedData.length);
+      } else {
+        throw new Error("Invalid API response");
+      }
+    } catch (err) {
+      console.error("Failed to fetch universities data:", err);
+      setError(err instanceof Error ? err.message : "Failed to load universities data");
+      setData([]);
+      setTotalCount(0);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUniversitiesData(currentPage);
+  }, [currentPage, debouncedSearchTerm, fetchUniversitiesData]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+  if (loading && data.length === 0) {
+    return (
+      <div className="min-h-screen bg-white font-sans">
+        <SiteHero>
+          <Badge>Leaderboard</Badge>
+          <h1 className="font-inter md:max-w-[700px] mb-8 text-center">
+            Top Universities & Institutions
+          </h1>
+        </SiteHero>
+        <section className="w-full section-padding py-0 bg-white">
+          <div className="w-full mx-auto">
+            <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden min-h-[600px] flex items-center justify-center">
+              <div className="text-center text-slate-500 animate-pulse">
+                <Sparkles className="w-12 h-12 mx-auto mb-4 text-[#FF7A00]" />
+                <div>Loading universities leaderboard...</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      {/* Hero Section */}
       <SiteHero>
-        {/* BADGE */}
         <Badge>Leaderboard</Badge>
-
-        {/* Main Heading */}
-        <h1 className="font-inter  md:max-w-[700px] mb-8 text-center">
+        <h1 className="font-inter md:max-w-[700px] mb-8 text-center">
           Top Universities & Institutions
         </h1>
-
-        {/* Subheading */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          Discover India&apos;s leading universities and research institutions
+          Discover India's leading universities and research institutions
           excelling in research output and academic excellence. Ranked by
           H-Index and research contributions.
         </p>
-
-        {/* CTA BUTTON */}
         <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6">
           Explore Universities
         </button>
       </SiteHero>
 
-      {/* Leaderboard Section */}
       <section className="w-full section-padding py-0 bg-white">
         <div className="w-full mx-auto">
           <div className="bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
-            {/* HEADER SECTION: Title and Search */}
             <div className="px-4 md:px-10 py-6 md:py-8 bg-white border-b border-slate-100 z-10">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="text-center md:text-left w-full md:w-auto">
                   <h3
                     className="h3-bento text-slate-900 flex items-center gap-3 justify-center md:justify-start"
                     style={{
-                      fontFamily:
-                        "'Helvetica Rounded', 'Helvetica', sans-serif",
+                      fontFamily: "'Helvetica Rounded', 'Helvetica', sans-serif",
                     }}
                   >
                     <div className="p-2 bg-orange-50 rounded-md sm:rounded-lg text-[#FF7A00]">
@@ -155,6 +149,11 @@ export default function UniversitiesLeaderboardPage() {
                     </div>
                     Universities Leaderboard
                   </h3>
+                  {debouncedSearchTerm && (
+                    <p className="text-xs text-slate-500 mt-2 font-inter">
+                      ({data.length} of {totalCount})
+                    </p>
+                  )}
                 </div>
 
                 <div className="relative group w-full md:w-auto">
@@ -172,13 +171,33 @@ export default function UniversitiesLeaderboardPage() {
               </div>
             </div>
 
-            <LeaderboardTable data={MOCK_DATA} type="Universities" />
+            {error ? (
+              <div className="p-12 text-center">
+                <div className="text-red-600 bg-red-50 p-8 rounded-lg border border-red-200 max-w-2xl mx-auto">
+                  <div className="text-xl font-medium mb-4">Failed to load leaderboard</div>
+                  <div className="text-slate-600 mb-6">{error}</div>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-6 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+                  >
+                    Retry Loading Data
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <LeaderboardTable 
+                data={data} 
+                type="Universities" 
+                totalCount={totalCount}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
         </div>
       </section>
 
       <ThreeCardsSection />
-
       <TabContentToggle
         title="Custom Consultancy Calls"
         description="Powered by Industry Experts"
@@ -213,11 +232,8 @@ export default function UniversitiesLeaderboardPage() {
           },
         ]}
       />
-
       <ThreeBlocksSection />
-
       <FAQSection />
-
       <LeaderboardFinalCTA />
     </div>
   );
