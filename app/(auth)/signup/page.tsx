@@ -204,20 +204,20 @@ export default function RegisterPage() {
       const data = await response.json();
 
       // 🔐 cookie for middleware
-      document.cookie = `nationciteId=${data.data.nationciteId}; path=/; max-age=86400`;
-      document.cookie = `userType=${userType}; path=/; max-age=86400`; // 👈 add this
+      // document.cookie = `nationciteId=${data.data.nationciteId}; path=/; max-age=86400`;
+      // document.cookie = `userType=${userType}; path=/; max-age=86400`; // 👈 add this
 
-      // 💾 local storage
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({
-          ticketId: data.data.ticketId,
-          nationciteId: data.data.nationciteId,
-          registrationId: data.data.registrationId,
-          userType,
+      // // 💾 local storage
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     ticketId: data.data.ticketId,
+      //     nationciteId: data.data.nationciteId,
+      //     registrationId: data.data.registrationId,
+      //     userType,
 
-        })
-      );
+      //   })
+      // );
 
       setCurrentStep(FlowStep.Dashboard);
     } catch (error) {
@@ -438,17 +438,16 @@ export default function RegisterPage() {
                     <Icon name="check" size={24} />
                   </div>
                   <h4 className="text-lg font-medium mb-2 text-neutral-800">
-                    Welcome to Dashboard!
+                    Welcome!
                   </h4>
                   <p className="text-xs text-neutral-500 mb-5 max-w-md mx-auto">
-                    Your account has been successfully created and you are now
-                    logged in.
+                    Your account is under review. After successful verification, you will receive your credentials via email.
                   </p>
                   <button
                     className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full max-w-xs mx-auto"
-                    onClick={() => router.push(getDashboardRoute(userType))}
+                    onClick={() => router.push('/')}
                   >
-                    Go to Dashboard
+                    Go to Home
                   </button>
 
 

@@ -209,7 +209,7 @@ export const FlowRenderer = ({
                 onClick={onNext}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
               >
-                Go to Dashboard <Icon name="chevron-right" size={20} />
+                Complete Registration <Icon name="chevron-right" size={20} />
               </button>
             </div>
           </div>
@@ -545,7 +545,7 @@ export const FlowRenderer = ({
                 onClick={onNext}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 touch-manipulation"
               >
-                Go to Dashboard <Icon name="chevron-right" size={20} />
+                Complete Registration <Icon name="chevron-right" size={20} />
               </button>
             </div>
           </div>
