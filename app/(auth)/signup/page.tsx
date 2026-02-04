@@ -7,6 +7,7 @@ import { SignupSidebar } from "./components/SignupSidebar";
 import { UserTypeCard } from "./components/UserTypeCard";
 import { FlowRenderer } from "./components/FlowRenderer";
 import { Icon } from "./components/Icon";
+import { useRouter } from "next/navigation";
 
 // Types
 enum UserType {
@@ -24,11 +25,111 @@ enum FlowStep {
 }
 
 export default function RegisterPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [otpSent, setOtpSent] = useState(false);
   const [timer, setTimer] = useState(60);
+  const [researcherForm, setResearcherForm] = useState({
+    name: "",
+    institution: "",
+    instituteEmail: "",
+    orcidId: "",
+    institutionalIdCardUrl: "www.demo",
+    primaryDomain: "",
+    googleScholarUrl: "",
+    profilePhotoUrl: "www.demo",
+    email: "test@gmail.com",
+    mobile: "1234567890",
+  });
+  const buildResearcherPayload = () => {
+    const payload = {
+      name: researcherForm.name,
+      institute: researcherForm.institution,
+      instituteEmail: researcherForm.instituteEmail,
+      orcidId: researcherForm.orcidId,
+      institutionalIdCardUrl: researcherForm.institutionalIdCardUrl,
+      primaryDomain: researcherForm.primaryDomain,
+      googleScholarUrl: researcherForm.googleScholarUrl,
+      profilePhotoUrl: researcherForm.profilePhotoUrl,
+      type: "RESEARCHER",
+      email: researcherForm.instituteEmail,
+      mobile: "12345678855", // Replace with actual mobile from backend / user input
+    };
 
+    return payload;
+  };
+  const [medicalForm, setMedicalForm] = useState({
+    name: "",
+    email: "tet",
+    mobile: "3456789",
+    medCouncilRegNo: "",
+    stateCouncil: "",
+    primaryHospital: "",
+    specialty: "",
+    researchFocus: "",
+    medicalDegreeUrl: "dfghj",
+    regCertificateUrl: "fdgh",
+  });
+  const buildMedicalPayload = () => {
+    return {
+      type: "MEDICAL",
+      name: medicalForm.name,
+      email: medicalForm.email,
+      mobile: medicalForm.mobile,
+      medCouncilRegNo: medicalForm.medCouncilRegNo,
+      stateCouncil: medicalForm.stateCouncil,
+      primaryHospital: medicalForm.primaryHospital,
+      specialty: medicalForm.specialty,
+      researchFocus: medicalForm.researchFocus,
+      medicalDegreeUrl: medicalForm.medicalDegreeUrl,
+      regCertificateUrl: medicalForm.regCertificateUrl,
+    };
+  };
+  const handleMedicalInputChange = (field: string, value: string | File) => {
+    setMedicalForm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+  const [institutionForm, setInstitutionForm] = useState({
+    name: "",
+    domain: "",
+    email: "",
+    number: "",
+    name1: '',
+    letterOfAuthorizationUrl: "www.demo",
+    accreditationProofUrl: "www.demo",
+  });
+  const buildInstitutionPayload = () => {
+    return {
+      type: "INSTITUTION",
+      name: institutionForm.name,
+      domain: institutionForm.domain,
+      email: institutionForm.email,
+      number: institutionForm.number,
+      letterOfAuthorizationUrl: institutionForm.letterOfAuthorizationUrl,
+      accreditationProofUrl: institutionForm.accreditationProofUrl,
+    };
+  };
+  const handleInstitutionInputChange = (field: string, value: string | File) => {
+    setInstitutionForm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+
+  const router = useRouter();
+
+
+  const handleInputChange = (field: string, value: string | File) => {
+    setResearcherForm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
   // Timer effect for OTP
   useEffect(() => {
     let interval: any;
@@ -44,13 +145,100 @@ export default function RegisterPage() {
     setTimer(60);
   }, [currentStep]);
 
+
   const handleNextStep = () => {
     if (currentStep === 0) {
       if (userType) setCurrentStep(1);
       return;
     }
+
     if (currentStep < FlowStep.Dashboard) {
-      setCurrentStep((prev) => prev + 1);
+      // If going to Dashboard, call API
+      if (currentStep === FlowStep.Welcome) {
+        submitRegistration();
+      } else {
+        setCurrentStep((prev) => prev + 1);
+      }
+    }
+  };
+  const submitRegistration = async () => {
+    let payload: any;
+    let apiUrl = "";
+
+    switch (userType) {
+      case UserType.Researcher:
+        payload = buildResearcherPayload();
+        apiUrl = "/api/registration/scholars";
+        break;
+
+      case UserType.Medical:
+        payload = buildMedicalPayload();
+        apiUrl = "/api/registration/scholar";
+        break;
+
+      case UserType.Institution:
+        payload = buildInstitutionPayload();
+        apiUrl = "/api/registration/orgs";
+        break;
+
+      default:
+        console.error("Invalid user type");
+        return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Registration failed:", errorData);
+        return;
+      }
+
+      const data = await response.json();
+
+      // 🔐 cookie for middleware
+      // document.cookie = `nationciteId=${data.data.nationciteId}; path=/; max-age=86400`;
+      // document.cookie = `userType=${userType}; path=/; max-age=86400`; // 👈 add this
+
+      // // 💾 local storage
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     ticketId: data.data.ticketId,
+      //     nationciteId: data.data.nationciteId,
+      //     registrationId: data.data.registrationId,
+      //     userType,
+
+      //   })
+      // );
+
+      setCurrentStep(FlowStep.Dashboard);
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
+
+  const getDashboardRoute = (type: UserType | null) => {
+    switch (type) {
+      case UserType.Researcher:
+        return "/dashboard/researchers";
+      case UserType.Medical:
+        return "/dashboard/medical";
+      case UserType.Institution:
+        return "/dashboard/institution";
+      default:
+        return "/";
     }
   };
 
@@ -184,11 +372,10 @@ export default function RegisterPage() {
             {[1, 2, 3, 4].map((step) => (
               <div
                 key={step}
-                className={`h-1 flex-1 rounded-full transition-all ${
-                  currentStep >= step
-                    ? "bg-[var(--color-primary)]"
-                    : "bg-neutral-200"
-                }`}
+                className={`h-1 flex-1 rounded-full transition-all ${currentStep >= step
+                  ? "bg-[var(--color-primary)]"
+                  : "bg-neutral-200"
+                  }`}
               />
             ))}
           </div>
@@ -237,24 +424,35 @@ export default function RegisterPage() {
             )}
 
             <div className="w-full max-w-xl mx-auto relative flex-1 flex flex-col justify-start md:pt-0 md:justify-center">
-              {isDashboardStep ? (
+              {isSubmitting ? (
+                <div className="flex flex-col items-center justify-center min-h-[300px] gap-4">
+                  <div className="h-10 w-10 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
+                  <p className="text-sm text-neutral-600">
+                    Creating your account…
+                  </p>
+                </div>
+              ) : isDashboardStep ? (
+
                 <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-none flex flex-col justify-center">
                   <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Icon name="check" size={24} />
                   </div>
                   <h4 className="text-lg font-medium mb-2 text-neutral-800">
-                    Welcome to Dashboard!
+                    Welcome!
                   </h4>
                   <p className="text-xs text-neutral-500 mb-5 max-w-md mx-auto">
-                    Your account has been successfully created and you are now
-                    logged in.
+                    Your account is under review. After successful verification, you will receive your credentials via email.
                   </p>
                   <button
                     className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full max-w-xs mx-auto"
-                    onClick={() => window.location.reload()}
+                    onClick={() => router.push('/')}
                   >
                     Go to Home
                   </button>
+
+
+
+
                 </div>
               ) : (
                 <>
@@ -282,11 +480,20 @@ export default function RegisterPage() {
                           otpSent={otpSent}
                           setOtpSent={setOtpSent}
                           timer={timer}
+                          onChange={
+                            userType === UserType.Medical
+                              ? handleMedicalInputChange
+                              : userType === UserType.Institution
+                                ? handleInstitutionInputChange
+                                : handleInputChange
+                          }
+                          researcherForm={researcherForm}
+                          medicalForm={medicalForm}
+                          institutionForm={institutionForm}
                         />
                       )}
                     </div>
                   </div>
-
                   {/* Login Link */}
                   <div className="mt-4 md:mt-6 text-center md:hidden">
                     <p className="text-xs text-neutral-600">
