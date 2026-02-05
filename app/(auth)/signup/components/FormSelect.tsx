@@ -1,9 +1,25 @@
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+// components/FormSelect.tsx
+import React from "react";
+
+interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> {
   label: string;
   options: string[];
+  onChange?: (value: string) => void;
 }
 
-export const FormSelect = ({ label, options, ...props }: SelectProps) => {
+export const FormSelect = ({
+  label,
+  options,
+  onChange,
+  ...props
+}: SelectProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (onChange) {
+      onChange(e.target.value);
+    }
+  };
+
   return (
     <div className="w-full relative">
       <label className="block text-xs md:text-sm font-medium text-neutral-700 mb-2 font-sans">
@@ -13,6 +29,7 @@ export const FormSelect = ({ label, options, ...props }: SelectProps) => {
         <select
           className="w-full px-3 md:px-4 py-3 md:py-2.5 text-sm md:text-base border-2 border-neutral-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition-all appearance-none bg-white cursor-pointer text-neutral-900 touch-manipulation"
           {...props}
+          onChange={handleChange}
         >
           <option value="" disabled selected>
             Select

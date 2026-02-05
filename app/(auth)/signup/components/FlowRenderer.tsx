@@ -5,6 +5,7 @@ import { FormInput } from "./FormInput";
 import { FormSelect } from "./FormSelect";
 import { FileUpload } from "./FileUpload";
 import { Icon } from "./Icon";
+import { useRouter } from "next/navigation";
 
 enum UserType {
   Medical = "Medical Professional",
@@ -33,6 +34,10 @@ interface FlowRendererProps {
   otpSent: boolean;
   setOtpSent: (value: boolean) => void;
   timer: number;
+  onChange?: (field: string, value: string | File) => void;
+  researcherForm: any,
+  medicalForm: any,
+  institutionForm: any
 }
 
 export const FlowRenderer = ({
@@ -42,7 +47,13 @@ export const FlowRenderer = ({
   otpSent,
   setOtpSent,
   timer,
+  onChange,
+  researcherForm,
+  medicalForm,
+  institutionForm
 }: FlowRendererProps) => {
+  const router = useRouter();
+
   // RESEARCHER FLOW
   if (userType === UserType.Researcher) {
     switch (step) {
@@ -52,9 +63,16 @@ export const FlowRenderer = ({
             <div className="space-y-5 pb-2">
               <FormInput
                 label="Full Name"
+                name="fullName"
                 placeholder="e.g. Dr. Aditi Sharma"
+                value={researcherForm.name} onChange={(value) => onChange?.("name", value)}
               />
-              <FormSelect label="Select Institution" options={INSTITUTIONS} />
+
+              <FormSelect
+                label="Select Institution"
+                options={INSTITUTIONS}
+                onChange={(value) => onChange?.("institution", value)}
+              />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
               <button
@@ -70,18 +88,25 @@ export const FlowRenderer = ({
         return (
           <div className="flex flex-col h-full justify-between">
             <div className="space-y-3 pb-2">
+
               <FormInput
                 label="Institutional Email ID"
-                placeholder="name@institute.edu.in"
+                name="institutionEmail"
                 type="email"
+                value={researcherForm.instituteEmail} placeholder="name@institute.edu.in"
+                onChange={(value) => onChange?.("instituteEmail", value)}
               />
               <FormInput
-                label="ORCID iD"
+                label="ORCID ID"
                 placeholder="e.g. 0000-0002-1825-0097"
+                value={researcherForm.orcidId}
+                onChange={(value) => onChange?.("orcidId", value)}
               />
               <FileUpload
                 label="Institutional ID Card"
                 subLabel="Upload a clear scan of your ID card."
+
+                onChange={(value) => onChange?.("institutionalIdCardUrl", value as File)}
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -107,14 +132,19 @@ export const FlowRenderer = ({
                   "Humanities",
                   "Social Sciences",
                 ]}
+                onChange={(value) => onChange?.("primaryDomain", value)}
               />
               <FormInput
+                value={researcherForm.googleScholarUrl}
+
                 label="Google Scholar Profile URL"
                 placeholder="https://scholar.google.com/citations?user=..."
+                onChange={(value) => onChange?.("googleScholarUrl", value)}
               />
               <FileUpload
                 label="Profile Photography"
                 subLabel="Upload a professional headshot."
+                onChange={(value) => onChange?.("profilePhotoUrl", value as File)}
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -135,7 +165,7 @@ export const FlowRenderer = ({
                 <label className="block text-xs font-medium text-neutral-700 mb-1.5 font-sans tracking-wide">
                   Impact Card Preview
                 </label>
-                <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-xl p-4 text-center flex flex-col items-center ">
+                <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-xl p-4 text-center flex flex-col items-center">
                   <div className="bg-white p-2 rounded-full mb-2 text-neutral-500 shadow-none">
                     <Icon name="upload" size={16} />
                   </div>
@@ -145,7 +175,10 @@ export const FlowRenderer = ({
                   <p className="text-[10px] text-neutral-400 mb-2">
                     Support for a single or bulk upload. Allowed: PDF, JPG, PNG.
                   </p>
-                  <button className="px-3 py-1.5  bg-white border border-neutral-300 rounded-lg text-xs text-neutral-700 font-medium">
+                  <button
+                    type="button"
+                    className="px-3 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs text-neutral-700 font-medium"
+                  >
                     Browse File
                   </button>
                 </div>
@@ -158,6 +191,7 @@ export const FlowRenderer = ({
                   "Collaboration",
                   "Teaching Resources",
                 ]}
+                onChange={(value) => onChange?.("useCase", value)}
               />
               <FormSelect
                 label="How did you hear about us?"
@@ -167,6 +201,7 @@ export const FlowRenderer = ({
                   "University Portal",
                   "Search Engine",
                 ]}
+                onChange={(value) => onChange?.("heardFrom", value)}
               />
             </div>
             <div className="mt-auto pt-6">
@@ -174,7 +209,7 @@ export const FlowRenderer = ({
                 onClick={onNext}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 px-6 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
               >
-                Go to Dashboard <Icon name="chevron-right" size={20} />
+                Complete Registration <Icon name="chevron-right" size={20} />
               </button>
             </div>
           </div>
@@ -189,11 +224,12 @@ export const FlowRenderer = ({
         return (
           <div className="flex flex-col h-full justify-between">
             <div className="space-y-5 pb-2">
-              <FormInput label="Name" placeholder="e.g. Dr. Rajesh Kumar" />
+              <FormInput label="Name" placeholder="e.g. Dr. Rajesh Kumar"
+                value={medicalForm.name} onChange={(value) => onChange?.("name", value)} />
               <FormSelect
                 label="Medical Council Registration Number"
                 options={["MCI-12345", "MCI-67890", "Select Manually..."]}
-              />
+                onChange={(value) => onChange?.("medCouncilRegNo", value)} />
               <FormSelect
                 label="State Council"
                 options={[
@@ -201,6 +237,7 @@ export const FlowRenderer = ({
                   "Maharashtra Medical Council",
                   "Karnataka Medical Council",
                 ]}
+                onChange={(value) => onChange?.("stateCouncil", value)}
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -225,6 +262,8 @@ export const FlowRenderer = ({
                   "Fortis Healthcare",
                   "Private Practice",
                 ]}
+                onChange={(value) => onChange?.("primaryHospital", value)}
+
               />
               <FormSelect
                 label="Specialty"
@@ -235,6 +274,8 @@ export const FlowRenderer = ({
                   "Pediatrics",
                   "General Medicine",
                 ]}
+                onChange={(value) => onChange?.("specialty", value)}
+
               />
               <FormSelect
                 label="Research Focus:"
@@ -244,6 +285,8 @@ export const FlowRenderer = ({
                   "Epidemiology",
                   "Genetics",
                 ]}
+                onChange={(value) => onChange?.("researchFocus", value)}
+
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -263,10 +306,13 @@ export const FlowRenderer = ({
               <FileUpload
                 label="Medical Degree"
                 subLabel="Upload your MBBS/MD/MS degree certificate."
+                onChange={(value) => onChange?.("medicalDegreeUrl", value)}
               />
               <FileUpload
                 label="Reg. Certificate"
                 subLabel="Upload your Medical Council Registration certificate."
+                onChange={(value) => onChange?.("regCertificateUrl", value)}
+
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -341,7 +387,8 @@ export const FlowRenderer = ({
             <div className="space-y-5 pb-2">
               <FormInput
                 label="Official Domain Name"
-                placeholder="www.university.ac.in"
+                placeholder="namen"
+                value={institutionForm.name} onChange={(value) => onChange?.("name", value)}
               />
               <p className="text-[10px] md:text-xs text-neutral-500 -mt-1 ml-1">
                 We will verify the domain DNS records automatically.
@@ -365,16 +412,25 @@ export const FlowRenderer = ({
                 <FormInput
                   label="Administrator Full Name"
                   placeholder="e.g. Registrar Name"
+                  value={institutionForm.name1}
+                  onChange={(value) => onChange?.("name1", value)}
+
                 />
                 <FormInput
                   label="Official Email Address"
                   placeholder="registrar@university.ac.in"
                   type="email"
+                  value={institutionForm.email}
+                  onChange={(value) => onChange?.("email", value)}
+
                 />
                 <FormInput
                   label="Registered Mobile Number"
                   placeholder="+91 98765 43210"
                   type="tel"
+                  value={institutionForm.number}
+                  onChange={(value) => onChange?.("number", value)}
+
                 />
               </div>
               <div className="mt-auto pt-6 md:pt-4">
@@ -390,14 +446,14 @@ export const FlowRenderer = ({
         } else {
           return (
             <div className="flex flex-col h-full text-center">
-              <div className="flex-1 flex flex-col  py-6">
+              <div className="flex-1 flex flex-col py-6">
                 <h5 className="mb-3 text-neutral-800 text-base md:text-lg font-semibold md:font-medium">
                   Enter Verification Code
                 </h5>
                 <p className="text-xs md:text-sm mb-8 md:mb-7 pt-2 text-neutral-500 px-4">
                   We sent a 4-digit code to your registered mobile number.
                 </p>
-                <div className="flex justify-center pt-3 gap-2.5  md:gap-3 mb-8 md:mb-7">
+                <div className="flex justify-center pt-3 gap-2.5 md:gap-3 mb-8 md:mb-7">
                   {[1, 2, 3, 4].map((i) => (
                     <input
                       key={i}
@@ -444,15 +500,18 @@ export const FlowRenderer = ({
             </div>
           );
         }
-        case FlowStep.Profile:
+      case FlowStep.Profile:
         return (
           <div className="flex flex-col h-full justify-between">
             <div className="space-y-5 pb-2">
               <FileUpload
                 label="Letter of Authorization"
                 subLabel="Signed by the Head of Institution"
+                onChange={(value) => onChange?.("letterOfAuthorizationUrl", value)}
               />
-              <FileUpload label="NAAC/ NIRF Accreditation Proof" />
+              <FileUpload label="NAAC/ NIRF Accreditation Proof"
+                onChange={(value) => onChange?.("accreditationProofUrl", value)}
+              />
             </div>
             <div className="mt-auto pt-6">
               <button
@@ -477,6 +536,8 @@ export const FlowRenderer = ({
                   "Biology",
                   "Business Administration",
                 ]}
+                onChange={(value) => onChange?.("domain", value)}
+
               />
             </div>
             <div className="mt-auto pt-6">
@@ -484,7 +545,7 @@ export const FlowRenderer = ({
                 onClick={onNext}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 touch-manipulation"
               >
-                Go to Dashboard <Icon name="chevron-right" size={20} />
+                Complete Registration <Icon name="chevron-right" size={20} />
               </button>
             </div>
           </div>
