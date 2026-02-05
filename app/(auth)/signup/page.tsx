@@ -62,7 +62,7 @@ export default function RegisterPage() {
   };
   const [medicalForm, setMedicalForm] = useState({
     name: "",
-    email: "tet",
+    email: "test@gmail.com",
     mobile: "3456789",
     medCouncilRegNo: "",
     stateCouncil: "",
