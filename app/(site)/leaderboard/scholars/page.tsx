@@ -49,7 +49,7 @@ export default function ScholarsLeaderboardPage() {
         params.append("page", page.toString());
       }
 
-      const response = await fetch(`http://localhost:3001/api/scholars`);
+      const response = await fetch(`/api/scholars`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
