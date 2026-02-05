@@ -48,7 +48,7 @@ export default function UniversitiesLeaderboardPage() {
         params.append("page", page.toString());
       }
 
-      const response = await fetch(`http://localhost:3001/api/orgs`);
+      const response = await fetch(`/api/orgs`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
