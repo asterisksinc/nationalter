@@ -2,17 +2,17 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const nationciteId = req.cookies.get("nationciteId")?.value;
+  const token = req.cookies.get("nationciteId")?.value;
   const userType = req.cookies.get("userType")?.value;
 
   const pathname = req.nextUrl.pathname;
 
-  // 🔐 Not logged in → block all dashboards
-  if (pathname.startsWith("/dashboard") && !nationciteId) {
+  // 🔐 Block unauthenticated users
+  if (pathname.startsWith("/dashboard") && !token) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
-  // 🧠 Role-based dashboard access
+  // 🧠 Role-based access
   if (pathname.startsWith("/dashboard/researchers") && userType !== "Researcher") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }

@@ -33,6 +33,59 @@ export const SigninFlowRenderer = ({
   const [password, setPassword] = useState("");
   const [orcid, setOrcid] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
+  const handleEmailPassSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          userType,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!result.success) {
+        alert(result.message || "Login failed");
+        return;
+      }
+
+      // ✅ Optional email verification check
+      // if (!result.data.user.isEmailVerified) {
+      //   window.location.href = "/verify-email";
+      //   return;
+      // }
+
+      // 🧭 Role-based redirect
+      switch (userType) {
+        case UserType.Medical:
+          window.location.replace("/dashboard/medical");
+          break;
+
+        case UserType.Institution:
+          window.location.replace("/dashboard/organizations");
+          break;
+
+        case UserType.Researcher:
+          window.location.replace("/dashboard/researchers");
+          break;
+
+        default:
+          window.location.replace("/dashboard");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   // Timer Logic
   useEffect(() => {
@@ -53,20 +106,7 @@ export const SigninFlowRenderer = ({
     }, 1000);
   };
 
-  const handleEmailPassSubmit = () => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      if (userType === UserType.Institution) {
-        // Institution needs mobile verification after email auth
-        setStep(2);
-      } else {
-        // Others login directly
-        onSuccess();
-      }
-    }, 1000);
-  };
+
 
   const handleOtpSubmit = () => {
     setIsLoading(true);
@@ -231,7 +271,7 @@ export const SigninFlowRenderer = ({
             type="email"
             placeholder="johndoe@org.in"
             value={email}
-            onChange={(e: any) => setEmail(e.target.value)}
+            onChange={setEmail}
           />
           <div className="relative">
             <FormInput
@@ -239,7 +279,7 @@ export const SigninFlowRenderer = ({
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e: any) => setPassword(e.target.value)}
+              onChange={setPassword}
             />
             <button className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1">
               Forgot?
@@ -276,14 +316,14 @@ export const SigninFlowRenderer = ({
             type="email"
             placeholder="johndoe@institution.edu"
             value={email}
-            onChange={(e: any) => setEmail(e.target.value)}
+            onChange={setEmail}
           />
           <FormInput
             label="Password"
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e: any) => setPassword(e.target.value)}
+            onChange={setPassword}
           />
           <button
             onClick={handleEmailPassSubmit}
@@ -315,14 +355,14 @@ export const SigninFlowRenderer = ({
             type="email"
             placeholder="johndoe@email.com"
             value={email}
-            onChange={(e: any) => setEmail(e.target.value)}
+            onChange={setEmail}
           />
           <FormInput
             label="Password"
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e: any) => setPassword(e.target.value)}
+            onChange={setPassword}
           />
           <button
             onClick={handleEmailPassSubmit}
