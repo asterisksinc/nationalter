@@ -62,7 +62,7 @@ export default function RegisterPage() {
   };
   const [medicalForm, setMedicalForm] = useState({
     name: "",
-    email: "test@gmail.com",
+    email: "",
     mobile: "3456789",
     medCouncilRegNo: "",
     stateCouncil: "",
@@ -173,7 +173,7 @@ export default function RegisterPage() {
 
       case UserType.Medical:
         payload = buildMedicalPayload();
-        apiUrl = "/api/registration/scholar";
+        apiUrl = "/api/registration/scholars";
         break;
 
       case UserType.Institution:
