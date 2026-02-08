@@ -71,6 +71,7 @@ export const FlowRenderer = ({
               <FormSelect
                 label="Select Institution"
                 options={INSTITUTIONS}
+                 value={researcherForm.institution}
                 onChange={(value) => onChange?.("institution", value)}
               />
             </div>
@@ -105,7 +106,7 @@ export const FlowRenderer = ({
               <FileUpload
                 label="Institutional ID Card"
                 subLabel="Upload a clear scan of your ID card."
-
+                value={researcherForm.institutionalIdCardUrl}
                 onChange={(value) => onChange?.("institutionalIdCardUrl", value as File)}
               />
             </div>
@@ -132,6 +133,8 @@ export const FlowRenderer = ({
                   "Humanities",
                   "Social Sciences",
                 ]}
+                                 value={researcherForm.primaryDomain}
+
                 onChange={(value) => onChange?.("primaryDomain", value)}
               />
               <FormInput
@@ -144,6 +147,8 @@ export const FlowRenderer = ({
               <FileUpload
                 label="Profile Photography"
                 subLabel="Upload a professional headshot."
+                                                 value={researcherForm.profilePhotoUrl}
+
                 onChange={(value) => onChange?.("profilePhotoUrl", value as File)}
               />
             </div>
@@ -191,6 +196,8 @@ export const FlowRenderer = ({
                   "Collaboration",
                   "Teaching Resources",
                 ]}
+                                                                 value={researcherForm.useCase}
+
                 onChange={(value) => onChange?.("useCase", value)}
               />
               <FormSelect
@@ -201,6 +208,8 @@ export const FlowRenderer = ({
                   "University Portal",
                   "Search Engine",
                 ]}
+                                                                                 value={researcherForm.heardFrom}
+
                 onChange={(value) => onChange?.("heardFrom", value)}
               />
             </div>
@@ -229,7 +238,9 @@ export const FlowRenderer = ({
               <FormSelect
                 label="Medical Council Registration Number"
                 options={["MCI-12345", "MCI-67890", "Select Manually..."]}
-                onChange={(value) => onChange?.("medCouncilRegNo", value)} />
+                onChange={(value) => onChange?.("medCouncilRegNo", value)} 
+    value={medicalForm.medCouncilRegNo}
+/>
               <FormSelect
                 label="State Council"
                 options={[
@@ -237,7 +248,16 @@ export const FlowRenderer = ({
                   "Maharashtra Medical Council",
                   "Karnataka Medical Council",
                 ]}
+                    value={medicalForm.stateCouncil}
+
                 onChange={(value) => onChange?.("stateCouncil", value)}
+              />
+               <FormInput
+                label="Email ID"
+                name="email"
+                type="email"
+                value={medicalForm.email} placeholder="name@institute.edu.in"
+                onChange={(value) => onChange?.("email", value)}
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -262,6 +282,8 @@ export const FlowRenderer = ({
                   "Fortis Healthcare",
                   "Private Practice",
                 ]}
+                                    value={medicalForm.primaryHospital}
+
                 onChange={(value) => onChange?.("primaryHospital", value)}
 
               />
@@ -274,6 +296,8 @@ export const FlowRenderer = ({
                   "Pediatrics",
                   "General Medicine",
                 ]}
+                                                    value={medicalForm.specialty}
+
                 onChange={(value) => onChange?.("specialty", value)}
 
               />
@@ -285,6 +309,8 @@ export const FlowRenderer = ({
                   "Epidemiology",
                   "Genetics",
                 ]}
+                                                                    value={medicalForm.researchFocus}
+
                 onChange={(value) => onChange?.("researchFocus", value)}
 
               />
@@ -306,12 +332,15 @@ export const FlowRenderer = ({
               <FileUpload
                 label="Medical Degree"
                 subLabel="Upload your MBBS/MD/MS degree certificate."
+value={medicalForm.medicalDegreeUrl}
+
                 onChange={(value) => onChange?.("medicalDegreeUrl", value)}
               />
               <FileUpload
                 label="Reg. Certificate"
                 subLabel="Upload your Medical Council Registration certificate."
                 onChange={(value) => onChange?.("regCertificateUrl", value)}
+value={medicalForm.regCertificateUrl}
 
               />
             </div>

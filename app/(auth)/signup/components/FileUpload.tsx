@@ -10,6 +10,8 @@ interface FileUploadProps {
   onChange?: (file: File) => void;
   filename?: string;
   error?: string;
+  value?: string;
+
 }
 
 export const FileUpload = ({
@@ -18,6 +20,7 @@ export const FileUpload = ({
   onChange,
   filename,
   error,
+  value
 }: FileUploadProps) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -71,6 +74,7 @@ export const FileUpload = ({
           onChange={handleFileChange}
           className="hidden"
           aria-label={`Upload ${label}`}
+
         // Optional: restrict file types
         // accept=".pdf,.jpg,.jpeg,.png"
         />
