@@ -17,80 +17,81 @@ const ITEMS_PER_PAGE = 10;
 
 export default function ScholarsLeaderboardPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [allData, setAllData] = useState<LeaderboardEntry[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchScholarsData(currentPage);
-    }, 300);
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-    fetchScholarsData(1,);
-  }, []);
-
-  const fetchScholarsData = useCallback(async (page: number) => {
+  /* ---------------- FETCH DATA (NO page/top) ---------------- */
+  const fetchScholarsData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const params = new URLSearchParams();
-      
-
-
-      if (page !== 1) {
-        params.append("top", ITEMS_PER_PAGE.toString());
-        params.append("page", page.toString());
+      if (searchTerm.trim()) {
+        params.append("scholarName", searchTerm.trim());
       }
 
-      const response = await fetch(`/api/scholars`);
-      
+      const response = await fetch(`/api/scholars?${params.toString()}`);
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
-      if (result.success && result.data) {
-        const transformedData: LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
+
+      if (!result.success || !Array.isArray(result.data)) {
+        throw new Error("Invalid API response");
+      }
+
+      const transformed: LeaderboardEntry[] = result.data.map(
+        (item: any, index: number) => ({
           id: item.id,
-          rank: String((page - 1) * ITEMS_PER_PAGE + index + 1).padStart(2, "0"),
+          rank: String(index + 1).padStart(2, "0"),
           name: item.scholarName,
           institution: item.orgName,
           hIndex: item.hIndexTotal,
           articles: Math.round(item.hIndexLast5 * 3.5),
           avatar: `https://i.pravatar.cc/150?img=${(item.id % 60) + 1}`,
-        }));
-        
-        setData(transformedData);
-        setTotalCount(result.count || transformedData.length);
-      } else {
-        throw new Error("Invalid API response");
-      }
+        })
+      );
+
+      setAllData(transformed);
+      setTotalCount(transformed.length);
+      setCurrentPage(1);
     } catch (err) {
-      console.error("Failed to fetch scholars data:", err);
-      setError(err instanceof Error ? err.message : "Failed to load scholars data");
-      setData([]);
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Failed to load data");
+      setAllData([]);
       setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [searchTerm]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    fetchScholarsData(page);
-  };
+  /* ---------------- SEARCH DEBOUNCE ---------------- */
+  useEffect(() => {
+    const timeout = setTimeout(fetchScholarsData, 300);
+    return () => clearTimeout(timeout);
+  }, [fetchScholarsData]);
+
+  /* ---------------- PAGINATION (FRONTEND) ---------------- */
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const paginatedData = allData.slice(startIndex, endIndex).map(
+    (item, index) => ({
+      ...item,
+      rank: String(startIndex + index + 1).padStart(2, "0"),
+    })
+  );
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
-  if (loading && data.length === 0) {
+  /* ---------------- LOADING STATE ---------------- */
+  if (loading && allData.length === 0) {
     return (
       <div className="min-h-screen bg-white font-sans">
         <SiteHero>
@@ -113,6 +114,7 @@ export default function ScholarsLeaderboardPage() {
     );
   }
 
+  /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-white font-sans">
       <SiteHero>
@@ -148,7 +150,7 @@ export default function ScholarsLeaderboardPage() {
                   </h3>
                   {searchTerm && (
                     <p className="text-xs text-slate-500 mt-2 font-inter">
-                      ({data.length} of {totalCount})
+                      ({allData.length} of {totalCount})
                     </p>
                   )}
                 </div>
@@ -182,13 +184,13 @@ export default function ScholarsLeaderboardPage() {
                 </div>
               </div>
             ) : (
-              <LeaderboardTable 
-                data={data} 
-                type="Scholars" 
-                totalCount={totalCount}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
+               <LeaderboardTable
+              data={paginatedData}
+              type="Scholars"
+              totalCount={totalCount}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
             )}
           </div>
         </div>

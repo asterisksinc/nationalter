@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Building2, ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface LeaderboardEntry {
@@ -13,59 +13,46 @@ export interface LeaderboardEntry {
   avatar: string;
 }
 
-// Add these props to LeaderboardTableProps interface
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];
   type: "Scholars" | "Universities" | "Doctors";
-  totalCount?: number;
-  currentPage?: number;
-  onPageChange?: (page: number) => void;
+  totalCount: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
+const ITEMS_PER_PAGE = 10;
+const MAX_VISIBLE_PAGES = 5;
 
-const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
+  data,
+  type,
+  totalCount,
+  currentPage,
+  onPageChange,
+}) => {
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + data.length;
 
-  const maxVisiblePages = 5;
-
+  /* -------- PAGE NUMBERS -------- */
   const getVisiblePages = () => {
     const pages: number[] = [];
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    let start = Math.max(
+      1,
+      currentPage - Math.floor(MAX_VISIBLE_PAGES / 2)
+    );
+    let end = Math.min(totalPages, start + MAX_VISIBLE_PAGES - 1);
 
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    if (end - start + 1 < MAX_VISIBLE_PAGES) {
+      start = Math.max(1, end - MAX_VISIBLE_PAGES + 1);
     }
 
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
+    for (let i = start; i <= end; i++) pages.push(i);
     return pages;
   };
 
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
 
   const headerTextStyle: React.CSSProperties = {
     fontFamily:
@@ -132,7 +119,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
 
           {/* Table Body */}
           <div className="space-y-2">
-            {currentData.map((row) => (
+            {data.map((row) => (
               <div
                 key={row.id}
                 className="group flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-3 items-start md:items-center p-4 md:px-6 md:py-3 bg-white rounded-lg sm:rounded-xl border border-slate-100 shadow-none hover:shadow-md hover:border-orange-100 transition-all duration-300 relative"
@@ -247,67 +234,44 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, type }) => {
         </div>
       </div>
 
-      {/* FOOTER PAGINATION */}
-      <div className="w-full border-t border-slate-100 bg-white z-10 py-4 md:py-0 h-auto md:h-20 px-4 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* PAGINATION */}
+      <div className="border-t px-4 md:px-10 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            onClick={prevPage}
+            onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="w-9 h-9 flex items-center justify-center rounded-md sm:rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500 font-inter disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft />
           </button>
 
-          <div className="flex items-center bg-slate-50 rounded-md sm:rounded-lg p-1">
-            {getVisiblePages().map((page) => (
-              <button
-                key={page}
-                onClick={() => goToPage(page)}
-                className={`w-8 h-8 flex items-center justify-center rounded-md font-medium text-sm font-inter transition-colors ${
-                  currentPage === page
-                    ? "bg-white shadow-sm text-[#FF7A00] border border-orange-200"
-                    : "hover:bg-white/50 text-slate-500 hover:text-slate-700"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-
-          {totalPages > maxVisiblePages && (
-            <>
-              {getVisiblePages()[getVisiblePages().length - 1] < totalPages && (
-                <span className="text-slate-300 px-1 font-medium font-inter">
-                  ...
-                </span>
-              )}
-              <button
-                onClick={() => goToPage(totalPages)}
-                className="w-8 h-8 flex items-center justify-center rounded-md sm:rounded-lg hover:bg-slate-50 font-medium text-sm text-slate-500 transition-colors font-inter"
-              >
-                {totalPages}
-              </button>
-            </>
-          )}
+          {getVisiblePages().map((page) => (
+            <button
+              key={page}
+              onClick={() => onPageChange(page)}
+              className={`w-8 h-8 rounded ${
+                page === currentPage
+                  ? "bg-orange-500 text-white"
+                  : "text-slate-500"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
 
           <button
-            onClick={nextPage}
+            onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="w-9 h-9 flex items-center justify-center rounded-md sm:rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors text-slate-500 font-inter disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
           >
-            <ChevronRight size={18} />
+            <ChevronRight />
           </button>
         </div>
 
-        <div
-          className="text-sm text-slate-400 font-medium"
-          style={{ fontFamily: "var(--font-inter)" }}
-        >
+        <div className="text-sm text-slate-500">
           Showing{" "}
-          <span className="text-slate-900 font-bold">
-            {data.length > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, data.length)}
-          </span>{" "}
-          of <span className="text-slate-900 font-bold">{data.length}</span>
+          <b>
+            {startIndex + 1}-{endIndex}
+          </b>{" "}
+          of <b>{totalCount}</b>
         </div>
       </div>
     </div>
