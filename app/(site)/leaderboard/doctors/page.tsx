@@ -109,6 +109,8 @@ const MOCK_DATA: LeaderboardEntry[] = [
 
 export default function DoctorsLeaderboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = MOCK_DATA.length;
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -172,7 +174,13 @@ export default function DoctorsLeaderboardPage() {
               </div>
             </div>
 
-            <LeaderboardTable data={MOCK_DATA} type="Doctors" />
+            <LeaderboardTable
+              data={MOCK_DATA}
+              type="Doctors"
+              totalCount={totalCount}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </div>
       </section>
