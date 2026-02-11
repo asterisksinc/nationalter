@@ -210,3 +210,38 @@ model TicketComments {
   // Relations
   ticket Tickets @relation(fields: [ticketId], references: [ticketId])
 }
+
+////////////////////////////////////////////////
+// PUBLICATIONS
+////////////////////////////////////////////////
+
+model Publication {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  journalName        String
+  datePublished      DateTime
+  citationsTotal     Int
+  citationsLast5Years Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  scholars           PublicationScholar[]
+  orgs               PublicationOrg[]
+}
+
+model PublicationScholar {
+  publication        Publication @relation(fields: [publicationId], references: [id])
+  publicationId      Int
+  scholarNationciteId String     @db.VarChar(256) // link to ScholarsPublic.nationciteId
+
+  @@id([publicationId, scholarNationciteId])
+}
+
+model PublicationOrg {
+  publication       Publication @relation(fields: [publicationId], references: [id])
+  publicationId     Int
+  orgNationciteId   String     @db.VarChar(256) // link to OrgsPublic.nationciteId
+
+  @@id([publicationId, orgNationciteId])
+}
