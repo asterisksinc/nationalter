@@ -35,6 +35,7 @@ export const SigninFlowRenderer = ({
   const [otp, setOtp] = useState(["", "", "", ""]);
   const handleEmailPassSubmit = async () => {
     setIsLoading(true);
+    console.log("[AUTH] Starting login...", { email });
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -43,49 +44,55 @@ export const SigninFlowRenderer = ({
         body: JSON.stringify({
           email,
           password,
-          userType,
         }),
+        credentials: "include", // CRITICAL: Include cookies in request/response
       });
 
+      console.log("[AUTH] Login response status:", res.status);
       const result = await res.json();
+      console.log("[AUTH] Login result:", {
+        success: result.success,
+        role: result.data?.user?.role,
+      });
 
       if (!result.success) {
+        console.error("[AUTH] Login failed:", result.message);
         alert(result.message || "Login failed");
+        setIsLoading(false);
         return;
       }
 
-      // ✅ Optional email verification check
+      // Get user role from response (from database, not from UI selection)
+      const userRole = result.data.user.role;
+      console.log("[AUTH] Login successful, role:", userRole);
+
+      // Optional email verification check
       // if (!result.data.user.isEmailVerified) {
       //   window.location.href = "/verify-email";
       //   return;
       // }
 
-      // 🧭 Role-based redirect
-      switch (userType) {
-        case UserType.Medical:
-          window.location.replace("/dashboard/medical");
-          break;
+      // Role-based redirect (using actual database role)
+      // Small delay to ensure cookies are saved
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-        case UserType.Institution:
-          window.location.replace("/dashboard/organizations");
-          break;
-
-        case UserType.Researcher:
-          window.location.replace("/dashboard/researchers");
-          break;
-
-        default:
-          window.location.replace("/dashboard");
+      let redirectUrl = "/dashboard";
+      if (userRole === "ADMIN") {
+        redirectUrl = "/admin-overview";
+      } else if (userRole === "ORG") {
+        redirectUrl = "/dashboard/organizations";
+      } else if (userRole === "SCHOLAR") {
+        redirectUrl = "/dashboard/researchers";
       }
 
+      console.log("[AUTH] Redirecting to:", redirectUrl);
+      window.location.href = redirectUrl;
     } catch (err) {
-      console.error(err);
+      console.error("[AUTH] Login error:", err);
       alert("Something went wrong");
-    } finally {
       setIsLoading(false);
     }
   };
-
 
   // Timer Logic
   useEffect(() => {
@@ -105,8 +112,6 @@ export const SigninFlowRenderer = ({
       setTimer(60);
     }, 1000);
   };
-
-
 
   const handleOtpSubmit = () => {
     setIsLoading(true);

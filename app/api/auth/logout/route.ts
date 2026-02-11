@@ -1,22 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth";
 
-export async function PATCH(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    // Validate token (throws if invalid)
-    const payload = requireAuth(req);
-
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: "Logout successful",
-      data: {
-        user: payload,
-      },
     });
+
+    // Clear authentication cookies
+    response.cookies.delete("nationciteId");
+    response.cookies.delete("userRole");
+
+    return response;
   } catch (error) {
+    console.error("Logout error:", error);
     return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 }
+      { success: false, message: "Logout failed" },
+      { status: 500 }
     );
   }
+}
+
+// Support PATCH for backwards compatibility
+export async function PATCH(req: NextRequest) {
+  return POST(req);
 }
