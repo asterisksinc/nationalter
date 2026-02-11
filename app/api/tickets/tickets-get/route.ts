@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
+    requireAdmin(req);
     const { searchParams } = new URL(req.url);
 
     const nationciteId = searchParams.get("nationciteId");

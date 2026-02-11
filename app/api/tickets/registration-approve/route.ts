@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { sendApprovalCredentialsMail } from "@/lib/mailer";
+import { requireAdmin } from "@/lib/auth";
 
 /**
  * Generate random temporary password
@@ -13,6 +14,8 @@ function generateTempPassword() {
 
 export async function PATCH(req: NextRequest) {
   try {
+    requireAdmin(req);
+
     const { ticketId, nationciteId } = await req.json();
 
     if (!ticketId || !nationciteId) {
@@ -56,6 +59,7 @@ export async function PATCH(req: NextRequest) {
 
     let email = "";
     let name = "";
+    let role: "ORG" | "SCHOLAR";
 
     await prisma.$transaction(async (tx) => {
       // 4️⃣ Update ticket
@@ -89,6 +93,7 @@ export async function PATCH(req: NextRequest) {
 
         email = org.email;
         name = org.name;
+        role = "ORG";
       }
 
       // 7️⃣ Handle SCHOLARS
@@ -103,6 +108,7 @@ export async function PATCH(req: NextRequest) {
 
         email = med.email;
         name = med.name;
+        role = "SCHOLAR";
       }
 
       if (registration.type === "RESEARCHER") {
@@ -116,6 +122,7 @@ export async function PATCH(req: NextRequest) {
 
         email = res.email;
         name = res.name;
+        role = "SCHOLAR";
       }
 
       // 8️⃣ Create Auth User
@@ -123,6 +130,7 @@ export async function PATCH(req: NextRequest) {
         data: {
           email,
           passwordHash,
+          role,
           isEmailVerified: false,
           isActive: true,
           registration: { connect: { id: registration.id } },

@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.authUser.findUnique({
       where: { email },
       include: {
-        registration: true,
+        registration: true, 
       },
     });
 
@@ -38,22 +38,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!user.registration) {
+    const role = user.role; 
+
+    if (role !== "ADMIN" && !user.registration) {
       return NextResponse.json(
-        { success: false, message: "Registration not linked to user" },
+        {
+          success: false,
+          message: "Registration not linked to user",
+        },
         { status: 403 }
       );
     }
-
-    // 3️⃣ Extract user type
-    const userType = user.registration.type; // ORG | RESEARCHER | MEDICAL
 
     // 4️⃣ Generate JWT
     const token = signJwt({
       userId: user.id,
       email: user.email,
-      registrationId: user.registration.id,
-      userType,
+      role,
+      registrationId: user.registration?.id ?? null,
     });
 
     // 5️⃣ Update last login
@@ -70,8 +72,8 @@ export async function POST(req: NextRequest) {
         user: {
           id: user.id,
           email: user.email,
-          registrationId: user.registration.id,
-          userType,
+          role,
+          registrationId: user.registration?.id ?? null,
           isEmailVerified: user.isEmailVerified,
         },
       },
