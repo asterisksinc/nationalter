@@ -172,7 +172,14 @@ export default function DoctorsLeaderboardPage() {
               </div>
             </div>
 
-            <LeaderboardTable data={MOCK_DATA} type="Doctors" />
+            <LeaderboardTable
+              data={MOCK_DATA}
+              type="Doctors"
+              totalCount={MOCK_DATA.length}       // total items
+              currentPage={1}                     // starting page
+              onPageChange={(page) => console.log("Change to page:", page)} // handle page changes
+            />
+
           </div>
         </div>
       </section>
