@@ -5,8 +5,7 @@ import { signJwt } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { email, password } = body;
+    const { email, password } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -15,47 +14,51 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1️⃣ Find user
+    // 1️⃣ Find auth user
     const user = await prisma.authUser.findUnique({
       where: { email },
-      include: { registration: true },
+      include: {
+        registration: true, 
+      },
     });
 
-    if (!user) {
+    if (!user || !user.isActive) {
       return NextResponse.json(
         { success: false, message: "Invalid credentials" },
         { status: 401 }
-      );
-    }
-
-    if (!user.isActive) {
-      return NextResponse.json(
-        { success: false, message: "Account is inactive" },
-        { status: 403 }
       );
     }
 
     // 2️⃣ Verify password
-    const passwordMatch = await bcrypt.compare(
-      password,
-      user.passwordHash
-    );
-
-    if (!passwordMatch) {
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isValid) {
       return NextResponse.json(
         { success: false, message: "Invalid credentials" },
         { status: 401 }
       );
     }
 
-    // 3️⃣ Sign JWT
+    const role = user.role; 
+
+    if (role !== "ADMIN" && !user.registration) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Registration not linked to user",
+        },
+        { status: 403 }
+      );
+    }
+
+    // 4️⃣ Generate JWT
     const token = signJwt({
       userId: user.id,
       email: user.email,
-      registrationId: user.registration?.id,
+      role,
+      registrationId: user.registration?.id ?? null,
     });
 
-    // 4️⃣ Update last login
+    // 5️⃣ Update last login
     await prisma.authUser.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date() },
@@ -69,7 +72,8 @@ export async function POST(req: NextRequest) {
         user: {
           id: user.id,
           email: user.email,
-          registrationId: user.registration?.id,
+          role,
+          registrationId: user.registration?.id ?? null,
           isEmailVerified: user.isEmailVerified,
         },
       },

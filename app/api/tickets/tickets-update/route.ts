@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 export async function PUT(req: NextRequest) {
   try {
+    requireAdmin(req);
     const body = await req.json();
 
     const {
@@ -10,7 +12,7 @@ export async function PUT(req: NextRequest) {
       status,
       comment,
       attachments,
-      nationciteId, // OPTIONAL: new nationciteId (real one after approval)
+      nationciteId, 
     } = body;
 
     if (!ticketId) {
