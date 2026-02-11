@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  GraduationCap,
-  Building2,
-  Stethoscope,
-  Search,
-} from "lucide-react";
+import { GraduationCap, Building2, Stethoscope, Search } from "lucide-react";
 import LeaderboardTable, { LeaderboardEntry } from "./LeaderboardTable";
 
 const LeaderboardWidget = ({
@@ -21,6 +16,7 @@ const LeaderboardWidget = ({
   const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   React.useEffect(() => {
     console.log("LeaderboardWidget mounted", { activeTab });
@@ -32,27 +28,29 @@ const LeaderboardWidget = ({
       try {
         setLoading(true);
         setError(null);
-        
+
         const response = await fetch("/api/leaderboard");
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const result = await response.json();
-        
+
         if (result.success && result.data) {
           // Transform API response to match LeaderboardEntry interface
-          const transformedData: LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
-            id: item.id,
-            rank: String(index + 1).padStart(2, "0"),
-            name: item.scholarName,
-            institution: item.orgName,
-            hIndex: item.hIndexTotal,
-            articles: item.hIndexLast5 * 3, // Approximate articles from hIndexLast5
-            avatar: `https://i.pravatar.cc/150?img=${(index % 60) + 1}`,
-          }));
-          
+          const transformedData: LeaderboardEntry[] = result.data.map(
+            (item: any, index: number) => ({
+              id: item.id,
+              rank: String(index + 1).padStart(2, "0"),
+              name: item.scholarName,
+              institution: item.orgName,
+              hIndex: item.hIndexTotal,
+              articles: item.hIndexLast5 * 3, // Approximate articles from hIndexLast5
+              avatar: `https://i.pravatar.cc/150?img=${(index % 60) + 1}`,
+            }),
+          );
+
           setData(transformedData);
         } else {
           throw new Error("API response invalid");
@@ -75,9 +73,10 @@ const LeaderboardWidget = ({
   ] as const;
 
   // Filter data based on search term
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.institution.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.institution.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (loading) {
@@ -89,7 +88,9 @@ const LeaderboardWidget = ({
           </h3>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-slate-500 animate-pulse">Loading leaderboard...</div>
+          <div className="text-slate-500 animate-pulse">
+            Loading leaderboard...
+          </div>
         </div>
       </div>
     );
@@ -159,7 +160,13 @@ const LeaderboardWidget = ({
           </div>
         </div>
       ) : (
-        <LeaderboardTable data={filteredData} type={activeTab} />
+        <LeaderboardTable
+          data={filteredData}
+          type={activeTab}
+          totalCount={filteredData.length}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
       )}
     </div>
   );
