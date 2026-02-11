@@ -35,56 +35,61 @@ export default function UniversitiesLeaderboardPage() {
     setCurrentPage(1);
   }, [debouncedSearchTerm]);
 
-  const fetchUniversitiesData = useCallback(async (page: number) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const params = new URLSearchParams();
-      
-      if (page === 1) {
-      } else {
-        params.append("top", ITEMS_PER_PAGE.toString());
-        params.append("page", page.toString());
-      }
+const fetchUniversitiesData = useCallback(async () => {
+  try {
+    setLoading(true);
+    setError(null);
 
-      const response = await fetch(`http://localhost:3001/api/orgs`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const result = await response.json();
-      
-      if (result.success && result.data) {
-        const transformedData: LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
+    const params = new URLSearchParams();
+
+    if (debouncedSearchTerm.trim()) {
+      params.append("orgName", debouncedSearchTerm.trim());
+    }
+
+    const response = await fetch(`/api/orgs?${params.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.success && Array.isArray(result.data)) {
+      setTotalCount(result.data.length);
+
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+
+      const paginatedData: LeaderboardEntry[] = result.data
+        .slice(startIndex, endIndex)
+        .map((item: any, index: number) => ({
           id: item.id,
-          rank: String((page - 1) * ITEMS_PER_PAGE + index + 1).padStart(2, "0"),
+          rank: String(startIndex + index + 1).padStart(2, "0"),
           name: item.orgName,
           institution: item.nationciteId,
           hIndex: item.hIndexTotal,
           articles: item.hIndexLast5,
           avatar: `https://i.pravatar.cc/150?img=${(item.id % 60) + 1}`,
         }));
-        
-        setData(transformedData);
-        setTotalCount(result.count || transformedData.length);
-      } else {
-        throw new Error("Invalid API response");
-      }
-    } catch (err) {
-      console.error("Failed to fetch universities data:", err);
-      setError(err instanceof Error ? err.message : "Failed to load universities data");
-      setData([]);
-      setTotalCount(0);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
-  useEffect(() => {
-    fetchUniversitiesData(currentPage);
-  }, [currentPage, debouncedSearchTerm, fetchUniversitiesData]);
+      setData(paginatedData);
+    } else {
+      throw new Error("Invalid API response");
+    }
+  } catch (err) {
+    console.error("Failed to fetch universities data:", err);
+    setError(err instanceof Error ? err.message : "Failed to load universities data");
+    setData([]);
+    setTotalCount(0);
+  } finally {
+    setLoading(false);
+  }
+}, [currentPage, debouncedSearchTerm]);
+
+
+useEffect(() => {
+  fetchUniversitiesData();
+}, [fetchUniversitiesData]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

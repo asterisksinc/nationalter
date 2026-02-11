@@ -33,7 +33,7 @@ const LeaderboardWidget = ({
         setLoading(true);
         setError(null);
         
-        const response = await fetch("http://localhost:3001/api/leaderboard");
+        const response = await fetch("/api/leaderboard");
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

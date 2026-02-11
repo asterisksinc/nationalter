@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
@@ -7,14 +8,24 @@ export async function GET(req: NextRequest) {
 
     const top = Math.min(
       parseInt(searchParams.get("top") || "100", 10),
-      500 // safety cap
+      500
     );
 
+    const orgName = searchParams.get("orgName") || undefined;
+
+    const where: Prisma.OrgsPublicWhereInput | undefined = orgName
+      ? {
+          orgName: {
+            contains: orgName,
+            mode: Prisma.QueryMode.insensitive,
+          },
+        }
+      : undefined;
+
     const orgs = await prisma.orgsPublic.findMany({
+      where,
       take: top,
-      orderBy: {
-        worldRank: "asc",
-      },
+      orderBy: { worldRank: "asc" },
       select: {
         id: true,
         nationciteId: true,
