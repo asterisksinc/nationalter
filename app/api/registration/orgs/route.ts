@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendRegistrationMail, sendAdminNotificationMail } from "@/lib/mailer";
+import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
 
 /**
  * Generate temporary NationCite ID
@@ -117,11 +117,12 @@ export async function POST(req: NextRequest) {
 
     // Send notification to admin (non-blocking)
     try {
-      await sendAdminNotificationMail({
-        ticketId: result.ticketId,
-        registrantName: name,
-        registrationType: "ORG",
+      await sendAdminRegistrationAlert({
+        name,
         email,
+        type: "ORG",
+        ticketId: result.ticketId,
+        nationciteId: result.nationciteId,
       });
     } catch (adminMailError) {
       console.error("Admin notification mail failed:", adminMailError);
