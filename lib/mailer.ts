@@ -140,3 +140,61 @@ export async function sendApprovalCredentialsMail({
     text: body,
   });
 }
+
+/* ======================================================
+   FORGOT PASSWORD MAIL
+   ====================================================== */
+
+function buildForgotPasswordMail({
+  name,
+  password,
+}: {
+  name: string;
+  password: string;
+}) {
+  const subject = "NationCite | Password Reset";
+
+  const body = `
+Hello ${name},
+
+We received a request to reset your NationCite password.
+
+Here is your new temporary password:
+
+🔑 Temporary Password: ${password}
+
+🔐 Important:
+• Please login and change your password immediately.
+• If you did not request this reset, contact support immediately.
+
+Login here:
+${process.env.APP_URL}/login
+
+Warm regards,  
+NationCite Team
+`;
+
+  return { subject, body };
+}
+
+export async function sendForgotPasswordMail({
+  to,
+  name,
+  password,
+}: {
+  to: string;
+  name: string;
+  password: string;
+}) {
+  const { subject, body } = buildForgotPasswordMail({
+    name,
+    password,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    text: body,
+  });
+}
