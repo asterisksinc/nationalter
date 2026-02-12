@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 
 type RegistrationType = "ORG" | "SCHOLAR";
+type RegistrationSubType = "MEDICAL" | "RESEARCHER" | "ORG";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -9,6 +10,90 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASS,
   },
 });
+
+/* ======================================================
+   ADMIN NOTIFICATION MAIL (NEW REGISTRATION)
+   ====================================================== */
+
+function buildAdminNotificationMail({
+  ticketId,
+  registrantName,
+  registrationType,
+  email,
+}: {
+  ticketId: string;
+  registrantName: string;
+  registrationType: RegistrationSubType;
+  email: string;
+}) {
+  const typeLabel =
+    registrationType === "ORG"
+      ? "Organization"
+      : registrationType === "MEDICAL"
+      ? "Medical Professional"
+      : "Researcher";
+
+  const subject = `[NationCite] New Registration Request - ${ticketId}`;
+
+  const body = `
+New Registration Request
+========================
+
+A new registration request has been submitted and requires review.
+
+REGISTRATION DETAILS
+--------------------
+Ticket ID: ${ticketId}
+Name: ${registrantName}
+Type: ${typeLabel}
+Email: ${email}
+Submitted: ${new Date().toLocaleString()}
+
+Please review this request at:
+${process.env.APP_URL || "http://localhost:3001"}/admin-overview/registration-requests/${ticketId}
+
+---
+NationCite System
+`;
+
+  return { subject, body };
+}
+
+/**
+ * Send notification email to admin when new registration is submitted
+ */
+export async function sendAdminNotificationMail({
+  ticketId,
+  registrantName,
+  registrationType,
+  email,
+}: {
+  ticketId: string;
+  registrantName: string;
+  registrationType: RegistrationSubType;
+  email: string;
+}) {
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
+
+  if (!adminEmail) {
+    console.log("ADMIN_NOTIFICATION_EMAIL not configured, skipping admin notification");
+    return;
+  }
+
+  const { subject, body } = buildAdminNotificationMail({
+    ticketId,
+    registrantName,
+    registrationType,
+    email,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite System" <${process.env.MAIL_USER}>`,
+    to: adminEmail,
+    subject,
+    text: body,
+  });
+}
 
 /* ======================================================
    REGISTRATION SUBMISSION MAIL
@@ -31,7 +116,7 @@ Thank you for submitting your ${
     type === "ORG" ? "organization" : "scholar"
   } registration on NationCite.
 
-📌 Ticket ID: ${ticketId}
+Ticket ID: ${ticketId}
 
 Your application is currently under review by our admin team.
 You will be notified once it is approved.
@@ -85,19 +170,19 @@ function buildApprovalMail({
   username: string;
   password: string;
 }) {
-  const subject = "NationCite | Registration Approved 🎉";
+  const subject = "NationCite | Registration Approved";
 
   const body = `
 Hello ${name},
 
-🎉 Congratulations! Your NationCite registration has been approved.
+Congratulations! Your NationCite registration has been approved.
 
 Here are your login credentials:
 
-👤 Username: ${username}
-🔑 Temporary Password: ${password}
+Username: ${username}
+Temporary Password: ${password}
 
-🔐 Important:
+Important:
 • This is a temporary password
 • You will be asked to change it on your first login
 

@@ -9,11 +9,18 @@ import {
   UsersRound,
   ChartColumnIncreasing,
   Landmark,
+  UserPlus,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
-  activePage?: "overview" | "usermanagement" | "tickets" | "datasets" | "monetization";
+  activePage?:
+    | "overview"
+    | "usermanagement"
+    | "tickets"
+    | "datasets"
+    | "monetization"
+    | "registrations";
 }
 
 export const DashboardSidebar = ({
@@ -41,6 +48,12 @@ export const DashboardSidebar = ({
           href="/admin-overview"
         />
         <SidebarItem
+          icon={<UserPlus size={18} />}
+          label="Registration Requests"
+          active={activePage === "registrations"}
+          href="/admin-overview/registration-requests"
+        />
+        <SidebarItem
           icon={<UsersRound size={18} />}
           label="User Management"
           active={activePage === "usermanagement"}
@@ -55,14 +68,12 @@ export const DashboardSidebar = ({
           label="Monetization"
           active={activePage === "monetization"}
           href="/admin-overview/monetization"
-         
         />
         <SidebarItem
           icon={<Ticket size={18} />}
           label="Tickets"
           active={activePage === "tickets"}
           href="/admin-overview/tickets"
-         
         />
       </nav>
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendRegistrationMail } from "@/lib/mailer";
+import { sendRegistrationMail, sendAdminNotificationMail } from "@/lib/mailer";
 
 /**
  * Generate temporary NationCite ID
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // ✉️ Send registration mail (non-blocking)
+    // Send registration mail to user (non-blocking)
     try {
       await sendRegistrationMail({
         to: email,
@@ -113,7 +113,18 @@ export async function POST(req: NextRequest) {
       });
     } catch (mailError) {
       console.error("Organization registration mail failed:", mailError);
-      // do not fail registration
+    }
+
+    // Send notification to admin (non-blocking)
+    try {
+      await sendAdminNotificationMail({
+        ticketId: result.ticketId,
+        registrantName: name,
+        registrationType: "ORG",
+        email,
+      });
+    } catch (adminMailError) {
+      console.error("Admin notification mail failed:", adminMailError);
     }
 
     return NextResponse.json(
