@@ -12,90 +12,6 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ======================================================
-   ADMIN NOTIFICATION MAIL (NEW REGISTRATION)
-   ====================================================== */
-
-function buildAdminNotificationMail({
-  ticketId,
-  registrantName,
-  registrationType,
-  email,
-}: {
-  ticketId: string;
-  registrantName: string;
-  registrationType: RegistrationSubType;
-  email: string;
-}) {
-  const typeLabel =
-    registrationType === "ORG"
-      ? "Organization"
-      : registrationType === "MEDICAL"
-      ? "Medical Professional"
-      : "Researcher";
-
-  const subject = `[NationCite] New Registration Request - ${ticketId}`;
-
-  const body = `
-New Registration Request
-========================
-
-A new registration request has been submitted and requires review.
-
-REGISTRATION DETAILS
---------------------
-Ticket ID: ${ticketId}
-Name: ${registrantName}
-Type: ${typeLabel}
-Email: ${email}
-Submitted: ${new Date().toLocaleString()}
-
-Please review this request at:
-${process.env.APP_URL || "http://localhost:3001"}/admin-overview/registration-requests/${ticketId}
-
----
-NationCite System
-`;
-
-  return { subject, body };
-}
-
-/**
- * Send notification email to admin when new registration is submitted
- */
-export async function sendAdminNotificationMail({
-  ticketId,
-  registrantName,
-  registrationType,
-  email,
-}: {
-  ticketId: string;
-  registrantName: string;
-  registrationType: RegistrationSubType;
-  email: string;
-}) {
-  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
-
-  if (!adminEmail) {
-    console.log("ADMIN_NOTIFICATION_EMAIL not configured, skipping admin notification");
-    return;
-  }
-
-  const { subject, body } = buildAdminNotificationMail({
-    ticketId,
-    registrantName,
-    registrationType,
-    email,
-  });
-
-  await transporter.sendMail({
-    from: `"NationCite System" <${process.env.MAIL_USER}>`,
-    to: adminEmail,
-    subject,
-    text: body,
-  });
-}
-
-/* ======================================================
    REGISTRATION SUBMISSION MAIL
    ====================================================== */
 
@@ -221,6 +137,135 @@ export async function sendApprovalCredentialsMail({
   await transporter.sendMail({
     from: `"NationCite" <${process.env.MAIL_USER}>`,
     to,
+    subject,
+    text: body,
+  });
+}
+
+/* ======================================================
+   FORGOT PASSWORD MAIL
+   ====================================================== */
+
+function buildForgotPasswordMail({
+  name,
+  password,
+}: {
+  name: string;
+  password: string;
+}) {
+  const subject = "NationCite | Password Reset";
+
+  const body = `
+Hello ${name},
+
+We received a request to reset your NationCite password.
+
+Here is your new temporary password:
+
+🔑 Temporary Password: ${password}
+
+🔐 Important:
+• Please login and change your password immediately.
+• If you did not request this reset, contact support immediately.
+
+Login here:
+${process.env.APP_URL}/login
+
+Warm regards,  
+NationCite Team
+`;
+
+  return { subject, body };
+}
+
+export async function sendForgotPasswordMail({
+  to,
+  name,
+  password,
+}: {
+  to: string;
+  name: string;
+  password: string;
+}) {
+  const { subject, body } = buildForgotPasswordMail({
+    name,
+    password,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    text: body,
+  });
+}
+
+/* ======================================================
+   ADMIN NOTIFICATION - NEW REGISTRATION
+   ====================================================== */
+
+function buildAdminRegistrationAlert({
+  name,
+  email,
+  type,
+  ticketId,
+  nationciteId,
+}: {
+  name: string;
+  email: string;
+  type: string;
+  ticketId: string;
+  nationciteId: string;
+}) {
+  const subject = "🚨 New Registration Submitted | NationCite";
+
+  const body = `
+Hello Admin,
+
+A new registration has been submitted on NationCite.
+
+👤 Name: ${name}
+📧 Email: ${email}
+🧾 Type: ${type}
+🎟 Ticket ID: ${ticketId}
+🆔 Temp NationCite ID: ${nationciteId}
+
+Please review this registration in the admin dashboard.
+
+Admin Panel:
+${process.env.APP_URL}/admin
+
+Regards,
+NationCite System
+`;
+
+  return { subject, body };
+}
+
+export async function sendAdminRegistrationAlert({
+  name,
+  email,
+  type,
+  ticketId,
+  nationciteId,
+}: {
+  name: string;
+  email: string;
+  type: string;
+  ticketId: string;
+  nationciteId: string;
+}) {
+  const { subject, body } = buildAdminRegistrationAlert({
+    name,
+    email,
+    type,
+    ticketId,
+    nationciteId,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite System" <${process.env.MAIL_USER}>`,
+    to: process.env.ADMIN_EMAIL, // 👈 admin email here
     subject,
     text: body,
   });

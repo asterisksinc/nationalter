@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendRegistrationMail, sendAdminNotificationMail } from "@/lib/mailer";
+import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
 
 /**
  * Helper to generate temporary NationCite ID
@@ -159,29 +159,28 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // Send registration mail to user (non-blocking)
+    // ✉️ Send registration mail (non-blocking)
+    // ✉️ Send user + admin mails (non-blocking)
     try {
-      await sendRegistrationMail({
-        to: email,
-        name,
-        ticketId: result.ticketId,
-        type: "SCHOLAR",
-      });
+      await Promise.all([
+        sendRegistrationMail({
+          to: email,
+          name,
+          ticketId: result.ticketId,
+          type: "SCHOLAR",
+        }),
+        sendAdminRegistrationAlert({
+          name,
+          email,
+          type,
+          ticketId: result.ticketId,
+          nationciteId: result.nationciteId,
+        }),
+      ]);
     } catch (mailError) {
-      console.error("Registration mail failed:", mailError);
+      console.error("Mail sending failed:", mailError);
     }
 
-    // Send notification to admin (non-blocking)
-    try {
-      await sendAdminNotificationMail({
-        ticketId: result.ticketId,
-        registrantName: name,
-        registrationType: type,
-        email,
-      });
-    } catch (adminMailError) {
-      console.error("Admin notification mail failed:", adminMailError);
-    }
 
     return NextResponse.json(
       {
