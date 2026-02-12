@@ -1,17 +1,21 @@
 // components/FormSelect.tsx
 import React from "react";
 
-interface SelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> {
+interface SelectProps extends Omit<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  "onChange"
+> {
   label: string;
   options: string[];
   onChange?: (value: string) => void;
+  error?: string;
 }
 
 export const FormSelect = ({
   label,
   options,
   onChange,
+  error,
   ...props
 }: SelectProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -27,11 +31,11 @@ export const FormSelect = ({
       </label>
       <div className="relative">
         <select
-          className="w-full px-3 md:px-4 py-3 md:py-2.5 text-sm md:text-base border-2 border-neutral-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition-all appearance-none bg-white cursor-pointer text-neutral-900 touch-manipulation"
+          className={`w-full px-3 md:px-4 py-3 md:py-2.5 text-sm md:text-base border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition-all appearance-none bg-white cursor-pointer text-neutral-900 touch-manipulation ${error ? "border-red-500" : "border-neutral-200"}`}
           {...props}
           onChange={handleChange}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Select
           </option>
           {options.map((opt: string) => (
@@ -56,6 +60,7 @@ export const FormSelect = ({
           </svg>
         </div>
       </div>
+      {error && <p className="text-red-500 text-[10px] mt-1 ml-1">{error}</p>}
     </div>
   );
 };

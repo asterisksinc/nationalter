@@ -6,6 +6,7 @@ import { signJwt } from "@/lib/jwt";
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
+    console.log("[AUTH] Login attempt for:", email);
 
     if (!email || !password) {
       return NextResponse.json(
@@ -14,13 +15,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1️⃣ Find auth user
+    // Find auth user
     const user = await prisma.authUser.findUnique({
       where: { email },
       include: {
         registration: true, 
       },
     });
+    
+    console.log("[AUTH] User found:", !!user, user ? { role: user.role, hasReg: !!user.registration } : null);
 
     if (!user || !user.isActive) {
       return NextResponse.json(
@@ -29,7 +32,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2️⃣ Verify password
+    // Verify password
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) {
       return NextResponse.json(
@@ -50,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4️⃣ Generate JWT
+    // Generate JWT
     const token = signJwt({
       userId: user.id,
       email: user.email,
@@ -58,17 +61,17 @@ export async function POST(req: NextRequest) {
       registrationId: user.registration?.id ?? null,
     });
 
-    // 5️⃣ Update last login
+    // Update last login
     await prisma.authUser.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date() },
     });
 
-    return NextResponse.json({
+    // Set HTTP-only cookies for authentication
+    const response = NextResponse.json({
       success: true,
       message: "Login successful",
       data: {
-        token,
         user: {
           id: user.id,
           email: user.email,
@@ -78,6 +81,29 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    // Set auth token in HTTP-only cookie (secure, not accessible via JS)
+    response.cookies.set("nationciteId", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    // Set user role in regular cookie for middleware routing
+    response.cookies.set("userRole", role, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    console.log("[AUTH] Setting cookies:", { nationciteId: !!token, userRole: role });
+    console.log("[AUTH] Login successful for:", email, "Role:", role);
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

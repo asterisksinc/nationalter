@@ -26,6 +26,7 @@ enum FlowStep {
 
 export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -88,7 +89,7 @@ export default function RegisterPage() {
     };
   };
   const handleMedicalInputChange = (field: string, value: string | File) => {
-    setMedicalForm(prev => ({
+    setMedicalForm((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -98,7 +99,7 @@ export default function RegisterPage() {
     domain: "",
     email: "",
     number: "",
-    name1: '',
+    name1: "",
     letterOfAuthorizationUrl: "www.demo",
     accreditationProofUrl: "www.demo",
   });
@@ -113,26 +114,153 @@ export default function RegisterPage() {
       accreditationProofUrl: institutionForm.accreditationProofUrl,
     };
   };
-  const handleInstitutionInputChange = (field: string, value: string | File) => {
-    setInstitutionForm(prev => ({
+  const handleInstitutionInputChange = (
+    field: string,
+    value: string | File,
+  ) => {
+    setInstitutionForm((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-
 
   const router = useRouter();
 
-
   const handleInputChange = (field: string, value: string | File) => {
-    setResearcherForm(prev => ({
+    setResearcherForm((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
+
+  // Validation state
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
+
+  // Validation functions
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateRequired = (value: string): boolean => {
+    return value.trim().length > 0;
+  };
+
+  const validateResearcherStep = (
+    step: number,
+  ): { valid: boolean; errors: Record<string, string> } => {
+    const errors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!validateRequired(researcherForm.name)) {
+        errors.name = "Full name is required";
+      }
+      if (!validateRequired(researcherForm.institution)) {
+        errors.institution = "Institution is required";
+      }
+    } else if (step === 2) {
+      if (!validateRequired(researcherForm.instituteEmail)) {
+        errors.instituteEmail = "Institutional email is required";
+      } else if (!validateEmail(researcherForm.instituteEmail)) {
+        errors.instituteEmail = "Please enter a valid email";
+      }
+      if (!validateRequired(researcherForm.orcidId)) {
+        errors.orcidId = "ORCID ID is required";
+      }
+    } else if (step === 3) {
+      if (!validateRequired(researcherForm.primaryDomain)) {
+        errors.primaryDomain = "Primary domain is required";
+      }
+      if (!validateRequired(researcherForm.googleScholarUrl)) {
+        errors.googleScholarUrl = "Google Scholar URL is required";
+      }
+    }
+
+    return { valid: Object.keys(errors).length === 0, errors };
+  };
+
+  const validateMedicalStep = (
+    step: number,
+  ): { valid: boolean; errors: Record<string, string> } => {
+    const errors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!validateRequired(medicalForm.name)) {
+        errors.name = "Name is required";
+      }
+      if (!validateRequired(medicalForm.medCouncilRegNo)) {
+        errors.medCouncilRegNo =
+          "Medical council registration number is required";
+      }
+      if (!validateRequired(medicalForm.stateCouncil)) {
+        errors.stateCouncil = "State council is required";
+      }
+      if (!validateRequired(medicalForm.email)) {
+        errors.email = "Email is required";
+      } else if (!validateEmail(medicalForm.email)) {
+        errors.email = "Please enter a valid email";
+      }
+    } else if (step === 2) {
+      if (!validateRequired(medicalForm.primaryHospital)) {
+        errors.primaryHospital = "Primary hospital is required";
+      }
+      if (!validateRequired(medicalForm.specialty)) {
+        errors.specialty = "Specialty is required";
+      }
+      if (!validateRequired(medicalForm.researchFocus)) {
+        errors.researchFocus = "Research focus is required";
+      }
+    }
+
+    return { valid: Object.keys(errors).length === 0, errors };
+  };
+
+  const validateInstitutionStep = (
+    step: number,
+  ): { valid: boolean; errors: Record<string, string> } => {
+    const errors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!validateRequired(institutionForm.name)) {
+        errors.name = "Domain name is required";
+      }
+    } else if (step === 2) {
+      if (!validateRequired(institutionForm.name1)) {
+        errors.name1 = "Administrator name is required";
+      }
+      if (!validateRequired(institutionForm.email)) {
+        errors.email = "Email is required";
+      } else if (!validateEmail(institutionForm.email)) {
+        errors.email = "Please enter a valid email";
+      }
+      if (!validateRequired(institutionForm.number)) {
+        errors.number = "Mobile number is required";
+      }
+    }
+
+    return { valid: Object.keys(errors).length === 0, errors };
+  };
+
+  const validateCurrentStep = (): boolean => {
+    let result = { valid: true, errors: {} as Record<string, string> };
+
+    if (userType === UserType.Researcher) {
+      result = validateResearcherStep(currentStep);
+    } else if (userType === UserType.Medical) {
+      result = validateMedicalStep(currentStep);
+    } else if (userType === UserType.Institution) {
+      result = validateInstitutionStep(currentStep);
+    }
+
+    setValidationErrors(result.errors);
+    return result.valid;
+  };
+
   // Timer effect for OTP
   useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval>;
     if (otpSent && timer > 0) {
       interval = setInterval(() => setTimer((p) => p - 1), 1000);
     }
@@ -143,12 +271,17 @@ export default function RegisterPage() {
   useEffect(() => {
     setOtpSent(false);
     setTimer(60);
+    setValidationErrors({});
   }, [currentStep]);
-
 
   const handleNextStep = () => {
     if (currentStep === 0) {
       if (userType) setCurrentStep(1);
+      return;
+    }
+
+    // Validate current step before proceeding
+    if (!validateCurrentStep()) {
       return;
     }
 
@@ -162,6 +295,11 @@ export default function RegisterPage() {
     }
   };
   const submitRegistration = async () => {
+    // Prevent double submission
+    if (hasSubmitted || isSubmitting) {
+      return;
+    }
+
     let payload: any;
     let apiUrl = "";
 
@@ -187,6 +325,7 @@ export default function RegisterPage() {
     }
 
     setIsSubmitting(true);
+    setHasSubmitted(true);
 
     try {
       const response = await fetch(apiUrl, {
@@ -226,8 +365,6 @@ export default function RegisterPage() {
       setIsSubmitting(false);
     }
   };
-
-
 
   const getDashboardRoute = (type: UserType | null) => {
     switch (type) {
@@ -372,10 +509,11 @@ export default function RegisterPage() {
             {[1, 2, 3, 4].map((step) => (
               <div
                 key={step}
-                className={`h-1 flex-1 rounded-full transition-all ${currentStep >= step
-                  ? "bg-[var(--color-primary)]"
-                  : "bg-neutral-200"
-                  }`}
+                className={`h-1 flex-1 rounded-full transition-all ${
+                  currentStep >= step
+                    ? "bg-[var(--color-primary)]"
+                    : "bg-neutral-200"
+                }`}
               />
             ))}
           </div>
@@ -432,7 +570,6 @@ export default function RegisterPage() {
                   </p>
                 </div>
               ) : isDashboardStep ? (
-
                 <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-none flex flex-col justify-center">
                   <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Icon name="check" size={24} />
@@ -441,18 +578,15 @@ export default function RegisterPage() {
                     Welcome!
                   </h4>
                   <p className="text-xs text-neutral-500 mb-5 max-w-md mx-auto">
-                    Your account is under review. After successful verification, you will receive your credentials via email.
+                    Your account is under review. After successful verification,
+                    you will receive your credentials via email.
                   </p>
                   <button
                     className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full max-w-xs mx-auto"
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push("/")}
                   >
                     Go to Home
                   </button>
-
-
-
-
                 </div>
               ) : (
                 <>
@@ -474,6 +608,7 @@ export default function RegisterPage() {
                     <div className="flex-1 flex flex-col min-h-0">
                       {userType && (
                         <FlowRenderer
+                          key={currentStep}
                           userType={userType}
                           step={currentStep}
                           onNext={handleNextStep}
@@ -490,6 +625,7 @@ export default function RegisterPage() {
                           researcherForm={researcherForm}
                           medicalForm={medicalForm}
                           institutionForm={institutionForm}
+                          validationErrors={validationErrors}
                         />
                       )}
                     </div>

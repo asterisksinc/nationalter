@@ -215,6 +215,7 @@ export default function LoginPage() {
             {/* Form Container */}
             <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col h-full md:h-auto">
               <SigninFlowRenderer
+                key={currentStep}
                 userType={userType}
                 step={currentStep}
                 setStep={setCurrentStep}
