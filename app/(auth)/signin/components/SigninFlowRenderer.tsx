@@ -35,7 +35,7 @@ export const SigninFlowRenderer = ({
   const [otp, setOtp] = useState(["", "", "", ""]);
   const handleEmailPassSubmit = async () => {
     setIsLoading(true);
-    console.log("[AUTH] Starting login...", { email });
+    console.log("[AUTH] Starting login...", { email, userType });
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -44,6 +44,7 @@ export const SigninFlowRenderer = ({
         body: JSON.stringify({
           email,
           password,
+          loginType: userType, // Pass selected login type for role validation
         }),
         credentials: "include", // CRITICAL: Include cookies in request/response
       });
