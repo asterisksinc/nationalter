@@ -26,6 +26,32 @@ interface DashboardSidebarProps {
 export const DashboardSidebar = ({
   activePage = "overview",
 }: DashboardSidebarProps) => {
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        // Clear any client-side session data
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // redirect to clear all state and go to signin
+        window.location.href = "/admin";
+      } else {
+        alert("Logout failed: " + result.message);
+      }
+    } catch (err) {
+      console.error("Logout error:", err);
+      alert("Something went wrong during logout.");
+    }
+  };
+
   return (
     <aside
       className="w-[260px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-20"
@@ -92,7 +118,7 @@ export const DashboardSidebar = ({
               example@gmail.com
             </span>
           </div>
-          <button className="text-gray-400 hover:text-red-500 transition-colors">
+          <button onClick={handleLogout} className="text-gray-400 hover:text-red-500 transition-colors">
             <LogOut size={16} />
           </button>
         </div>
