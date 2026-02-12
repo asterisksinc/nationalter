@@ -386,5 +386,36 @@ export const SigninFlowRenderer = ({
     );
   }
 
+  // Admin
+
+  if (userType === "Admin") {
+    return (
+      <div className="flex flex-col space-y-4">
+        <div className="space-y-4">
+          <FormInput
+            label="Admin Email"
+            type="email"
+            placeholder="admin@nationcite.com"
+            value={email}
+            onChange={setEmail}
+          />
+          <FormInput
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={setPassword}
+          />
+          <button
+            onClick={handleEmailPassSubmit}
+            disabled={!email || !password || isLoading}
+            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50"
+          >
+            {isLoading ? "Authenticating..." : "Login to Admin Portal"}
+          </button>
+        </div>
+      </div>
+    );
+  }
   return <div>Unknown User Type</div>;
 };
