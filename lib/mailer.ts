@@ -198,3 +198,74 @@ export async function sendForgotPasswordMail({
     text: body,
   });
 }
+
+/* ======================================================
+   ADMIN NOTIFICATION - NEW REGISTRATION
+   ====================================================== */
+
+function buildAdminRegistrationAlert({
+  name,
+  email,
+  type,
+  ticketId,
+  nationciteId,
+}: {
+  name: string;
+  email: string;
+  type: string;
+  ticketId: string;
+  nationciteId: string;
+}) {
+  const subject = "🚨 New Registration Submitted | NationCite";
+
+  const body = `
+Hello Admin,
+
+A new registration has been submitted on NationCite.
+
+👤 Name: ${name}
+📧 Email: ${email}
+🧾 Type: ${type}
+🎟 Ticket ID: ${ticketId}
+🆔 Temp NationCite ID: ${nationciteId}
+
+Please review this registration in the admin dashboard.
+
+Admin Panel:
+${process.env.APP_URL}/admin
+
+Regards,
+NationCite System
+`;
+
+  return { subject, body };
+}
+
+export async function sendAdminRegistrationAlert({
+  name,
+  email,
+  type,
+  ticketId,
+  nationciteId,
+}: {
+  name: string;
+  email: string;
+  type: string;
+  ticketId: string;
+  nationciteId: string;
+}) {
+  const { subject, body } = buildAdminRegistrationAlert({
+    name,
+    email,
+    type,
+    ticketId,
+    nationciteId,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite System" <${process.env.MAIL_USER}>`,
+    to: process.env.ADMIN_EMAIL, // 👈 admin email here
+    subject,
+    text: body,
+  });
+}
