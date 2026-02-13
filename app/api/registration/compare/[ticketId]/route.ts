@@ -263,6 +263,20 @@ export async function GET(
       potentialMatches = potentialMatches.slice(0, 10);
     }
 
+    // If already approved, fetch the linked public record
+    let linkedPublicRecord = null;
+    if (registration.status === "APPROVED" && registration.nationciteId) {
+      if (registration.type === "MEDICAL" || registration.type === "RESEARCHER") {
+        linkedPublicRecord = await prisma.scholarsPublic.findUnique({
+          where: { nationciteId: registration.nationciteId },
+        });
+      } else if (registration.type === "ORG") {
+        linkedPublicRecord = await prisma.orgsPublic.findUnique({
+          where: { nationciteId: registration.nationciteId },
+        });
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: {
@@ -276,6 +290,7 @@ export async function GET(
         ticket: registration.ticket,
         registrantData,
         potentialMatches,
+        linkedPublicRecord,
       },
     });
   } catch (error) {

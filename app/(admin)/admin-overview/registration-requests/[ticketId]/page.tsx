@@ -35,6 +35,19 @@ interface PotentialMatch {
   worldRank?: number | null;
 }
 
+interface LinkedPublicRecord {
+  nationciteId: string;
+  scholarName?: string;
+  orgName?: string;
+  mainSubject?: string;
+  subField?: string;
+  hIndexTotal?: number;
+  hIndexLast5?: number;
+  worldRank?: number | null;
+  countryRank?: number | null;
+  universityRank?: number | null;
+}
+
 interface RegistrationData {
   registration: {
     id: number;
@@ -52,6 +65,7 @@ interface RegistrationData {
   };
   registrantData: RegistrantData;
   potentialMatches: PotentialMatch[];
+  linkedPublicRecord?: LinkedPublicRecord | null;
 }
 
 export default function RegistrationReviewPage() {
@@ -698,22 +712,100 @@ export default function RegistrationReviewPage() {
                             color: "#222",
                           }}
                         >
-                          Linked User Details
+                          Linked Public Record
                         </h4>
-                        <div style={{ fontSize: "13px", color: "#444" }}>
-                          <p style={{ marginBottom: "6px" }}>
-                            <strong>Name:</strong> {data.registrantData?.name}
-                          </p>
-                          <p style={{ marginBottom: "6px" }}>
-                            <strong>Email:</strong> {data.registrantData?.email}
-                          </p>
-                          <p style={{ marginBottom: "6px" }}>
-                            <strong>Type:</strong> {data.registration.type}
-                          </p>
-                          <p style={{ marginBottom: "6px" }}>
-                            <strong>Account Status:</strong> Active
-                          </p>
-                        </div>
+                        {data.linkedPublicRecord ? (
+                          <div style={{ fontSize: "13px", color: "#444" }}>
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>NationCite ID:</strong>{" "}
+                              {data.linkedPublicRecord.nationciteId}
+                            </p>
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>Name:</strong>{" "}
+                              {data.linkedPublicRecord.scholarName ||
+                                data.linkedPublicRecord.orgName}
+                            </p>
+                            {data.linkedPublicRecord.orgName &&
+                              data.registration.type !== "ORG" && (
+                                <p style={{ marginBottom: "6px" }}>
+                                  <strong>Organization:</strong>{" "}
+                                  {data.linkedPublicRecord.orgName}
+                                </p>
+                              )}
+                            {data.linkedPublicRecord.mainSubject && (
+                              <p style={{ marginBottom: "6px" }}>
+                                <strong>Main Subject:</strong>{" "}
+                                {data.linkedPublicRecord.mainSubject}
+                              </p>
+                            )}
+                            {data.linkedPublicRecord.subField && (
+                              <p style={{ marginBottom: "6px" }}>
+                                <strong>Sub-field:</strong>{" "}
+                                {data.linkedPublicRecord.subField}
+                              </p>
+                            )}
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>H-Index (Total):</strong>{" "}
+                              {data.linkedPublicRecord.hIndexTotal || 0}
+                            </p>
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>H-Index (Last 5 Years):</strong>{" "}
+                              {data.linkedPublicRecord.hIndexLast5 || 0}
+                            </p>
+                            {data.linkedPublicRecord.worldRank && (
+                              <p style={{ marginBottom: "6px" }}>
+                                <strong>World Rank:</strong> #
+                                {data.linkedPublicRecord.worldRank}
+                              </p>
+                            )}
+                            {data.linkedPublicRecord.countryRank && (
+                              <p style={{ marginBottom: "6px" }}>
+                                <strong>Country Rank:</strong> #
+                                {data.linkedPublicRecord.countryRank}
+                              </p>
+                            )}
+                            <p
+                              style={{
+                                marginBottom: "6px",
+                                marginTop: "12px",
+                                paddingTop: "12px",
+                                borderTop: "1px solid #e5e5e5",
+                              }}
+                            >
+                              <strong>Account Type:</strong>{" "}
+                              {data.registration.type}
+                            </p>
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>Account Email:</strong>{" "}
+                              {data.registrantData?.email}
+                            </p>
+                            <p style={{ marginBottom: "6px" }}>
+                              <strong>Account Status:</strong>{" "}
+                              <span
+                                style={{ color: "#28a745", fontWeight: "600" }}
+                              >
+                                Active
+                              </span>
+                            </p>
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              fontSize: "13px",
+                              color: "#666",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            <p>
+                              No linked public record found. This may be a newly
+                              created profile.
+                            </p>
+                            <p style={{ marginTop: "8px", fontSize: "12px" }}>
+                              <strong>Account Email:</strong>{" "}
+                              {data.registrantData?.email}
+                            </p>
+                          </div>
+                        )}
                       </div>
 
                       <button

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { Search, Plus, Filter } from "lucide-react";
+import { Search, Plus, Filter, Loader2 } from "lucide-react";
 import { StatCard, TicketTable, CreateTicketModal } from "./components";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
@@ -22,9 +22,21 @@ interface TicketData {
   adminResponse: string;
 }
 
-// --- Mock Data ---
+// Map API status to display status
+const mapStatus = (status: string): TicketData["status"] => {
+  const statusUpper = status?.toUpperCase() || "";
+  if (statusUpper === "RESOLVED") return "Approved";
+  if (statusUpper === "OPEN" || statusUpper === "PENDING")
+    return "Awaiting Review";
+  if (statusUpper === "REJECTED") return "Rejected";
+  if (statusUpper === "IN_PROGRESS") return "Under Review";
+  if (statusUpper === "CLOSED") return "Active";
+  return "Awaiting Review";
+};
 
-const tickets: TicketData[] = [
+// --- Mock Data fallback ---
+
+const mockTickets: TicketData[] = [
   {
     id: "TKT-15678",
     submittedOn: "24/11/2025",
@@ -130,9 +142,51 @@ const tickets: TicketData[] = [
 
 function TicketsPageContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tickets, setTickets] = useState<TicketData[]>([]);
+  const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    async function fetchTickets() {
+      try {
+        const res = await fetch("/api/dashboard/org/me");
+        const json = await res.json();
+        if (json.success && json.data.tickets) {
+          const formattedTickets: TicketData[] = json.data.tickets.map(
+            (t: any) => ({
+              id: t.ticketId,
+              submittedOn: new Date(t.createdAt).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              }),
+              issueType: t.issueType || t.type || "Support",
+              status: mapStatus(t.status),
+              priority: t.priority || "Normal",
+              lastUpdate: t.updatedAt
+                ? new Date(t.updatedAt).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })
+                : "-",
+              adminResponse: "-",
+            }),
+          );
+          setTickets(formattedTickets);
+        }
+      } catch (error) {
+        console.error("Failed to fetch tickets:", error);
+        setTickets(mockTickets);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTickets();
+  }, []);
 
   useEffect(() => {
     if (searchParams?.get("openCreate") === "true") {
@@ -147,6 +201,24 @@ function TicketsPageContent() {
       router.replace(pathname);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-[50vh] w-full items-center justify-center">
+        <Loader2
+          className="animate-spin text-[var(--color-primary)]"
+          size={32}
+        />
+      </div>
+    );
+  }
+
+  const openCount = tickets.filter(
+    (t) => t.status === "Awaiting Review" || t.status === "Active",
+  ).length;
+  const reviewCount = tickets.filter((t) => t.status === "Under Review").length;
+  const approvedCount = tickets.filter((t) => t.status === "Approved").length;
+  const rejectedCount = tickets.filter((t) => t.status === "Rejected").length;
 
   return (
     <>
@@ -197,7 +269,7 @@ function TicketsPageContent() {
                 Open Tickets
               </span>
               <span className="text-[24px] md:text-2xl font-bold md:font-semibold text-[#0E121B]">
-                01
+                {openCount}
               </span>
             </div>
 
@@ -206,7 +278,7 @@ function TicketsPageContent() {
                 In Review Tickets
               </span>
               <span className="text-[24px] md:text-2xl font-bold md:font-semibold text-[#0E121B]">
-                210
+                {reviewCount}
               </span>
             </div>
 
@@ -215,7 +287,7 @@ function TicketsPageContent() {
                 Approved Tickets
               </span>
               <span className="text-[24px] md:text-2xl font-bold md:font-semibold text-[#0E121B]">
-                11
+                {approvedCount}
               </span>
             </div>
 
@@ -224,7 +296,7 @@ function TicketsPageContent() {
                 Rejected
               </span>
               <span className="text-[24px] md:text-2xl font-bold md:font-semibold text-[#0E121B]">
-                129
+                {rejectedCount}
               </span>
             </div>
           </div>
