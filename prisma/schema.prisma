@@ -190,6 +190,11 @@ model Tickets {
   status       String
   createdAt    DateTime
   updatedAt    DateTime
+  issueReason      String?     
+  links            String[]    
+  attachments      String[]   
+  impactLevel      String?    
+  preferredOutcome String?     
 
   // Relations
   registration Registration[]
@@ -204,7 +209,6 @@ model TicketComments {
   id          Int      @id @default(autoincrement())
   ticketId    String
   comments    String
-  attachments String?
   createdAt   DateTime
 
   // Relations
