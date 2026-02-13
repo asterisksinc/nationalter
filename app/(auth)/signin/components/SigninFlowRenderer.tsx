@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { FormInput } from "../../signup/components/FormInput";
 import { Icon } from "../../signup/components/Icon";
+import { ForgotPasswordModal } from "./ForgotPasswordModal";
 
 enum UserType {
   Medical = "Medical Professional",
@@ -33,9 +34,10 @@ export const SigninFlowRenderer = ({
   const [password, setPassword] = useState("");
   const [orcid, setOrcid] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const handleEmailPassSubmit = async () => {
     setIsLoading(true);
-    console.log("[AUTH] Starting login...", { email });
+    console.log("[AUTH] Starting login...", { email, userType });
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -44,6 +46,7 @@ export const SigninFlowRenderer = ({
         body: JSON.stringify({
           email,
           password,
+          loginType: userType, // Pass selected login type for role validation
         }),
         credentials: "include", // CRITICAL: Include cookies in request/response
       });
@@ -240,148 +243,204 @@ export const SigninFlowRenderer = ({
   // --- MEDICAL FLOW ---
   if (userType === UserType.Medical) {
     if (step === 2)
-      return renderOtpStep("Please enter the OTP sent to your mobile number.");
+      return (
+        <>
+          {renderOtpStep("Please enter the OTP sent to your mobile number.")}
+          <ForgotPasswordModal
+            isOpen={isForgotPasswordOpen}
+            onClose={() => setIsForgotPasswordOpen(false)}
+          />
+        </>
+      );
 
     return (
-      <div className="flex flex-col space-y-4">
-        {/* Mobile Section */}
-        <div>
-          <label className="block text-xs font-medium text-neutral-700 mb-1.5 ml-1">
-            Mobile Number
-          </label>
-          <input
-            type="tel"
-            placeholder="9876543210"
-            className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:bg-white focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-          />
-        </div>
-
-        {mobile && (
-          <button
-            onClick={handleMobileSubmit}
-            className="w-full bg-[var(--color-primary)] text-white py-3 mt-2 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all"
-          >
-            {isLoading ? "Sending OTP..." : "Send OTP"}
-          </button>
-        )}
-
-        <Divider />
-
-        {/* Email Section */}
-        <div className="space-y-4">
-          <FormInput
-            label="Email"
-            type="email"
-            placeholder="johndoe@org.in"
-            value={email}
-            onChange={setEmail}
-          />
-          <div className="relative">
-            <FormInput
-              label="Password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={setPassword}
+      <>
+        <div className="flex flex-col space-y-4">
+          {/* Mobile Section */}
+          <div>
+            <label className="block text-xs font-medium text-neutral-700 mb-1.5 ml-1">
+              Mobile Number
+            </label>
+            <input
+              type="tel"
+              placeholder="9876543210"
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:bg-white focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 outline-none transition-all"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
             />
-            <button className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1">
-              Forgot?
+          </div>
+
+          {mobile && (
+            <button
+              onClick={handleMobileSubmit}
+              className="w-full bg-[var(--color-primary)] text-white py-3 mt-2 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all"
+            >
+              {isLoading ? "Sending OTP..." : "Send OTP"}
+            </button>
+          )}
+
+          <Divider />
+
+          {/* Email Section */}
+          <div className="space-y-4">
+            <FormInput
+              label="Email"
+              type="email"
+              placeholder="johndoe@org.in"
+              value={email}
+              onChange={setEmail}
+            />
+            <div className="relative">
+              <FormInput
+                label="Password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={setPassword}
+              />
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1"
+              >
+                Forgot?
+              </button>
+            </div>
+            <button
+              onClick={handleEmailPassSubmit}
+              disabled={!email || !password}
+              className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
+            >
+              Login
             </button>
           </div>
-          <button
-            onClick={handleEmailPassSubmit}
-            disabled={!email || !password}
-            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
-          >
-            Login
-          </button>
+
+          <Divider />
+
+          <GoogleButton />
         </div>
-
-        <Divider />
-
-        <GoogleButton />
-      </div>
+        <ForgotPasswordModal
+          isOpen={isForgotPasswordOpen}
+          onClose={() => setIsForgotPasswordOpen(false)}
+        />
+      </>
     );
   }
 
   // --- INSTITUTION FLOW ---
   if (userType === UserType.Institution) {
     if (step === 2)
-      return renderOtpStep("For security, please verify your mobile number.");
+      return (
+        <>
+          {renderOtpStep("For security, please verify your mobile number.")}
+          <ForgotPasswordModal
+            isOpen={isForgotPasswordOpen}
+            onClose={() => setIsForgotPasswordOpen(false)}
+          />
+        </>
+      );
 
     return (
-      <div className="flex flex-col space-y-4 mt-4">
-        <div className="space-y-4">
-          <FormInput label="Institutional SSO" placeholder="abc1234" />
+      <>
+        <div className="flex flex-col space-y-4 mt-4">
+          <div className="space-y-4">
+            <FormInput label="Institutional SSO" placeholder="abc1234" />
+            <Divider />
+            <FormInput
+              label="Work Email"
+              type="email"
+              placeholder="johndoe@institution.edu"
+              value={email}
+              onChange={setEmail}
+            />
+            <div className="relative">
+              <FormInput
+                label="Password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={setPassword}
+              />
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1"
+              >
+                Forgot?
+              </button>
+            </div>
+            <button
+              onClick={handleEmailPassSubmit}
+              disabled={!email || !password}
+              className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
+            >
+              Next
+            </button>
+          </div>
+
           <Divider />
-          <FormInput
-            label="Work Email"
-            type="email"
-            placeholder="johndoe@institution.edu"
-            value={email}
-            onChange={setEmail}
-          />
-          <FormInput
-            label="Password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={setPassword}
-          />
-          <button
-            onClick={handleEmailPassSubmit}
-            disabled={!email || !password}
-            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
-          >
-            Next
-          </button>
+
+          <GoogleButton />
         </div>
-
-        <Divider />
-
-        <GoogleButton />
-      </div>
+        <ForgotPasswordModal
+          isOpen={isForgotPasswordOpen}
+          onClose={() => setIsForgotPasswordOpen(false)}
+        />
+      </>
     );
   }
 
   // --- RESEARCHER FLOW ---
   if (userType === UserType.Researcher) {
     return (
-      <div className="flex flex-col space-y-4">
-        <FormInput label="Enter ORCID" placeholder="0000-0000-0000-0000" />
+      <>
+        <div className="flex flex-col space-y-4">
+          <FormInput label="Enter ORCID" placeholder="0000-0000-0000-0000" />
 
-        <Divider />
+          <Divider />
 
-        <div className="space-y-4">
-          <FormInput
-            label="Email"
-            type="email"
-            placeholder="johndoe@email.com"
-            value={email}
-            onChange={setEmail}
-          />
-          <FormInput
-            label="Password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={setPassword}
-          />
-          <button
-            onClick={handleEmailPassSubmit}
-            disabled={!email || !password}
-            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
-          >
-            Login
-          </button>
+          <div className="space-y-4">
+            <FormInput
+              label="Email"
+              type="email"
+              placeholder="johndoe@email.com"
+              value={email}
+              onChange={setEmail}
+            />
+            <div className="relative">
+              <FormInput
+                label="Password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={setPassword}
+              />
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1"
+              >
+                Forgot?
+              </button>
+            </div>
+            <button
+              onClick={handleEmailPassSubmit}
+              disabled={!email || !password}
+              className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
+            >
+              Login
+            </button>
+          </div>
+
+          <Divider />
+
+          <GoogleButton />
         </div>
-
-        <Divider />
-
-        <GoogleButton />
-      </div>
+        <ForgotPasswordModal
+          isOpen={isForgotPasswordOpen}
+          onClose={() => setIsForgotPasswordOpen(false)}
+        />
+      </>
     );
   }
 
@@ -389,32 +448,55 @@ export const SigninFlowRenderer = ({
 
   if (userType === "Admin") {
     return (
-      <div className="flex flex-col space-y-4">
-        <div className="space-y-4">
-          <FormInput
-            label="Admin Email"
-            type="email"
-            placeholder="admin@nationcite.com"
-            value={email}
-            onChange={setEmail}
-          />
-          <FormInput
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={setPassword}
-          />
-          <button
-            onClick={handleEmailPassSubmit}
-            disabled={!email || !password || isLoading}
-            className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50"
-          >
-            {isLoading ? "Authenticating..." : "Login to Admin Portal"}
-          </button>
+      <>
+        <div className="flex flex-col space-y-4">
+          <div className="space-y-4">
+            <FormInput
+              label="Admin Email"
+              type="email"
+              placeholder="admin@nationcite.com"
+              value={email}
+              onChange={setEmail}
+            />
+            <div className="relative">
+              <FormInput
+                label="Password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={setPassword}
+              />
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="absolute right-0 top-0 text-[10px] text-[var(--color-primary)] font-medium hover:underline p-1"
+              >
+                Forgot?
+              </button>
+            </div>
+            <button
+              onClick={handleEmailPassSubmit}
+              disabled={!email || !password || isLoading}
+              className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50"
+            >
+              {isLoading ? "Authenticating..." : "Login to Admin Portal"}
+            </button>
+          </div>
         </div>
-      </div>
+        <ForgotPasswordModal
+          isOpen={isForgotPasswordOpen}
+          onClose={() => setIsForgotPasswordOpen(false)}
+        />
+      </>
     );
   }
-  return <div>Unknown User Type</div>;
+  return (
+    <>
+      <div>Unknown User Type</div>
+      <ForgotPasswordModal
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+      />
+    </>
+  );
 };

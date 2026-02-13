@@ -10,7 +10,7 @@ type Status =
 const STATUS_CONFIG: Record<Status, { Icon: any; color: string }> = {
   Approved: {
     // Solid check icon as seen in image_61834f.png
-    Icon: Check, 
+    Icon: Check,
     color: "#1FC16B",
   },
   "Awaiting Review": {
@@ -36,8 +36,30 @@ const STATUS_CONFIG: Record<Status, { Icon: any; color: string }> = {
 };
 
 export const StatusBadge = ({ status }: { status: Status }) => {
-  const { Icon, color } = STATUS_CONFIG[status];
-  
+  // Fallback to "Awaiting Review" if status is undefined
+  const validStatus = status || "Awaiting Review";
+  const config = STATUS_CONFIG[validStatus];
+
+  if (!config) {
+    // Render a default fallback badge for unknown statuses
+    return (
+      <div className="inline-flex items-center gap-1 h-6 px-2 py-1 border border-[#E1E4EA] rounded-md bg-white">
+        <div
+          className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+          style={{ background: "#999999" }}
+        >
+          <Clock size={10} color="#ffffff" strokeWidth={3} />
+        </div>
+
+        <span className="text-[12px] font-medium leading-4 text-[#525866] whitespace-nowrap">
+          {status || "Unknown"}
+        </span>
+      </div>
+    );
+  }
+
+  const { Icon, color } = config;
+
   return (
     <div className="inline-flex items-center gap-1 h-6 px-2 py-1 border border-[#E1E4EA] rounded-md bg-white">
       <div
@@ -49,7 +71,7 @@ export const StatusBadge = ({ status }: { status: Status }) => {
       </div>
 
       <span className="text-[12px] font-medium leading-4 text-[#525866] whitespace-nowrap">
-        {status}
+        {validStatus}
       </span>
     </div>
   );

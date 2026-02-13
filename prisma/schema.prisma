@@ -115,7 +115,7 @@ model MedicalProfessional {
   name                 String
   medCouncilRegNo      String
   stateCouncil         String
-  mobile               String
+  mobile               String   @unique
   email                String
   primaryHospital      String
   specialty            String
@@ -142,7 +142,7 @@ model Researchers {
   instituteEmail            String
   orcidId                   String
   institutionalIdCardUrl    String?
-  mobile                    String
+  mobile                    String    @unique
   email                     String
   primaryDomain             String
   googleScholarUrl          String
@@ -165,7 +165,7 @@ model OrgsRegistered {
   domain                    String
   name                      String
   email                     String
-  number                    String
+  number                    String    @unique
   letterOfAuthorizationUrl  String
   accreditationProofUrl     String
   status                    String
@@ -225,4 +225,22 @@ model Publication {
   citationsLast5Years Int       @default(0)
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+}
+
+////////////////////////////////////////////////
+// OTP AUTHENTICATION (MOBILE LOGIN)
+////////////////////////////////////////////////
+
+model Otp {
+  id          Int      @id @default(autoincrement())
+
+  mobile      String   @db.VarChar(20)
+  otpHash     String   // hashed OTP
+  expiresAt   DateTime
+  attempts    Int      @default(0)
+  verified    Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+
+  @@index([mobile])
 }

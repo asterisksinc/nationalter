@@ -23,13 +23,16 @@ export interface AddPublicationForm {
 interface AddPublicationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
 export const AddPublicationModal = ({
   isOpen,
   onClose,
+  onSuccess
 }: AddPublicationModalProps) => {
   const [step, setStep] = useState<ModalStep>("choose");
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state
   const [formData, setFormData] = useState<AddPublicationForm>({
     method: "doi",
   });
@@ -65,10 +68,44 @@ export const AddPublicationModal = ({
     setStep("review");
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting:", formData);
-    onClose();
-    resetModal();
+  const handleSubmit = async () => {
+    if (!confirmed) return;
+  
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/publications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Mapping frontend formData to backend Prisma schema
+          nationciteId: formData.doi || "Manual-Entry", 
+          title: formData.title,
+          journalName: formData.journal,
+          
+          datePublished: formData.year ? `${formData.year}-01-01` : new Date().toISOString(),
+          citationsTotal: 0, 
+          citationsLast5Years: 0,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (result.success) {
+         
+        if (onSuccess) onSuccess();
+        onClose();
+        resetModal();
+      } else {
+        alert(result.message || "Failed to save publication");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred while connecting to the server.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetModal = () => {
@@ -402,14 +439,21 @@ export const AddPublicationModal = ({
 
             <button
               onClick={handleSubmit}
-              disabled={!confirmed}
-              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors ${
-                confirmed
+              disabled={!confirmed || isSubmitting}
+              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${
+                confirmed && !isSubmitting
                   ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
             >
-              Submit
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </button>
           </div>
         )}

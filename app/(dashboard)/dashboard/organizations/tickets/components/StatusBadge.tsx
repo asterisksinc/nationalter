@@ -36,7 +36,29 @@ const STATUS_CONFIG: Record<Status, { Icon: any; color: string }> = {
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-  const { Icon, color } = STATUS_CONFIG[status];
+  // Fallback to "Awaiting Review" if status is undefined
+  const validStatus = status || "Awaiting Review";
+  const config = STATUS_CONFIG[validStatus];
+
+  if (!config) {
+    // Render a default fallback badge for unknown statuses
+    return (
+      <div className="inline-flex items-center gap-[4px] h-[24px] px-[8px] py-[4px] border border-[#E1E4EA] rounded-[6px] bg-white">
+        <div
+          className="w-[16px] h-[16px] rounded-full flex items-center justify-center shrink-0"
+          style={{ background: "#999999" }}
+        >
+          <Clock size={10} color="#ffffff" strokeWidth={3} />
+        </div>
+
+        <span className="text-[12px] font-medium leading-[16px] text-[#525866] whitespace-nowrap">
+          {status || "Unknown"}
+        </span>
+      </div>
+    );
+  }
+
+  const { Icon, color } = config;
 
   return (
     <div className="inline-flex items-center gap-[4px] h-[24px] px-[8px] py-[4px] border border-[#E1E4EA] rounded-[6px] bg-white">
@@ -48,7 +70,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       </div>
 
       <span className="text-[12px] font-medium leading-[16px] text-[#525866] whitespace-nowrap">
-        {status}
+        {validStatus}
       </span>
     </div>
   );

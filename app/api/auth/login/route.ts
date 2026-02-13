@@ -5,8 +5,8 @@ import { signJwt } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
-    console.log("[AUTH] Login attempt for:", email);
+    const { email, password, loginType } = await req.json();
+    console.log("[AUTH] Login attempt for:", email, "via:", loginType);
 
     if (!email || !password) {
       return NextResponse.json(
@@ -42,6 +42,25 @@ export async function POST(req: NextRequest) {
     }
 
     const role = user.role; 
+
+    // Validate login type matches user role
+    if (loginType) {
+      const isOrgLogin = loginType === "Institution/ Organisation";
+      const isResearcherLogin = loginType === "Researcher" || loginType === "Medical Professional";
+      
+      if (isOrgLogin && role !== "ORG") {
+        return NextResponse.json(
+          { success: false, message: "This account is not registered as an organization" },
+          { status: 403 }
+        );
+      }
+      if (isResearcherLogin && role !== "SCHOLAR") {
+        return NextResponse.json(
+          { success: false, message: "This account is not registered as a researcher" },
+          { status: 403 }
+        );
+      }
+    }
 
     if (role !== "ADMIN" && !user.registration) {
       return NextResponse.json(

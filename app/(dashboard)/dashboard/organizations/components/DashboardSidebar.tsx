@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   FileText,
@@ -16,11 +16,42 @@ interface DashboardSidebarProps {
   onClose?: () => void;
 }
 
+interface UserData {
+  name: string;
+  email: string;
+}
+
 export const DashboardSidebar = ({
   activePage = "overview",
   isOpen = false,
   onClose,
 }: DashboardSidebarProps) => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const res = await fetch("/api/dashboard/org/me");
+        const json = await res.json();
+        if (json.success && json.data) {
+          const { user, organizationProfile } = json.data;
+          setUserData({
+            name:
+              organizationProfile?.name || user?.email?.split("@")[0] || "User",
+            email: user?.email || "unknown@email.com",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        setUserData({
+          name: "User",
+          email: "unknown@email.com",
+        });
+      }
+    }
+
+    fetchUserData();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -35,8 +66,8 @@ export const DashboardSidebar = ({
         // Clear any client-side session data
         localStorage.clear();
         sessionStorage.clear();
-        
-        // redirect to clear all state and go to signin
+
+        // Hard redirect to clear all state and go to signin
         window.location.href = "/signin";
       } else {
         alert("Logout failed: " + result.message);
@@ -46,7 +77,7 @@ export const DashboardSidebar = ({
       alert("Something went wrong during logout.");
     }
   };
-  
+
   return (
     <aside
       className={`
@@ -105,15 +136,15 @@ export const DashboardSidebar = ({
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#E1E4EA] cursor-pointer transition-colors">
           <img
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt="John Doe"
+            alt={userData?.name || "User"}
             className="w-10 h-10 rounded-full object-cover ring-2 ring-white"
           />
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-[14px] font-semibold leading-[120%] text-[#181B25] truncate">
-              John Doe
+              {userData?.name || "User"}
             </span>
             <span className="text-[12px] font-normal leading-[120%] text-[#525866] truncate">
-              example@gmail.com
+              {userData?.email || "unknown@email.com"}
             </span>
           </div>
           <button onClick={handleLogout} className="text-[#525866] hover:text-[#E82323] transition-colors">
