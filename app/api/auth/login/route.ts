@@ -96,6 +96,7 @@ export async function POST(req: NextRequest) {
           email: user.email,
           role,
           registrationId: user.registration?.id ?? null,
+          registrationType: user.registration?.type ?? null,
           isEmailVerified: user.isEmailVerified,
         },
       },
