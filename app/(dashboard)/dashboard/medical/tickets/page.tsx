@@ -2,141 +2,12 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { Search, Plus, Filter, Loader2 } from "lucide-react";
-import { StatCard, TicketTable, CreateTicketModal } from "./components";
+import {
+  CreateTicketModal,
+  TicketTable,
+  TicketData,
+} from "@/components/shared/tickets";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-
-// --- Types ---
-
-interface TicketData {
-  id: string;
-  submittedOn: string;
-  issueType: string;
-  status:
-    | "Active"
-    | "Awaiting Review"
-    | "Approved"
-    | "Under Review"
-    | "Rejected";
-  priority: "High" | "Normal" | "Low";
-  lastUpdate: string;
-  adminResponse: string;
-}
-
-// Map API status to display status
-const mapStatus = (status: string): TicketData["status"] => {
-  const statusUpper = status?.toUpperCase() || "";
-  if (statusUpper === "RESOLVED") return "Approved";
-  if (statusUpper === "OPEN" || statusUpper === "PENDING")
-    return "Awaiting Review";
-  if (statusUpper === "REJECTED") return "Rejected";
-  if (statusUpper === "IN_PROGRESS") return "Under Review";
-  if (statusUpper === "CLOSED") return "Active";
-  return "Awaiting Review";
-};
-
-// --- Mock Data fallback ---
-
-const mockTickets: TicketData[] = [
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Active",
-    priority: "Normal",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Affiliation Issue",
-    status: "Approved",
-    priority: "Low",
-    lastUpdate: "-",
-    adminResponse: "Please upload your acceptan...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "Normal",
-    lastUpdate: "-",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Affiliation Issue",
-    status: "Awaiting Review",
-    priority: "Low",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Missing Publication",
-    status: "Under Review",
-    priority: "Normal",
-    lastUpdate: "-",
-    adminResponse: "Please upload your acceptan...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Active",
-    priority: "Low",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Missing Publication",
-    status: "Active",
-    priority: "Normal",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Rejected",
-    priority: "High",
-    lastUpdate: "-",
-    adminResponse: "Due to unforseen reasons tic...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Rejected",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "Due to unforseen reasons tic...",
-  },
-];
 
 // --- Main Page Component ---
 
@@ -144,47 +15,30 @@ function TicketsPageContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tickets, setTickets] = useState<TicketData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    async function fetchTickets() {
-      try {
-        const res = await fetch("/api/dashboard/scholar/me");
-        const json = await res.json();
-        if (json.success && json.data.tickets) {
-          const formattedTickets: TicketData[] = json.data.tickets.map(
-            (t: any) => ({
-              id: t.ticketId,
-              submittedOn: new Date(t.createdAt).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }),
-              issueType: t.issueType || t.type || "Support",
-              status: mapStatus(t.status),
-              priority: t.priority || "Normal",
-              lastUpdate: t.updatedAt
-                ? new Date(t.updatedAt).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })
-                : "-",
-              adminResponse: "-",
-            }),
-          );
-          setTickets(formattedTickets);
+  const fetchTickets = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/dashboard/medical/me");
+      const json = await res.json();
+      if (json.success && json.data) {
+        setUserData(json.data);
+        if (json.data.tickets) {
+          setTickets(json.data.tickets);
         }
-      } catch (error) {
-        console.error("Failed to fetch tickets:", error);
-        setTickets(mockTickets);
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      console.error("Failed to fetch tickets:", error);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchTickets();
   }, []);
 
@@ -196,10 +50,13 @@ function TicketsPageContent() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    // Remove query param if present
     if (searchParams?.get("openCreate") === "true") {
       router.replace(pathname);
     }
+  };
+
+  const handleTicketClick = (ticketId: string) => {
+    router.push(`/dashboard/medical/tickets/${ticketId}`);
   };
 
   if (loading) {
@@ -262,9 +119,8 @@ function TicketsPageContent() {
       {/* Stats Cards - Responsive */}
       <div className="mb-6">
         <div className="rounded-xl border border-[#E1E4EA] bg-white md:flex md:flex-row md:items-center md:h-[102px] overflow-hidden">
-          {/* Mobile: 2x2 Grid for all 4 items */}
           <div className="grid grid-cols-2 md:flex md:flex-1">
-            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] md:after:hidden">
+            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-px after:bg-[#E1E4EA] md:after:hidden">
               <span className="text-[13px] md:text-sm text-[#525866]">
                 Open Tickets
               </span>
@@ -282,7 +138,7 @@ function TicketsPageContent() {
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] md:after:hidden">
+            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-px after:bg-[#E1E4EA] md:after:hidden">
               <span className="text-[13px] md:text-sm text-[#525866]">
                 Approved Tickets
               </span>
@@ -301,7 +157,6 @@ function TicketsPageContent() {
             </div>
           </div>
 
-          {/* Desktop: Vertical dividers */}
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
@@ -309,10 +164,19 @@ function TicketsPageContent() {
       </div>
 
       {/* Tickets Table */}
-      <TicketTable tickets={tickets} />
+      <TicketTable tickets={tickets} onTicketClick={handleTicketClick} />
 
       {/* Create Ticket Modal */}
-      <CreateTicketModal isOpen={isModalOpen} onClose={closeModal} />
+      {userData && (
+        <CreateTicketModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          userType="Medical Professional"
+          nationciteId={userData.nationciteId}
+          userName={userData.name}
+          onSuccess={fetchTickets}
+        />
+      )}
     </>
   );
 }

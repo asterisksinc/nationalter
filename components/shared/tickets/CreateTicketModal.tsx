@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import { X, ArrowLeft, Upload, CheckCircle } from "lucide-react";
+import { X, ArrowLeft, Upload, CheckCircle, Loader2 } from "lucide-react";
 
 // --- Types & Enums ---
 
@@ -16,12 +18,15 @@ export enum TicketStep {
 }
 
 interface PaperData {
+  id?: number;
   title: string;
-  authors: string;
-  journal: string;
-  year: string;
-  publisher: string;
-  doi: string;
+  authors?: string;
+  journalName: string;
+  datePublished: string;
+  publisher?: string;
+  doi?: string;
+  citationsTotal?: number;
+  citationsLast5Years?: number;
 }
 
 type TicketType =
@@ -36,9 +41,9 @@ type IssueReason = "not-mine" | "not-author" | "different-person";
 type ImpactLevel = "low" | "medium" | "high";
 
 interface TicketFormData {
-  userType: string;
+  userType: "Researcher" | "Organization" | "Medical Professional";
   ticketType: TicketType | null;
-  subCategory?: string; // For specific issue dropdown details
+  subCategory?: string;
   selectedPaper?: PaperData;
   issueReason?: IssueReason;
   uploadedFile?: File | null;
@@ -52,43 +57,70 @@ interface TicketFormData {
 interface CreateTicketModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userType: "Researcher" | "Organization" | "Medical Professional";
+  nationciteId: string;
+  userName: string;
+  onSuccess?: () => void;
 }
+
+// Sub-category options for each type
+const profileSubcategories = [
+  "Name spelling/correction",
+  "H-Index incorrect",
+  "Ranking incorrect",
+  "Duplicate profile",
+  "Profile information outdated",
+  "Other",
+];
+
+const affiliationSubcategories = [
+  "Changed institution",
+  "Institution ranking wrong",
+  "Institutional email mismatch",
+  "Organization details incorrect",
+  "Other",
+];
+
+const credentialSubcategories = [
+  "License expired/renewed",
+  "Specialty/board change",
+  "Council registration update",
+  "Qualification addition",
+  "Other",
+];
 
 export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
   isOpen,
   onClose,
+  userType,
+  nationciteId,
+  userName,
+  onSuccess,
 }) => {
-  // Navigation Stack State
   const [history, setHistory] = useState<TicketStep[]>([TicketStep.CATEGORY]);
-
   const [formData, setFormData] = useState<TicketFormData>({
-    userType: "Researcher",
+    userType,
     ticketType: null,
     consent: false,
   });
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<PaperData[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [createdTicketId, setCreatedTicketId] = useState("");
 
-  const mockPaper: PaperData = {
-    title: "Lorem ipsum Lorem ipsum Lorem ipsum",
-    authors: "Lorem ipsum",
-    journal: "JFLFLFLN",
-    year: "2021",
-    publisher: "IEEE",
-    doi: "829129",
-  };
-
-  // Helper to get current step
   const currentStep = history[history.length - 1];
 
   const resetModal = () => {
     setHistory([TicketStep.CATEGORY]);
     setFormData({
-      userType: "Researcher",
+      userType,
       ticketType: null,
       consent: false,
     });
     setSearchQuery("");
+    setSearchResults([]);
+    setCreatedTicketId("");
   };
 
   const handleClose = () => {
@@ -122,22 +154,54 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
     }
   };
 
-  const handlePaperSearch = () => {
-    // Mock search success
-    if (searchQuery.trim()) {
-      setFormData({ ...formData, selectedPaper: mockPaper });
-      pushStep(TicketStep.PAPER_DETAILS);
+  const handlePaperSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    setSearching(true);
+    try {
+      // Call Publications API
+      const res = await fetch(
+        `/api/publications?title=${encodeURIComponent(searchQuery)}`,
+      );
+      const json = await res.json();
+
+      if (json.success && json.publications) {
+        setSearchResults(json.publications);
+        if (json.publications.length > 0) {
+          // Auto-select first result
+          const paper = json.publications[0];
+          setFormData({
+            ...formData,
+            selectedPaper: {
+              id: paper.id,
+              title: paper.title,
+              journalName: paper.journalName,
+              datePublished: new Date(paper.datePublished)
+                .getFullYear()
+                .toString(),
+              citationsTotal: paper.citationsTotal,
+              citationsLast5Years: paper.citationsLast5Years,
+            },
+          });
+          pushStep(TicketStep.PAPER_DETAILS);
+        } else {
+          alert("No publications found. Try a different search term.");
+        }
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      alert("Failed to search publications. Please try again.");
+    } finally {
+      setSearching(false);
     }
   };
 
   const handleIssueReasonSelect = (reason: IssueReason) => {
     setFormData({ ...formData, issueReason: reason });
-    // Flow Logic
     if (reason === "not-mine") {
-      // Flow 2.3 (Fast Track) -> Notes
+      // Fast track
       pushStep(TicketStep.NOTES);
     } else {
-      // Flow 2.1 (Not Author) & 2.2 (Different Person) -> Upload
       pushStep(TicketStep.UPLOAD);
     }
   };
@@ -148,13 +212,63 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting ticket:", formData);
-    // Ideally call API here
-    pushStep(TicketStep.SUCCESS);
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const ticketData = {
+        nationciteId,
+        name: userName,
+        type: formData.ticketType,
+        issueType: formData.subCategory || formData.ticketType,
+        description: formData.additionalNotes || "N/A",
+        issueReason: formData.issueReason || null,
+        links: formData.supportLinks ? [formData.supportLinks] : [],
+        attachments: formData.uploadedFile ? [formData.uploadedFile.name] : [],
+        impactLevel: formData.impactLevel || null,
+        preferredOutcome: formData.preferredOutcome || null,
+        comment: formData.selectedPaper
+          ? `Paper: ${formData.selectedPaper.title} (${formData.selectedPaper.journalName})`
+          : null,
+      };
+
+      const res = await fetch("/api/tickets/tickets-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(ticketData),
+      });
+
+      const json = await res.json();
+
+      if (json.success) {
+        setCreatedTicketId(json.ticket.ticketId);
+        pushStep(TicketStep.SUCCESS);
+        if (onSuccess) onSuccess();
+      } else {
+        alert("Failed to create ticket: " + json.message);
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
+
+  // Helper to get sub-category options
+  const getSubCategoryOptions = () => {
+    switch (formData.ticketType) {
+      case "profile-identity":
+        return profileSubcategories;
+      case "affiliation-institution":
+        return affiliationSubcategories;
+      case "credentials":
+        return credentialSubcategories;
+      default:
+        return [];
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -169,7 +283,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               <ArrowLeft size={20} className="text-gray-600" />
             </button>
           ) : (
-            <div className="w-7" /> /* Spacer to keep title centered */
+            <div className="w-7" />
           )}
 
           <div className="flex-1 text-center text-base font-semibold leading-5 tracking-[-0.006em] text-[#0E121B]">
@@ -193,7 +307,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             <div className="space-y-4">
               <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mb-4">
                 You are submitting as:{" "}
-                <span className="text-[#f76a23] font-medium">Researcher</span>
+                <span className="text-[#f76a23] font-medium">{userType}</span>
               </p>
 
               <div className="space-y-2 mb-4">
@@ -207,15 +321,24 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                     id: "affiliation-institution",
                     label: "Affiliation & Institution",
                   },
-                  { id: "credentials", label: "Credentials (Medical only)" },
+                  {
+                    id: "credentials",
+                    label: "Credentials (Medical only)",
+                    disabled: userType !== "Medical Professional",
+                  },
                   { id: "other", label: "Other" },
                 ].map((type) => (
                   <label
                     key={type.id}
                     onClick={() =>
+                      !type.disabled &&
                       handleTicketTypeSelect(type.id as TicketType)
                     }
-                    className={`flex items-center gap-3 p-3 rounded-lg hover:bg-orange-50/20 cursor-pointer transition-all ${
+                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
+                      type.disabled
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-orange-50/20"
+                    } ${
                       formData.ticketType === type.id
                         ? "border border-[#FF8D28] bg-orange-50/30"
                         : "border border-transparent hover:border-[#FF8D28]/30"
@@ -225,6 +348,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       type="radio"
                       name="ticketType"
                       checked={formData.ticketType === type.id}
+                      disabled={type.disabled}
                       onChange={() => {}}
                       style={{ accentColor: "#FF8D28" }}
                       className="w-3.5 h-3.5 shrink-0 cursor-pointer"
@@ -246,7 +370,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* STEP: Sub Category (Flow 1) */}
+          {/* STEP: Sub Category */}
           {currentStep === TicketStep.SUB_CATEGORY && (
             <div className="space-y-4">
               <div className="flex items-start gap-3 mb-4">
@@ -258,13 +382,13 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   className="mt-1 w-4 h-4 shrink-0 cursor-pointer"
                 />
                 <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] capitalize">
-                  {formData.ticketType?.replace("-", " & ")}
+                  {formData.ticketType?.replace(/-/g, " & ")}
                 </span>
               </div>
 
               {formData.ticketType === "other" ? (
                 <textarea
-                  placeholder="Something else..."
+                  placeholder="Describe your issue..."
                   value={formData.additionalNotes || ""}
                   onChange={(e) =>
                     setFormData({
@@ -283,10 +407,12 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   }
                   value={formData.subCategory || ""}
                 >
-                  <option value="">Select</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
+                  <option value="">Select issue type</option>
+                  {getSubCategoryOptions().map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               )}
 
@@ -307,7 +433,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* STEP: Search (Flow 2) */}
+          {/* STEP: Search */}
           {currentStep === TicketStep.SEARCH && (
             <div className="space-y-4">
               <div className="flex items-start gap-3 mb-4">
@@ -321,20 +447,22 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 placeholder="Search by title, DOI, or journal"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handlePaperSearch()}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f76a23] text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93]"
               />
 
               <button
                 onClick={handlePaperSearch}
-                disabled={!searchQuery.trim()}
-                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors"
+                disabled={!searchQuery.trim() || searching}
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] disabled:bg-gray-300 text-white text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                Search
+                {searching && <Loader2 size={16} className="animate-spin" />}
+                {searching ? "Searching..." : "Search"}
               </button>
             </div>
           )}
 
-          {/* STEP: Paper Details (Flow 2) */}
+          {/* STEP: Paper Details */}
           {currentStep === TicketStep.PAPER_DETAILS &&
             formData.selectedPaper && (
               <div className="space-y-4">
@@ -356,44 +484,31 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   </div>
                   <div>
                     <span className="font-semibold leading-[120%] text-[#0E121B]">
-                      Authors
+                      Journal / Conference
                     </span>
                     <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                      {formData.selectedPaper.authors}
+                      {formData.selectedPaper.journalName}
                     </p>
                   </div>
                   <div>
                     <span className="font-semibold leading-[120%] text-[#0E121B]">
-                      Journal / Conference name
+                      Year
                     </span>
                     <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                      {formData.selectedPaper.journal}
+                      {formData.selectedPaper.datePublished}
                     </p>
                   </div>
-                  <div>
-                    <span className="font-semibold leading-[120%] text-[#0E121B]">
-                      Year of publication
-                    </span>
-                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                      {formData.selectedPaper.year}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-semibold leading-[120%] text-[#0E121B]">
-                      Publisher
-                    </span>
-                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                      {formData.selectedPaper.publisher}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="font-semibold leading-[120%] text-[#0E121B]">
-                      DOI
-                    </span>
-                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                      {formData.selectedPaper.doi}
-                    </p>
-                  </div>
+                  {formData.selectedPaper.citationsTotal && (
+                    <div>
+                      <span className="font-semibold leading-[120%] text-[#0E121B]">
+                        Citations
+                      </span>
+                      <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                        Total: {formData.selectedPaper.citationsTotal} | Last 5
+                        years: {formData.selectedPaper.citationsLast5Years}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -405,7 +520,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
               </div>
             )}
 
-          {/* STEP: Issue Reason (Flow 2) */}
+          {/* STEP: Issue Reason */}
           {currentStep === TicketStep.ISSUE_REASON && (
             <div className="space-y-4">
               <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-4">
@@ -437,7 +552,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       checked={formData.issueReason === reason.id}
                       onChange={() => {}}
                       style={{ accentColor: "#FF8D28" }}
-                      className="mt-0.5 w-4 h-4 shrink-0 focus:ring-1 focus:ring-offset-0 focus:ring-[#FF8D28] cursor-pointer"
+                      className="mt-0.5 w-4 h-4 shrink-0 cursor-pointer"
                     />
                     <span className="text-[14px] font-normal leading-[120%] text-[#0E121B]">
                       {reason.label}
@@ -448,11 +563,11 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* STEP: Upload (Flow 2.1 & 2.2) */}
+          {/* STEP: Upload */}
           {currentStep === TicketStep.UPLOAD && (
             <div className="space-y-4">
               <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-2">
-                Upload screenshots, letters, certificates, or ID
+                Upload proof documents
                 <span className="text-red-500">*</span>
               </p>
 
@@ -462,20 +577,21 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   id="fileUpload"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   onChange={handleFileUpload}
+                  accept=".pdf,.jpg,.jpeg,.png"
                 />
                 <div className="flex flex-col items-center pointer-events-none">
                   <Upload size={32} className="text-gray-400 mb-3" />
                   <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#333333] mb-1">
                     <span className="text-[#f76a23] font-medium">
-                      Click or Drag File To This Area to Upload
+                      Click or Drag File To Upload
                     </span>
                   </p>
                   <p className="text-[12px] font-normal leading-[120%] text-[#8E8E93]">
-                    Support for a single or bulk upload. Allowed: PDF, JPG, PNG
+                    Allowed: PDF, JPG, PNG
                   </p>
                   {formData.uploadedFile && (
                     <p className="text-[14px] font-medium leading-[120%] text-green-600 mt-2">
-                      Selected: {formData.uploadedFile.name}
+                      ✓ {formData.uploadedFile.name}
                     </p>
                   )}
                 </div>
@@ -483,15 +599,15 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <div>
                 <label className="block text-[12px] font-normal leading-[120%] text-[#525866] mb-2">
-                  Add supporting links*
+                  Add supporting links
                   <br />
                   <span className="text-[#8E8E93]">
-                    (Google Scholar, PubMed, ORCID, hospital website)
+                    (Google Scholar, PubMed, ORCID, etc.)
                   </span>
                 </label>
                 <input
                   type="text"
-                  placeholder="Paste here"
+                  placeholder="Paste link here"
                   value={formData.supportLinks || ""}
                   onChange={(e) =>
                     setFormData({ ...formData, supportLinks: e.target.value })
@@ -509,7 +625,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* STEP: Impact (Flow 2.1 & 2.2) */}
+          {/* STEP: Impact */}
           {currentStep === TicketStep.IMPACT && (
             <div className="space-y-4">
               <p className="text-[14px] font-semibold leading-[120%] text-[#0E121B] mb-2">
@@ -554,7 +670,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                       checked={formData.impactLevel === level.id}
                       onChange={() => {}}
                       style={{ accentColor: "#FF8D28" }}
-                      className="mt-0.5 w-4 h-4 shrink-0 focus:ring-1 focus:ring-offset-0 focus:ring-[#FF8D28] cursor-pointer"
+                      className="mt-0.5 w-4 h-4 shrink-0 cursor-pointer"
                     />
                     <div className="flex-1">
                       <span className="text-[14px] font-medium leading-[120%] text-[#0E121B] block">
@@ -586,6 +702,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   <option value="remove">Remove publication</option>
                   <option value="correct">Correct information</option>
                   <option value="verify">Verify authorship</option>
+                  <option value="update">Update profile data</option>
                 </select>
               </div>
 
@@ -598,7 +715,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
             </div>
           )}
 
-          {/* STEP: Notes (All Flows) */}
+          {/* STEP: Notes */}
           {currentStep === TicketStep.NOTES && (
             <div className="space-y-4">
               <div>
@@ -630,7 +747,6 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                   className="mt-0.5 w-4 h-4 text-green-600 focus:ring-green-500 rounded"
                 />
                 <span className="text-[12px] font-normal leading-[120%] text-[#333333]">
-                  {/* Dynamic consent text based on flow? Using generic/safest string */}
                   I confirm that all information provided is accurate. I
                   understand that any false or misleading information may result
                   in strict action.
@@ -639,14 +755,15 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
 
               <button
                 onClick={handleSubmit}
-                disabled={!formData.consent}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                  formData.consent
+                disabled={!formData.consent || submitting}
+                className={`w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                  formData.consent && !submitting
                     ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                Submit Ticket
+                {submitting && <Loader2 size={16} className="animate-spin" />}
+                {submitting ? "Submitting..." : "Submit Ticket"}
               </button>
             </div>
           )}
@@ -654,8 +771,15 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
           {/* STEP: Success */}
           {currentStep === TicketStep.SUCCESS && (
             <div className="space-y-4 text-center py-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle size={32} className="text-green-600" />
+              </div>
+
+              <p className="text-[16px] font-semibold text-[#0E121B]">
+                Ticket Created Successfully!
+              </p>
               <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
-                Your ticket has been submitted!
+                Your ticket has been submitted to our review team.
               </p>
 
               <div className="space-y-2 text-[14px] bg-gray-50 p-4 rounded-lg text-left">
@@ -664,17 +788,15 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                     Ticket ID
                   </span>
                   <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                    NC-REQ-2048
+                    {createdTicketId}
                   </p>
                 </div>
                 <div>
                   <span className="font-semibold leading-[120%] text-[#0E121B]">
-                    Issue
+                    Issue Type
                   </span>
-                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                    {formData.ticketType === "publications-citations"
-                      ? "Publication Issue"
-                      : "Profile Issue"}
+                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333] capitalize">
+                    {formData.ticketType?.replace(/-/g, " ")}
                   </p>
                 </div>
                 <div>
@@ -695,26 +817,12 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
                 </div>
               </div>
 
-              <p className="text-[12px] font-normal leading-[120%] text-[#525866]">
-                We will contact you at{" "}
-                <span className="text-[#f76a23] font-medium">[email]</span> if
-                we need more information
-              </p>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={handleClose}
-                  className="flex-1 py-2.5 border border-gray-300 rounded-lg text-[14px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 transition-colors"
-                >
-                  Back to Dashboard
-                </button>
-                <button
-                  onClick={handleClose}
-                  className="flex-1 bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors"
-                >
-                  View Ticket Details
-                </button>
-              </div>
+              <button
+                onClick={handleClose}
+                className="w-full bg-[#f76a23] hover:bg-[#e05a1a] text-white py-2.5 rounded-lg text-[14px] font-semibold leading-[120%] transition-colors"
+              >
+                Back to Dashboard
+              </button>
             </div>
           )}
         </div>

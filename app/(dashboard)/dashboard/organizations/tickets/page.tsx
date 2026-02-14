@@ -2,141 +2,12 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { Search, Plus, Filter, Loader2 } from "lucide-react";
-import { StatCard, TicketTable, CreateTicketModal } from "./components";
+import {
+  CreateTicketModal,
+  TicketTable,
+  TicketData,
+} from "@/components/shared/tickets";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-
-// --- Types ---
-
-interface TicketData {
-  id: string;
-  submittedOn: string;
-  issueType: string;
-  status:
-    | "Active"
-    | "Awaiting Review"
-    | "Approved"
-    | "Under Review"
-    | "Rejected";
-  priority: "High" | "Normal" | "Low";
-  lastUpdate: string;
-  adminResponse: string;
-}
-
-// Map API status to display status
-const mapStatus = (status: string): TicketData["status"] => {
-  const statusUpper = status?.toUpperCase() || "";
-  if (statusUpper === "RESOLVED") return "Approved";
-  if (statusUpper === "OPEN" || statusUpper === "PENDING")
-    return "Awaiting Review";
-  if (statusUpper === "REJECTED") return "Rejected";
-  if (statusUpper === "IN_PROGRESS") return "Under Review";
-  if (statusUpper === "CLOSED") return "Active";
-  return "Awaiting Review";
-};
-
-// --- Mock Data fallback ---
-
-const mockTickets: TicketData[] = [
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Active",
-    priority: "Normal",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Affiliation Issue",
-    status: "Approved",
-    priority: "Low",
-    lastUpdate: "-",
-    adminResponse: "Please upload your acceptan...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Not My Paper",
-    status: "Awaiting Review",
-    priority: "Normal",
-    lastUpdate: "-",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Affiliation Issue",
-    status: "Awaiting Review",
-    priority: "Low",
-    lastUpdate: "28/11/2025",
-    adminResponse: "-",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Missing Publication",
-    status: "Under Review",
-    priority: "Normal",
-    lastUpdate: "-",
-    adminResponse: "Please upload your acceptan...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Active",
-    priority: "Low",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Missing Publication",
-    status: "Active",
-    priority: "Normal",
-    lastUpdate: "28/11/2025",
-    adminResponse: "We're verifying this with your...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Rejected",
-    priority: "High",
-    lastUpdate: "-",
-    adminResponse: "Due to unforseen reasons tic...",
-  },
-  {
-    id: "TKT-15678",
-    submittedOn: "24/11/2025",
-    issueType: "Profile Data Incorrect",
-    status: "Rejected",
-    priority: "High",
-    lastUpdate: "28/11/2025",
-    adminResponse: "Due to unforseen reasons tic...",
-  },
-];
 
 // --- Main Page Component ---
 
@@ -144,47 +15,30 @@ function TicketsPageContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tickets, setTickets] = useState<TicketData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    async function fetchTickets() {
-      try {
-        const res = await fetch("/api/dashboard/org/me");
-        const json = await res.json();
-        if (json.success && json.data.tickets) {
-          const formattedTickets: TicketData[] = json.data.tickets.map(
-            (t: any) => ({
-              id: t.ticketId,
-              submittedOn: new Date(t.createdAt).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }),
-              issueType: t.issueType || t.type || "Support",
-              status: mapStatus(t.status),
-              priority: t.priority || "Normal",
-              lastUpdate: t.updatedAt
-                ? new Date(t.updatedAt).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })
-                : "-",
-              adminResponse: "-",
-            }),
-          );
-          setTickets(formattedTickets);
+  const fetchTickets = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/dashboard/org/me");
+      const json = await res.json();
+      if (json.success && json.data) {
+        setUserData(json.data);
+        if (json.data.tickets) {
+          setTickets(json.data.tickets);
         }
-      } catch (error) {
-        console.error("Failed to fetch tickets:", error);
-        setTickets(mockTickets);
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      console.error("Failed to fetch tickets:", error);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchTickets();
   }, []);
 
@@ -202,6 +56,10 @@ function TicketsPageContent() {
     }
   };
 
+  const handleTicketClick = (ticket: TicketData) => {
+    router.push(`/dashboard/organizations/tickets/${ticket.ticketId}`);
+  };
+
   if (loading) {
     return (
       <div className="flex h-[50vh] w-full items-center justify-center">
@@ -214,11 +72,19 @@ function TicketsPageContent() {
   }
 
   const openCount = tickets.filter(
-    (t) => t.status === "Awaiting Review" || t.status === "Active",
+    (t) =>
+      t.status?.toUpperCase() === "OPEN" ||
+      t.status?.toUpperCase() === "PENDING",
   ).length;
-  const reviewCount = tickets.filter((t) => t.status === "Under Review").length;
-  const approvedCount = tickets.filter((t) => t.status === "Approved").length;
-  const rejectedCount = tickets.filter((t) => t.status === "Rejected").length;
+  const reviewCount = tickets.filter(
+    (t) => t.status?.toUpperCase() === "IN_PROGRESS",
+  ).length;
+  const approvedCount = tickets.filter(
+    (t) => t.status?.toUpperCase() === "RESOLVED",
+  ).length;
+  const rejectedCount = tickets.filter(
+    (t) => t.status?.toUpperCase() === "REJECTED",
+  ).length;
 
   return (
     <>
@@ -309,10 +175,23 @@ function TicketsPageContent() {
       </div>
 
       {/* Tickets Table */}
-      <TicketTable tickets={tickets} />
+      <TicketTable
+        tickets={tickets}
+        loading={loading}
+        onTicketClick={handleTicketClick}
+      />
 
       {/* Create Ticket Modal */}
-      <CreateTicketModal isOpen={isModalOpen} onClose={closeModal} />
+      {userData && (
+        <CreateTicketModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          userType="Organization"
+          nationciteId={userData.registration?.nationciteId || ""}
+          userName={userData.organizationProfile?.name || "Organization"}
+          onSuccess={fetchTickets}
+        />
+      )}
     </>
   );
 }
