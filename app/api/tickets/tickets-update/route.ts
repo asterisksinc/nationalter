@@ -12,7 +12,7 @@ export async function PUT(req: NextRequest) {
       status,
       comment,
       attachments,
-      nationciteId, 
+      nationciteId,
     } = body;
 
     if (!ticketId) {
@@ -23,49 +23,44 @@ export async function PUT(req: NextRequest) {
     }
 
     await prisma.$transaction(async (tx) => {
-      // 1️⃣ Fetch ticket with registrations
       const ticket = await tx.tickets.findUnique({
         where: { ticketId },
-        include: {
-          registration: true,
-        },
+        include: { registration: true },
       });
 
       if (!ticket) {
         throw new Error("Ticket not found");
       }
 
-      // 2️⃣ Update ticket fields
+      // ✅ Update Ticket (attachments now live here)
       await tx.tickets.update({
         where: { ticketId },
         data: {
           status: status ?? ticket.status,
           nationciteId: nationciteId ?? ticket.nationciteId,
+          attachments: attachments ?? ticket.attachments, 
           updatedAt: new Date(),
         },
       });
 
-      // 3️⃣ Add comment if provided
-      if (comment || attachments) {
+      // ✅ Add comment only (no attachments here)
+      if (comment) {
         await tx.ticketComments.create({
           data: {
             ticketId,
-            comments: comment || "",
-            attachments: attachments || null,
+            comments: comment,
             createdAt: new Date(),
           },
         });
       }
 
-      // 4️⃣ Update Registration nationciteId (if provided)
+      // ✅ Update Registration if needed
       if (nationciteId && ticket.registration.length > 0) {
         const registration = ticket.registration[0];
 
         await tx.registration.update({
           where: { id: registration.id },
-          data: {
-            nationciteId,
-          },
+          data: { nationciteId },
         });
       }
     });
