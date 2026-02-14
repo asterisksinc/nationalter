@@ -23,18 +23,21 @@ export interface AddPublicationForm {
 interface AddPublicationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 export const AddPublicationModal = ({
   isOpen,
   onClose,
+  onSuccess,
 }: AddPublicationModalProps) => {
   const [step, setStep] = useState<ModalStep>("choose");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<AddPublicationForm>({
     method: "doi",
   });
   const [confirmed, setConfirmed] = useState(false);
-
+  
   const handleMethodSelect = (method: "doi" | "manual") => {
     setFormData({ ...formData, method });
     if (method === "doi") {
@@ -65,10 +68,42 @@ export const AddPublicationModal = ({
     setStep("review");
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting:", formData);
-    onClose();
-    resetModal();
+  const handleSubmit = async () => {
+    if (!confirmed) return;
+    
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/publications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Note: The 'nationciteId' cookie is sent automatically by the browser
+        },
+        body: JSON.stringify({
+           nationciteId: formData.doi || "TEMP_ID",  
+          journalName: formData.journal,
+          datePublished: formData.year ? `${formData.year}-01-01` : new Date().toISOString(),
+          citationsTotal: 0, // Default for new entries
+          citationsLast5Years: 0,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (result.success) {
+         
+        if (onSuccess) onSuccess();
+        onClose();
+        resetModal();
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to connect to the server.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetModal = () => {
@@ -401,16 +436,23 @@ export const AddPublicationModal = ({
             </div>
 
             <button
-              onClick={handleSubmit}
-              disabled={!confirmed}
-              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors ${
-                confirmed
-                  ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Submit
-            </button>
+            onClick={handleSubmit}
+            disabled={!confirmed || isSubmitting}
+            className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${
+              confirmed && !isSubmitting
+                ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Submit"
+            )}
+          </button>
           </div>
         )}
       </div>
