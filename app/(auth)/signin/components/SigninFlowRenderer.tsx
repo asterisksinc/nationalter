@@ -67,7 +67,13 @@ export const SigninFlowRenderer = ({
 
       // Get user role from response (from database, not from UI selection)
       const userRole = result.data.user.role;
-      console.log("[AUTH] Login successful, role:", userRole);
+      const registrationType = result.data.user.registrationType;
+      console.log(
+        "[AUTH] Login successful, role:",
+        userRole,
+        "type:",
+        registrationType,
+      );
 
       // Optional email verification check
       // if (!result.data.user.isEmailVerified) {
@@ -85,7 +91,15 @@ export const SigninFlowRenderer = ({
       } else if (userRole === "ORG") {
         redirectUrl = "/dashboard/organizations";
       } else if (userRole === "SCHOLAR") {
-        redirectUrl = "/dashboard/researchers";
+        // Check for both backend enum value "MEDICAL" and possible frontend display value "Medical Professional"
+        if (
+          registrationType === "MEDICAL" ||
+          registrationType === "Medical Professional"
+        ) {
+          redirectUrl = "/dashboard/medical";
+        } else {
+          redirectUrl = "/dashboard/researchers";
+        }
       }
 
       console.log("[AUTH] Redirecting to:", redirectUrl);

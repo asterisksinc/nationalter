@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth";
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    requireAdmin(req);
+    // Allow both authenticated users and admins
+    requireAuth(req);
     const { id: ticketId } = await context.params;
 
     if (!ticketId) {

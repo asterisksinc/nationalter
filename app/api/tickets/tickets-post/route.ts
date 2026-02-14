@@ -6,6 +6,7 @@ import { requireAuth } from "@/lib/auth";
 export async function POST(req: NextRequest) {
   try {
     requireAuth(req);
+
     const body = await req.json();
 
     const {
@@ -14,11 +15,17 @@ export async function POST(req: NextRequest) {
       type,
       issueType,
       description,
-      comment,
+
+      issueReason,
+      links,
       attachments,
+      impactLevel,
+      preferredOutcome,
+
+      comment,
     } = body;
 
-    // Basic validation
+    // validation
     if (!nationciteId || !name || !type || !issueType || !description) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -36,6 +43,14 @@ export async function POST(req: NextRequest) {
         type,
         issueType,
         description,
+
+        // ✅ new fields
+        issueReason: issueReason || null,
+        links: links || [],
+        attachments: attachments || [],
+        impactLevel: impactLevel || null,
+        preferredOutcome: preferredOutcome || null,
+
         status: "OPEN",
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -44,12 +59,12 @@ export async function POST(req: NextRequest) {
           ? {
               create: {
                 comments: comment,
-                attachments: attachments || null,
                 createdAt: new Date(),
               },
             }
           : undefined,
       },
+
       include: {
         comments: true,
       },
@@ -57,6 +72,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
+        success: true,
         message: "Ticket created successfully",
         ticket,
       },
@@ -66,7 +82,10 @@ export async function POST(req: NextRequest) {
     console.error("Ticket creation error:", error);
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        success: false,
+        message: "Internal server error",
+      },
       { status: 500 }
     );
   }

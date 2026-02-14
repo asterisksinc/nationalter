@@ -23,7 +23,7 @@ function TicketsPageContent() {
   const fetchTickets = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/dashboard/scholar/me");
+      const res = await fetch("/api/dashboard/medical/me");
       const json = await res.json();
       if (json.success && json.data) {
         setUserData(json.data);
@@ -50,14 +50,13 @@ function TicketsPageContent() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    // Remove query param if present
     if (searchParams?.get("openCreate") === "true") {
       router.replace(pathname);
     }
   };
 
   const handleTicketClick = (ticket: TicketData) => {
-    router.push(`/dashboard/researchers/tickets/${ticket.ticketId}`);
+    router.push(`/dashboard/medical/tickets/${ticket.ticketId}`);
   };
 
   if (loading) {
@@ -124,9 +123,8 @@ function TicketsPageContent() {
       {/* Stats Cards - Responsive */}
       <div className="mb-6">
         <div className="rounded-xl border border-[#E1E4EA] bg-white md:flex md:flex-row md:items-center md:h-[102px] overflow-hidden">
-          {/* Mobile: 2x2 Grid for all 4 items */}
           <div className="grid grid-cols-2 md:flex md:flex-1">
-            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] md:after:hidden">
+            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-px after:bg-[#E1E4EA] md:after:hidden">
               <span className="text-[13px] md:text-sm text-[#525866]">
                 Open Tickets
               </span>
@@ -144,7 +142,7 @@ function TicketsPageContent() {
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] md:after:hidden">
+            <div className="flex flex-col gap-1 p-4 md:p-0 md:flex-1 md:justify-center md:px-8 relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-px after:bg-[#E1E4EA] md:after:hidden">
               <span className="text-[13px] md:text-sm text-[#525866]">
                 Approved Tickets
               </span>
@@ -163,7 +161,6 @@ function TicketsPageContent() {
             </div>
           </div>
 
-          {/* Desktop: Vertical dividers */}
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
           <div className="hidden md:block w-px h-[54px] bg-[#D9D9D9]" />
@@ -171,20 +168,16 @@ function TicketsPageContent() {
       </div>
 
       {/* Tickets Table */}
-      <TicketTable
-        tickets={tickets}
-        loading={loading}
-        onTicketClick={handleTicketClick}
-      />
+      <TicketTable tickets={tickets} onTicketClick={handleTicketClick} />
 
       {/* Create Ticket Modal */}
       {userData && (
         <CreateTicketModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          userType="Researcher"
-          nationciteId={userData.registration?.nationciteId || ""}
-          userName={userData.scholarProfile?.data?.name || "User"}
+          userType="Medical Professional"
+          nationciteId={userData.nationciteId}
+          userName={userData.name}
           onSuccess={fetchTickets}
         />
       )}

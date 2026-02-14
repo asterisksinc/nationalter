@@ -76,7 +76,7 @@ const chartData = [
 
 // --- Main Page Component ---
 
-export default function ResearchersPage() {
+export default function MedicalPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -222,7 +222,7 @@ export default function ResearchersPage() {
             {/* Mobile: 2x2 Grid for first 4 items */}
             <div className="grid grid-cols-2 lg:contents">
               <StatItem
-                label="University Rank"
+                label="Institution Rank"
                 value={
                   metrics.universityRank ? `#${metrics.universityRank}` : "--"
                 }
@@ -306,7 +306,7 @@ export default function ResearchersPage() {
       <CreateTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        userType="Researcher"
+        userType="Medical Professional"
         nationciteId={data.registration.nationciteId}
         userName={name}
       />
