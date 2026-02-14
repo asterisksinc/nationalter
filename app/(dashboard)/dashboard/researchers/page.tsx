@@ -8,7 +8,7 @@ import {
   ProfileCompleteness,
   TicketsTable,
 } from "./components";
-import { CreateTicketModal } from "../researchers/tickets/components";
+import { CreateTicketModal } from "@/components/shared/tickets";
 
 // --- Types ---
 
@@ -306,6 +306,9 @@ export default function ResearchersPage() {
       <CreateTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        userType="Researcher"
+        nationciteId={data.registration.nationciteId}
+        userName={name}
       />
     </>
   );

@@ -11,7 +11,11 @@ export function middleware(req: NextRequest) {
   // Block unauthenticated users
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin-overview")) {
     if (!token) {
-      console.log("[MIDDLEWARE] No token found, redirecting to signin");
+      console.log("[MIDDLEWARE] No token found, redirecting...");
+      // Redirect to appropriate login page based on attempted route
+      if (pathname.startsWith("/admin-overview")) {
+        return NextResponse.redirect(new URL("/admin", req.url));
+      }
       return NextResponse.redirect(new URL("/signin", req.url));
     }
     

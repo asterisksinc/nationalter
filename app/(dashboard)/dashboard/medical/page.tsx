@@ -8,7 +8,7 @@ import {
   ProfileCompleteness,
   TicketsTable,
 } from "./components";
-import { CreateTicketModal } from "./tickets/components";
+import { CreateTicketModal } from "@/components/shared/tickets";
 
 // --- Types ---
 
@@ -306,6 +306,9 @@ export default function MedicalPage() {
       <CreateTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        userType="Medical Professional"
+        nationciteId={data.registration.nationciteId}
+        userName={name}
       />
     </>
   );

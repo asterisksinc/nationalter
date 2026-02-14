@@ -55,8 +55,8 @@ function TicketsPageContent() {
     }
   };
 
-  const handleTicketClick = (ticketId: string) => {
-    router.push(`/dashboard/medical/tickets/${ticketId}`);
+  const handleTicketClick = (ticket: TicketData) => {
+    router.push(`/dashboard/medical/tickets/${ticket.ticketId}`);
   };
 
   if (loading) {
@@ -71,11 +71,15 @@ function TicketsPageContent() {
   }
 
   const openCount = tickets.filter(
-    (t) => t.status === "Awaiting Review" || t.status === "Active",
+    (t) => t.status === "OPEN" || t.status === "PENDING",
   ).length;
-  const reviewCount = tickets.filter((t) => t.status === "Under Review").length;
-  const approvedCount = tickets.filter((t) => t.status === "Approved").length;
-  const rejectedCount = tickets.filter((t) => t.status === "Rejected").length;
+  const reviewCount = tickets.filter(
+    (t) => t.status === "IN_PROGRESS" || t.status === "UNDER_REVIEW",
+  ).length;
+  const approvedCount = tickets.filter(
+    (t) => t.status === "RESOLVED" || t.status === "APPROVED",
+  ).length;
+  const rejectedCount = tickets.filter((t) => t.status === "REJECTED").length;
 
   return (
     <>

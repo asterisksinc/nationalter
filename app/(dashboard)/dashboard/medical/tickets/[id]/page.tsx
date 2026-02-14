@@ -37,7 +37,10 @@ export default function MedicalTicketDetailPage({ params }: PageProps) {
         throw new Error("Failed to fetch user data");
       }
 
-      setCurrentUserNationCiteId(userData.data.nationciteId);
+      const currentUserNcId =
+        userData.data.nationciteId || userData.data.registration?.nationciteId;
+
+      setCurrentUserNationCiteId(currentUserNcId);
 
       // Fetch ticket details
       const ticketRes = await fetch(`/api/tickets/${ticketId}`);
@@ -50,7 +53,7 @@ export default function MedicalTicketDetailPage({ params }: PageProps) {
       const ticketDetails = ticketData.data;
 
       // Verify ownership
-      if (ticketDetails.nationciteId !== userData.data.nationciteId) {
+      if (ticketDetails.nationciteId !== currentUserNcId) {
         throw new Error("Unauthorized: You can only view your own tickets");
       }
 
@@ -102,7 +105,7 @@ export default function MedicalTicketDetailPage({ params }: PageProps) {
   if (error) {
     return (
       <div className="max-w-2xl mx-auto mt-12 p-6 bg-red-50 border border-red-200 rounded-lg">
-        <h2 className="text-lg font-semibold text-red-900 mb-2">Error</h2>
+        <div className="text-lg font-semibold text-red-900 mb-2">Error</div>
         <p className="text-red-700">{error}</p>
         <button
           onClick={handleBack}
@@ -117,9 +120,9 @@ export default function MedicalTicketDetailPage({ params }: PageProps) {
   if (!ticket) {
     return (
       <div className="max-w-2xl mx-auto mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+        <div className="text-lg font-semibold text-gray-900 mb-2">
           Ticket Not Found
-        </h2>
+        </div>
         <p className="text-gray-700">
           The ticket you're looking for doesn't exist or has been removed.
         </p>

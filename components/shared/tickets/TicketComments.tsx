@@ -84,10 +84,10 @@ export function TicketComments({
 
   return (
     <div className="bg-white rounded-xl border border-[#E1E4EA] p-6">
-      <h2 className="text-lg font-semibold text-[#0E121B] mb-4 flex items-center gap-2">
+      <div className="text-base font-semibold text-[#0E121B] mb-4 flex items-center gap-2">
         <MessageSquare size={20} />
         Comments & Updates
-      </h2>
+      </div>
 
       {/* Comments List */}
       {comments.length === 0 ? (

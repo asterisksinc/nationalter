@@ -8,7 +8,7 @@ import {
   ProfileCompleteness,
   TicketsTable,
 } from "./components";
-import { CreateTicketModal } from "./tickets/components"; // Using organization ticket modal
+import { CreateTicketModal } from "@/components/shared/tickets"; // Using organization ticket modal
 
 // --- Types ---
 
@@ -295,6 +295,9 @@ export default function OrganizationsPage() {
       <CreateTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        userType="Organization"
+        nationciteId={data.registration.nationciteId}
+        userName={name}
       />
     </>
   );
