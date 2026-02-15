@@ -1,0 +1,132 @@
+export const analyticsData = {
+  profile: {
+    name: "Dr. Aditya Sharma",
+    field: "Clinical Medicine",
+    cohortSize: 2847,
+  },
+  mainMetrics: [
+    { label: "Total Publications", value: "18", change: "+12.5%", trend: "up" },
+    { label: "H-Index", value: "24", change: "+13.2%", trend: "up" },
+    { label: "Citations (5Y)", value: "1,248", change: "+8.9%", trend: "up" },
+    { label: "National Rank", value: "#227", change: "-2 positions", trend: "down" },
+  ],
+  aris: {
+    score: 93.3,
+    change: "+2.1%",
+    percentile: 92,
+    status: "ELITE",
+    formula: {
+      display: "H × ln(P+1) × FW",
+      values: "24 × 3.74 × 1.04",
+    },
+    breakdown: [
+      { label: "H-Index Impact", value: 83, color: "bg-emerald-500" },
+      { label: "Productivity", value: 13, color: "bg-blue-400" },
+      { label: "Field Weight", value: 4, color: "bg-purple-500" },
+    ],
+  },
+  coreMetrics: [
+    {
+      label: "PIBI",
+      value: "0.59",
+      status: "Optimal",
+      percentile: "87th percentile",
+      formula: "H ÷ P",
+      statusColor: "text-emerald-600 bg-emerald-50",
+    },
+    {
+      label: "CS-H Index",
+      value: "6.2",
+      status: "Strong",
+      percentile: "85th percentile",
+      formula: "H ÷ √Y",
+      statusColor: "text-emerald-600 bg-emerald-50",
+    },
+    {
+      label: "PQLI",
+      value: "14.0",
+      status: "Elite",
+      percentile: "94th percentile",
+      formula: "H² ÷ P",
+      statusColor: "text-emerald-600 bg-emerald-50",
+    },
+    {
+      label: "CASS",
+      value: "193",
+      status: "High",
+      percentile: "89th percentile",
+      formula: "Complex",
+      statusColor: "text-blue-600 bg-blue-50",
+    },
+    {
+      label: "ARIS",
+      value: "93",
+      status: "Elite",
+      percentile: "92th percentile",
+      formula: "H×ln(P+1)×FW",
+      statusColor: "text-emerald-600 bg-emerald-50",
+    },
+  ],
+  percentile: {
+    value: 92,
+    rank: 247,
+    total: 24567,
+  },
+  trajectory: [
+    { year: 2011, publications: 2, score: 8 },
+    { year: 2012, publications: 3, score: 12 },
+    { year: 2013, publications: 5, score: 16 },
+    { year: 2014, publications: 7, score: 20 },
+    { year: 2015, publications: 9, score: 24 },
+    { year: 2016, publications: 12, score: 28 },
+    { year: 2017, publications: 15, score: 33 },
+    { year: 2018, publications: 18, score: 38 },
+    { year: 2019, publications: 22, score: 44 },
+    { year: 2020, publications: 26, score: 50 },
+    { year: 2021, publications: 30, score: 55 },
+    { year: 2022, publications: 35, score: 60 },
+    { year: 2023, publications: 40, score: 66 },
+    { year: 2024, publications: 45, score: 71 },
+    { year: 2025, publications: 50, score: 76 },
+    { year: 2026, publications: 55, score: 80 },
+  ],
+  benchmark: [
+    { subject: "ARIS", A: 93.3, B: 45.2, C: 38.7, fullMark: 100 },
+    { subject: "PIBI", A: 60, B: 70, C: 70, fullMark: 100 }, // Scaled for chart
+    { subject: "CS-H", A: 62, B: 83, C: 71, fullMark: 100 }, // Scaled
+    { subject: "PQLI", A: 140, B: 24, C: 21, fullMark: 150 }, // Scaled
+    { subject: "CASS", A: 192.7, B: 38.5, C: 32.8, fullMark: 200 },
+  ],
+  benchmarkRaw: [
+    {
+      metric: "ARIS",
+      you: 93.3,
+      field: 45.2,
+      national: 38.7,
+    },
+    {
+      metric: "PIBI",
+      you: 0.6,
+      field: 0.7,
+      national: 0.7,
+    },
+    {
+      metric: "CS-H",
+      you: 6.2,
+      field: 8.3,
+      national: 7.1,
+    },
+    {
+      metric: "PQLI",
+      you: 14.0,
+      field: 2.4,
+      national: 2.1,
+    },
+    {
+      metric: "CASS",
+      you: 192.7,
+      field: 38.5,
+      national: 32.8,
+    },
+  ],
+};

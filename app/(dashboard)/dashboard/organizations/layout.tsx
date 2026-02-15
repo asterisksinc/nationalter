@@ -19,9 +19,11 @@ export default function ResearchersLayout({
     | "overview"
     | "publications"
     | "tickets"
+    | "analytics"
     | "settings" => {
     if (pathname.includes("/my-researchers")) return "publications";
     if (pathname.includes("/tickets")) return "tickets";
+    if (pathname.includes("/analytics")) return "analytics";
     if (pathname.includes("/settings")) return "settings";
     return "overview";
   };
@@ -37,6 +39,8 @@ export default function ResearchersLayout({
         return [...baseItems, { label: "My Researchers" }];
       case "tickets":
         return [...baseItems, { label: "Ticket Center" }];
+      case "analytics":
+        return [...baseItems, { label: "Analytics" }];
       case "settings":
         return [...baseItems, { label: "Settings & Privacy" }];
       default:
