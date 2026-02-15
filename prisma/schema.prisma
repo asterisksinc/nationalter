@@ -225,6 +225,7 @@ model Publication {
   title               String
   journalName         String
   datePublished       DateTime
+  field               String
   citationsTotal      Int       @default(0)
   citationsLast5Years Int       @default(0)
   createdAt           DateTime  @default(now())
