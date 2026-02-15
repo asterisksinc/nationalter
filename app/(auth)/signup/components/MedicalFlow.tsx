@@ -85,6 +85,16 @@ export const MedicalFlow = ({
             {checkingEmail && (
               <p className="text-xs text-neutral-500">Checking email...</p>
             )}
+            <FormInput
+              label="Mobile Number"
+              name="mobile"
+              type="tel"
+              value={medicalForm.mobile}
+              placeholder="e.g. 9876543210"
+              onChange={(value) => onChange?.("mobile", value)}
+              error={getFieldError("mobile")}
+              required
+            />
           </div>
           <div className="mt-auto pt-6 md:pt-4">
             <button

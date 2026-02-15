@@ -65,14 +65,14 @@ export default function RegisterPage() {
   const [medicalForm, setMedicalForm] = useState({
     name: "",
     email: "",
-    mobile: "3456789",
+    mobile: "",
     medCouncilRegNo: "",
     stateCouncil: "",
     primaryHospital: "",
     specialty: "",
     researchFocus: "",
-    medicalDegreeUrl: "dfghj",
-    regCertificateUrl: "fdgh",
+    medicalDegreeUrl: "",
+    regCertificateUrl: "",
   });
   const buildMedicalPayload = () => {
     return {
@@ -202,6 +202,9 @@ export default function RegisterPage() {
         errors.email = "Email is required";
       } else if (!validateEmail(medicalForm.email)) {
         errors.email = "Please enter a valid email";
+      }
+      if (!validateRequired(medicalForm.mobile)) {
+        errors.mobile = "Mobile number is required";
       }
     } else if (step === 2) {
       if (!validateRequired(medicalForm.primaryHospital)) {
