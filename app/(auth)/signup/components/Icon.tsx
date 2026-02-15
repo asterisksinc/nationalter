@@ -10,6 +10,8 @@ import {
   Building,
   Microscope,
   Stethoscope,
+  AlertCircle,
+  X,
 } from "lucide-react";
 
 interface IconProps {
@@ -50,6 +52,10 @@ export const Icon = ({
       return <Microscope {...props} />;
     case "medical":
       return <Stethoscope {...props} />;
+    case "alert-circle":
+      return <AlertCircle {...props} />;
+    case "x":
+      return <X {...props} />;
     default:
       return null;
   }

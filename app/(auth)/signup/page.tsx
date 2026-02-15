@@ -27,6 +27,7 @@ enum FlowStep {
 export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string>("");
 
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -272,6 +273,7 @@ export default function RegisterPage() {
     setOtpSent(false);
     setTimer(60);
     setValidationErrors({});
+    setApiError(""); // Clear API errors when navigating between steps
   }, [currentStep]);
 
   const handleNextStep = () => {
@@ -320,12 +322,12 @@ export default function RegisterPage() {
         break;
 
       default:
-        console.error("Invalid user type");
+        setApiError("Invalid user type selected");
         return;
     }
 
     setIsSubmitting(true);
-    setHasSubmitted(true);
+    setApiError(""); // Clear any previous errors
 
     try {
       const response = await fetch(apiUrl, {
@@ -335,12 +337,26 @@ export default function RegisterPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Registration failed:", errorData);
+        let errorMessage = "Registration failed. Please try again.";
+
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch (parseError) {
+          // If response body is not JSON, use default error message
+          console.error("Failed to parse error response:", parseError);
+        }
+
+        setApiError(errorMessage);
+        setHasSubmitted(false); // Allow retry
+        console.error("Registration failed:", errorMessage);
         return;
       }
 
       const data = await response.json();
+      setHasSubmitted(true);
 
       // 🔐 cookie for middleware
       // document.cookie = `nationciteId=${data.data.nationciteId}; path=/; max-age=86400`;
@@ -361,6 +377,8 @@ export default function RegisterPage() {
       setCurrentStep(FlowStep.Dashboard);
     } catch (error) {
       console.error("Network error:", error);
+      setApiError("Network error. Please check your connection and try again.");
+      setHasSubmitted(false); // Allow retry
     } finally {
       setIsSubmitting(false);
     }
@@ -602,6 +620,34 @@ export default function RegisterPage() {
                       </span>
                     </p>
                   </div>
+
+                  {/* Error Message Display */}
+                  {apiError && (
+                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                      <div className="flex items-start gap-3">
+                        <Icon
+                          name="alert-circle"
+                          className="text-red-600 shrink-0 mt-0.5"
+                          size={20}
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-red-800">
+                            Registration Error
+                          </p>
+                          <p className="text-xs text-red-600 mt-1">
+                            {apiError}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setApiError("")}
+                          className="text-red-400 hover:text-red-600 transition-colors shrink-0"
+                          aria-label="Dismiss error"
+                        >
+                          <Icon name="x" size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Form Container */}
                   <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col h-full">
