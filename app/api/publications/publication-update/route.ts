@@ -9,7 +9,7 @@ export async function PUT(req: NextRequest) {
   try {
     const user = requireAuth(req);
 
-    // ✅ Allow only ADMIN
+    // ✅ Only ADMIN allowed
     if (user.role !== "ADMIN") {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
@@ -20,10 +20,11 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
 
     const {
-      id, 
+      id,
       title,
       journalName,
       datePublished,
+      field,
       citationsTotal,
       citationsLast5Years,
     } = body;
@@ -35,7 +36,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Check if publication exists
+    // ✅ Check if exists
     const existing = await prisma.publication.findUnique({
       where: { id },
     });
@@ -47,7 +48,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Update dynamically (only provided fields)
+    // ✅ Update dynamically
     const updatedPublication = await prisma.publication.update({
       where: { id },
       data: {
@@ -56,6 +57,7 @@ export async function PUT(req: NextRequest) {
         datePublished: datePublished
           ? new Date(datePublished)
           : existing.datePublished,
+        field: field ?? existing.field,
         citationsTotal:
           citationsTotal ?? existing.citationsTotal,
         citationsLast5Years:
@@ -71,6 +73,7 @@ export async function PUT(req: NextRequest) {
       },
       { status: 200 }
     );
+
   } catch (error) {
     console.error("Update publication error:", error);
 
