@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { DashboardSidebar, DashboardHeader } from "./components";
+import { CreateTicketModal } from "@/components/shared/tickets";
 
 interface ResearchersLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,25 @@ export default function ResearchersLayout({
 }: ResearchersLayoutProps) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    // Fetch user data for the modal
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch("/api/dashboard/scholar/me");
+        const json = await res.json();
+        if (json.success && json.data) {
+          setUserData(json.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // Determine active page based on current pathname
   const getActivePage = ():
@@ -69,10 +89,25 @@ export default function ResearchersLayout({
         <DashboardHeader
           breadcrumbItems={breadcrumbItems}
           onMenuClick={() => setIsSidebarOpen(true)}
+          onRaiseTicket={() => setIsModalOpen(true)}
         />
 
         {/* Page Content */}
         {children}
+
+        {/* Ticket Modal */}
+        {userData && (
+          <CreateTicketModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            userType="Researcher"
+            nationciteId={userData.registration.nationciteId}
+            userName={
+              userData.scholarProfile?.data?.name ||
+              userData.user.email.split("@")[0]
+            }
+          />
+        )}
       </main>
     </div>
   );

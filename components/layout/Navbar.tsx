@@ -3,19 +3,75 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Check if user is logged in and fetch registration type from API
+    const checkAuth = async () => {
+      const nationciteId = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("nationciteId="));
+
+      if (nationciteId) {
+        try {
+          // Call API to get user's registration type
+          const response = await fetch("/api/dashboard/scholar/me", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.data?.registration?.type) {
+              setIsLoggedIn(true);
+              setUserType(data.data.registration.type);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+        }
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const getDashboardLink = () => {
+    if (!userType) return "/dashboard/researchers";
+
+    const typeMap: { [key: string]: string } = {
+      MEDICAL: "/dashboard/medical",
+      RESEARCHER: "/dashboard/researchers",
+      ORG: "/dashboard/organizations",
+    };
+
+    return typeMap[userType] || "/dashboard/researchers";
+  };
+
+  const handleLogout = () => {
+    // Clear authentication cookies
+    document.cookie =
+      "nationciteId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setIsLoggedIn(false);
+    setUserType(null);
+    window.location.href = "/";
+  };
 
   return (
     <nav
@@ -108,32 +164,80 @@ export default function Navbar() {
               Blogs
             </Link>
 
-            <div className="relative group">
-              <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
-                Sign Up/In
-                <ChevronDown
-                  size={14}
-                  className="group-hover:rotate-180 transition-transform duration-200"
-                />
-              </button>
+            {isLoggedIn ? (
+              <div className="relative group">
+                <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
+                  Dashboard
+                  <ChevronDown
+                    size={14}
+                    className="group-hover:rotate-180 transition-transform duration-200"
+                  />
+                </button>
 
-              <div className="absolute top-full right-0 pt-2 w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                <div className="bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
-                  <Link
-                    href="/signin"
-                    className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
-                  >
-                    Sign Up
-                  </Link>
+                <div className="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
+                    <Link
+                      href="/dashboard/researchers"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Researcher Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/organizations"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Organization Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/medical"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Medical Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/admin"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Admin Dashboard
+                    </Link>
+                    <hr className="my-1" />
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium flex items-center gap-2"
+                    >
+                      <LogOut size={14} /> Logout
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="relative group">
+                <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
+                  Sign Up/In
+                  <ChevronDown
+                    size={14}
+                    className="group-hover:rotate-180 transition-transform duration-200"
+                  />
+                </button>
+
+                <div className="absolute top-full right-0 pt-2 w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
+                    <Link
+                      href="/signin"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="block px-4 py-2 text-slate-700 hover:bg-orange-50 hover:text-[#FF7A00] transition-colors text-sm font-medium"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -242,44 +346,112 @@ export default function Navbar() {
               >
                 Blogs
               </Link>
-              {/* Sign Up/In with submenu */}
-              <div>
-                <button
-                  className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-base px-4 py-2 rounded-[7px] w-full mt-2"
-                  onClick={() => setIsAuthOpen((v) => !v)}
-                  aria-expanded={isAuthOpen}
-                  aria-controls="mobile-auth-menu"
-                >
-                  Sign Up/In
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${
-                      isAuthOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isAuthOpen && (
-                  <div
-                    id="mobile-auth-menu"
-                    className="ml-4 flex flex-col gap-1"
-                  >
-                    <Link
-                      href="/signin"
-                      className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
-                      onClick={() => setIsMenuOpen(false)}
+              {isLoggedIn ? (
+                <>
+                  {/* Dashboard with submenu */}
+                  <div>
+                    <button
+                      className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-base px-4 py-2 rounded-[7px] w-full mt-2"
+                      onClick={() => setIsAuthOpen((v) => !v)}
+                      aria-expanded={isAuthOpen}
+                      aria-controls="mobile-dashboard-menu"
                     >
-                      Sign In
-                    </Link>
-                    <Link
-                      href="/signup"
-                      className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Sign Up
-                    </Link>
+                      Dashboard
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${
+                          isAuthOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {isAuthOpen && (
+                      <div
+                        id="mobile-dashboard-menu"
+                        className="ml-4 flex flex-col gap-1 mt-2"
+                      >
+                        <Link
+                          href="/dashboard/researchers"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Researcher Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/organizations"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Organization Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/medical"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Medical Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/admin"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Admin Dashboard
+                        </Link>
+                        <button
+                          onClick={() => {
+                            handleLogout();
+                            setIsMenuOpen(false);
+                          }}
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded flex items-center gap-2 text-left"
+                        >
+                          <LogOut size={14} /> Logout
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </>
+              ) : (
+                <>
+                  {/* Sign Up/In with submenu */}
+                  <div>
+                    <button
+                      className="flex items-center gap-1 bg-[#FF7A00] text-white font-medium text-base px-4 py-2 rounded-[7px] w-full mt-2"
+                      onClick={() => setIsAuthOpen((v) => !v)}
+                      aria-expanded={isAuthOpen}
+                      aria-controls="mobile-auth-menu"
+                    >
+                      Sign Up/In
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${
+                          isAuthOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {isAuthOpen && (
+                      <div
+                        id="mobile-auth-menu"
+                        className="ml-4 flex flex-col gap-1"
+                      >
+                        <Link
+                          href="/signin"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          href="/signup"
+                          className="py-2 px-2 text-slate-700 hover:text-[#FF7A00] hover:bg-orange-50 rounded"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Sign Up
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </nav>
           </div>
         </div>

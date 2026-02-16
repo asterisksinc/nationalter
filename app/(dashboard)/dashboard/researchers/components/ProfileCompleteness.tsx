@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { ProfileGauge } from "./ProfileGauge";
 
@@ -11,6 +14,7 @@ export const ProfileCompleteness = ({
   percentage,
   missingPublications = 0,
 }: ProfileCompletenessProps) => {
+  const router = useRouter();
   return (
     <div className="w-full bg-white rounded-xl border border-[#E1E4EA] p-4 md:p-6 flex flex-col box-border font-sans">
       {/* Title Section */}
@@ -81,7 +85,10 @@ export const ProfileCompleteness = ({
       </div>
 
       {/* Action Button */}
-      <button className="mt-auto w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#FF7A00] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer shadow-sm">
+      <button
+        onClick={() => router.push("/dashboard/researchers/settings")}
+        className="mt-auto w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#FF7A00] bg-white text-[#FF7A00] hover:bg-orange-50 transition-colors cursor-pointer shadow-sm"
+      >
         <span className="text-[14px] font-bold leading-[120%]">
           Complete Your Profile
         </span>

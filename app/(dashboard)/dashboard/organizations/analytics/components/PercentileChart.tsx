@@ -2,22 +2,25 @@
 
 import React, { useEffect, useState } from "react";
 import { analyticsData } from "../data";
+import { useInViewOnce } from "./useInViewOnce";
 
 export default function PercentileChart() {
   const { percentile, profile } = analyticsData;
   const [position, setPosition] = useState(0);
+  const { ref, inView } = useInViewOnce<HTMLDivElement>();
 
   useEffect(() => {
-    // Trigger animation after mount
-    const timer = setTimeout(() => {
-      setPosition(percentile.value);
-    }, 100);
+    if (!inView) return;
+    const timer = setTimeout(() => setPosition(percentile.value), 100);
     return () => clearTimeout(timer);
-  }, [percentile.value]);
+  }, [inView, percentile.value]);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6 relative">
-      <div className="mb-6">
+    <div
+      ref={ref}
+      className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6 relative"
+    >
+      <div className="mb-6 pb-4 border-b border-gray-300">
         <div className="text-lg font-bold text-gray-900 mb-1">
           Field-Normalized Percentile
         </div>

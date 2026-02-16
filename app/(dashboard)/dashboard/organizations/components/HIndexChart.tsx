@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Download, ChevronDown } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -27,45 +26,10 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
         <div className="text-[16px] md:text-[16px] font-semibold md:font-medium leading-[120%] tracking-[-0.006em] text-[#0E121B]">
           H-Index Performance
         </div>
-
-        {/* Mobile Controls */}
-        <div className="flex sm:hidden items-center justify-between w-full">
-          <div className="relative">
-            <button className="px-3 py-1.5 bg-white border border-[#E1E4EA] rounded-md text-[#0E121B] text-[13px] font-medium flex items-center gap-2">
-              1Y
-              <ChevronDown size={14} className="text-[#525866]" />
-            </button>
-          </div>
-
-          <button className="flex items-center gap-2 px-3 py-1.5 border border-[#E1E4EA] rounded-md text-[13px] font-medium leading-[120%] text-[#0E121B] hover:bg-gray-50 transition-all">
-            <Download size={14} strokeWidth={1.5} className="text-[#525866]" />
-            <span>Export Report</span>
-          </button>
-        </div>
-
-        {/* Desktop Controls */}
-        <div className="hidden sm:flex items-center justify-end gap-2 w-auto">
-          <div className="flex bg-gray-100 rounded-md p-0.5 text-[12px] font-medium leading-[120%]">
-            <button className="px-2.5 py-1 bg-white text-gray-900 rounded">
-              1Y
-            </button>
-            <button className="px-2.5 py-1 text-gray-500 hover:text-gray-900">
-              3Y
-            </button>
-            <button className="px-2.5 py-1 text-gray-500 hover:text-gray-900">
-              5Y
-            </button>
-            <button className="px-2.5 py-1 text-gray-500 hover:text-gray-900">
-              All
-            </button>
-          </div>
-
-          <button className="flex items-center gap-1.5 px-2.5 py-1 border border-[#E1E4EA] rounded-md text-[11px] md:text-[12px] font-medium leading-[120%] text-[#525866] hover:bg-gray-50 h-7 whitespace-nowrap">
-            <Download size={13} strokeWidth={1.5} />
-            <span>Export Report</span>
-          </button>
-        </div>
       </div>
+
+      {/* Line below title */}
+      <div className="h-px w-full bg-[#E1E4EA] mb-6"></div>
 
       <div className="h-[240px] md:h-[450px] w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -115,12 +79,8 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
                 if (active && payload && payload.length) {
                   return (
                     <div className="bg-gray-900 text-white text-[11px] font-normal leading-[120%] py-1 px-2 rounded flex flex-col items-center z-10 relative">
-                      <span className="font-semibold">
-                        {payload[0].value}
-                      </span>
-                      <span className="text-gray-400 text-[9px]">
-                        H-Index
-                      </span>
+                      <span className="font-semibold">{payload[0].value}</span>
+                      <span className="text-gray-400 text-[9px]">H-Index</span>
                       <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-t-[3px] border-t-gray-900"></div>
                     </div>
                   );

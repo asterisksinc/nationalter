@@ -1,55 +1,47 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { analyticsData } from "../data";
-import {
-  RadialBarChart,
-  RadialBar,
-  ResponsiveContainer,
-  Tooltip,
-  Cell,
-} from "recharts";
+import { useInViewOnce } from "./useInViewOnce";
+
+// Colors to match Figma screenshot: Dark brown-orange, Orange, Amber-yellow
+const COLORS = ["#B76A2E", "#EA580C", "#F59E0B"] as const;
+
+const ARC_RADII = [72, 58, 44] as const;
+const ARC_STROKE = 6;
+
+function arcStrokeDash(value: number, radius: number) {
+  const clamped = Math.max(0, Math.min(value, 100));
+  const circumference = 2 * Math.PI * radius;
+  return `${(clamped / 100) * circumference} ${circumference}`;
+}
 
 export default function ArisScoreCard() {
   const { aris } = analyticsData;
-  const [mounted, setMounted] = useState(false);
+  const { ref, inView } = useInViewOnce<HTMLDivElement>();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Colors to match Figma screenshot: Dark brown-orange, Orange, Amber-yellow
-  const COLORS = ["#B76A2E", "#EA580C", "#F59E0B"];
-
-  // Prepare data for RadialBarChart
-  // Outermost to innermost corresponds to the order in the data array
-  // We want H-Index (83%) to be outermost
   const chartData = [
-    { name: "H-Index Impact", value: 83, fill: COLORS[0] },
-    { name: "Productivity", value: 13, fill: COLORS[1] },
-    { name: "Field Weight", value: 4, fill: COLORS[2] },
-  ].reverse(); // RadialBarChart often maps last item to outermost depending on config, but lets check.
-  // Actually, for RadialBarChart, default is innerRadius to outerRadius.
-  // We want the most significant one to be outermost.
-
-  if (!mounted)
-    return (
-      <div className="h-[400px] bg-white rounded-xl border border-gray-200 animate-pulse" />
-    );
+    { name: "H-Index Impact", value: 83, arcValue: 83, fill: COLORS[0] },
+    { name: "Productivity", value: 13, arcValue: 62, fill: COLORS[1] },
+    { name: "Field Weight", value: 4, arcValue: 48, fill: COLORS[2] },
+  ];
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
+    <div
+      ref={ref}
+      className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden"
+    >
       {/* Card Header */}
-      <div className="p-6 pb-4 flex justify-between items-start">
+      <div className="relative p-5 pb-3.5 flex justify-between items-start">
         <div>
-          <h5 className="text-xl font-bold text-gray-900">
+          <h5 className="text-xl leading-tight font-semibold text-gray-900">
             Adjusted Research Impact Score
           </h5>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-[4px] text-gray-300 mt-1">
             {analyticsData.profile.field} Cohort • 2,847 researchers
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <span className="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100 uppercase">
             Elite
           </span>
@@ -70,117 +62,89 @@ export default function ArisScoreCard() {
             92th Percentile
           </span>
         </div>
+
+        <div className="pointer-events-none absolute left-5 right-5 bottom-0 h-px bg-gray-300" />
       </div>
 
       {/* Score & Formula Row */}
-      <div className="grid grid-cols-2 border-y border-gray-100">
-        <div className="p-4 px-6 border-r border-gray-100">
+      <div className="relative grid grid-cols-2">
+        <div className="p-3.5 px-5">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
             ARIS Score
           </div>
-          <div className="text-4xl font-bold text-gray-900 leading-none">
+          <div className="text-[40px] md:text-[38px] font-semibold text-gray-900 leading-none">
             {aris.score}
           </div>
         </div>
-        <div className="p-4 px-6">
+        <div className="p-3.5 px-5">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
             Formula
           </div>
-          <div className="text-sm font-bold text-gray-800 font-mono">
+          <div className="text-xl font-semibold text-gray-900 leading-tight">
             H × ln(P+1) × FW
           </div>
-          <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+          <div className="text-sm text-gray-500 mt-0.5">
             {aris.formula.values}
           </div>
         </div>
+
+        <div className="pointer-events-none absolute left-5 right-5 bottom-0 h-px bg-gray-300" />
+        <div className="pointer-events-none absolute top-3 bottom-3 left-1/2 w-px -translate-x-1/2 bg-gray-300" />
       </div>
 
       {/* Chart & Legend Section */}
-      <div className="p-6 flex flex-col md:flex-row items-center justify-between gap-8">
-        {/* Center: Radial Chart */}
-        <div className="relative w-64 h-64 shrink-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <RadialBarChart
-              cx="50%"
-              cy="50%"
-              innerRadius="20%"
-              outerRadius="75%"
-              barSize={8}
-              data={chartData}
-              startAngle={90}
-              endAngle={-270}
-            >
-              <RadialBar
-                background={{ fill: "transparent" }}
-                dataKey="value"
-                cornerRadius={10}
+      <div className="p-5 flex items-center justify-between gap-8">
+        <div className="relative w-[260px] h-[190px] shrink-0">
+          <svg viewBox="0 0 220 180" className="w-full h-full">
+            {/* Background dotted guides */}
+            {[72, 58, 44, 30].map((r) => (
+              <circle
+                key={r}
+                cx="92"
+                cy="90"
+                r={r}
+                fill="none"
+                stroke="#CBD5E1"
+                strokeWidth="1.25"
+                strokeDasharray="2 8"
+                opacity="0.65"
               />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: "8px",
-                  border: "none",
-                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                  fontSize: "12px",
+            ))}
+
+            {chartData.map((item, idx) => (
+              <circle
+                key={item.name}
+                cx="92"
+                cy="90"
+                r={ARC_RADII[idx]}
+                fill="none"
+                stroke={item.fill}
+                strokeWidth={ARC_STROKE}
+                strokeLinecap="round"
+                strokeDasharray={arcStrokeDash(
+                  inView ? item.arcValue : 0,
+                  ARC_RADII[idx],
+                )}
+                transform="rotate(-145 92 90)"
+                style={{
+                  transition: `stroke-dasharray 900ms ease-out ${idx * 90}ms`,
                 }}
               />
-            </RadialBarChart>
-          </ResponsiveContainer>
+            ))}
+          </svg>
 
-          {/* Background Dashed Rings - Manual SVG */}
-          <div className="absolute inset-0 pointer-events-none">
-            <svg viewBox="0 0 100 100" className="w-full h-full opacity-10">
-              <circle
-                cx="50"
-                cy="50"
-                r="10"
-                fill="none"
-                stroke="#64748b"
-                strokeWidth="0.5"
-                strokeDasharray="2,2"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="20"
-                fill="none"
-                stroke="#64748b"
-                strokeWidth="0.5"
-                strokeDasharray="2,2"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="30"
-                fill="none"
-                stroke="#64748b"
-                strokeWidth="0.5"
-                strokeDasharray="2,2"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                fill="none"
-                stroke="#64748b"
-                strokeWidth="0.5"
-                strokeDasharray="2,2"
-              />
-            </svg>
-          </div>
-
-          {/* Center Text */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-3xl font-bold text-gray-900 leading-none">
+          <div className="absolute left-[42%] top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none">
+            <span className="text-[24px] leading-none font-normal text-gray-900">
               {aris.score}
             </span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-              ARIS Score
+            <span className="text-[8px] text-slate-500 mt-1 uppercase tracking-wider">
+              ARIS SCORE
             </span>
           </div>
         </div>
 
         {/* Right: Legend */}
-        <div className="flex-1 space-y-4 w-full max-w-[240px]">
+        <div className="flex-1 space-y-5 w-full max-w-[300px] pr-1">
           {[
             { label: "H-Index Impact", value: 83, color: COLORS[0] },
             { label: "Productivity", value: 13, color: COLORS[1] },
@@ -194,12 +158,12 @@ export default function ArisScoreCard() {
                 <div
                   className="w-4 h-4 rounded"
                   style={{ backgroundColor: item.color }}
-                ></div>
-                <span className="text-sm font-medium text-slate-600 group-hover:text-gray-900 transition-colors">
+                />
+                <span className="text-sm font-medium text-slate-700 group-hover:text-gray-900 transition-colors">
                   {item.label}
                 </span>
               </div>
-              <span className="text-sm font-bold text-gray-900">
+              <span className="text-xl font-semibold text-gray-900">
                 {item.value}%
               </span>
             </div>

@@ -1,9 +1,0 @@
-export { DashboardSidebar } from "./DashboardSidebar";
-export { DashboardHeader } from "./DashboardHeader";
-export { SidebarItem } from "./SidebarItem";
-export { StatItem } from "./StatItem";
-export { StatusBadge } from "./StatusBadge";
-export { ProfileGauge } from "./ProfileGauge";
-export { HIndexChart } from "./HIndexChart";
-export { ProfileCompleteness } from "./ProfileCompleteness";
-export { TicketsTable } from "./TicketsTable";
