@@ -26,9 +26,7 @@
     "nodemailer": "^7.0.13",
     "prisma": "^5.15.0",
     "react": "^18.3.1",
-    "react-datamaps-india": "^0.6.0",
     "react-dom": "^18.3.1",
-    "react-india-states-map": "^1.0.0",
     "react-simple-maps": "^3.0.0",
     "recharts": "^3.7.0"
   },
