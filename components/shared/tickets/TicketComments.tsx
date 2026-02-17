@@ -98,19 +98,7 @@ export function TicketComments({
       ) : (
         <div className="space-y-4 mb-6">
           {comments.map((comment) => {
-            console.log("Comment data:", comment);
-            console.log("Comment text:", comment.comments);
-            
-            // Check if comment was written by admin (multiple detection methods)
-            const isAdminComment = 
-              comment.comments.startsWith("[ADMIN] ") ||
-              comment.comments.startsWith("[Admin] ") ||
-              comment.comments.startsWith("ADMIN:") ||
-              comment.comments.includes("Support Team:") ||
-              comment.comments.includes("[Support]");
-            
-            console.log("Is admin comment:", isAdminComment);
-            
+            // Remove admin prefixes from comment text
             const displayComment = comment.comments
               .replace(/^\[ADMIN\]\s*/i, "")
               .replace(/^ADMIN:\s*/i, "")
@@ -131,7 +119,7 @@ export function TicketComments({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-[#525866]">
-                        {isAdminComment ? "Admin" : "You"}
+                        Admin
                       </span>
                       <span className="text-xs text-[#525866]">
                         {formatDate(comment.createdAt)}
