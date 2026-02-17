@@ -25,11 +25,17 @@ function TicketsPageContent() {
     try {
       const res = await fetch("/api/dashboard/scholar/me");
       const json = await res.json();
+      console.log("API Response:", json);
       if (json.success && json.data) {
         setUserData(json.data);
         if (json.data.tickets) {
+          console.log("Tickets from API:", json.data.tickets);
           setTickets(json.data.tickets);
+        } else {
+          console.log("No tickets in response");
         }
+      } else {
+        console.error("API returned error:", json);
       }
     } catch (error) {
       console.error("Failed to fetch tickets:", error);
@@ -75,6 +81,9 @@ function TicketsPageContent() {
   const filteredTickets = tickets.filter(
     (t) => t.issueType !== "NEW_REGISTRATION",
   );
+  
+  console.log("Total tickets:", tickets.length);
+  console.log("Filtered tickets:", filteredTickets.length);
 
   const openCount = filteredTickets.filter(
     (t) =>
