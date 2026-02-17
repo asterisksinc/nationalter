@@ -2,70 +2,38 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
 import { DashboardSidebar } from "../../component/dashboardsidebar";
 import { DashboardHeader } from "../../component/DashboardHeader";
-import { ArrowLeft, Check, X, AlertCircle } from "lucide-react";
-import "../../adminstyle.css";
-import "../../monetization/mstyle.css";
-
-interface RegistrantData {
-  id: number;
-  name: string;
-  email: string;
-  mobile?: string;
-  institute?: string;
-  instituteEmail?: string;
-  orcidId?: string;
-  primaryDomain?: string;
-  googleScholarUrl?: string;
-  medCouncilRegNo?: string;
-  stateCouncil?: string;
-  primaryHospital?: string;
-  specialty?: string;
-  researchFocus?: string;
-  domain?: string;
-  number?: string;
-}
-
-interface PotentialMatch {
-  nationciteId: string;
-  name: string;
-  organization?: string;
-  hIndexTotal?: number;
-  worldRank?: number | null;
-}
-
-interface LinkedPublicRecord {
-  nationciteId: string;
-  scholarName?: string;
-  orgName?: string;
-  mainSubject?: string;
-  subField?: string;
-  hIndexTotal?: number;
-  hIndexLast5?: number;
-  worldRank?: number | null;
-  countryRank?: number | null;
-  universityRank?: number | null;
-}
+import { ArrowLeft, Check, X, MessageCircle, ExternalLink, FileText, CheckCircle2, CircleCheck } from "lucide-react";
 
 interface RegistrationData {
   registration: {
-    id: number;
-    nationciteId: string;
-    type: string;
+    type: "RESEARCHER" | "ORG" | "MEDICAL";
     status: string;
     ticketId: string;
   };
-  ticket: {
-    ticketId: string;
+  registrantData: {
     name: string;
-    type: string;
-    status: string;
-    createdAt: string;
+    email: string;
+    institute?: string;
+    orcidId?: string;
+    googleScholarUrl?: string;
+    officialDomain?: string;
+    adminName?: string;
+    adminMobile?: string;
+    adminEmail?: string;
+    medCouncilRegNo?: string;
+    stateCouncil?: string;
+    primaryHospital?: string;
+    specialty?: string;
+    researchFocus?: string;
+    researchCategories?: string[];
+    referral?: string;
+    purpose?: string;
+    hIndex?: number;
+    citations?: string;
   };
-  registrantData: RegistrantData;
-  potentialMatches: PotentialMatch[];
-  linkedPublicRecord?: LinkedPublicRecord | null;
 }
 
 export default function RegistrationReviewPage() {
@@ -75,1088 +43,578 @@ export default function RegistrationReviewPage() {
 
   const [data, setData] = useState<RegistrationData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedMatch, setSelectedMatch] = useState<string>("");
-  const [customNationCiteId, setCustomNationCiteId] = useState("");
-  const [useCustomId, setUseCustomId] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
-  const [showRejectModal, setShowRejectModal] = useState(false);
-
-  const [showRevokeModal, setShowRevokeModal] = useState(false);
-
+  const [activeModal, setActiveModal] = useState<"APPROVE" | "REJECT" | "REQUEST" | null>(null);
   useEffect(() => {
-    if (ticketId) {
-      fetchRegistrationData();
-    }
+    // Mocking data based on ticketId for design demonstration
+    const mockFetch = () => {
+      let type: "RESEARCHER" | "ORG" | "MEDICAL" = "RESEARCHER";
+      if (ticketId?.startsWith("ORG")) type = "ORG";
+      if (ticketId?.startsWith("MED")) type = "MEDICAL";
+
+      setData({
+        registration: { type, status: "PENDING", ticketId: ticketId || "REG-2048" },
+        registrantData: {
+          name: "Dr. Aditya Sharma",
+          email: "aditya@iitd.ac.in",
+          institute: "IIT Delhi",
+          orcidId: "0000-0002-1823-4567",
+          googleScholarUrl: "#",
+          officialDomain: "iitd.ac.in",
+          adminName: "Dr. Rajesh Kumar",
+          adminMobile: "+91 98765 43210",
+          adminEmail: "rajesh.kumar@iitd.ac.in",
+          medCouncilRegNo: "MCI-12345",
+          stateCouncil: "Tamil Nadu Medical Council",
+          primaryHospital: "Apollo Hospital Chennai",
+          specialty: "Cardiology",
+          researchFocus: "Cardiovascular Disease Prevention",
+          researchCategories: ["AI/AM", "Computer Vision"],
+          referral: "IIT Newsletter",
+          purpose: "H-index Tracking for Promotion and Research Impact Measurement",
+          hIndex: 24,
+          citations: "1,240"
+        }
+      });
+      setLoading(false);
+    };
+    mockFetch();
   }, [ticketId]);
 
-  const fetchRegistrationData = async () => {
-    setLoading(true);
-    setError(null);
+ 
 
-    try {
-      const response = await fetch(`/api/registration/compare/${ticketId}`, {
-        credentials: "include",
-      });
+  if (loading || !data) return <div className="p-10 text-center">Loading...</div>;
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch registration data");
-      }
-
-      const result = await response.json();
-      setData(result.data);
-
-      if (result.data.potentialMatches?.length > 0) {
-        setSelectedMatch(result.data.potentialMatches[0].nationciteId);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleApprove = async () => {
-    const nationciteId = useCustomId ? customNationCiteId : selectedMatch;
-
-    if (!nationciteId) {
-      alert("Please select or enter a NationCite ID");
-      return;
-    }
-
-    setProcessing(true);
-
-    try {
-      const response = await fetch("/api/tickets/registration-approve", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          ticketId,
-          nationciteId,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to approve registration");
-      }
-
-      alert("Registration approved successfully!");
-      router.push("/admin-overview/registration-requests");
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to approve");
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const handleReject = async () => {
-    setProcessing(true);
-
-    try {
-      const response = await fetch("/api/registration/reject", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          ticketId,
-          reason: rejectReason,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to reject registration");
-      }
-
-      alert("Registration rejected successfully");
-      setShowRejectModal(false);
-      router.push("/admin-overview/registration-requests");
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to reject");
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const handleRevoke = async () => {
-    setProcessing(true);
-
-    try {
-      const response = await fetch("/api/registration/revoke", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ ticketId }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to revoke registration");
-      }
-
-      alert(
-        "Registration revoked. Account deleted and public record unlinked.",
-      );
-      setShowRevokeModal(false);
-      fetchRegistrationData(); // Refresh data
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to revoke");
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const renderRegistrantField = (
-    label: string,
-    value: string | undefined | null,
-  ) => {
-    if (!value) return null;
-    return (
-      <div style={{ marginBottom: "12px" }}>
-        <div style={{ fontSize: "12px", color: "#000", marginBottom: "4px" }}>
-          {label}
-        </div>
-        <div style={{ fontSize: "14px", color: "#000" }}>{value}</div>
-      </div>
-    );
-  };
-
-  if (loading) {
-    return (
-      <div className="admin-layout">
-        <DashboardSidebar activePage="registrations" />
-        <main
-          className="flex-1 ml-[260px] p-8 min-w-[1000px]"
-          style={{ paddingLeft: "0px", paddingTop: "0px", paddingRight: "0px" }}
-        >
-          <DashboardHeader
-            breadcrumbItems={[
-              { label: "Home", href: "/" },
-              {
-                label: "Registration Requests",
-                href: "/admin-overview/registration-requests",
-              },
-              { label: "Review" },
-            ]}
-          />
-          <div style={{ padding: "60px", textAlign: "center", color: "#000" }}>
-            Loading registration data...
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <div className="admin-layout">
-        <DashboardSidebar activePage="registrations" />
-        <main
-          className="flex-1 ml-[260px] p-8 min-w-[1000px]"
-          style={{ paddingLeft: "0px", paddingTop: "0px", paddingRight: "0px" }}
-        >
-          <DashboardHeader
-            breadcrumbItems={[
-              { label: "Home", href: "/" },
-              {
-                label: "Registration Requests",
-                href: "/admin-overview/registration-requests",
-              },
-              { label: "Review" },
-            ]}
-          />
-          <div
-            style={{ padding: "60px", textAlign: "center", color: "#dc3545" }}
-          >
-            {error || "Registration not found"}
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  const isAlreadyProcessed = data.registration.status !== "PENDING";
+  const type = data.registration.type;
 
   return (
-    <div className="admin-layout">
+    <div className="flex min-h-screen bg-[#F9FAFB]">
       <DashboardSidebar activePage="registrations" />
 
-      <main
-        className="flex-1 ml-[260px] p-8 min-w-[1000px]"
-        style={{ paddingLeft: "0px", paddingTop: "0px", paddingRight: "0px" }}
-      >
+      <main className="flex-1 ml-[260px]">
         <DashboardHeader
           breadcrumbItems={[
             { label: "Home", href: "/" },
-            {
-              label: "Registration Requests",
-              href: "/admin-overview/registration-requests",
-            },
-            { label: "Review" },
+            { label: "Registrations", href: "/admin-overview/registration-requests" },
+            { label: ticketId || "Review" },
           ]}
         />
 
-        <section className="admin-content" style={{ padding: "0 32px" }}>
-          <button
-            onClick={() => router.push("/admin-overview/registration-requests")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 0",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#000",
-              marginBottom: "16px",
-            }}
-          >
-            <ArrowLeft size={18} />
-            Back to Registration Requests
-          </button>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "24px",
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "600",
-                  color: "#000",
-                  marginBottom: "4px",
-                }}
-              >
-                Registration Review
-              </h2>
-              <p style={{ color: "#000", fontSize: "14px" }}>
-                Ticket ID: {ticketId}
-              </p>
-            </div>
-
-            {isAlreadyProcessed && (
-              <div
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "6px",
-                  background:
-                    data.registration.status === "APPROVED"
-                      ? "#d4edda"
-                      : "#f8d7da",
-                  color:
-                    data.registration.status === "APPROVED"
-                      ? "#155724"
-                      : "#721c24",
-                }}
-              >
-                {data.registration.status}
-              </div>
-            )}
+        <div className="p-4">
+          {/* Header & Back Button */}
+          <div className="flex items-center mb-6">
+            <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <ArrowLeft size={20} className="text-gray-700" />
+            </button>
+            <h1 className="!text-lg !font-bold !text-gray-900  ">{ticketId}</h1>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "24px",
-            }}
-          >
-            {/* Submitted Data Card */}
-            <div
-              style={{
-                background: "#fff",
-                border: "1px solid #e5e5e5",
-                borderRadius: "12px",
-                padding: "24px",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  marginBottom: "20px",
-                  paddingBottom: "12px",
-                  borderBottom: "1px solid #e5e5e5",
-                  color: "#000",
-                }}
-              >
-                Submitted Registration Data
-              </h3>
-
-              <div
-                style={{
-                  display: "inline-block",
-                  padding: "4px 10px",
-                  borderRadius: "4px",
-                  background: "#f0f0f0",
-                  fontSize: "12px",
-                  fontWeight: "500",
-                  marginBottom: "16px",
-                  color: "#000",
-                }}
-              >
-                {data.registration.type}
-              </div>
-
-              {renderRegistrantField("Name", data.registrantData?.name)}
-              {renderRegistrantField("Email", data.registrantData?.email)}
-              {renderRegistrantField("Mobile", data.registrantData?.mobile)}
-
-              {data.registration.type === "RESEARCHER" && (
-                <>
-                  {renderRegistrantField(
-                    "Institution",
-                    data.registrantData?.institute,
-                  )}
-                  {renderRegistrantField(
-                    "Institute Email",
-                    data.registrantData?.instituteEmail,
-                  )}
-                  {renderRegistrantField(
-                    "ORCID ID",
-                    data.registrantData?.orcidId,
-                  )}
-                  {renderRegistrantField(
-                    "Primary Domain",
-                    data.registrantData?.primaryDomain,
-                  )}
-                  {renderRegistrantField(
-                    "Google Scholar",
-                    data.registrantData?.googleScholarUrl,
-                  )}
-                </>
-              )}
-
-              {data.registration.type === "MEDICAL" && (
-                <>
-                  {renderRegistrantField(
-                    "Medical Council Reg. No.",
-                    data.registrantData?.medCouncilRegNo,
-                  )}
-                  {renderRegistrantField(
-                    "State Council",
-                    data.registrantData?.stateCouncil,
-                  )}
-                  {renderRegistrantField(
-                    "Primary Hospital",
-                    data.registrantData?.primaryHospital,
-                  )}
-                  {renderRegistrantField(
-                    "Specialty",
-                    data.registrantData?.specialty,
-                  )}
-                  {renderRegistrantField(
-                    "Research Focus",
-                    data.registrantData?.researchFocus,
-                  )}
-                </>
-              )}
-
-              {data.registration.type === "ORG" && (
-                <>
-                  {renderRegistrantField("Domain", data.registrantData?.domain)}
-                  {renderRegistrantField(
-                    "Contact Number",
-                    data.registrantData?.number,
-                  )}
-                </>
-              )}
-
-              <div
-                style={{
-                  marginTop: "16px",
-                  paddingTop: "16px",
-                  borderTop: "1px solid #e5e5e5",
-                  fontSize: "12px",
-                  color: "#000",
-                }}
-              >
-                Submitted: {new Date(data.ticket.createdAt).toLocaleString()}
-              </div>
-            </div>
-
-            {/* Match Selection Card */}
-            <div
-              style={{
-                background: "#fff",
-                border: "1px solid #e5e5e5",
-                borderRadius: "12px",
-                padding: "24px",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  marginBottom: "20px",
-                  paddingBottom: "12px",
-                  borderBottom: "1px solid #e5e5e5",
-                  color: "#000",
-                }}
-              >
-                Assign NationCite ID
-              </h3>
-
-              {!isAlreadyProcessed && (
-                <>
-                  {data.potentialMatches.length > 0 && (
-                    <div style={{ marginBottom: "20px" }}>
-                      <label
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          marginBottom: "12px",
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          checked={!useCustomId}
-                          onChange={() => setUseCustomId(false)}
-                        />
-                        <span
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            color: "#000",
-                          }}
-                        >
-                          Select from potential matches
-                        </span>
-                      </label>
-
-                      <div
-                        style={{
-                          maxHeight: "200px",
-                          overflowY: "auto",
-                          border: "1px solid #e5e5e5",
-                          borderRadius: "8px",
-                          opacity: useCustomId ? 0.5 : 1,
-                        }}
-                      >
-                        {data.potentialMatches.map((match) => (
-                          <label
-                            key={match.nationciteId}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "12px",
-                              padding: "12px",
-                              borderBottom: "1px solid #f0f0f0",
-                              cursor: useCustomId ? "not-allowed" : "pointer",
-                              background:
-                                selectedMatch === match.nationciteId &&
-                                !useCustomId
-                                  ? "#f8f9fa"
-                                  : "transparent",
-                            }}
-                          >
-                            <input
-                              type="radio"
-                              name="match"
-                              value={match.nationciteId}
-                              checked={
-                                selectedMatch === match.nationciteId &&
-                                !useCustomId
-                              }
-                              onChange={(e) => setSelectedMatch(e.target.value)}
-                              disabled={useCustomId}
-                            />
-                            <div style={{ flex: 1 }}>
-                              <div
-                                style={{
-                                  fontWeight: "500",
-                                  fontSize: "14px",
-                                  color: "#000",
-                                }}
-                              >
-                                {match.name}
-                              </div>
-                              <div style={{ fontSize: "12px", color: "#000" }}>
-                                {match.nationciteId}
-                                {match.organization &&
-                                  ` - ${match.organization}`}
-                              </div>
-                              {match.hIndexTotal !== undefined && (
-                                <div
-                                  style={{ fontSize: "11px", color: "#000" }}
-                                >
-                                  H-Index: {match.hIndexTotal}
-                                  {match.worldRank &&
-                                    ` | Rank: #${match.worldRank}`}
-                                </div>
-                              )}
-                            </div>
-                          </label>
-                        ))}
-                      </div>
+          <div className="space-y-6">
+            {/* SCREEN 1: RESEARCHER DESIGN */}
+            {type === "RESEARCHER" && (
+              <>
+                {/* Profile Card */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-8 flex gap-8 items-center shadow-sm">
+                  <div className="relative w-28 h-28 rounded-xl overflow-hidden bg-gray-100">
+                    <Image src="/api/placeholder/112/112" alt="Profile" fill className="object-cover" />
+                  </div>
+                  <div className="grid grid-cols-2 flex-1 gap-y-4">
+                    <div>
+                      <p className=" text-xs!  font-medium!  text-gray-400!  uppercase!  mb-1!">Name</p>
+                      <h3 className=" text-base!  font-bold!  text-gray-900! ">{data.registrantData.name}</h3>
                     </div>
-                  )}
+                    <div>
+                      <p className="text-xs! font-medium! text-gray-400! uppercase! mb-1">Institution</p>
+                      <p className=" text-sm!  font-semibold! text-gray-900!">{data.registrantData.institute}</p>
+                    </div>
+                    <div>
+                      <p className=" text-xs! font-medium! text-gray-400! uppercase! mb-1!">Email</p>
+                      <p className="text-sm! font-semibold! text-gray-900!">{data.registrantData.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs! font-medium! text-gray-400! uppercase! mb-1!">ORCID</p>
+                      <p className="text-sm! font-semibold! text-gray-900!">{data.registrantData.orcidId}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs! font-medium! text-gray-400! uppercase! mb-1!">Google Scholar</p>
+                      <a href="#" className="text-sm font-bold text-[#FF7F3E] flex items-center gap-1 hover:underline">
+                        View Profile <ExternalLink size={14} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-                  <div>
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        checked={useCustomId}
-                        onChange={() => setUseCustomId(true)}
-                      />
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          color: "#000",
-                        }}
-                      >
-                        Enter NationCite ID manually
-                      </span>
-                    </label>
-
-                    <input
-                      type="text"
-                      value={customNationCiteId}
-                      onChange={(e) => setCustomNationCiteId(e.target.value)}
-                      placeholder="e.g., SC0000001"
-                      disabled={!useCustomId}
-                      style={{
-                        width: "100%",
-                        padding: "10px 12px",
-                        border: "1px solid #e5e5e5",
-                        borderRadius: "6px",
-                        fontSize: "14px",
-                        opacity: !useCustomId ? 0.5 : 1,
-                        color: "#000",
-                      }}
-                    />
+                <div className="grid grid-cols-2 gap-6">
+                  {/* Documents Section */}
+                  <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                    <h3 className="text-base! font-bold! text-gray-900! mb-1!  ">Uploaded Documents</h3>
+                    <div className="space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex items-center justify-between p-2 border border-gray-100 rounded-xl">
+                          <div className="flex items-center gap-1">
+                            <div className="p-2 bg-red-50 text-red-500 rounded-lg"><FileText size={20} /></div>
+                            <div>
+                              <p className="text-sm! font-bold! text-gray-900!">document.pdf</p>
+                              <p className="text-[11px]! text-gray-400! font-medium!">3 MB</p>
+                            </div>
+                          </div>
+                          <button className="text-sm font-bold text-[#FF7F3E] hover:underline">View</button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {data.potentialMatches.length === 0 && (
-                    <div
-                      style={{
-                        padding: "16px",
-                        background: "#fff3cd",
-                        borderRadius: "8px",
-                        marginTop: "16px",
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <AlertCircle size={20} style={{ color: "#dc3545" }} />
-                      <div style={{ fontSize: "13px", color: "#000" }}>
-                        No matching pre-seeded records found. Please enter a
-                        NationCite ID manually.
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-
-              {isAlreadyProcessed && (
-                <div>
-                  {data.registration.status === "APPROVED" ? (
-                    <div>
-                      <div
-                        style={{
-                          padding: "16px",
-                          background: "#d4edda",
-                          borderRadius: "8px",
-                          marginBottom: "16px",
-                        }}
-                      >
-                        <p
-                          style={{
-                            color: "#155724",
-                            fontWeight: "600",
-                            marginBottom: "8px",
-                          }}
-                        >
-                          Approved and Linked
-                        </p>
-                        <p style={{ color: "#155724", fontSize: "14px" }}>
-                          NationCite ID:{" "}
-                          <strong>{data.registration.nationciteId}</strong>
-                        </p>
-                      </div>
-
-                      <div
-                        style={{
-                          padding: "16px",
-                          background: "#f8f9fa",
-                          borderRadius: "8px",
-                          marginBottom: "16px",
-                        }}
-                      >
-                        <h4
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "600",
-                            marginBottom: "12px",
-                            color: "#222",
-                          }}
-                        >
-                          Linked Public Record
-                        </h4>
-                        {data.linkedPublicRecord ? (
-                          <div style={{ fontSize: "13px", color: "#444" }}>
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>NationCite ID:</strong>{" "}
-                              {data.linkedPublicRecord.nationciteId}
-                            </p>
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>Name:</strong>{" "}
-                              {data.linkedPublicRecord.scholarName ||
-                                data.linkedPublicRecord.orgName}
-                            </p>
-                            {data.linkedPublicRecord.orgName &&
-                              data.registration.type !== "ORG" && (
-                                <p style={{ marginBottom: "6px" }}>
-                                  <strong>Organization:</strong>{" "}
-                                  {data.linkedPublicRecord.orgName}
-                                </p>
-                              )}
-                            {data.linkedPublicRecord.mainSubject && (
-                              <p style={{ marginBottom: "6px" }}>
-                                <strong>Main Subject:</strong>{" "}
-                                {data.linkedPublicRecord.mainSubject}
-                              </p>
-                            )}
-                            {data.linkedPublicRecord.subField && (
-                              <p style={{ marginBottom: "6px" }}>
-                                <strong>Sub-field:</strong>{" "}
-                                {data.linkedPublicRecord.subField}
-                              </p>
-                            )}
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>H-Index (Total):</strong>{" "}
-                              {data.linkedPublicRecord.hIndexTotal || 0}
-                            </p>
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>H-Index (Last 5 Years):</strong>{" "}
-                              {data.linkedPublicRecord.hIndexLast5 || 0}
-                            </p>
-                            {data.linkedPublicRecord.worldRank && (
-                              <p style={{ marginBottom: "6px" }}>
-                                <strong>World Rank:</strong> #
-                                {data.linkedPublicRecord.worldRank}
-                              </p>
-                            )}
-                            {data.linkedPublicRecord.countryRank && (
-                              <p style={{ marginBottom: "6px" }}>
-                                <strong>Country Rank:</strong> #
-                                {data.linkedPublicRecord.countryRank}
-                              </p>
-                            )}
-                            <p
-                              style={{
-                                marginBottom: "6px",
-                                marginTop: "12px",
-                                paddingTop: "12px",
-                                borderTop: "1px solid #e5e5e5",
-                              }}
-                            >
-                              <strong>Account Type:</strong>{" "}
-                              {data.registration.type}
-                            </p>
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>Account Email:</strong>{" "}
-                              {data.registrantData?.email}
-                            </p>
-                            <p style={{ marginBottom: "6px" }}>
-                              <strong>Account Status:</strong>{" "}
-                              <span
-                                style={{ color: "#28a745", fontWeight: "600" }}
-                              >
-                                Active
-                              </span>
-                            </p>
+                  <div className="space-y-6">
+                    {/* Research Info Card */}
+                    <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                      <div className="grid grid-cols-2 gap-6 mb-6">
+                        <div>
+                          <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-2!">Research Categories</p>
+                          <div className="flex gap-2">
+                            {data.registrantData.researchCategories?.map(cat => (
+                              <span key={cat} className="px-3 py-1 bg-blue-50 text-blue-600 text-[11px] font-bold rounded-full">{cat}</span>
+                            ))}
                           </div>
-                        ) : (
-                          <div
-                            style={{
-                              fontSize: "13px",
-                              color: "#666",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            <p>
-                              No linked public record found. This may be a newly
-                              created profile.
-                            </p>
-                            <p style={{ marginTop: "8px", fontSize: "12px" }}>
-                              <strong>Account Email:</strong>{" "}
-                              {data.registrantData?.email}
-                            </p>
-                          </div>
-                        )}
+                        </div>
+                        <div>
+                          <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-2!">Referral</p>
+                          <p className="text-sm! font-bold! text-gray-900!">"{data.registrantData.referral}"</p>
+                        </div>
                       </div>
+                      <div>
+                        <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-2!">Purpose</p>
+                        <p className="text-sm! font-bold! text-gray-900! leading-relaxed!">"{data.registrantData.purpose}"</p>
+                      </div>
+                    </div>
 
-                      <button
-                        onClick={() => setShowRevokeModal(true)}
-                        style={{
-                          width: "100%",
-                          padding: "12px",
-                          borderRadius: "6px",
-                          border: "1px solid #dc3545",
-                          background: "#fff",
-                          color: "#dc3545",
-                          fontWeight: "500",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                        }}
-                      >
-                        Revoke Approval
-                      </button>
-                      <p
-                        style={{
-                          fontSize: "11px",
-                          color: "#666",
-                          marginTop: "8px",
-                          textAlign: "center",
-                        }}
-                      >
-                        This will delete the user account and unlink from public
-                        record
-                      </p>
+                    {/* Impact Card Preview */}
+                    <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                      <h3 className="text-base! font-bold! text-gray-900! mb-3! !important">Impact Card Preview</h3>
+                      <div className="flex justify-between">
+                        <div>
+                          <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">H-Index</p>
+                          <p className="text-xl! font-bold! text-gray-900!">{data.registrantData.hIndex}</p>
+                        </div>
+                        <div className="text-right border-l pl-2 border-gray-300 ">
+                          <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Citations</p>
+                          <p className="text-xl! font-bold! text-gray-900!">{data.registrantData.citations}</p>
+                        </div>
+                      </div>
                     </div>
-                  ) : (
-                    <div
-                      style={{
-                        padding: "20px",
-                        background: "#f8d7da",
-                        borderRadius: "8px",
-                        textAlign: "center",
-                      }}
-                    >
-                      <p style={{ color: "#721c24", marginBottom: "8px" }}>
-                        This registration has been rejected
-                      </p>
-                      <p style={{ fontWeight: "500", color: "#721c24" }}>
-                        Status: {data.registration.status}
-                      </p>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              )}
+              </>
+            )}
+
+            {/* SCREEN 2: ORGANIZATION DESIGN */}
+            {type === "ORG" && (
+  <div className="space-y-6">
+    <div className="grid grid-cols-2 gap-4">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <div className="space-y-3">
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Official Domain</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.officialDomain}</p>
+          </div>
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Institution</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.institute}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <h3 className="text-sm! font-bold! text-gray-900! mb-2! ">Admin Contact</h3>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="border-r border-gray-300 " >
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Name</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.adminName}</p>
+           </div>
+          
+          <div className="border-r border-gray-300 ">
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Mobile</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.adminMobile}</p>
+          </div>
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Email</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.adminEmail}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm h-fit">
+        <h3 className="text-sm! font-bold! text-gray-900! mb-2! !important">Uploaded Documents</h3>
+        <div className="flex items-center justify-between p-2 border border-gray-200 rounded-xl">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-50 text-red-500 rounded-lg"><FileText size={20} /></div>
+            <div>
+              <p className="text-sm! font-bold! text-gray-900!">document.pdf</p>
+              <p className="text-[11px]! text-gray-400!">3 MB</p>
             </div>
           </div>
+          <button className="text-sm font-bold text-[#FF7F3E] hover:underline">View</button>
+        </div>
+      </div>
 
-          {/* Action Buttons */}
-          {!isAlreadyProcessed && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "12px",
-                marginTop: "24px",
-                paddingTop: "24px",
-                borderTop: "1px solid #e5e5e5",
-              }}
-            >
-              <button
-                onClick={() => setShowRejectModal(true)}
-                disabled={processing}
-                style={{
-                  padding: "10px 24px",
-                  borderRadius: "6px",
-                  border: "1px solid #dc3545",
-                  background: "#fff",
-                  color: "#dc3545",
-                  fontWeight: "500",
-                  cursor: processing ? "not-allowed" : "pointer",
-                  opacity: processing ? 0.7 : 1,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                <X size={16} />
-                Reject
-              </button>
-
-              <button
-                onClick={handleApprove}
-                disabled={
-                  processing ||
-                  (!selectedMatch && !customNationCiteId) ||
-                  (useCustomId && !customNationCiteId)
-                }
-                style={{
-                  padding: "10px 24px",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: "#28a745",
-                  color: "#fff",
-                  fontWeight: "500",
-                  cursor:
-                    processing ||
-                    (!selectedMatch && !customNationCiteId) ||
-                    (useCustomId && !customNationCiteId)
-                      ? "not-allowed"
-                      : "pointer",
-                  opacity:
-                    processing ||
-                    (!selectedMatch && !customNationCiteId) ||
-                    (useCustomId && !customNationCiteId)
-                      ? 0.7
-                      : 1,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                <Check size={16} />
-                {processing ? "Processing..." : "Approve & Assign"}
-              </button>
+      <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+        <h3 className="text-sm! font-bold! text-gray-900! mb-3! !important">Impact Card Preview</h3>
+        <div className="grid grid-cols-2 gap-y-4">
+          {["Computer Science", "Electrical Engineering", "Physics", "Mechanical Engineering", "Mathematics"].map(subj => (
+            <div key={subj} className="flex items-center gap-2 text-sm font-medium text-gray-600">
+              <Check size={14} className="text-green-500" /> 
+              <p className="text-sm! font-bold! text-gray-600!">{subj}</p>
             </div>
-          )}
-        </section>
-      </main>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
-      {/* Reject Modal */}
-      {showRejectModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "12px",
-              width: "100%",
-              maxWidth: "450px",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "18px",
-                fontWeight: "600",
-                marginBottom: "16px",
-                color: "#000",
-              }}
-            >
-              Reject Registration
-            </h3>
+            {/* SCREEN 3: MEDICAL PROFESSIONAL DESIGN */}
+            {type === "MEDICAL" && (
+  <div className="space-y-6">
+    <div className="grid grid-cols-2 gap-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <div className="space-y-4">
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Name</p>
+            <p className="text-sm! font-bold! text-gray-900!">Dr. Priya Rao</p>
+          </div>
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Primary Hospital</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.primaryHospital}</p>
+          </div>
+          <div>
+            <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Specialty</p>
+            <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.specialty}</p>
+          </div>
+        </div>
+      </div>
 
-            <p
-              style={{ color: "#000", marginBottom: "16px", fontSize: "14px" }}
-            >
-              Are you sure you want to reject this registration? The user will
-              be notified via email.
-            </p>
+      <div className="space-y-6">
+        <div className="bg-green-50 border border-green-100 p-4 rounded-xl flex justify-between items-center">
+          <div className="flex items-center gap-2 text-green-700 text-sm font-bold">
+             <CircleCheck  className="w-4 h-4 rounded-full bg-green-500"/>             <p className="text-sm! font-bold! text-green-700!">priya@apollo.com</p>
+          </div>
+          <p className="text-[11px]! font-bold! text-green-700!">Email is Verified</p>
+        </div>
 
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  color: "#000",
-                }}
+        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm ">
+          <h3 className="text-sm! font-bold! text-gray-900! mb-3!  ">Medical Council</h3>
+          <div className="flex gap-16">
+            <div>
+              <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">Registration #</p>
+              <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.medCouncilRegNo}</p>
+            </div>
+            <div>
+              <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-1!">State Council</p>
+              <p className="text-sm! font-bold! text-gray-900!">{data.registrantData.stateCouncil}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <h3 className="text-sm! font-bold! text-gray-900! mb-3! !important">Uploaded Documents</h3>
+        <div className="flex items-center justify-between p-2 border border-gray-100 rounded-xl relative">
+          <div className="flex items-center gap-3">
+            <div className="p-1 bg-red-50 text-red-500 rounded-lg"><FileText size={20} /></div>
+            <div>
+              <p className="text-sm! font-bold! text-gray-900!">document.pdf</p>
+              <p className="text-[11px]! text-gray-400!">3 MB</p>
+            </div>
+          </div>
+          <button className="text-sm font-bold text-[#FF7F3E] hover:underline">View</button>
+        </div>
+      </div>
+
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <p className="text-[11px]! font-bold! text-gray-400! uppercase! mb-2!">Research Focus</p>
+        <p className="text-sm! font-bold! text-gray-900! leading-relaxed!">{data.registrantData.researchFocus}</p>
+      </div>
+    </div>
+  </div>
+)}
+
+            {/* Bottom Decision Bar */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex justify-between items-center mt-8">
+              <h3 className="text-base! font-bold! text-gray-900!  ">Final Decision:</h3>
+              <div className="flex! gap-4!">
+              {/* APPROVE BUTTON & MODAL */}
+              <button 
+                onClick={() => setActiveModal("APPROVE")} 
+                className="bg-[#10B981]! hover:bg-[#059669]! text-white! px-8! py-2.5! rounded-lg! flex! items-center! gap-2! font-bold! transition-colors!"
               >
-                Reason (optional)
-              </label>
-              <textarea
-                value={rejectReason}
-                onChange={(e) => setRejectReason(e.target.value)}
-                placeholder="Enter reason for rejection..."
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  border: "1px solid #e5e5e5",
-                  borderRadius: "6px",
-                  minHeight: "80px",
-                  resize: "vertical",
-                  color: "#000",
-                }}
+                <p className="text-sm! font-bold! text-white!">Approve</p> <Check size={18} />
+              </button>
+              <ApproveModal 
+                isOpen={activeModal === "APPROVE"}
+                onClose={() => setActiveModal(null)}
+                registrantId={data.registration.ticketId}
+                registrantType={data.registration.type}
+              />
+
+              {/* REJECT BUTTON & MODAL */}
+              <button 
+                onClick={() => setActiveModal("REJECT")} 
+                className="bg-[#EF4444]! hover:bg-[#DC2626]! text-white! px-8! py-2.5! rounded-lg! flex! items-center! gap-2! font-bold! transition-colors!"
+              >
+                <p className="text-sm! font-bold! text-white!">Reject</p> <X size={18} />
+              </button>
+              <RejectModal 
+                isOpen={activeModal === "REJECT"}
+                onClose={() => setActiveModal(null)}
+                registrantId={data.registration.ticketId}
+              />
+
+              {/* REQUEST MORE DETAILS BUTTON & MODAL */}
+              <button 
+                onClick={() => setActiveModal("REQUEST")} 
+                className="bg-[#FF7F3E]! hover:bg-[#E66A2E]! text-white! px-8! py-2.5! rounded-lg! flex! items-center! gap-2! font-bold! transition-colors!"
+              >
+                <p className="text-sm! font-bold! text-white!">Request More Details ⓘ </p>  
+              </button>
+              <RequestDetailsModal 
+                isOpen={activeModal === "REQUEST"}
+                onClose={() => setActiveModal(null)}
+                registrantId={data.registration.ticketId}
               />
             </div>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "12px",
-              }}
-            >
-              <button
-                onClick={() => setShowRejectModal(false)}
-                disabled={processing}
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  border: "1px solid #e5e5e5",
-                  background: "#fff",
-                  cursor: "pointer",
-                  color: "#000",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleReject}
-                disabled={processing}
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: "#dc3545",
-                  color: "#fff",
-                  fontWeight: "500",
-                  cursor: processing ? "not-allowed" : "pointer",
-                  opacity: processing ? 0.7 : 1,
-                }}
-              >
-                {processing ? "Processing..." : "Confirm Reject"}
-              </button>
             </div>
           </div>
         </div>
-      )}
+      </main>
+    </div>
+  );
+}
+ 
 
-      {/* Revoke Modal */}
-      {showRevokeModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "12px",
-              width: "100%",
-              maxWidth: "450px",
-            }}
+
+interface ApproveModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  registrantId: string;
+  registrantType: string;
+}
+
+export function ApproveModal({ isOpen, onClose, registrantId, registrantType }: ApproveModalProps) {
+  const [template, setTemplate] = useState("");
+  const [customMessage, setCustomMessage] = useState("");
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed! inset-0! z-50! flex! items-center! justify-center! bg-black/50! backdrop-blur-sm!">
+      <div className="bg-white! w-full! max-w-[560px]! rounded-2xl! shadow-2xl! overflow-hidden! animate-in! fade-in! zoom-in! duration-200!">
+        {/* Modal Header */}
+        <div className="flex! items-center! justify-between! p-6! border-b! border-gray-100!">
+          <div>
+            <h2 className="text-lg! font-bold! text-gray-900! leading-tight! !important">
+              Approve
+            </h2>
+            <p className="text-xs! font-medium! text-gray-500! mt-1! !important">
+              {registrantType} ID: {registrantId}
+            </p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2! hover:bg-gray-100! rounded-full! transition-colors! text-gray-400!"
           >
-            <h3
-              style={{
-                fontSize: "18px",
-                fontWeight: "600",
-                marginBottom: "16px",
-                color: "#dc3545",
-              }}
-            >
-              Revoke Approval
-            </h3>
+            <X size={20} />
+          </button>
+        </div>
 
-            <p
-              style={{ color: "#222", marginBottom: "16px", fontSize: "14px" }}
-            >
-              Are you sure you want to revoke this approval? This will:
+        {/* Modal Body */}
+        <div className="p-4! space-y-6!">
+          {/* Template Selection */}
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">
+              Template
             </p>
-
-            <ul
-              style={{
-                color: "#444",
-                marginBottom: "20px",
-                fontSize: "13px",
-                paddingLeft: "20px",
-              }}
-            >
-              <li style={{ marginBottom: "6px" }}>
-                Delete the user&apos;s login account
-              </li>
-              <li style={{ marginBottom: "6px" }}>
-                Unlink from the public NationCite record
-              </li>
-              <li style={{ marginBottom: "6px" }}>
-                Return registration to pending status
-              </li>
-            </ul>
-
-            <p
-              style={{
-                color: "#666",
-                marginBottom: "16px",
-                fontSize: "12px",
-                fontStyle: "italic",
-              }}
-            >
-              The public record will remain in the database and can be re-linked
-              later.
-            </p>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "12px",
-              }}
-            >
-              <button
-                onClick={() => setShowRevokeModal(false)}
-                disabled={processing}
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  border: "1px solid #e5e5e5",
-                  background: "#fff",
-                  cursor: "pointer",
-                  color: "#000",
-                }}
+            <div className="relative!">
+              <select
+                value={template}
+                onChange={(e) => setTemplate(e.target.value)}
+                className="w-full! p-3! bg-white! border! border-gray-200! rounded-xl! text-sm! font-medium! text-gray-700! appearance-none! focus:outline-none! focus:ring-2! focus:ring-[#10B981]/20! focus:border-[#10B981]! transition-all!"
               >
-                Cancel
-              </button>
-              <button
-                onClick={handleRevoke}
-                disabled={processing}
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: "#dc3545",
-                  color: "#fff",
-                  fontWeight: "500",
-                  cursor: processing ? "not-allowed" : "pointer",
-                  opacity: processing ? 0.7 : 1,
-                }}
-              >
-                {processing ? "Processing..." : "Confirm Revoke"}
-              </button>
+                <option value="" disabled >Select a Template</option>
+                <option value="standard">Standard Approval</option>
+                <option value="welcome">Welcome Onboard</option>
+                <option value="priority">Priority Research Access</option>
+              </select>
+              <div className="absolute! inset-y-0! right-4! flex! items-center! pointer-events-none! text-gray-400!">
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </div>
             </div>
           </div>
+
+          {/* Custom Message */}
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">
+              Custom Message
+            </p>
+            <textarea
+              value={customMessage}
+              onChange={(e) => setCustomMessage(e.target.value)}
+              placeholder="Or write a custom message..."
+              className="w-full! min-h-[140px]! p-4! bg-white! border! border-gray-200! rounded-xl! text-sm! font-medium! text-gray-700! placeholder:text-gray-400! focus:outline-none! focus:ring-2! focus:ring-[#10B981]/20! focus:border-[#10B981]! transition-all! resize-none!"
+            />
+          </div>
         </div>
-      )}
+
+        {/* Modal Footer */}
+        <div className="flex! items-center! justify-end! gap-3! p-6! bg-gray-50/50! border-t! border-gray-100!">
+          <button
+            onClick={onClose}
+            className="px-6! py-2.5! bg-white! border! border-gray-200! rounded-lg! text-sm! font-bold! text-gray-600! hover:bg-gray-50! transition-all!"
+          >
+            Cancel
+          </button>
+          <button
+            className="px-6! py-2.5! bg-[#10B981]! hover:bg-[#059669]! text-white! rounded-lg! text-sm! font-bold! transition-all! shadow-sm! shadow-[#10B981]/20!"
+          >
+            Confirm Approve
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
+
+interface RejectModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  registrantId: string;
+}
+
+export function RejectModal({ isOpen, onClose, registrantId }: RejectModalProps) {
+  const [reason, setReason] = useState("");
+  const [template, setTemplate] = useState("");
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed! inset-0! z-50! flex! items-center! justify-center! bg-black/50! backdrop-blur-sm!">
+      <div className="bg-white! w-full! max-w-[560px]! rounded-2xl! shadow-2xl! animate-in! fade-in! zoom-in! duration-200!">
+        <div className="flex! items-center! justify-between! p-4! border-b! border-gray-100!">
+          <div>
+            <h2 className="text-lg! font-bold! text-gray-900! !important">Reject</h2>
+            <p className="text-xs! font-medium! text-gray-500! mt-1! !important">Researcher ID: {registrantId}</p>
+          </div>
+          <button onClick={onClose} className="p-2! hover:bg-gray-100! rounded-full! text-gray-400!"><X size={20} /></button>
+        </div>
+
+        <div className="p-4! space-y-5!">
+          {/* Reason Select */}
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">Reason</p>
+            <select 
+              value={reason} 
+              onChange={(e) => setReason(e.target.value)}
+              className="w-full! p-3! text-black border! border-gray-200! rounded-xl! text-sm! font-medium!"
+            >
+              <option value="">Select a Reason</option>
+              <option value="invalid_docs">Invalid Documents</option>
+              <option value="mismatch">Identity Mismatch</option>
+            </select>
+          </div>
+
+          {/* Template Select */}
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">Template</p>
+            <select 
+              value={template} 
+              onChange={(e) => setTemplate(e.target.value)}
+              className="w-full! p-3! border! text-black border-gray-200! rounded-xl! text-sm! font-medium!"
+            >
+              <option value="">Select a Template</option>
+              <option value="std_reject">Standard Rejection</option>
+            </select>
+          </div>
+
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">Custom Message</p>
+            <textarea 
+              placeholder="Or write a custom message..."
+              className="w-full! min-h-[120px]! p-4! border! text-black border-gray-200! rounded-xl! text-sm! font-medium! resize-none!"
+            />
+          </div>
+        </div>
+
+        <div className="flex! items-center! justify-end! gap-3! p-6! bg-gray-50/50! border-t! border-gray-100!">
+          <button onClick={onClose} className="px-6! py-2.5! bg-white! border! border-gray-200! rounded-lg! text-sm! font-bold! text-gray-600!">Cancel</button>
+          <button className="px-6! py-2.5! bg-[#EF4444]! text-white! rounded-lg! text-sm! font-bold!">Confirm Reject</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
+interface RequestDetailsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  registrantId: string;
+}
+
+export  function RequestDetailsModal({ isOpen, onClose, registrantId }: RequestDetailsModalProps) {
+  if (!isOpen) return null;
+
+  const items = ["Letterhead", "ORCID", "ID Proof", "Publications"];
+
+  return (
+    <div className="fixed! inset-0! z-50! flex! items-center! justify-center! bg-black/50! backdrop-blur-sm!">
+      <div className="bg-white!  w-full! max-w-[560px]! rounded-2xl! shadow-2xl! animate-in! fade-in! zoom-in! duration-200!">
+        <div className="flex! items-center! justify-between! p-4! border-b! border-gray-100!">
+          <div>
+            <h2 className="text-lg! font-bold! text-gray-900! !important">Request More Details</h2>
+            <p className="text-xs! font-medium! text-gray-500! mt-1! !important">Researcher ID: {registrantId}</p>
+          </div>
+          <button onClick={onClose} className="p-2! hover:bg-gray-100! rounded-full! text-gray-400!"><X size={20} /></button>
+        </div>
+
+        <div className="p-4! space-y-6!">
+          {/* Checklist Section */}
+          <div className="p-5! bg-gray-50/50! border! border-gray-100! rounded-xl!">
+            <p className="text-sm! font-bold! text-gray-900! mb-4! !important">Missing</p>
+            <div className="grid! grid-cols-2! gap-4!">
+              {items.map((item) => (
+                <label key={item} className="flex! items-center! gap-3! cursor-pointer!">
+                  <input type="checkbox" className="w-4! h-4! rounded! border-gray-300! text-[#FF7F3E]! focus:ring-[#FF7F3E]!" />
+                  <p className="text-sm! font-medium! text-gray-600! !important">{item}</p>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">Template</p>
+            <select className="w-full! p-3! border! text-black border-gray-200! rounded-xl! text-sm! font-medium!">
+              <option value="">Select a Template</option>
+            </select>
+          </div>
+
+          <div>
+            <p className="text-sm! font-bold! text-gray-900! mb-2! !important">Custom Message</p>
+            <textarea 
+              placeholder="Or write a custom message..."
+              className="w-full! min-h-[120px]! p-4!  text-black  border! border-gray-200! rounded-xl! text-sm! font-medium! resize-none!"
+            />
+          </div>
+        </div>
+
+        <div className="flex! items-center! justify-end! gap-3! p-6! bg-gray-50/50! border-t! border-gray-100!">
+          <button onClick={onClose} className="px-6! py-2.5! bg-white! border! border-gray-200! rounded-lg! text-sm! font-bold! text-gray-600!">Cancel</button>
+          <button className="px-6! py-2.5! bg-[#FF7F3E]! text-white! rounded-lg! text-sm! font-bold!">Request More Details</button>
+        </div>
+      </div>
     </div>
   );
 }
