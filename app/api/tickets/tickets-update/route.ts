@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, requireAuth } from "@/lib/auth";
 
 export async function PUT(req: NextRequest) {
   try {
-    requireAdmin(req);
+    // Try to authenticate - if user is admin, they can do everything
+    // If user is regular user, they can only add comments to their own tickets
+    const payload = requireAuth(req);
+    const isAdmin = payload.role === "ADMIN";
+    
     const body = await req.json();
 
     const {
@@ -22,6 +26,14 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    // If non-admin user trying to update status/attachments/nationciteId, deny
+    if (!isAdmin && (status || attachments || nationciteId)) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized: Only admins can update ticket status" },
+        { status: 403 }
+      );
+    }
+
     await prisma.$transaction(async (tx) => {
       const ticket = await tx.tickets.findUnique({
         where: { ticketId },
@@ -32,30 +44,38 @@ export async function PUT(req: NextRequest) {
         throw new Error("Ticket not found");
       }
 
-      // ✅ Update Ticket (attachments now live here)
-      await tx.tickets.update({
-        where: { ticketId },
-        data: {
-          status: status ?? ticket.status,
-          nationciteId: nationciteId ?? ticket.nationciteId,
-          attachments: attachments ?? ticket.attachments, 
-          updatedAt: new Date(),
-        },
-      });
+      // Non-admin users can only comment on their own tickets
+      if (!isAdmin && ticket.nationciteId !== payload.nationciteId) {
+        throw new Error("Unauthorized: You can only comment on your own tickets");
+      }
 
-      // ✅ Add comment only (no attachments here)
+      // ✅ Update Ticket (only if admin)
+      if (isAdmin) {
+        await tx.tickets.update({
+          where: { ticketId },
+          data: {
+            status: status ?? ticket.status,
+            nationciteId: nationciteId ?? ticket.nationciteId,
+            attachments: attachments ?? ticket.attachments, 
+            updatedAt: new Date(),
+          },
+        });
+      }
+
+      // ✅ Add comment with admin marker
       if (comment) {
+        const commentText = isAdmin ? `[ADMIN] ${comment}` : comment;
         await tx.ticketComments.create({
           data: {
             ticketId,
-            comments: comment,
+            comments: commentText,
             createdAt: new Date(),
           },
         });
       }
 
-      // ✅ Update Registration if needed
-      if (nationciteId && ticket.registration.length > 0) {
+      // ✅ Update Registration if needed (only if admin)
+      if (isAdmin && nationciteId && ticket.registration.length > 0) {
         const registration = ticket.registration[0];
 
         await tx.registration.update({

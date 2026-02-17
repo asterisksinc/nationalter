@@ -97,33 +97,41 @@ export function TicketComments({
         </div>
       ) : (
         <div className="space-y-4 mb-6">
-          {comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="p-4 bg-gray-50 rounded-lg border border-gray-200"
-            >
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-[#FF7A00] flex items-center justify-center">
-                    <User size={16} className="text-white" />
+          {comments.map((comment) => {
+            // Check if comment was written by admin
+            const isAdminComment = comment.comments.startsWith("[ADMIN] ");
+            const displayComment = isAdminComment 
+              ? comment.comments.replace("[ADMIN] ", "") 
+              : comment.comments;
+            
+            return (
+              <div
+                key={comment.id}
+                className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-[#FF7A00] flex items-center justify-center">
+                      <User size={16} className="text-white" />
+                    </div>
                   </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-[#525866]">
-                      {isAdmin ? "Support Team" : "You"}
-                    </span>
-                    <span className="text-xs text-[#525866]">
-                      {formatDate(comment.createdAt)}
-                    </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-medium text-[#525866]">
+                        {isAdminComment ? "Support Team" : "You"}
+                      </span>
+                      <span className="text-xs text-[#525866]">
+                        {formatDate(comment.createdAt)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#0E121B] whitespace-pre-wrap break-words">
+                      {displayComment}
+                    </p>
                   </div>
-                  <p className="text-sm text-[#0E121B] whitespace-pre-wrap break-words">
-                    {comment.comments}
-                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

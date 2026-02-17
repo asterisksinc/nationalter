@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useMemo } from "react";
 import { Search, Filter, Plus } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 
@@ -8,7 +10,21 @@ export const TicketsTable = ({
   reviewCount,
   approvedCount,
   rejectedCount,
+  onRaiseTicket,
+  onFilter,
 }: any) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter tickets based on search query
+  const filteredTickets = useMemo(() => {
+    if (!searchQuery) return tickets;
+    return tickets.filter(
+      (ticket: any) =>
+        ticket.ticketId?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ticket.issueType?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ticket.type?.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [tickets, searchQuery]);
   const StatsGrid = ({ isMobile = false }) => (
     <div
       className={`border border-[#E1E4EA] rounded-xl overflow-hidden mb-6 ${
@@ -72,6 +88,8 @@ export const TicketsTable = ({
             />
             <input
               placeholder="Search by ticket id or type..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-full pl-10 pr-3 bg-white
                          text-[14px] font-normal leading-[120%]
                          border border-[#E1E4EA] rounded-lg
@@ -83,6 +101,7 @@ export const TicketsTable = ({
           <div className="flex items-center gap-3 w-full lg:w-auto">
             {/* Filter */}
             <button
+              onClick={onFilter}
               className="w-[50%] lg:w-auto h-[44px] lg:h-10 px-3 flex items-center justify-center gap-2
                                 border border-[#E1E4EA] rounded-lg
                                 text-[14px] font-medium text-[#222530] hover:bg-gray-50 transition-colors bg-white"
@@ -93,6 +112,7 @@ export const TicketsTable = ({
 
             {/* Raise Ticket (Desktop & Mobile Unified Logic, styled differently) */}
             <button
+              onClick={onRaiseTicket}
               className="flex-1 lg:flex-none h-[44px] lg:h-10 px-4
                                 flex items-center justify-center gap-2
                                 bg-[#FF7A00] rounded-lg text-white font-semibold text-[14px] hover:bg-[#FF8A1A] transition-colors"
@@ -138,23 +158,25 @@ export const TicketsTable = ({
           </thead>
 
           <tbody>
-            {tickets.map((ticket: any, i: number) => (
+            {filteredTickets.map((ticket: any, i: number) => (
               <tr
                 key={i}
                 className="h-[48px] md:h-[54px] border-b border-[#E1E4EA]
                            hover:bg-[#F9FAFB]"
               >
                 <td className="px-3 text-[13px] md:text-[14px] font-medium text-[#222530]">
-                  {ticket.id}
+                  {ticket.ticketId || ticket.id}
                 </td>
                 <td className="px-3 text-[13px] md:text-[14px] text-[#525866]">
-                  {ticket.type}
+                  {ticket.issueType || ticket.type}
                 </td>
                 <td className="px-1.5 md:px-3">
                   <StatusBadge status={ticket.status} />
                 </td>
                 <td className="px-1.5 md:px-3 text-[13px] md:text-[14px] text-[#525866]">
-                  {ticket.date}
+                  {ticket.createdAt
+                    ? new Date(ticket.createdAt).toLocaleDateString("en-GB")
+                    : ticket.date}
                 </td>
               </tr>
             ))}

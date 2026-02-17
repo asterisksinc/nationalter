@@ -24,8 +24,8 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
         <table className="w-full text-sm" style={{ minWidth: "500px" }}>
           <thead className="bg-[#F5F7FA] border-b border-[#E1E4EA]">
             <tr>
-              <th className="px-1.5 md:px-4 py-2.5 text-left text-[11px] md:text-xs font-medium text-[#525866] uppercase tracking-wider w-[140px] md:w-[220px]">
-                Authors
+              <th className="px-1.5 md:px-4 py-2.5 text-left text-[11px] md:text-xs font-medium text-[#525866] uppercase tracking-wider w-[180px] md:w-[280px]">
+                Title
               </th>
               <th className="px-1.5 md:px-4 py-2.5 text-left text-[11px] md:text-xs font-medium text-[#525866] uppercase tracking-wider w-[70px] md:w-[80px]">
                 Citations
@@ -55,17 +55,10 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
                 className="bg-[#FDFDFD] hover:bg-gray-50 transition-colors"
                 style={{ height: 54 }}
               >
-                {/* Author */}
+                {/* Title */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
-                  <div className="flex items-center gap-1.5 md:gap-3 overflow-hidden">
-                    <img
-                      src={pub.authorImg}
-                      alt={pub.author}
-                      className="w-6 h-6 md:w-8 md:h-8 rounded-full object-cover shrink-0"
-                    />
-                    <div className="text-[12px] md:text-[14px] font-medium text-[#222530] truncate max-w-full overflow-hidden whitespace-nowrap">
-                      {pub.author}
-                    </div>
+                  <div className="text-[12px] md:text-[14px] font-medium text-[#222530] line-clamp-2 max-w-full">
+                    {pub.title}
                   </div>
                 </td>
 

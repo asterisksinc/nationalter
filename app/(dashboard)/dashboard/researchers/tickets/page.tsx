@@ -71,16 +71,30 @@ function TicketsPageContent() {
     );
   }
 
-  const openCount = tickets.filter(
-    (t) => t.status === "OPEN" || t.status === "PENDING",
+  // Filter out registration tickets
+  const filteredTickets = tickets.filter(
+    (t) => t.issueType !== "NEW_REGISTRATION",
+  );
+
+  const openCount = filteredTickets.filter(
+    (t) =>
+      t.status?.toUpperCase() === "OPEN" ||
+      t.status?.toUpperCase() === "PENDING",
   ).length;
-  const reviewCount = tickets.filter(
-    (t) => t.status === "IN_PROGRESS" || t.status === "UNDER_REVIEW",
+  const reviewCount = filteredTickets.filter(
+    (t) =>
+      t.status?.toUpperCase() === "IN_PROGRESS" ||
+      t.status?.toUpperCase() === "UNDER_REVIEW",
   ).length;
-  const approvedCount = tickets.filter(
-    (t) => t.status === "RESOLVED" || t.status === "APPROVED",
+  const approvedCount = filteredTickets.filter(
+    (t) =>
+      t.status?.toUpperCase() === "RESOLVED" ||
+      t.status?.toUpperCase() === "APPROVED" ||
+      t.status?.toUpperCase() === "CLOSED",
   ).length;
-  const rejectedCount = tickets.filter((t) => t.status === "REJECTED").length;
+  const rejectedCount = filteredTickets.filter(
+    (t) => t.status?.toUpperCase() === "REJECTED",
+  ).length;
 
   return (
     <>
@@ -92,33 +106,6 @@ function TicketsPageContent() {
         <p className="text-[13px] md:text-sm font-normal leading-6 tracking-[-0.02em] text-[#525866]">
           Manage your Tickets
         </p>
-      </div>
-
-      {/* Search Bar - Mobile First */}
-      <div className="mb-4 md:mb-6 flex flex-col md:flex-row items-stretch md:items-center gap-3">
-        <div className="relative flex-1">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            size={18}
-          />
-          <input
-            type="text"
-            placeholder="Search by ticket id or type...."
-            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-normal leading-6 tracking-[-0.02em] focus:outline-none focus:border-[#f76a23] text-[#333333] placeholder-[#8E8E93]"
-          />
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-lg text-sm font-medium leading-5 text-[#525866] hover:bg-gray-50 bg-white">
-            <Filter size={16} /> Filter
-          </button>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 bg-[#FF7A00] rounded-lg text-sm font-semibold text-white hover:bg-[#FF8A1A]"
-          >
-            <Plus size={16} className="text-white" strokeWidth={2.5} /> Raise
-            Ticket
-          </button>
-        </div>
       </div>
 
       {/* Stats Cards - Responsive */}
@@ -172,7 +159,7 @@ function TicketsPageContent() {
 
       {/* Tickets Table */}
       <TicketTable
-        tickets={tickets}
+        tickets={filteredTickets}
         loading={loading}
         onTicketClick={handleTicketClick}
       />

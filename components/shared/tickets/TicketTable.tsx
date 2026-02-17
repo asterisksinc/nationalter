@@ -15,6 +15,25 @@ export interface TicketData {
   description?: string;
 }
 
+// All possible issue types from CreateTicketModal
+const ALL_ISSUE_TYPES = [
+  "Name spelling/correction",
+  "H-Index incorrect",
+  "Ranking incorrect",
+  "Duplicate profile",
+  "Profile information outdated",
+  "Publications & Citations",
+  "Changed institution",
+  "Institution ranking wrong",
+  "Institutional email mismatch",
+  "Organization details incorrect",
+  "License expired/renewed",
+  "Specialty/board change",
+  "Council registration update",
+  "Qualification addition",
+  "Other",
+];
+
 interface TicketTableProps {
   tickets: TicketData[];
   loading?: boolean;
@@ -56,10 +75,8 @@ export const TicketTable: React.FC<TicketTableProps> = ({
     () => [...new Set(tickets.map((t) => t.impactLevel || "normal"))],
     [tickets],
   );
-  const uniqueIssueTypes = useMemo(
-    () => [...new Set(tickets.map((t) => t.issueType))],
-    [tickets],
-  );
+  // Use all predefined issue types instead of just unique ones from tickets
+  const issueTypeOptions = useMemo(() => ALL_ISSUE_TYPES, []);
 
   // Filter and search tickets
   const filteredTickets = useMemo(() => {
@@ -136,17 +153,17 @@ export const TicketTable: React.FC<TicketTableProps> = ({
             />
             <input
               type="text"
-              placeholder="Search by Ticket ID or Issue Type..."
+              placeholder="    Search by Ticket ID or Issue Type..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00]"
+              className="w-full pl-10 pr-4 py-2 border border-[#2B3E50] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00] bg-white text-[#0E121B] placeholder-[#525866]"
             />
           </div>
 
           {/* Filter Button */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 border border-[#E1E4EA] rounded-lg text-[14px] hover:bg-gray-50 transition-colors relative"
+            className="flex items-center gap-2 px-4 py-2 border border-[#2B3E50] rounded-lg text-[14px] hover:bg-gray-50 transition-colors relative text-[#0E121B]"
           >
             <Filter size={18} />
             <span>Filters</span>
@@ -167,7 +184,7 @@ export const TicketTable: React.FC<TicketTableProps> = ({
               onChange={(e) =>
                 setFilters({ ...filters, status: e.target.value })
               }
-              className="px-3 py-2 border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00]"
+              className="px-3 py-2 border border-[#2B3E50] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00] bg-white text-[#0E121B]"
             >
               <option value="">All Statuses</option>
               {uniqueStatuses.map((status) => (
@@ -183,7 +200,7 @@ export const TicketTable: React.FC<TicketTableProps> = ({
               onChange={(e) =>
                 setFilters({ ...filters, priority: e.target.value })
               }
-              className="px-3 py-2 border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00]"
+              className="px-3 py-2 border border-[#2B3E50] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00] bg-white text-[#0E121B]"
             >
               <option value="">All Priorities</option>
               {uniquePriorities.map((priority) => (
@@ -199,12 +216,12 @@ export const TicketTable: React.FC<TicketTableProps> = ({
               onChange={(e) =>
                 setFilters({ ...filters, issueType: e.target.value })
               }
-              className="px-3 py-2 border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00]"
+              className="px-3 py-2 border border-[#2B3E50] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00] bg-white text-[#0E121B]"
             >
               <option value="">All Issue Types</option>
-              {uniqueIssueTypes.map((type) => (
+              {issueTypeOptions.map((type) => (
                 <option key={type} value={type}>
-                  {type.replace(/-/g, " ")}
+                  {type}
                 </option>
               ))}
             </select>

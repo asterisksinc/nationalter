@@ -152,31 +152,41 @@ export default function OrganizationsPage() {
   };
 
   // Derived Data
-  const recentTickets: TicketData[] = data.tickets.map((t) => ({
-    id: t.ticketId,
-    type: t.issueType,
-    status: mapStatus(t.status),
-    date: new Date(t.createdAt).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }),
-  }));
+  // Filter out registration tickets
+  const recentTickets: TicketData[] = data.tickets
+    .filter((t) => t.issueType !== "NEW_REGISTRATION")
+    .map((t) => ({
+      id: t.ticketId,
+      type: t.issueType,
+      status: mapStatus(t.status),
+      date: new Date(t.createdAt).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+    }));
 
   const openCount = data.tickets.filter(
-    (t) => t.status === "OPEN" || t.status === "PENDING",
+    (t) =>
+      t.issueType !== "NEW_REGISTRATION" &&
+      (t.status === "OPEN" || t.status === "PENDING"),
   ).length;
   const reviewCount = data.tickets.filter(
-    (t) => t.status === "IN_PROGRESS" || t.status === "Under Review",
+    (t) =>
+      t.issueType !== "NEW_REGISTRATION" &&
+      (t.status === "IN_PROGRESS" || t.status === "Under Review"),
   ).length;
   const approvedCount = data.tickets.filter(
     (t) =>
-      t.status === "RESOLVED" ||
-      t.status === "Approved" ||
-      t.status === "CLOSED",
+      t.issueType !== "NEW_REGISTRATION" &&
+      (t.status === "RESOLVED" ||
+        t.status === "Approved" ||
+        t.status === "CLOSED"),
   ).length;
   const rejectedCount = data.tickets.filter(
-    (t) => t.status === "REJECTED" || t.status === "Rejected",
+    (t) =>
+      t.issueType !== "NEW_REGISTRATION" &&
+      (t.status === "REJECTED" || t.status === "Rejected"),
   ).length;
 
   const name = data.organizationProfile?.name || data.user.email.split("@")[0];
@@ -283,6 +293,11 @@ export default function OrganizationsPage() {
           reviewCount={reviewCount}
           approvedCount={approvedCount}
           rejectedCount={rejectedCount}
+          onRaiseTicket={() => setIsModalOpen(true)}
+          onFilter={() => {
+            // Filter functionality - can be enhanced later
+            console.log("Filter clicked");
+          }}
         />
 
         {/* Mobile Profile Completeness */}
