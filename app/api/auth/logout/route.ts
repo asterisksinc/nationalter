@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     // Clear authentication cookies
     response.cookies.delete("nationciteId");
     response.cookies.delete("userRole");
+    response.cookies.delete("registrationType");
 
     return response;
   } catch (error) {

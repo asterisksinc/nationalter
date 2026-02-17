@@ -42,21 +42,29 @@ export async function POST(req: NextRequest) {
     }
 
     const role = user.role; 
+    const registrationType = user.registration?.type ?? null;
 
-    // Validate login type matches user role
+    // Validate login type matches user's actual registration type
     if (loginType) {
       const isOrgLogin = loginType === "Institution/ Organisation";
-      const isResearcherLogin = loginType === "Researcher" || loginType === "Medical Professional";
+      const isResearcherLogin = loginType === "Researcher";
+      const isMedicalLogin = loginType === "Medical Professional";
       
-      if (isOrgLogin && role !== "ORG") {
+      if (isOrgLogin && registrationType !== "ORG") {
         return NextResponse.json(
           { success: false, message: "This account is not registered as an organization" },
           { status: 403 }
         );
       }
-      if (isResearcherLogin && role !== "SCHOLAR") {
+      if (isResearcherLogin && registrationType !== "RESEARCHER") {
         return NextResponse.json(
           { success: false, message: "This account is not registered as a researcher" },
+          { status: 403 }
+        );
+      }
+      if (isMedicalLogin && registrationType !== "MEDICAL") {
+        return NextResponse.json(
+          { success: false, message: "This account is not registered as a medical professional" },
           { status: 403 }
         );
       }
@@ -121,7 +129,18 @@ export async function POST(req: NextRequest) {
       path: "/",
     });
 
-    console.log("[AUTH] Setting cookies:", { nationciteId: !!token, userRole: role });
+    // Set registration type cookie for medical/researcher differentiation
+    if (registrationType) {
+      response.cookies.set("registrationType", registrationType, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: "/",
+      });
+    }
+
+    console.log("[AUTH] Setting cookies:", { nationciteId: !!token, userRole: role, registrationType });
     console.log("[AUTH] Login successful for:", email, "Role:", role);
 
     return response;
