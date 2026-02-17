@@ -17,6 +17,7 @@ interface TicketData {
   type: string;
   status: string;
   date: string;
+  createdAt: string;
 }
 
 interface DashboardData {
@@ -164,6 +165,7 @@ export default function OrganizationsPage() {
         month: "short",
         year: "numeric",
       }),
+      createdAt: t.createdAt,
     }));
 
   const openCount = data.tickets.filter(
