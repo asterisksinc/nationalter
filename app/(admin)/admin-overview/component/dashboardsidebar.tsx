@@ -20,6 +20,7 @@ interface DashboardSidebarProps {
     | "tickets"
     | "datasets"
     | "monetization"
+    | "analytics"
     | "registrations";
 }
 
@@ -88,6 +89,9 @@ export const DashboardSidebar = ({
         <SidebarItem
           icon={<ChartColumnIncreasing size={18} />}
           label="Analytics"
+                    active={activePage === "analytics"}
+
+           href="/admin-overview/analytics"
         />
         <SidebarItem
           icon={<Landmark size={18} />}

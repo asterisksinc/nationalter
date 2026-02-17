@@ -1,0 +1,90 @@
+.gf-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.gf-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+.gf-card-header h3,
+.gf-card-header-row h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.gf-card-header p,
+.gf-card-header-row p {
+  margin: 4px 0 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.gf-card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gf-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.gf-badge-green {
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.gf-badge-orange {
+  background: #ffedd5;
+  color: #ea580c;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.gf-stats {
+  display: flex;
+  gap: 60px;
+  margin-bottom: 16px;
+}
+
+.gf-stats p {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.gf-stats h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.gf-green {
+  color: #16a34a;
+}
+
+.gf-state-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.gf-state-item {
+  display: flex;
+  justify-content: space-between;
+  background: #f9fafb;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
