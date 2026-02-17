@@ -32,16 +32,16 @@ export default function ArisScoreCard() {
       className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden"
     >
       {/* Card Header */}
-      <div className="relative p-5 pb-3.5 flex justify-between items-start">
+      <div className="relative p-4 sm:p-5 pb-3.5 flex flex-col sm:flex-row justify-between items-start gap-3">
         <div>
-          <h5 className="text-xl leading-tight font-semibold text-gray-900">
+          <h5 className="text-base sm:text-xl leading-tight font-semibold text-gray-900">
             Adjusted Research Impact Score
           </h5>
-          <p className="text-[4px] text-gray-300 mt-1">
+          <p className="text-[10px] sm:text-[11px] text-gray-500 mt-1">
             {analyticsData.profile.field} Cohort • 2,847 researchers
           </p>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-wrap gap-2 shrink-0">
           <span className="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100 uppercase">
             Elite
           </span>
@@ -67,20 +67,20 @@ export default function ArisScoreCard() {
       </div>
 
       {/* Score & Formula Row */}
-      <div className="relative grid grid-cols-2">
-        <div className="p-3.5 px-5">
+      <div className="relative grid grid-cols-1 sm:grid-cols-2">
+        <div className="p-3.5 px-4 sm:px-5">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
             ARIS Score
           </div>
-          <div className="text-[40px] md:text-[38px] font-semibold text-gray-900 leading-none">
+          <div className="text-[34px] sm:text-[40px] md:text-[38px] font-semibold text-gray-900 leading-none">
             {aris.score}
           </div>
         </div>
-        <div className="p-3.5 px-5">
+        <div className="p-3.5 px-4 sm:px-5 border-t border-gray-300 sm:border-t-0">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
             Formula
           </div>
-          <div className="text-xl font-semibold text-gray-900 leading-tight">
+          <div className="text-base sm:text-xl font-semibold text-gray-900 leading-tight">
             H × ln(P+1) × FW
           </div>
           <div className="text-sm text-gray-500 mt-0.5">
@@ -89,12 +89,12 @@ export default function ArisScoreCard() {
         </div>
 
         <div className="pointer-events-none absolute left-5 right-5 bottom-0 h-px bg-gray-300" />
-        <div className="pointer-events-none absolute top-3 bottom-3 left-1/2 w-px -translate-x-1/2 bg-gray-300" />
+        <div className="hidden sm:block pointer-events-none absolute top-3 bottom-3 left-1/2 w-px -translate-x-1/2 bg-gray-300" />
       </div>
 
       {/* Chart & Legend Section */}
-      <div className="p-5 flex items-center justify-between gap-8">
-        <div className="relative w-[260px] h-[190px] shrink-0">
+      <div className="p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-8">
+        <div className="relative w-full max-w-[260px] h-[190px] shrink-0 mx-auto lg:mx-0">
           <svg viewBox="0 0 220 180" className="w-full h-full">
             {/* Background dotted guides */}
             {[72, 58, 44, 30].map((r) => (
@@ -144,7 +144,7 @@ export default function ArisScoreCard() {
         </div>
 
         {/* Right: Legend */}
-        <div className="flex-1 space-y-5 w-full max-w-[300px] pr-1">
+        <div className="flex-1 space-y-4 sm:space-y-5 w-full max-w-none sm:max-w-[300px] pr-0 sm:pr-1">
           {[
             { label: "H-Index Impact", value: 83, color: COLORS[0] },
             { label: "Productivity", value: 13, color: COLORS[1] },
@@ -163,7 +163,7 @@ export default function ArisScoreCard() {
                   {item.label}
                 </span>
               </div>
-              <span className="text-xl font-semibold text-gray-900">
+              <span className="text-lg sm:text-xl font-semibold text-gray-900">
                 {item.value}%
               </span>
             </div>

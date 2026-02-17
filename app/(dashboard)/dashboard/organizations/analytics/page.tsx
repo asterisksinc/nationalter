@@ -13,21 +13,21 @@ import OverallAssessment from "./components/OverallAssessment";
 
 export default function AnalyticsPage() {
   return (
-    <div className="pr-4 py-2 max-w-[1600px] mx-auto">
+    <div className="px-2 sm:px-0 md:pr-4 py-2 max-w-[1600px] mx-auto overflow-x-hidden">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4 mt-2 pb-6 border-b border-gray-200">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-5 md:mb-8 gap-3 md:gap-4 mt-2 pb-5 md:pb-6 border-b border-gray-200">
         <div>
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl md:text-2xl font-bold text-gray-900">
             Analytics Oversight
           </div>
-          <div className="text-sm text-gray-500 mt-1 max-w-2xl">
+          <div className="text-xs sm:text-sm text-gray-500 mt-1 max-w-2xl">
             Monitor platform health, engagement metrics, and search intent
             trends across the enterprise ecosystem.
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
+        <div className="flex w-full sm:w-auto flex-wrap md:flex-nowrap items-center gap-2">
+          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
             <span>Last 30 Days</span>
             <svg
               className="w-4 h-4 text-gray-400"
@@ -43,7 +43,7 @@ export default function AnalyticsPage() {
               />
             </svg>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
+          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
             <svg
               className="w-4 h-4 text-gray-400"
               fill="none"
@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
             </svg>
             <span>Filter</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-sm font-semibold shadow-sm transition-colors">
+          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm transition-colors">
             <Download className="w-4 h-4" />
             <span>Export Data</span>
           </button>

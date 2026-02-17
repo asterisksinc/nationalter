@@ -14,26 +14,26 @@ export default function OverallAssessment() {
       ref={ref}
       className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col"
     >
-      <div className="relative p-6 pb-4">
-        <div className="text-lg font-bold text-gray-900">
+      <div className="relative p-4 sm:p-6 pb-4">
+        <div className="text-base sm:text-lg font-bold text-gray-900">
           Overall Assessment
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-xs sm:text-sm text-gray-500">
           Elite Performance across all metrics
         </div>
         <div className="pointer-events-none absolute left-6 right-6 bottom-0 h-px bg-gray-300" />
       </div>
 
-      <div className="p-6 pb-4">
-        <div className="space-y-6 max-h-[520px] overflow-y-auto pr-3 [scrollbar-width:thin]  [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-orange-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:hover:bg-orange-400 [&::-webkit-scrollbar-thumb]:transition-colors">
+      <div className="p-4 sm:p-6 pb-4">
+        <div className="space-y-5 sm:space-y-6 max-h-[520px] overflow-y-auto pr-1 sm:pr-3 [scrollbar-width:thin]  [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-orange-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:hover:bg-orange-400 [&::-webkit-scrollbar-thumb]:transition-colors">
           {benchmarkRaw.map((item, idx) => (
-            <div key={idx} className="pb-6 last:pb-0 relative">
+            <div key={idx} className="pb-5 sm:pb-6 last:pb-0 relative">
               {/* Metric Name + Value */}
               <div className="flex justify-between items-baseline mb-2.5">
-                <span className="text-[16px] font-bold text-gray-900">
+                <span className="text-[15px] sm:text-[16px] font-bold text-gray-900">
                   {item.metric}
                 </span>
-                <span className="text-[16px] font-bold text-orange-500">
+                <span className="text-[15px] sm:text-[16px] font-bold text-orange-500">
                   {item.you}
                 </span>
               </div>

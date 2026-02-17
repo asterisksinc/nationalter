@@ -20,6 +20,12 @@ interface HIndexChartProps {
 }
 
 export const HIndexChart = ({ data }: HIndexChartProps) => {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className="col-span-12 lg:col-span-8 p-3 md:p-4 bg-white rounded-lg border border-[#E1E4EA]">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-4 gap-4 sm:gap-0">
@@ -32,11 +38,12 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
       <div className="h-px w-full bg-[#E1E4EA] mb-6"></div>
 
       <div className="h-[240px] md:h-[450px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={data}
-            margin={{ top: 5, right: -25, left: 10, bottom: 5 }}
-          >
+        {isMounted ? (
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            <AreaChart
+              data={data}
+              margin={{ top: 5, right: -25, left: 10, bottom: 5 }}
+            >
             <defs>
               <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#f76a23" stopOpacity={0.25} />
@@ -108,8 +115,11 @@ export const HIndexChart = ({ data }: HIndexChartProps) => {
                 strokeWidth: 2,
               }}
             />
-          </AreaChart>
-        </ResponsiveContainer>
+            </AreaChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="w-full h-full" />
+        )}
       </div>
     </div>
   );

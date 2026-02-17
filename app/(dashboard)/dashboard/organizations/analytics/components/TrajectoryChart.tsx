@@ -25,15 +25,15 @@ export default function TrajectoryChart() {
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
-      <div className="relative p-6 pt-5 pb-5 mb-0">
-        <div className="flex items-center justify-between">
-          <h5 className="text-lg font-bold text-gray-900">
+      <div className="relative p-4 sm:p-6 pt-5 pb-5 mb-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h5 className="text-base sm:text-lg font-bold text-gray-900">
             Career Trajectory{" "}
             <span className="text-sm font-normal text-gray-400">
               (2011–2026)
             </span>
           </h5>
-          <select className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-200 rounded-lg outline-none hover:bg-gray-50 cursor-pointer">
+          <select className="w-full sm:w-auto px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-200 rounded-lg outline-none hover:bg-gray-50 cursor-pointer">
             <option>Past 10 Years</option>
             <option>All Time</option>
           </select>
@@ -41,8 +41,8 @@ export default function TrajectoryChart() {
         <div className="pointer-events-none absolute left-6 right-6 bottom-0 h-px bg-gray-300" />
       </div>
 
-      <div className="p-6">
-        <div className="flex items-center gap-6 mb-6 text-xs font-medium text-gray-500">
+      <div className="p-4 sm:p-6">
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-5 sm:mb-6 text-xs font-medium text-gray-500">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-500 rounded-xs" />
             <span>Productivity (Pubs)</span>
@@ -53,10 +53,10 @@ export default function TrajectoryChart() {
           </div>
         </div>
 
-        <div className="w-full h-80 relative">
+        <div className="w-full h-64 sm:h-80 relative">
           {/* Side axis tags */}
           <div
-            className="absolute left-0 top-1/2 bg-gray-50 border border-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded"
+            className="hidden sm:block absolute left-0 top-1/2 bg-gray-50 border border-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded"
             style={{
               writingMode: "vertical-rl",
               transform: "translate(-1rem, -50%) rotate(180deg)",
@@ -65,7 +65,7 @@ export default function TrajectoryChart() {
             Productivity
           </div>
           <div
-            className="absolute right-0 top-1/2 bg-gray-50 border border-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded"
+            className="hidden sm:block absolute right-0 top-1/2 bg-gray-50 border border-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded"
             style={{
               writingMode: "vertical-rl",
               transform: "translate(1rem, -50%)",
@@ -75,7 +75,7 @@ export default function TrajectoryChart() {
           </div>
 
           {inView ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <ComposedChart
                 data={trajectory}
                 margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
@@ -96,6 +96,7 @@ export default function TrajectoryChart() {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#9CA3AF", fontSize: 11, fontWeight: 500 }}
+                  minTickGap={16}
                   dy={10}
                 />
                 <YAxis
