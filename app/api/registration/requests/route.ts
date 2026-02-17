@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 
     // Transform data for frontend
     const formattedRegistrations = registrations.map((reg) => {
-      let registrantData = null;
+      let registrantData: any = null;
       let name = "";
       let email = "";
 

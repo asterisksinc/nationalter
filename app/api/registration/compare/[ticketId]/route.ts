@@ -83,7 +83,7 @@ export async function GET(
     }
 
     // Get registrant details
-    let registrantData = null;
+    let registrantData: any = null;
     let name = "";
     let institution = "";
 
@@ -264,7 +264,7 @@ export async function GET(
     }
 
     // If already approved, fetch the linked public record
-    let linkedPublicRecord = null;
+    let linkedPublicRecord: any = null;
     if (registration.status === "APPROVED" && registration.nationciteId) {
       if (registration.type === "MEDICAL" || registration.type === "RESEARCHER") {
         linkedPublicRecord = await prisma.scholarsPublic.findUnique({
