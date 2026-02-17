@@ -98,11 +98,24 @@ export function TicketComments({
       ) : (
         <div className="space-y-4 mb-6">
           {comments.map((comment) => {
-            // Check if comment was written by admin
-            const isAdminComment = comment.comments.startsWith("[ADMIN] ");
-            const displayComment = isAdminComment
-              ? comment.comments.replace("[ADMIN] ", "")
-              : comment.comments;
+            console.log("Comment data:", comment);
+            console.log("Comment text:", comment.comments);
+            
+            // Check if comment was written by admin (multiple detection methods)
+            const isAdminComment = 
+              comment.comments.startsWith("[ADMIN] ") ||
+              comment.comments.startsWith("[Admin] ") ||
+              comment.comments.startsWith("ADMIN:") ||
+              comment.comments.includes("Support Team:") ||
+              comment.comments.includes("[Support]");
+            
+            console.log("Is admin comment:", isAdminComment);
+            
+            const displayComment = comment.comments
+              .replace(/^\[ADMIN\]\s*/i, "")
+              .replace(/^ADMIN:\s*/i, "")
+              .replace(/^Support Team:\s*/i, "")
+              .replace(/^\[Support\]\s*/i, "");
 
             return (
               <div
@@ -118,7 +131,7 @@ export function TicketComments({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-[#525866]">
-                        {isAdminComment ? "Support Team" : "You"}
+                        {isAdminComment ? "Admin" : "You"}
                       </span>
                       <span className="text-xs text-[#525866]">
                         {formatDate(comment.createdAt)}
