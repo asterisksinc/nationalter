@@ -1,39 +1,34 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, Plus, Filter, Loader2 } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import { AddPublicationModal, PublicationsTable } from "./components";
 import type { PublicationData } from "./components";
 
 export default function PublicationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   // --- INTEGRATION STATES ---
   const [publications, setPublications] = useState<PublicationData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
 
   // --- FETCH FUNCTION ---
-  const fetchPublications = async (titleQuery = "") => {
+  const fetchPublications = async () => {
     setLoading(true);
     try {
-      // Constructs the URL: supports filtering by title as per your docs
-      const url = titleQuery 
-        ? `/api/publications?title=${encodeURIComponent(titleQuery)}` 
-        : "/api/publications";
-        
-      const response = await fetch(url);
+      const response = await fetch("/api/publications");
       const result = await response.json();
-      
+
       if (result.success) {
         // Map backend Prisma fields to match your frontend PublicationData interface
         const mappedData = result.publications.map((pub: any) => ({
           id: pub.id,
           title: pub.title,
           author: "Researcher", // Fallback as backend doesn't provide author string yet
-          authorImg: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", 
+          authorImg:
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
           citations: pub.citationsTotal,
-          publicationType: "Journal", 
+          publicationType: "Journal",
           year: new Date(pub.datePublished).getFullYear(),
           publisher: pub.journalName,
           doi: pub.nationciteId,
@@ -52,13 +47,6 @@ export default function PublicationsPage() {
     fetchPublications();
   }, []);
 
-  // Search handler (Triggers on 'Enter')
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      fetchPublications(searchQuery);
-    }
-  };
-
   return (
     <>
       {/* Page Title */}
@@ -72,23 +60,8 @@ export default function PublicationsPage() {
       </div>
 
       {/* Search Bar & Actions */}
-      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-6 gap-4">
-        <div className="relative flex-1 md:max-w-2xl">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#525866]" size={20} />
-          <input
-            type="text"
-            placeholder="Search by title and press Enter..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="w-full pl-10 pr-4 py-3 md:py-2.5 bg-white border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF8D28] text-[#333333] placeholder-[#525866]"
-          />
-        </div>
-
+      <div className="flex flex-col md:flex-row justify-end items-stretch md:items-center mb-6 gap-4">
         <div className="flex items-center gap-3 md:gap-4">
-          <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-3 md:px-2.5 py-3 md:py-2.5 border border-[#E1E4EA] rounded-lg bg-white text-[14px] font-medium text-[#222530] hover:bg-gray-50">
-            <Filter size={18} /> Filter
-          </button>
           <button
             onClick={() => setIsModalOpen(true)}
             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 md:py-2.5 border border-[#FF8D28] rounded-lg bg-white text-[14px] font-semibold text-[#FF8D28] hover:bg-orange-50 transition-colors whitespace-nowrap"

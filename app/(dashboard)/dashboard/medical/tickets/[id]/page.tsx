@@ -30,7 +30,7 @@ export default function MedicalTicketDetailPage({ params }: PageProps) {
 
     try {
       // Fetch current user data to verify ownership
-      const userRes = await fetch("/api/dashboard/medical/me");
+      const userRes = await fetch("/api/dashboard/scholar/me");
       const userData = await userRes.json();
 
       if (!userData.success || !userData.data) {

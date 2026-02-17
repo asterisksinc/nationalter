@@ -77,6 +77,12 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    role: "",
+    status: "",
+    plan: "",
+  });
 
   // Fetch users from API
   useEffect(() => {
@@ -103,12 +109,67 @@ export default function HomePage() {
     fetchUsers();
   }, []);
 
-  // Filter users based on search term
-  const filteredUsers = users.filter(
-    (user) =>
+  // Get unique values for filter options
+  const uniqueRoles = [...new Set(users.map((u) => u.role))];
+  const uniqueStatuses = [...new Set(users.map((u) => u.status))];
+  const uniquePlans = [...new Set(users.map((u) => u.plan))];
+
+  // Filter users based on search term and filters
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      searchTerm === "" ||
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesRole = filters.role === "" || user.role === filters.role;
+    const matchesStatus =
+      filters.status === "" || user.status === filters.status;
+    const matchesPlan = filters.plan === "" || user.plan === filters.plan;
+
+    return matchesSearch && matchesRole && matchesStatus && matchesPlan;
+  });
+
+  const activeFilterCount = [filters.role, filters.status, filters.plan].filter(
+    (f) => f !== "",
+  ).length;
+
+  const clearFilters = () => {
+    setFilters({ role: "", status: "", plan: "" });
+    setSearchTerm("");
+  };
+
+  const handleExport = () => {
+    // Export users as CSV
+    const headers = [
+      "Name",
+      "Email",
+      "Role",
+      "Status",
+      "Plan",
+      "Last Login",
+    ].join(",");
+    const rows = filteredUsers.map((user) =>
+      [
+        user.name,
+        user.email,
+        user.role,
+        user.status,
+        user.plan,
+        user.lastLogin,
+      ].join(","),
+    );
+    const csv = [headers, ...rows].join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `users-export-${new Date().toISOString().split("T")[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="admin-layout">
@@ -161,7 +222,11 @@ export default function HomePage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="filter-btn">
+            <button
+              className="filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+              style={{ position: "relative" }}
+            >
               <Image
                 src="/logos/filter.png"
                 alt="Filter"
@@ -169,8 +234,29 @@ export default function HomePage() {
                 height={18}
               />
               <span>Filter</span>
+              {activeFilterCount > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    backgroundColor: "#FF7A00",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: "20px",
+                    height: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
-            <button className="filter-btn">
+            <button className="filter-btn" onClick={handleExport}>
               <Image
                 src="/logos/export.png"
                 alt="Export"
@@ -180,6 +266,107 @@ export default function HomePage() {
               <span>Export Users</span>
             </button>
           </div>
+
+          {/* Filter Dropdowns */}
+          {showFilters && (
+            <div
+              style={{
+                padding: "0 32px 16px",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                gap: "12px",
+              }}
+            >
+              <select
+                value={filters.role}
+                onChange={(e) =>
+                  setFilters({ ...filters, role: e.target.value })
+                }
+                className="filter-btn"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #e5e5e5",
+                }}
+              >
+                <option value="">All Roles</option>
+                {uniqueRoles.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={filters.status}
+                onChange={(e) =>
+                  setFilters({ ...filters, status: e.target.value })
+                }
+                className="filter-btn"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #e5e5e5",
+                }}
+              >
+                <option value="">All Statuses</option>
+                {uniqueStatuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={filters.plan}
+                onChange={(e) =>
+                  setFilters({ ...filters, plan: e.target.value })
+                }
+                className="filter-btn"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #e5e5e5",
+                }}
+              >
+                <option value="">All Plans</option>
+                {uniquePlans.map((plan) => (
+                  <option key={plan} value={plan}>
+                    {plan}
+                  </option>
+                ))}
+              </select>
+
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  style={{
+                    padding: "8px 12px",
+                    backgroundColor: "transparent",
+                    color: "#FF7A00",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                  }}
+                >
+                  Clear Filters
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Results count */}
+          {(searchTerm || activeFilterCount > 0) && !loading && !error && (
+            <div
+              style={{
+                padding: "0 32px 8px",
+                fontSize: "12px",
+                color: "#666",
+              }}
+            >
+              Showing {filteredUsers.length} of {users.length} users
+            </div>
+          )}
 
           {/* Loading state */}
           {loading && (
