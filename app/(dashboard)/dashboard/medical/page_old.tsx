@@ -76,7 +76,7 @@ const chartData = [
 
 // --- Main Page Component ---
 
-export default function ResearchersPage() {
+export default function MedicalPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -110,7 +110,7 @@ export default function ResearchersPage() {
     return (
       <div className="flex h-[50vh] w-full items-center justify-center">
         <Loader2
-          className="animate-spin text-[var(--color-primary)]"
+          className="animate-spin text-(--color-primary)"
           size={32}
         />
       </div>
@@ -123,7 +123,7 @@ export default function ResearchersPage() {
         <p className="text-red-500">{error || "No data found"}</p>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-white"
+          className="rounded-lg bg-(--color-primary) px-4 py-2 text-white"
         >
           Retry
         </button>
@@ -156,7 +156,8 @@ export default function ResearchersPage() {
     return "Awaiting Review";
   };
 
-  // Derived Data - Filter out registration tickets
+  // Derived Data
+  // Filter out registration tickets
   const recentTickets: TicketData[] = data.tickets
     .filter((t) => t.issueType !== "NEW_REGISTRATION")
     .map((t) => ({
@@ -213,7 +214,7 @@ export default function ResearchersPage() {
           </div>
           <p className="text-[13px] md:text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866] mt-1">
             Welcome back to your Research Impact Portal. NationCite ID:{" "}
-            <span className="font-mono text-[var(--color-primary)]">
+            <span className="font-mono text-(--color-primary)">
               {data.registration.nationciteId}
             </span>
           </p>
@@ -237,7 +238,7 @@ export default function ResearchersPage() {
                 }
                 change=""
                 isPositive={true}
-                className="relative after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-[1px] after:bg-[#E1E4EA] lg:after:hidden"
+                className=""
               />
               <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
               <StatItem
@@ -251,7 +252,7 @@ export default function ResearchersPage() {
                 isPositive={true}
                 className=""
               />
-              <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
+              <div className="hidden lg:block w-px h-[54px] bg-[#E1E4EA]"></div>
               <StatItem
                 label="Country Rank"
                 value={
@@ -274,7 +275,7 @@ export default function ResearchersPage() {
             </div>
             <div className="hidden lg:block w-[1px] h-[54px] bg-[#E1E4EA]"></div>
 
-            {/* Mobile: Publications Full Width */}
+            {/* Mobile: Publications Full Width */
             <div className="col-span-2 lg:col-span-1 lg:border-t-0 border-[#E1E4EA] lg:h-auto lg:self-center lg:max-w-[140px]">
               <StatItem
                 label="Publications"

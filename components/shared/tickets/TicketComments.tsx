@@ -100,17 +100,17 @@ export function TicketComments({
           {comments.map((comment) => {
             // Check if comment was written by admin
             const isAdminComment = comment.comments.startsWith("[ADMIN] ");
-            const displayComment = isAdminComment 
-              ? comment.comments.replace("[ADMIN] ", "") 
+            const displayComment = isAdminComment
+              ? comment.comments.replace("[ADMIN] ", "")
               : comment.comments;
-            
+
             return (
               <div
                 key={comment.id}
                 className="p-4 bg-gray-50 rounded-lg border border-gray-200"
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="w-8 h-8 rounded-full bg-[#FF7A00] flex items-center justify-center">
                       <User size={16} className="text-white" />
                     </div>
@@ -124,7 +124,7 @@ export function TicketComments({
                         {formatDate(comment.createdAt)}
                       </span>
                     </div>
-                    <p className="text-sm text-[#0E121B] whitespace-pre-wrap break-words">
+                    <p className="text-sm text-[#0E121B] whitespace-pre-wrap wrap-break-word">
                       {displayComment}
                     </p>
                   </div>

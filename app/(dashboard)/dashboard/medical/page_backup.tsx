@@ -231,7 +231,7 @@ export default function ResearchersPage() {
             {/* Mobile: 2x2 Grid for first 4 items */}
             <div className="grid grid-cols-2 lg:contents">
               <StatItem
-                label="Institution Rank"
+                label="University Rank"
                 value={
                   metrics.universityRank ? `#${metrics.universityRank}` : "--"
                 }
@@ -320,7 +320,7 @@ export default function ResearchersPage() {
       <CreateTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        userType="Medical Professional"
+        userType="Researcher"
         nationciteId={data.registration.nationciteId}
         userName={name}
       />
