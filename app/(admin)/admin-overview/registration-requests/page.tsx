@@ -6,8 +6,7 @@ import Image from "next/image";
 import { DashboardSidebar } from "../component/dashboardsidebar";
 import { DashboardHeader } from "../component/DashboardHeader";
 import { Search, Filter, ChevronDown, Download, Plus, Clock, Users, Stethoscope, Building2, Hourglass, ListFilter } from "lucide-react";
-import "../adminstyle.css";
-import "../monetization/mstyle.css";
+ 
 
 export default function RegistrationRequestsPage() {
   const router = useRouter();
@@ -15,7 +14,7 @@ export default function RegistrationRequestsPage() {
   const [loading, setLoading] = useState(true); 
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Logic to fetch from API instead of temporary data
+  // Logic to fetch from API instead of temporary data  
   const fetchRegistrations = async () => {
     setLoading(true);
     try {
@@ -45,7 +44,7 @@ export default function RegistrationRequestsPage() {
           ]}
         />
 
-        <div className="p-4 w-[95%] md:p-6">
+        <div className="p-4 w-[90%] md:p-6">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start pb-4 gap-4 border-b border-gray-200 mb-4">
             <div>
@@ -168,7 +167,7 @@ export default function RegistrationRequestsPage() {
                    <input
                     type="text"
                     placeholder="Search by name, email, or ID..."
-                    className="w-full pl-10 pr-4 py-2 bg-[#F9FAFB] border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#FF7F3E]"
+                    className="w-full pl-10 pr-4 py-2 bg-[#F9FAFB] text-gray-700 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#FF7F3E]"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -195,81 +194,117 @@ export default function RegistrationRequestsPage() {
               {loading ? (
                 <div className="p-20 text-center text-gray-500 font-bold">Loading registrations...</div>
               ) : (
-                <table className="w-full text-left border-collapse min-w-[1000px]">
-                  <thead>
-                    <tr className="bg-[#F9FAFB] text-[#6B6B6B] text-[11px] font-bold uppercase tracking-widest">
-                      <th className="px-6 py-4">ID</th>
-                      <th className="px-6 py-4">Type</th>
-                      <th className="px-6 py-4">Primary Info</th>
-                      <th className="px-6 py-4">Secondary Info</th>
-                      <th className="px-6 py-4">Submitted</th>
-                      <th className="px-6 py-4">Status</th>
-                      <th className="px-6 py-4">Uploads</th>
-                      <th className="px-6 py-4">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50">
-                    {registrations.filter((r: any) => 
-                      r.primaryName?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                      r.id?.toLowerCase().includes(searchQuery.toLowerCase())
-                    ).map((reg, index) => (
-                      <tr key={index} className="hover:bg-gray-50/50 transition-colors group">
-                        <td className="px-6 py-4 text-sm whitespace-nowrap font-semibold text-[#1E1E1E]">{reg.id}</td>
-                        <td className="px-6 py-4">
-                          <p className={` px-3!  py-1!  rounded-full! text-xs!  font-semibold!  w-fit!   ${
-                            reg.type === 'Organisation' ? 'bg-orange-50 text-orange-600' : 
-                            reg.type === 'Researcher' ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600'
-                          }`}>
-                            {reg.type}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <h5 className=" text-base! whitespace-nowrap! sm:text-base! !md:text-lg  text-[#1E1E1E]!  leading-snug!  ">
-                            {reg.primaryName}
-                          </h5>
-                          <p className=" text-xs!  font-medium!  text-[#6B6B6B]!  ">{reg.location}</p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className=" text-sm!  sm:text-base!  text-[#5C5C5C]! leading-relaxed! ">
-                            {reg.secondaryInfo}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className=" text-sm!  text-[#5C5C5C]! font-medium!  ">{reg.submitted}</p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border w-fit ${
-                            reg.status === 'Accepted' ? 'bg-green-50 border-green-100 text-green-600' :
-                            reg.status === 'Rejected' ? 'bg-red-50 border-red-100 text-red-600' :
-                            'bg-yellow-50 border-yellow-100 text-yellow-600'
-                          }`}>
-                            <span className="text-[10px] leading-none">
-                              {reg.status === 'Accepted' ? '●' : reg.status === 'Rejected' ? '✕' : 'ⓘ'}
-                            </span>
-                            <p className=" text-xs! font-bold! ">{reg.status}</p>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className={` text-sm! font-bold!  px-2!  py-1!  rounded!  w-fit!  ${
-                            reg.status === 'Accepted' ? 'bg-green-50 text-green-600' :
-                            reg.status === 'Rejected' ? 'bg-red-50 text-red-600' :
-                            'bg-yellow-50 text-yellow-600'
-                          }`}>
-                            {reg.uploads}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <button 
-                            onClick={() => router.push(`/admin-overview/registration-requests/${reg.id}`)}
-                            className="text-sm font-bold text-[#FF7F3E] hover:underline"
-                          >
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="w-full! overflow-x-auto! rounded-2xl! border! border-gray-100! shadow-sm!">
+  <table className="w-full! table-auto! min-w-[1000px]! text-left! border-collapse!">
+    <thead>
+      <tr className="bg-[#F9FAFB]! text-[#6B6B6B]! text-[11px]! font-bold! uppercase! tracking-widest!">
+        <th className="px-6! py-4! w-[15%]!">ID</th>
+        <th className="px-6! py-4! w-[10%]!">Type</th>
+        <th className="px-6! py-4! w-[25%]!">Primary Info</th>
+        <th className="px-6! py-4! w-[20%]!">Secondary Info</th>
+        <th className="px-6! py-4! w-[10%]!">Submitted</th>
+        <th className="px-6! py-4! w-[10%]!">Status</th>
+        <th className="px-6! py-4! w-[5%]!">Plan</th>
+        <th className="px-6! py-4! w-[5%]!">Actions</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y! divide-gray-50!">
+      {registrations
+        .filter((r: any) => 
+          r.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          r.nationciteId?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.ticketId?.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .map((reg, index) => (
+          <tr key={index} className="hover:bg-gray-50/50! transition-colors! group!">
+            {/* ID Column */}
+            <td className="px-6! py-4! text-sm! whitespace-nowrap! font-semibold! text-[#1E1E1E]!">
+              {reg.ticketId}
+            </td>
+
+            {/* Type Column */}
+            <td className="px-6! py-4!">
+              <p className={`px-3! py-1! rounded-full! text-xs! font-semibold! w-fit! !important ${
+                reg.type === 'ORG' ? 'bg-orange-50! text-orange-600!' : 
+                reg.type === 'RESEARCHER' ? 'bg-blue-50! text-blue-600!' : 'bg-purple-50! text-purple-600!'
+              }`}>
+                {reg.type}
+              </p>
+            </td>
+
+            {/* Primary Info */}
+            <td className="px-6! py-4!">
+              <h5 className="text-base! truncate! sm:text-base! md:text-lg! text-[#1E1E1E]! leading-snug! !important">
+                {reg.name}
+              </h5>
+              <p className="text-xs! truncate! font-medium! text-[#6B6B6B]! !important">
+                {reg.registrantData?.primaryHospital || reg.registrantData?.institute || "N/A"}
+              </p>
+            </td>
+
+            {/* Secondary Info */}
+            <td className="px-6! py-4!">
+              <p className="text-sm! truncate! sm:text-base! text-[#5C5C5C]! leading-relaxed! !important">
+                {reg.email}
+              </p>
+            </td>
+
+            {/* Submitted */}
+            <td className="px-6! py-4!">
+              <p className="text-sm! whitespace-nowrap! text-[#5C5C5C]! font-medium! !important">
+                {new Date(reg.createdAt).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                })}
+              </p>
+            </td>
+
+            {/* Status Column */}
+            <td className="px-6! py-4!">
+              <div className={`flex! items-center! gap-1.5! px-2! py-1! rounded-md! border! w-fit! ${
+                reg.status === 'APPROVED' ? 'bg-green-50! border-green-100! text-green-600!' :
+                reg.status === 'REJECTED' ? 'bg-red-50! border-red-100! text-red-600!' :
+                'bg-yellow-50! border-yellow-100! text-yellow-600!'
+              }`}>
+                <span className="text-[10px]! leading-none!">
+                  {reg.status === 'APPROVED' ? '●' : reg.status === 'REJECTED' ? '✕' : 'ⓘ'}
+                </span>
+                <span className= { `${
+                reg.status === 'APPROVED' ? 'bg-green-50! border-green-100! text-green-600!' :
+                reg.status === 'REJECTED' ? 'bg-red-50! border-red-100! text-red-600!' :
+                'bg-yellow-50! border-yellow-100! text-yellow-600!'
+              }  font-medium text-[12px]! `}>
+                  {reg.status}
+                </span>
+              </div>
+            </td>
+
+            {/* Plan Column */}
+            <td className="px-6  py-4 ">
+              <p className={ ` text-sm! font-bold! px-2! py-1! ${
+                reg.status === 'APPROVED' ? 'bg-green-50! border-green-100! text-green-600!' :
+                reg.status === 'REJECTED' ? 'bg-red-50! border-red-100! text-red-600!' :
+                'bg-yellow-50! border-yellow-100! text-yellow-600!'
+              } rounded! w-fit    `}>
+                {reg.registrantData?.plan || "0/0"}
+              </p>
+            </td>
+
+            {/* Action Column */}
+            <td className="px-6! py-4!">
+              <button 
+                onClick={() => router.push(`/admin-overview/registration-requests/${reg.ticketId}`)}
+                className="text-sm! font-bold! text-[#FF7F3E]! hover:underline!"
+              >
+                View
+              </button>
+            </td>
+          </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
               )}
             </div>
           </div>
