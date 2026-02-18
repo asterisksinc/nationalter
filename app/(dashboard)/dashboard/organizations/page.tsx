@@ -82,10 +82,21 @@ export default function OrganizationsPage() {
     async function fetchData() {
       try {
         const res = await fetch("/api/dashboard/org/me");
-        if (!res.ok) {
-          throw new Error("Failed to fetch dashboard data");
+        const contentType = res.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+          const body = await res.text();
+          throw new Error(
+            `Unexpected response from dashboard API (${res.status}): ${body.slice(0, 80)}`,
+          );
         }
+
         const json = await res.json();
+
+        if (!res.ok) {
+          throw new Error(json.message || "Failed to fetch dashboard data");
+        }
+
         if (json.success) {
           setData(json.data);
         } else {
@@ -93,6 +104,10 @@ export default function OrganizationsPage() {
         }
       } catch (err) {
         console.error(err);
+        if (err instanceof Error && err.message.toLowerCase().includes("unauthorized")) {
+          setError("Your session expired. Please sign in again.");
+          return;
+        }
         setError("Could not load dashboard information.");
       } finally {
         setLoading(false);

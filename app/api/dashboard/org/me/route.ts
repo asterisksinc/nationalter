@@ -73,6 +73,28 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Dashboard Org API Error:", error);
 
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    if (message === "Unauthorized" || message === "Invalid or expired token") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (message.startsWith("Forbidden")) {
+      return NextResponse.json(
+        {
+          success: false,
+          message,
+        },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: false,

@@ -22,10 +22,22 @@ export default function ResearchersLayout({
     const fetchUserData = async () => {
       try {
         const res = await fetch("/api/dashboard/org/me");
-        const json = await res.json();
-        if (json.success && json.data) {
-          setUserData(json.data);
+        const contentType = res.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+          const body = await res.text();
+          throw new Error(
+            `Unexpected response from dashboard API (${res.status}): ${body.slice(0, 80)}`,
+          );
         }
+
+        const json = await res.json();
+        if (res.ok && json.success && json.data) {
+          setUserData(json.data);
+          return;
+        }
+
+        throw new Error(json.message || "Failed to fetch user data");
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }

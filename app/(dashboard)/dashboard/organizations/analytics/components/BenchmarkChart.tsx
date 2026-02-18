@@ -38,19 +38,19 @@ export default function BenchmarkChart() {
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
-      <div className="relative p-6 pb-4">
-        <div className="text-lg font-bold text-gray-900 mb-1">
+      <div className="relative p-4 sm:p-6 pb-4">
+        <div className="text-base sm:text-lg font-bold text-gray-900 mb-1">
           Peer Benchmark Comparison
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-xs sm:text-sm text-gray-500">
           5-axis normalized comparison across all metrics
         </div>
         <div className="pointer-events-none absolute left-6 right-6 bottom-0 h-px bg-gray-300" />
       </div>
 
       {/* Top Legend */}
-      <div className="p-6 pt-6">
-        <div className="flex items-center justify-center gap-8 mb-6 text-xs text-gray-600">
+      <div className="p-4 sm:p-6 pt-5 sm:pt-6">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mb-4 sm:mb-6 text-[11px] sm:text-xs text-gray-600">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 border-2 border-orange-500 rounded-xs"></div>
             <span>You</span>
@@ -66,9 +66,9 @@ export default function BenchmarkChart() {
         </div>
 
         {/* Radar Chart - Full Width */}
-        <div className="w-full h-[550px] -mt-4 relative">
+        <div className="w-full h-[300px] sm:h-[550px] -mt-2 sm:-mt-4 relative">
           {inView ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <RadarChart
                 cx="50%"
                 cy="50%"
@@ -160,7 +160,7 @@ export default function BenchmarkChart() {
 
           {/* Side Stat Display */}
           {hoveredData && (
-            <div className="absolute top-6 right-6 bg-white border border-orange-200 rounded-lg p-4 shadow-md min-w-[140px]">
+            <div className="hidden sm:block absolute top-6 right-6 bg-white border border-orange-200 rounded-lg p-4 shadow-md min-w-[140px]">
               <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1">
                 {hoveredData.metric}
               </div>
