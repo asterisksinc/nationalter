@@ -20,7 +20,83 @@ export default function RegistrationRequestsPage() {
     try {
       const response = await fetch(`/api/registration/requests`, { credentials: "include" });
       const data = await response.json();
+      // const data = {
+      //   success: true,
+      //   count: 3,
+      //   data: [
+      //     {
+      //       id: 84,
+      //       nationciteId: "REG202602182MDX",
+      //       type: "MEDICAL",
+      //       status: "PENDING",
+      //       ticketId: "MED-20260218-0012",
+      //       createdAt: "2026-02-18T06:04:28.224Z",
+      //       name: "Yashwanth",
+      //       email: "yash@kims.com",
+      //       registrantData: {
+      //         id: 23,
+      //         registrationId: 84,
+      //         nationciteId: "REG202602182MDX",
+      //         name: "Yashwanth",
+      //         medCouncilRegNo: "MCI-12345",
+      //         stateCouncil: "Medical Council of India (MCI)",
+      //         mobile: "9812837465 ",
+      //         email: "yash@kims.com",
+      //         primaryHospital: "Apollo Hospitals",
+      //         specialty: "Neurology",
+      //         researchFocus: "Clinical Trials",
+      //         medicalDegreeUrl: null,
+      //         regCertificateUrl: null,
+      //         status: "PENDING",
+      //         plan: "FREE"
+      //       }
+      //     },
+      //     {
+      //       id: 85,
+      //       nationciteId: "RES202602185ABC",
+      //       type: "RESEARCHER",
+      //       status: "APPROVED",
+      //       ticketId: "TCK-20260218-0013",
+      //       createdAt: "2026-02-17T14:20:10.115Z",
+      //       name: "Dr. Aditya Sharma",
+      //       email: "aditya@iitd.ac.in",
+      //       registrantData: {
+      //         id: 24,
+      //         registrationId: 85,
+      //         institute: "IIT Delhi",
+      //         orcidId: "0000-0002-1823-4567",
+      //         mobile: "9988776655",
+      //         email: "aditya@iitd.ac.in",
+      //         primaryDomain: "Computer Science",
+      //         googleScholarUrl: "https://scholar.google.com/citations?user=xyz",
+      //         status: "APPROVED",
+      //         plan: "PREMIUM"
+      //       }
+      //     },
+      //     {
+      //       id: 86,
+      //       nationciteId: "ORG202602189ORG",
+      //       type: "ORG",
+      //       status: "REJECTED",
+      //       ticketId: "ORG-20260218-0014",
+      //       createdAt: "2026-02-16T09:15:45.000Z",
+      //       name: "CSIR Labs",
+      //       email: "info@csit.res.in",
+      //       registrantData: {
+      //         id: 25,
+      //         registrationId: 86,
+      //         institute: "CSIR-Central Institute",
+      //         domain: "csit.res.in",
+      //         mobile: "9123456789",
+      //         email: "info@csit.res.in",
+      //         status: "REJECTED",
+      //         plan: "INSTITUTIONAL"
+      //       }
+      //     }
+      //   ]
+      // };
       setRegistrations(data.data || []);
+
     } catch (err) {
       console.error(err);
     } finally {
@@ -44,7 +120,7 @@ export default function RegistrationRequestsPage() {
           ]}
         />
 
-        <div className="p-4 w-[90%] md:p-6">
+        <div className="p-4 w-[97%] md:p-6">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start pb-4 gap-4 border-b border-gray-200 mb-4">
             <div>
@@ -198,14 +274,14 @@ export default function RegistrationRequestsPage() {
   <table className="w-full! table-auto! min-w-[1000px]! text-left! border-collapse!">
     <thead>
       <tr className="bg-[#F9FAFB]! text-[#6B6B6B]! text-[11px]! font-bold! uppercase! tracking-widest!">
-        <th className="px-6! py-4! w-[15%]!">ID</th>
-        <th className="px-6! py-4! w-[10%]!">Type</th>
-        <th className="px-6! py-4! w-[25%]!">Primary Info</th>
-        <th className="px-6! py-4! w-[20%]!">Secondary Info</th>
-        <th className="px-6! py-4! w-[10%]!">Submitted</th>
-        <th className="px-6! py-4! w-[10%]!">Status</th>
-        <th className="px-6! py-4! w-[5%]!">Plan</th>
-        <th className="px-6! py-4! w-[5%]!">Actions</th>
+        <th className="px-4! py-4! w-[15%]!">ID</th>
+        <th className="px-4! py-4! w-[10%]!">Type</th>
+        <th className="px-4! py-4! w-[25%]!">Primary Info</th>
+        <th className="px-4! py-4! w-[20%]!">Secondary Info</th>
+        <th className="px-4! py-4! w-[10%]!">Submitted</th>
+        <th className="px-4! py-4! w-[10%]!">Status</th>
+        <th className="px-4! py-4! w-[5%]!">Plan</th>
+        <th className="px-4! py-4! w-[5%]!">Actions</th>
       </tr>
     </thead>
     <tbody className="divide-y! divide-gray-50!">
@@ -218,12 +294,12 @@ export default function RegistrationRequestsPage() {
         .map((reg, index) => (
           <tr key={index} className="hover:bg-gray-50/50! transition-colors! group!">
             {/* ID Column */}
-            <td className="px-6! py-4! text-sm! whitespace-nowrap! font-semibold! text-[#1E1E1E]!">
+            <td className="px-4! py-4! text-sm! whitespace-nowrap  font-semibold! text-[#1E1E1E]!">
               {reg.ticketId}
             </td>
 
             {/* Type Column */}
-            <td className="px-6! py-4!">
+            <td className="px-4! py-4!">
               <p className={`px-3! py-1! rounded-full! text-xs! font-semibold! w-fit! !important ${
                 reg.type === 'ORG' ? 'bg-orange-50! text-orange-600!' : 
                 reg.type === 'RESEARCHER' ? 'bg-blue-50! text-blue-600!' : 'bg-purple-50! text-purple-600!'
@@ -233,25 +309,25 @@ export default function RegistrationRequestsPage() {
             </td>
 
             {/* Primary Info */}
-            <td className="px-6! py-4!">
-              <h5 className="text-base! truncate! sm:text-base! md:text-lg! text-[#1E1E1E]! leading-snug! !important">
+            <td className="px-4! py-4!">
+              <h5 className="text-base!  sm:text-base! md:text-lg! text-[#1E1E1E]! leading-snug! !important">
                 {reg.name}
               </h5>
-              <p className="text-xs! truncate! font-medium! text-[#6B6B6B]! !important">
+              <p className="text-xs!   font-medium! text-[#6B6B6B]! !important">
                 {reg.registrantData?.primaryHospital || reg.registrantData?.institute || "N/A"}
               </p>
             </td>
 
             {/* Secondary Info */}
-            <td className="px-6! py-4!">
-              <p className="text-sm! truncate! sm:text-base! text-[#5C5C5C]! leading-relaxed! !important">
+            <td className="px-4! py-4!">
+              <p className="text-sm!   sm:text-base! text-[#5C5C5C]! leading-relaxed! !important">
                 {reg.email}
               </p>
             </td>
 
             {/* Submitted */}
-            <td className="px-6! py-4!">
-              <p className="text-sm! whitespace-nowrap! text-[#5C5C5C]! font-medium! !important">
+            <td className="px-4! py-4!">
+              <p className="text-sm!  text-[#5C5C5C]! font-medium! !important">
                 {new Date(reg.createdAt).toLocaleDateString('en-GB', {
                   day: '2-digit',
                   month: 'short',
@@ -261,7 +337,7 @@ export default function RegistrationRequestsPage() {
             </td>
 
             {/* Status Column */}
-            <td className="px-6! py-4!">
+            <td className="px-4! py-4!">
               <div className={`flex! items-center! gap-1.5! px-2! py-1! rounded-md! border! w-fit! ${
                 reg.status === 'APPROVED' ? 'bg-green-50! border-green-100! text-green-600!' :
                 reg.status === 'REJECTED' ? 'bg-red-50! border-red-100! text-red-600!' :
@@ -281,18 +357,18 @@ export default function RegistrationRequestsPage() {
             </td>
 
             {/* Plan Column */}
-            <td className="px-6  py-4 ">
+            <td className="px-4  py-4 ">
               <p className={ ` text-sm! font-bold! px-2! py-1! ${
                 reg.status === 'APPROVED' ? 'bg-green-50! border-green-100! text-green-600!' :
                 reg.status === 'REJECTED' ? 'bg-red-50! border-red-100! text-red-600!' :
                 'bg-yellow-50! border-yellow-100! text-yellow-600!'
               } rounded! w-fit    `}>
-                {reg.registrantData?.plan || "0/0"}
+                { "0/0"}
               </p>
             </td>
 
             {/* Action Column */}
-            <td className="px-6! py-4!">
+            <td className="px-4! py-4!">
               <button 
                 onClick={() => router.push(`/admin-overview/registration-requests/${reg.ticketId}`)}
                 className="text-sm! font-bold! text-[#FF7F3E]! hover:underline!"
