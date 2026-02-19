@@ -82,6 +82,18 @@ export function TicketComments({
     }
   };
 
+  const isAdminComment = (text: string) => {
+    return /^\s*(\[ADMIN\]|ADMIN:|Support Team:|\[Support\])/i.test(text);
+  };
+
+  const getDisplayComment = (text: string) => {
+    return text
+      .replace(/^\[ADMIN\]\s*/i, "")
+      .replace(/^ADMIN:\s*/i, "")
+      .replace(/^Support Team:\s*/i, "")
+      .replace(/^\[Support\]\s*/i, "");
+  };
+
   return (
     <div className="bg-white rounded-xl border border-[#E1E4EA] p-6">
       <div className="text-base font-semibold text-[#0E121B] mb-4 flex items-center gap-2">
@@ -98,12 +110,9 @@ export function TicketComments({
       ) : (
         <div className="space-y-4 mb-6">
           {comments.map((comment) => {
-            // Remove admin prefixes from comment text
-            const displayComment = comment.comments
-              .replace(/^\[ADMIN\]\s*/i, "")
-              .replace(/^ADMIN:\s*/i, "")
-              .replace(/^Support Team:\s*/i, "")
-              .replace(/^\[Support\]\s*/i, "");
+            const adminComment = isAdminComment(comment.comments);
+            const displayComment = getDisplayComment(comment.comments);
+            const authorLabel = adminComment ? "Admin" : isAdmin ? "User" : "You";
 
             return (
               <div
@@ -112,14 +121,18 @@ export function TicketComments({
               >
                 <div className="flex items-start gap-3">
                   <div className="shrink-0">
-                    <div className="w-8 h-8 rounded-full bg-[#FF7A00] flex items-center justify-center">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        adminComment ? "bg-[#FF7A00]" : "bg-[#0ea5e9]"
+                      }`}
+                    >
                       <User size={16} className="text-white" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-[#525866]">
-                        Admin
+                        {authorLabel}
                       </span>
                       <span className="text-xs text-[#525866]">
                         {formatDate(comment.createdAt)}

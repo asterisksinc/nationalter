@@ -15,6 +15,7 @@ enum FlowStep {
 interface InstitutionFlowProps {
   step: number;
   onNext: () => void;
+  onSendOtp?: () => void;
   otpSent: boolean;
   setOtpSent: (value: boolean) => void;
   timer: number;
@@ -26,6 +27,7 @@ interface InstitutionFlowProps {
 export const InstitutionFlow = ({
   step,
   onNext,
+  onSendOtp,
   otpSent,
   setOtpSent,
   timer,
@@ -91,7 +93,7 @@ export const InstitutionFlow = ({
             </div>
             <div className="mt-auto pt-6 md:pt-4">
               <button
-                onClick={() => setOtpSent(true)}
+                onClick={() => (onSendOtp ? onSendOtp() : setOtpSent(true))}
                 className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 px-6 text-sm md:text-base font-semibold md:font-medium rounded-xl hover:bg-[var(--color-warm-200)] active:scale-[0.98] transition-all shadow-md hover:shadow-lg touch-manipulation"
               >
                 Send Verification OTP

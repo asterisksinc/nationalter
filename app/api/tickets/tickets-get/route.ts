@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type");
     const name = searchParams.get("name");
     const status = searchParams.get("status");
+    const excludeRegistration = searchParams.get("excludeRegistration");
 
     // Build dynamic filter
     const whereClause: any = {};
@@ -20,6 +21,11 @@ export async function GET(req: NextRequest) {
     if (issueType) whereClause.issueType = issueType;
     if (type) whereClause.type = type;
     if (status) whereClause.status = status;
+    if (excludeRegistration === "true") {
+      whereClause.issueType = {
+        not: "NEW_REGISTRATION",
+      };
+    }
 
     if (name) {
       whereClause.name = {

@@ -180,6 +180,7 @@ export default function DoctorsLeaderboardPage() {
               totalCount={totalCount}
               currentPage={currentPage}
               onPageChange={setCurrentPage}
+              itemsPerPage={10}
             />
           </div>
         </div>

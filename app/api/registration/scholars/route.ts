@@ -1,6 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
+import { Prisma } from "@prisma/client";
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function normalizeMobileDigits(input: string) {
+  return String(input ?? "").replace(/\D/g, "");
+}
+
+function isValidMobile(input: string) {
+  const digits = normalizeMobileDigits(input);
+  return digits.length >= 10 && digits.length <= 15;
+}
+
+function normalizeOrcid(input: string) {
+  const trimmed = String(input ?? "").trim();
+  if (!trimmed) return "";
+  const withoutUrl = trimmed.replace(/^https?:\/\/orcid\.org\//i, "");
+  return withoutUrl.replace(/\s+/g, "");
+}
+
+// ORCID ISO 7064 (MOD 11-2) check
+function isValidOrcid(input: string) {
+  const orcid = normalizeOrcid(input);
+  if (!/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(orcid)) return false;
+
+  const digits = orcid.replace(/-/g, "").toUpperCase();
+  let total = 0;
+  for (let i = 0; i < 15; i++) {
+    total = (total + Number(digits[i])) * 2;
+  }
+  const remainder = total % 11;
+  const result = (12 - remainder) % 11;
+  const checkDigit = result === 10 ? "X" : String(result);
+  return digits[15] === checkDigit;
+}
+
+function badRequest(message: string, fieldErrors?: Record<string, string>) {
+  return NextResponse.json(
+    { success: false, message, fieldErrors: fieldErrors ?? {} },
+    { status: 400 },
+  );
+}
 
 /**
  * Helper to generate temporary NationCite ID
@@ -55,12 +99,22 @@ export async function POST(req: NextRequest) {
       profilePhotoUrl,
     } = body;
 
-    // 🔐 Basic validation
-    if (!type || !name || !email || !mobile) {
-      return NextResponse.json(
-        { success: false, message: "Missing required fields" },
-        { status: 400 }
-      );
+    const fieldErrors: Record<string, string> = {};
+
+    if (!type) fieldErrors.type = "Registration type is required";
+    if (!name) fieldErrors.name = "Name is required";
+    if (!email) fieldErrors.email = "Email is required";
+    if (!mobile) fieldErrors.mobile = "Mobile number is required";
+
+    if (email && !isValidEmail(email)) {
+      fieldErrors.email = "Enter a valid email";
+    }
+    if (mobile && !isValidMobile(mobile)) {
+      fieldErrors.mobile = "Enter a valid mobile number";
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
+      return badRequest("Please fix the highlighted fields", fieldErrors);
     }
 
     if (!["MEDICAL", "RESEARCHER"].includes(type)) {
@@ -69,6 +123,44 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Type-specific validation
+    if (type === "RESEARCHER") {
+      const rErrors: Record<string, string> = {};
+      if (!institute) rErrors.institution = "Institution is required";
+      if (!instituteEmail) rErrors.instituteEmail = "Institutional email is required";
+      if (instituteEmail && !isValidEmail(instituteEmail)) {
+        rErrors.instituteEmail = "Enter a valid institutional email";
+      }
+      if (!orcidId) rErrors.orcidId = "ORCID is required";
+      if (orcidId && !isValidOrcid(orcidId)) {
+        rErrors.orcidId = "Enter a valid ORCID (e.g. 0000-0002-1825-0097)";
+      }
+      if (!primaryDomain) rErrors.primaryDomain = "Primary domain is required";
+      if (!googleScholarUrl) rErrors.googleScholarUrl = "Google Scholar URL is required";
+
+      if (Object.keys(rErrors).length > 0) {
+        return badRequest("Please fix the highlighted fields", rErrors);
+      }
+    }
+
+    if (type === "MEDICAL") {
+      const mErrors: Record<string, string> = {};
+      if (!medCouncilRegNo) mErrors.medCouncilRegNo = "Registration number is required";
+      if (!stateCouncil) mErrors.stateCouncil = "State council is required";
+      if (!primaryHospital) mErrors.primaryHospital = "Primary hospital is required";
+      if (!specialty) mErrors.specialty = "Specialty is required";
+      if (!researchFocus) mErrors.researchFocus = "Research focus is required";
+
+      if (Object.keys(mErrors).length > 0) {
+        return badRequest("Please fix the highlighted fields", mErrors);
+      }
+    }
+
+    const normalizedMobile = normalizeMobileDigits(mobile);
+    const normalizedEmail = String(email).trim();
+    const normalizedInstituteEmail = String(instituteEmail ?? "").trim();
+    const normalizedOrcid = normalizeOrcid(orcidId);
 
     const tempNationciteId = generateTempNationciteId();
     const ticketId = await generateTicketId();
@@ -109,8 +201,8 @@ export async function POST(req: NextRequest) {
             name,
             medCouncilRegNo,
             stateCouncil,
-            mobile,
-            email,
+            mobile: normalizedMobile,
+            email: normalizedEmail,
             primaryHospital,
             specialty,
             researchFocus,
@@ -133,11 +225,11 @@ export async function POST(req: NextRequest) {
             nationciteId: tempNationciteId,
             name,
             institute,
-            instituteEmail,
-            orcidId,
+            instituteEmail: normalizedInstituteEmail,
+            orcidId: normalizedOrcid,
             institutionalIdCardUrl: institutionalIdCardUrl || null,
-            mobile,
-            email,
+            mobile: normalizedMobile,
+            email: normalizedEmail,
             primaryDomain,
             googleScholarUrl,
             profilePhotoUrl,
@@ -159,19 +251,18 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // ✉️ Send registration mail (non-blocking)
     // ✉️ Send user + admin mails (non-blocking)
     try {
       await Promise.all([
         sendRegistrationMail({
-          to: email,
+          to: normalizedEmail,
           name,
           ticketId: result.ticketId,
           type: "SCHOLAR",
         }),
         sendAdminRegistrationAlert({
           name,
-          email,
+          email: normalizedEmail,
           type,
           ticketId: result.ticketId,
           nationciteId: result.nationciteId,
@@ -180,7 +271,6 @@ export async function POST(req: NextRequest) {
     } catch (mailError) {
       console.error("Mail sending failed:", mailError);
     }
-
 
     return NextResponse.json(
       {
@@ -191,6 +281,34 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    // Prisma common user-facing errors
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const targets = (error.meta?.target as string[]) ?? [];
+      const fieldErrors: Record<string, string> = {};
+
+      if (targets.includes("mobile")) {
+        fieldErrors.mobile = "This mobile number is already registered";
+      }
+      if (targets.includes("email")) {
+        fieldErrors.email = "This email is already registered";
+      }
+      if (targets.includes("instituteEmail")) {
+        fieldErrors.instituteEmail = "This email is already registered";
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Some details are already in use",
+          fieldErrors,
+        },
+        { status: 409 },
+      );
+    }
+
     console.error("Scholar registration error:", error);
 
     return NextResponse.json(

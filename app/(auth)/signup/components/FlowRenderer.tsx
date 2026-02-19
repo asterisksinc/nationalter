@@ -15,6 +15,7 @@ interface FlowRendererProps {
   userType: string;
   step: number;
   onNext: () => void;
+  onSendOtp?: () => void;
   otpSent: boolean;
   setOtpSent: (value: boolean) => void;
   timer: number;
@@ -29,6 +30,7 @@ export const FlowRenderer = ({
   userType,
   step,
   onNext,
+  onSendOtp,
   otpSent,
   setOtpSent,
   timer,
@@ -168,6 +170,7 @@ export const FlowRenderer = ({
       <InstitutionFlow
         step={step}
         onNext={onNext}
+        onSendOtp={onSendOtp}
         otpSent={otpSent}
         setOtpSent={setOtpSent}
         timer={timer}

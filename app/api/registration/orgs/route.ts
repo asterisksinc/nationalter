@@ -1,6 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
+import { Prisma } from "@prisma/client";
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function normalizeMobileDigits(input: string) {
+  return String(input ?? "").replace(/\D/g, "");
+}
+
+function isValidMobile(input: string) {
+  const digits = normalizeMobileDigits(input);
+  return digits.length >= 10 && digits.length <= 15;
+}
+
+function isValidDomain(domain: string) {
+  const value = String(domain ?? "").trim();
+  if (!value) return false;
+  return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/i.test(
+    value,
+  );
+}
 
 /**
  * Generate temporary NationCite ID
@@ -35,16 +57,35 @@ export async function POST(req: NextRequest) {
       accreditationProofUrl,
     } = body;
 
-    // 🔐 Validation
-    if (!name || !domain || !email || !number) {
+    const fieldErrors: Record<string, string> = {};
+    if (!name) fieldErrors.name = "Official domain is required";
+    if (!domain) fieldErrors.domain = "Domain is required";
+    if (!email) fieldErrors.email = "Email is required";
+    if (!number) fieldErrors.number = "Mobile number is required";
+
+    if (name && !isValidDomain(name)) {
+      fieldErrors.name = "Enter a valid domain (e.g. university.edu.in)";
+    }
+    if (domain && !isValidDomain(domain)) {
+      fieldErrors.domain = "Enter a valid domain (e.g. university.edu.in)";
+    }
+    if (email && !isValidEmail(email)) {
+      fieldErrors.email = "Enter a valid email";
+    }
+    if (number && !isValidMobile(number)) {
+      fieldErrors.number = "Enter a valid mobile number";
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "name, domain, email, and number are required",
-        },
-        { status: 400 }
+        { success: false, message: "Please fix the highlighted fields", fieldErrors },
+        { status: 400 },
       );
     }
+
+    const normalizedEmail = String(email).trim();
+    const normalizedNumber = normalizeMobileDigits(number);
+    const normalizedDomain = String(domain).trim();
 
     const tempNationciteId = generateTempNationciteId();
     const ticketId = await generateTicketId();
@@ -80,9 +121,9 @@ export async function POST(req: NextRequest) {
         data: {
           nationciteId: tempNationciteId,
           name,
-          domain,
-          email,
-          number,
+          domain: normalizedDomain,
+          email: normalizedEmail,
+          number: normalizedNumber,
           letterOfAuthorizationUrl: letterOfAuthorizationUrl || null,
           accreditationProofUrl: accreditationProofUrl || null,
           status: "PENDING",
@@ -106,7 +147,7 @@ export async function POST(req: NextRequest) {
     // Send registration mail to user (non-blocking)
     try {
       await sendRegistrationMail({
-        to: email,
+        to: normalizedEmail,
         name,
         ticketId: result.ticketId,
         type: "ORG",
@@ -119,7 +160,7 @@ export async function POST(req: NextRequest) {
     try {
       await sendAdminRegistrationAlert({
         name,
-        email,
+        email: normalizedEmail,
         type: "ORG",
         ticketId: result.ticketId,
         nationciteId: result.nationciteId,
@@ -137,6 +178,32 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const targets = (error.meta?.target as string[]) ?? [];
+      const fieldErrors: Record<string, string> = {};
+      if (targets.includes("number")) {
+        fieldErrors.number = "This mobile number is already registered";
+      }
+      if (targets.includes("email")) {
+        fieldErrors.email = "This email is already registered";
+      }
+      if (targets.includes("domain")) {
+        fieldErrors.domain = "This domain is already registered";
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Some details are already in use",
+          fieldErrors,
+        },
+        { status: 409 },
+      );
+    }
+
     console.error("Organization registration error:", error);
 
     return NextResponse.json(

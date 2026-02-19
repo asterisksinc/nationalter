@@ -91,6 +91,16 @@ export const ResearcherFlow = ({
               <p className="text-xs text-neutral-500">Checking email...</p>
             )}
             <FormInput
+              label="Mobile Number"
+              name="mobile"
+              type="tel"
+              value={researcherForm.mobile}
+              placeholder="e.g. 9876543210"
+              onChange={(value) => onChange?.("mobile", value)}
+              error={getFieldError("mobile")}
+              required
+            />
+            <FormInput
               label="ORCID ID"
               placeholder="e.g. 0000-0002-1825-0097"
               value={researcherForm.orcidId}

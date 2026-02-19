@@ -18,6 +18,7 @@ export default function TicketPage() {
     setLoading(true);
     try {
       const queryParams = new URLSearchParams();
+      queryParams.append("excludeRegistration", "true");
       if (filter !== "ALL") {
         queryParams.append("status", filter);
       }

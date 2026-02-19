@@ -38,26 +38,26 @@ export default function RegisterPage() {
     institution: "",
     instituteEmail: "",
     orcidId: "",
-    institutionalIdCardUrl: "www.demo",
+    mobile: "",
+    institutionalIdCardUrl: "",
     primaryDomain: "",
     googleScholarUrl: "",
-    profilePhotoUrl: "www.demo",
-    email: "test@gmail.com",
-    mobile: "1234567890",
+    profilePhotoUrl: "",
+    email: "",
   });
   const buildResearcherPayload = () => {
     const payload = {
       name: researcherForm.name,
       institute: researcherForm.institution,
-      instituteEmail: researcherForm.instituteEmail,
-      orcidId: researcherForm.orcidId,
+      instituteEmail: researcherForm.instituteEmail.trim(),
+      orcidId: normalizeOrcid(researcherForm.orcidId),
       institutionalIdCardUrl: researcherForm.institutionalIdCardUrl,
       primaryDomain: researcherForm.primaryDomain,
       googleScholarUrl: researcherForm.googleScholarUrl,
       profilePhotoUrl: researcherForm.profilePhotoUrl,
       type: "RESEARCHER",
-      email: researcherForm.instituteEmail,
-      mobile: "12345678855", // Replace with actual mobile from backend / user input
+      email: researcherForm.instituteEmail.trim(),
+      mobile: normalizeMobileDigits(researcherForm.mobile),
     };
 
     return payload;
@@ -79,7 +79,7 @@ export default function RegisterPage() {
       type: "MEDICAL",
       name: medicalForm.name,
       email: medicalForm.email,
-      mobile: medicalForm.mobile,
+      mobile: normalizeMobileDigits(medicalForm.mobile),
       medCouncilRegNo: medicalForm.medCouncilRegNo,
       stateCouncil: medicalForm.stateCouncil,
       primaryHospital: medicalForm.primaryHospital,
@@ -108,9 +108,9 @@ export default function RegisterPage() {
     return {
       type: "INSTITUTION",
       name: institutionForm.name,
-      domain: institutionForm.domain,
+      domain: institutionForm.name,
       email: institutionForm.email,
-      number: institutionForm.number,
+      number: normalizeMobileDigits(institutionForm.number),
       letterOfAuthorizationUrl: institutionForm.letterOfAuthorizationUrl,
       accreditationProofUrl: institutionForm.accreditationProofUrl,
     };
@@ -145,6 +145,48 @@ export default function RegisterPage() {
     return emailRegex.test(email);
   };
 
+  const normalizeOrcid = (input: string): string => {
+    const trimmed = input.trim();
+    if (!trimmed) return "";
+    const withoutUrl = trimmed.replace(/^https?:\/\/orcid\.org\//i, "");
+    return withoutUrl.replace(/\s+/g, "");
+  };
+
+  // ORCID ISO 7064 (MOD 11-2) check
+  const isValidOrcid = (input: string): boolean => {
+    const orcid = normalizeOrcid(input);
+    if (!/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(orcid)) return false;
+
+    const digits = orcid.replace(/-/g, "").toUpperCase();
+    let total = 0;
+    for (let i = 0; i < 15; i++) {
+      total = (total + Number(digits[i])) * 2;
+    }
+    const remainder = total % 11;
+    const result = (12 - remainder) % 11;
+    const checkDigit = result === 10 ? "X" : String(result);
+    return digits[15] === checkDigit;
+  };
+
+  const normalizeMobileDigits = (input: string): string => {
+    return input.replace(/\D/g, "");
+  };
+
+  const validateMobile = (input: string): boolean => {
+    const digits = normalizeMobileDigits(input);
+    // Keep flexible but reject obviously invalid numbers
+    return digits.length >= 10 && digits.length <= 15;
+  };
+
+  const validateDomain = (domain: string): boolean => {
+    const value = domain.trim();
+    if (!value) return false;
+    // Basic domain pattern, avoids protocol/paths
+    return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/i.test(
+      value,
+    );
+  };
+
   const validateRequired = (value: string): boolean => {
     return value.trim().length > 0;
   };
@@ -167,8 +209,15 @@ export default function RegisterPage() {
       } else if (!validateEmail(researcherForm.instituteEmail)) {
         errors.instituteEmail = "Please enter a valid email";
       }
+      if (!validateRequired(researcherForm.mobile)) {
+        errors.mobile = "Mobile number is required";
+      } else if (!validateMobile(researcherForm.mobile)) {
+        errors.mobile = "Enter a valid mobile number";
+      }
       if (!validateRequired(researcherForm.orcidId)) {
         errors.orcidId = "ORCID ID is required";
+      } else if (!isValidOrcid(researcherForm.orcidId)) {
+        errors.orcidId = "Enter a valid ORCID (e.g. 0000-0002-1825-0097)";
       }
     } else if (step === 3) {
       if (!validateRequired(researcherForm.primaryDomain)) {
@@ -205,6 +254,8 @@ export default function RegisterPage() {
       }
       if (!validateRequired(medicalForm.mobile)) {
         errors.mobile = "Mobile number is required";
+      } else if (!validateMobile(medicalForm.mobile)) {
+        errors.mobile = "Enter a valid mobile number";
       }
     } else if (step === 2) {
       if (!validateRequired(medicalForm.primaryHospital)) {
@@ -228,7 +279,9 @@ export default function RegisterPage() {
 
     if (step === 1) {
       if (!validateRequired(institutionForm.name)) {
-        errors.name = "Domain name is required";
+        errors.name = "Official domain is required";
+      } else if (!validateDomain(institutionForm.name)) {
+        errors.name = "Enter a valid domain (e.g. university.edu.in)";
       }
     } else if (step === 2) {
       if (!validateRequired(institutionForm.name1)) {
@@ -241,6 +294,8 @@ export default function RegisterPage() {
       }
       if (!validateRequired(institutionForm.number)) {
         errors.number = "Mobile number is required";
+      } else if (!validateMobile(institutionForm.number)) {
+        errors.number = "Enter a valid mobile number";
       }
     }
 
@@ -299,6 +354,12 @@ export default function RegisterPage() {
       }
     }
   };
+
+  const handleSendInstitutionOtp = () => {
+    // Validate step 2 (Authentication) fields before showing OTP UI
+    if (!validateCurrentStep()) return;
+    setOtpSent(true);
+  };
   const submitRegistration = async () => {
     // Prevent double submission
     if (hasSubmitted || isSubmitting) {
@@ -341,15 +402,67 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         let errorMessage = "Registration failed. Please try again.";
+        let fieldErrors: Record<string, string> | undefined;
 
         try {
           const errorData = await response.json();
           if (errorData.message) {
             errorMessage = errorData.message;
           }
+          if (errorData.fieldErrors && typeof errorData.fieldErrors === "object") {
+            fieldErrors = errorData.fieldErrors;
+          }
         } catch (parseError) {
           // If response body is not JSON, use default error message
           console.error("Failed to parse error response:", parseError);
+        }
+
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          setValidationErrors(fieldErrors);
+
+          const fieldStepMap: Record<string, number> =
+            userType === UserType.Researcher
+              ? {
+                  name: 1,
+                  institution: 1,
+                  instituteEmail: 2,
+                  mobile: 2,
+                  orcidId: 2,
+                  primaryDomain: 3,
+                  googleScholarUrl: 3,
+                  profilePhotoUrl: 3,
+                }
+              : userType === UserType.Medical
+                ? {
+                    name: 1,
+                    medCouncilRegNo: 1,
+                    stateCouncil: 1,
+                    email: 1,
+                    mobile: 1,
+                    primaryHospital: 2,
+                    specialty: 2,
+                    researchFocus: 2,
+                    medicalDegreeUrl: 3,
+                    regCertificateUrl: 3,
+                  }
+                : {
+                    name: 1,
+                    domain: 1,
+                    name1: 2,
+                    email: 2,
+                    number: 2,
+                    letterOfAuthorizationUrl: 3,
+                    accreditationProofUrl: 3,
+                  };
+
+          const firstBadStep = Math.min(
+            ...Object.keys(fieldErrors)
+              .map((k) => fieldStepMap[k])
+              .filter((v): v is number => typeof v === "number"),
+          );
+          if (Number.isFinite(firstBadStep)) {
+            setCurrentStep(firstBadStep);
+          }
         }
 
         setApiError(errorMessage);
@@ -661,6 +774,11 @@ export default function RegisterPage() {
                           userType={userType}
                           step={currentStep}
                           onNext={handleNextStep}
+                          onSendOtp={
+                            userType === UserType.Institution
+                              ? handleSendInstitutionOtp
+                              : undefined
+                          }
                           otpSent={otpSent}
                           setOtpSent={setOtpSent}
                           timer={timer}

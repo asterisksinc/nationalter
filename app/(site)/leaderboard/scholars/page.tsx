@@ -190,6 +190,7 @@ export default function ScholarsLeaderboardPage() {
               totalCount={totalCount}
               currentPage={currentPage}
               onPageChange={setCurrentPage}
+              itemsPerPage={10}
             />
             )}
           </div>

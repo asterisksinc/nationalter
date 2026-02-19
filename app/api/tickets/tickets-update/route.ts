@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin, requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -34,20 +34,56 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    await prisma.$transaction(async (tx) => {
-      const ticket = await tx.tickets.findUnique({
-        where: { ticketId },
-        include: { registration: true },
+    const ticket = await prisma.tickets.findUnique({
+      where: { ticketId },
+      include: { registration: true },
+    });
+
+    if (!ticket) {
+      return NextResponse.json(
+        { success: false, message: "Ticket not found" },
+        { status: 404 }
+      );
+    }
+
+    // Resolve nationciteId for non-admin users from JWT claim or linked registration
+    let requesterNationciteId: string | null =
+      (payload.nationciteId as string | undefined) ?? null;
+
+    if (!isAdmin && !requesterNationciteId) {
+      const registrationOr: Array<{ id?: number; authUserId?: number }> = [];
+      const registrationId = Number(payload.registrationId);
+      const userId = Number(payload.userId);
+
+      if (Number.isFinite(registrationId) && registrationId > 0) {
+        registrationOr.push({ id: registrationId });
+      }
+      if (Number.isFinite(userId) && userId > 0) {
+        registrationOr.push({ authUserId: userId });
+      }
+
+      const registration = await prisma.registration.findFirst({
+        where: registrationOr.length > 0 ? { OR: registrationOr } : undefined,
+        select: {
+          nationciteId: true,
+        },
       });
 
-      if (!ticket) {
-        throw new Error("Ticket not found");
-      }
+      requesterNationciteId = registration?.nationciteId ?? null;
+    }
 
-      // Non-admin users can only comment on their own tickets
-      if (!isAdmin && ticket.nationciteId !== payload.nationciteId) {
-        throw new Error("Unauthorized: You can only comment on your own tickets");
-      }
+    // Non-admin users can only comment on their own tickets
+    if (!isAdmin && ticket.nationciteId !== requesterNationciteId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized: You can only comment on your own tickets",
+        },
+        { status: 403 }
+      );
+    }
+
+    await prisma.$transaction(async (tx) => {
 
       // ✅ Update Ticket (only if admin)
       if (isAdmin) {

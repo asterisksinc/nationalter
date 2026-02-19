@@ -196,6 +196,7 @@ useEffect(() => {
                 totalCount={totalCount}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                itemsPerPage={10}
               />
             )}
           </div>

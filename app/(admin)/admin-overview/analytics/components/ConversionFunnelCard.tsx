@@ -1,176 +1,138 @@
 import { funnelStages } from "./analyticsData";
 
 function userLabel(count: number) {
-  return `${count.toLocaleString()} ${count === 1 ? "User" : "Users"}`;
+  return `${count.toLocaleString()} User`;
 }
 
 export function ConversionFunnelCard() {
-  const innerPadX = 40;
-  const scaleX = (800 - innerPadX * 2) / 800;
-  const scaleY = 1.12;
-  const translateY = -((450 * scaleY - 450) / 2);
+  const width = 800;
+  const height = 420;
+
+  const stages = funnelStages.slice(0, 5);
+
+  const stageCount = 5;
+  const sectionWidth = width / stageCount;
+
+  // Staggered Y positioning to naturally hug the funnel curves
+  const topYPos = [30, 70, 130, 150, 155];
+  const bottomYPos = [390, 350, 290, 270, 265];
+  const percentY = 210; // Perfectly centered vertically
 
   return (
-    <div className="ao-card ao-funnel-card">
-      <div className="ao-funnel-head-row">
+    <div className="flex flex-col rounded-xl border border-[#e1e4ea] bg-white p-5">
+      <div className="flex items-start justify-between">
         <div>
-          <div className="ao-card-title">User Conversion Funnel</div>
-          <div className="ao-card-sub">User journey conversion metrics</div>
+          <div className="text-sm font-semibold text-[#1b2332]">
+            User Conversion Funnel
+          </div>
+          <div className="text-xs text-[#8a94a5]">
+            User journey conversion metrics
+          </div>
         </div>
-        <div className="ao-badges">
-          <span className="ao-badge-green">Elite</span>
-          <span className="ao-badge-orange">92th Percentile</span>
+        <div className="flex gap-2">
+          <span className="rounded-full bg-[#e8f8ec] px-2 py-1 text-xs text-[#1ea55a]">
+            Elite
+          </span>
+          <span className="rounded-full bg-[#fff1e1] px-2 py-1 text-xs text-[#ef8a1b]">
+            92nd Percentile
+          </span>
         </div>
       </div>
 
-      <div className="ao-card-divider" />
+      <div className="my-4 h-px bg-[#eceff4]" />
 
-      <div className="ao-funnel-metrics">
+      <div className="flex justify-between">
         <div>
-          <div className="ao-small-muted">Overall Conversion</div>
-          <div className="ao-green-value">21.7%</div>
+          <div className="text-xs text-[#8b93a2]">Overall Conversion</div>
+          <div className="text-4xl text-[#14a94f] leading-none">21.7%</div>
         </div>
         <div>
-          <div className="ao-small-muted">Total Converted</div>
-          <div className="ao-dark-value">184</div>
+          <div className="text-xs text-[#8b93a2]">Total Converted</div>
+          <div className="text-5xl text-[#1b2434] leading-none">184</div>
         </div>
       </div>
 
-      <div className="ao-funnel-graph">
+      <div className="mt-6 w-full rounded-xl border border-[#eadcc9] bg-gradient-to-b from-[#f4e8d9] to-[#efe4d6] p-6">
         <svg
-          className="ao-funnel-svg"
-          viewBox="0 0 800 450"
-          preserveAspectRatio="xMidYMid slice"
-          role="img"
-          aria-label="User conversion funnel"
-          style={{ width: "100%", height: "100%" }}
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full h-[420px]"
+          preserveAspectRatio="xMidYMid meet"
         >
-          <g
-            transform={`translate(${innerPadX}, ${translateY}) scale(${scaleX}, ${scaleY})`}
-          >
           <defs>
-            <linearGradient id="aoFunnelBack" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#ffe6cc" />
-              <stop offset="100%" stopColor="#fff0e0" />
-            </linearGradient>
-            <linearGradient id="aoFunnelMid" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#ffcc99" />
-              <stop offset="100%" stopColor="#ffdcb3" />
-            </linearGradient>
-            <linearGradient id="aoFunnelFront" x1="0" y1="0" x2="1" y2="0">
+            <linearGradient id="frontGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#ff7f00" />
               <stop offset="100%" stopColor="#ff9933" />
             </linearGradient>
-            <filter id="shadowVal" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow
-                dx="0"
-                dy="2"
-                stdDeviation="2"
-                floodColor="#000"
-                floodOpacity="0.1"
-              />
+
+            <filter id="bubbleShadow">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.15" />
             </filter>
           </defs>
 
+          {/* Layer 1: Lightest Back */}
           <path
-            d="
-              M 0,20 
-              C 150,20 200,80 300,110
-              C 400,140 500,165 600,180
-              C 700,195 750,200 800,205
-              L 800,245
-              C 750,250 700,255 600,270
-              C 500,285 400,310 300,340
-              C 200,370 150,430 0,430
-              Z
-            "
-            fill="url(#aoFunnelBack)"
-            opacity="0.6"
+            d="M 0,40 C 200,40 300,105 400,150 C 500,175 600,175 800,175 L 800,245 C 600,245 500,245 400,270 C 300,315 200,380 0,380 Z"
+            fill="#fde8d5"
+          />
+          
+          {/* Layer 2: Middle */}
+          <path
+            d="M 0,70 C 200,70 300,120 400,160 C 500,185 600,185 800,185 L 800,235 C 600,235 500,235 400,260 C 300,300 200,350 0,350 Z"
+            fill="#fbd3a9"
           />
 
+          {/* Layer 3: Dark Front Funnel */}
           <path
-            d="
-              M 0,55
-              C 150,55 200,105 300,130
-              C 400,155 500,175 600,188
-              C 700,201 750,205 800,210
-              L 800,240
-              C 750,245 700,249 600,262
-              C 500,275 400,295 300,320
-              C 200,345 150,395 0,395
-              Z
-            "
-            fill="url(#aoFunnelMid)"
-            opacity="0.8"
+            d="M 0,100 C 200,100 300,135 400,170 C 500,195 600,195 800,195 L 800,225 C 600,225 500,225 400,250 C 300,285 200,320 0,320 Z"
+            fill="url(#frontGrad)"
           />
 
-          <path
-            d="
-              M 0,90
-              C 150,90 200,130 300,150
-              C 400,170 500,185 600,196
-              C 700,207 750,210 800,215
-              L 800,235
-              C 750,240 700,243 600,254
-              C 500,265 400,280 300,300
-              C 200,320 150,360 0,360
-              Z
-            "
-            fill="url(#aoFunnelFront)"
-          />
-
-          {[190, 370, 550, 690].map((x) => (
-            <line
-              key={`line-${x}`}
-              x1={x}
-              y1={20}
-              x2={x}
-              y2={430}
-              stroke="white"
-              strokeWidth="2"
-              strokeOpacity="0.8"
-            />
-          ))}
-
-          {funnelStages.map((stage, idx) => {
-            const xPositions = [110, 290, 470, 620, 710];
-            const yCenters = [228, 218, 228, 236, 240];
-
-            const xPos = xPositions[idx] || 735;
-            const yCenter = yCenters[idx] || 250;
-
-            const yTopRef = [96, 132, 176, 196, 206][idx];
-            const yBotRef = [292, 286, 278, 268, 258][idx];
-
-            const labelParts = stage.label.split(" ");
-            const labelTop = labelParts[0] ?? "";
-            const labelBottom = labelParts.slice(1).join(" ");
+          {stages.map((stage, i) => {
+            const x = sectionWidth * i + sectionWidth / 2;
+            const topY = topYPos[i];
+            const bottomY = bottomYPos[i];
+            
+            const words = stage.label ? stage.label.split(" ") : [];
 
             return (
-              <g key={stage.key} transform={`translate(${xPos}, 0)`}>
-                <g transform={`translate(0, ${yTopRef - 40})`}>
-                  <rect
-                    x="-55"
-                    y="0"
-                    width="110"
-                    height="30"
-                    rx="15"
-                    fill="#ffeacc"
-                    opacity="0.95"
-                  />
-                  <text
-                    x="0"
-                    y="20"
-                    textAnchor="middle"
-                    fill="#1f2937"
-                    fontSize="13"
-                    fontWeight="600"
-                  >
-                    {userLabel(stage.users)}
-                  </text>
-                </g>
+              <g key={stage.key || i}>
+                {/* Vertical Connector Line */}
+                <line
+                  x1={x}
+                  y1={topY}
+                  x2={x}
+                  y2={bottomY}
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeOpacity="0.9"
+                />
 
-                <g transform={`translate(0, ${yCenter})`}>
+                {/* Top Users Bubble */}
+                {stage.users && (
+                  <g transform={`translate(${x},${topY})`}>
+                    <rect
+                      x="-45"
+                      y="-14"
+                      width="90"
+                      height="28"
+                      rx="14"
+                      fill="#fef0e3"
+                    />
+                    <text
+                      x="0"
+                      y="4"
+                      textAnchor="middle"
+                      fontSize="12"
+                      fontWeight="600"
+                      fill="#1f2937"
+                    >
+                      {userLabel(stage.users)}
+                    </text>
+                  </g>
+                )}
+
+                {/* Middle Percent Bubble */}
+                <g transform={`translate(${x},${percentY})`}>
                   <rect
                     x="-40"
                     y="-18"
@@ -178,55 +140,51 @@ export function ConversionFunnelCard() {
                     height="36"
                     rx="18"
                     fill="#fff"
-                    filter="url(#shadowVal)"
+                    filter="url(#bubbleShadow)"
                   />
                   <text
                     x="0"
                     y="6"
                     textAnchor="middle"
-                    fill="#ff7f00"
-                    fontWeight="bold"
                     fontSize="16"
+                    fontWeight="700"
+                    fill="#ff7f00"
                   >
                     {stage.percent}
                   </text>
                 </g>
 
-                <g transform={`translate(0, ${yBotRef + 2})`}>
-                  <path
-                    d="M -15,-20 Q 0,-5 15,-20"
-                    fill="#fff"
-                    opacity="0.1"
-                  />
-
-                  <circle r="38" fill="#fff5eb" cy="32" />
-                  <text
-                    x="0"
-                    y="28"
-                    textAnchor="middle"
-                    fill="#1f2937"
-                    fontSize="10"
-                    fontWeight="700"
-                  >
-                    {labelTop}
-                  </text>
-                  {labelBottom && (
+                {/* Bottom Label Bubble */}
+                {stage.label && (
+                  <g transform={`translate(${x},${bottomY})`}>
+                    <rect 
+                      x="-50" 
+                      y="-24" 
+                      width="100" 
+                      height="48" 
+                      rx="24" 
+                      fill="#fdf2e8" 
+                    />
                     <text
-                      x="0"
-                      y="42"
                       textAnchor="middle"
+                      fontSize="11"
+                      fontWeight="600"
                       fill="#1f2937"
-                      fontSize="10"
-                      fontWeight="700"
                     >
-                      {labelBottom}
+                      {words.length <= 1 ? (
+                        <tspan x="0" y="4">{words[0]}</tspan>
+                      ) : (
+                        <>
+                          <tspan x="0" y="-4">{words[0]}</tspan>
+                          <tspan x="0" y="12">{words.slice(1).join(" ")}</tspan>
+                        </>
+                      )}
                     </text>
-                  )}
-                </g>
+                  </g>
+                )}
               </g>
             );
           })}
-          </g>
         </svg>
       </div>
     </div>
