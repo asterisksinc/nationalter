@@ -180,11 +180,17 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
     );
   }
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="min-h-screen flex">
-      <DashboardSidebar activePage="tickets" />
-      <main className="flex-1 ml-[260px] min-w-[1000px] bg-gray-50">
-        <div className="pb-8 p-8">
+    <div className="min-h-screen flex relative">
+      <DashboardSidebar
+        activePage="tickets"
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+      <main className="flex-1 transition-all duration-300 ml-0 md:ml-[260px] bg-gray-50 w-full overflow-x-hidden">
+        <div className="pb-8 p-4 md:p-8">
           <TicketDetailView
             ticket={ticket}
             relatedPublication={relatedPublication}

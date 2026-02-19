@@ -84,7 +84,7 @@ export default function ResearchersLayout({
       />
 
       {/* Main Content */}
-      <main className="flex-1 ml-0 md:ml-[260px] p-4 md:p-6 min-w-0 md:min-w-[1000px] overflow-x-hidden">
+      <main className="flex-1 ml-0 md:ml-[260px] p-4 md:p-6 overflow-x-hidden">
         {/* Header */}
         <DashboardHeader
           breadcrumbItems={breadcrumbItems}

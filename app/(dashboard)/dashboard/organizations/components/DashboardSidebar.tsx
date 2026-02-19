@@ -12,11 +12,11 @@ import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
   activePage?:
-    | "overview"
-    | "publications"
-    | "tickets"
-    | "analytics"
-    | "settings";
+  | "overview"
+  | "publications"
+  | "tickets"
+  | "analytics"
+  | "settings";
   isOpen?: boolean;
   onClose?: () => void;
 }
@@ -98,7 +98,7 @@ export const DashboardSidebar = ({
   return (
     <aside
       className={`
-        w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-40
+        w-[260px] bg-[#F5F7FA] border-r border-[#E1E4EA] flex flex-col fixed h-full z-50
         transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0

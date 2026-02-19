@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import EditUserModal from "../component/EditUserModal";
 import "../adminstyle.css";
 
+
 function AddUserDrawer({ onClose }: { onClose: () => void }) {
   type RegistrationTab = "researcher" | "institution" | "medical";
   type Step = 1 | 2 | 3 | 4;
@@ -24,9 +25,9 @@ function AddUserDrawer({ onClose }: { onClose: () => void }) {
   const [inviteResult, setInviteResult] = useState<
     | null
     | {
-        email: string;
-        flowLabel: string;
-      }
+      email: string;
+      flowLabel: string;
+    }
   >(null);
 
   // Researcher flow (matches app/(auth)/signup)
@@ -1071,6 +1072,7 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filters, setFilters] = useState({
     role: "",
     status: "",
@@ -1167,11 +1169,11 @@ export default function HomePage() {
   return (
     <div className="admin-layout">
       {/* Sidebar */}
-      <DashboardSidebar activePage="usermanagement" />
+      <DashboardSidebar activePage="usermanagement" isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Main content */}
       <main
-        className="flex-1 ml-[260px] p-8 min-w-[1000px]"
+        className="flex-1 ml-0 md:ml-[260px] overflow-x-hidden"
         style={{ paddingLeft: "0px", paddingTop: "0px", paddingRight: "0px" }}
       >
         {/* Top bar */}
@@ -1180,6 +1182,7 @@ export default function HomePage() {
             { label: "Home", href: "/" },
             { label: "User Management" },
           ]}
+          onMenuClick={() => setIsSidebarOpen(true)}
         />
 
         {/* Content area */}

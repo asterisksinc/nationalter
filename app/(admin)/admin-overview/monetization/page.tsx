@@ -15,6 +15,7 @@ export default function MonetizationPage() {
   }
 
   const [showManageModal, setShowManageModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedSubscriber, setSelectedSubscriber] = useState<Subscriber | null>(null);
   const [showManualPayment, setShowManualPayment] = useState(false);
   const [showGrantAccess, setShowGrantAccess] = useState(false);
@@ -24,14 +25,19 @@ export default function MonetizationPage() {
   const [cancelOption, setCancelOption] = useState<"end" | "immediate">("end");
 
   return (
-    <>      <div className="zui-admin-layout min-h-screen">
-        <DashboardSidebar activePage="monetization" />
-        <main className="kryx-main-content flex-1 ml-[260px] min-w-[1000px] bg-gray-50"><DashboardHeader
-          breadcrumbItems={[
-            { label: "Home", href: "/" },
-            { label: "Monetization" },
-          ]}
-        />
+    <>      <div className="zui-admin-layout min-h-screen relative">
+      <DashboardSidebar
+        activePage="monetization"
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+      <main className="kryx-main-content flex-1 transition-all duration-300 ml-0 md:ml-[260px] bg-gray-50 w-full overflow-x-hidden"><DashboardHeader
+        breadcrumbItems={[
+          { label: "Home", href: "/" },
+          { label: "Monetization" },
+        ]}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
         {/* Paste the full content section from previous response here */}
 
 

@@ -86,16 +86,14 @@ export const TicketsTable = ({
   ).length;
   const StatsGrid = ({ isMobile = false }) => (
     <div
-      className={`border border-[#E1E4EA] rounded-xl overflow-hidden mb-6 ${
-        isMobile
+      className={`border border-[#E1E4EA] rounded-xl overflow-hidden mb-6 ${isMobile
           ? "block lg:hidden w-full"
           : "hidden lg:block border-y-0 border-x-0 rounded-none mb-0"
-      }`}
+        }`}
     >
       <div
-        className={`${
-          isMobile ? "grid grid-cols-2" : "lg:grid lg:grid-cols-4"
-        } ${!isMobile && "border-y border-[#E1E4EA] py-4"}`}
+        className={`${isMobile ? "grid grid-cols-2" : "lg:grid lg:grid-cols-4"
+          } ${!isMobile && "border-y border-[#E1E4EA] py-4"}`}
       >
         {[
           ["Open Tickets", openCount],
@@ -108,12 +106,12 @@ export const TicketsTable = ({
             className={`flex flex-col gap-2 p-4 relative ${
               // Desktop borders
               !isMobile && i < 3 ? "lg:border-r lg:border-[#E1E4EA]" : ""
-            } ${
+              } ${
               // Mobile borders - vertical dividers on positions 0 and 2 (left cards) with limited height
               isMobile && (i === 0 || i === 2)
                 ? "after:content-[''] after:absolute after:right-0 after:top-[20%] after:bottom-[20%] after:w-px after:bg-[#E1E4EA]"
                 : ""
-            } ${!isMobile ? "px-3 py-0 border-0" : ""}`}
+              } ${!isMobile ? "px-3 py-0 border-0" : ""}`}
           >
             <span className="text-[13px] md:text-[14px] font-normal text-[#525866]">
               {label}
@@ -250,7 +248,7 @@ export const TicketsTable = ({
 
       {/* TABLE */}
       <div className="border border-[#E1E4EA] rounded-lg overflow-x-auto">
-        <table className="w-full text-left" style={{ minWidth: "600px" }}>
+        <table className="w-full text-left" style={{ minWidth: "900px" }}>
           <colgroup>
             <col style={{ width: "90px", minWidth: "90px" }} />
             <col style={{ width: "140px", minWidth: "140px" }} />

@@ -28,20 +28,27 @@ export default function HomePage() {
 
 
   const [activePage, setActivePage] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="admin-layout">
+    <div className="admin-layout relative">
       {/* Sidebar */}
-      <DashboardSidebar activePage="overview" />
+      <DashboardSidebar
+        activePage="overview"
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
 
 
       {/* Main content */}
-      <main className="flex-1 ml-[260px] p-8 min-w-[1000px]" style={{ paddingLeft: '0px', paddingTop: '0px', paddingRight: '0px' }}>
+      <main className="flex-1 transition-all duration-300 ml-0 md:ml-[260px] p-4 md:p-8 w-full overflow-x-hidden" style={{ paddingLeft: '0px', paddingTop: '0px', paddingRight: '0px' }}>
         {/* Top bar */}
         <DashboardHeader
           breadcrumbItems={[
             { label: "Home", href: "/" },
             { label: "Dashboard" },
           ]}
+          onMenuClick={() => setIsSidebarOpen(true)}
         />
 
         {/* Content area */}
@@ -206,9 +213,9 @@ export default function HomePage() {
                   </div>
 
                   <div className="card-meta-row">
-                   <span className="meta-label">Source</span>
+                    <span className="meta-label">Source</span>
                     <span className="meta-value">adscientificindex</span>
-         
+
                   </div>
                 </div>
               </div>
@@ -218,8 +225,8 @@ export default function HomePage() {
               <div className='fle' style={{ paddingLeft: '32px', paddingRight: '32px' }}>
                 <div className="panel-title">Ecosystem Metrics</div>
                 <Link href="admin-overview/analytics" className="panel-title1">
-  View All Reports
-</Link>
+                  View All Reports
+                </Link>
               </div>
               <div className="cards-row1" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
                 {/* Left card */}

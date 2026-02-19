@@ -63,12 +63,19 @@ export default function TicketPage() {
 
   const stats = getStats();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="zui-admin-layout min-h-screen flex">
-      <DashboardSidebar activePage="tickets" />
-      <main className="kryx-main-content flex-1 ml-[260px] min-w-[1000px] bg-gray-50">
+    <div className="zui-admin-layout min-h-screen flex relative">
+      <DashboardSidebar
+        activePage="tickets"
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+      <main className="kryx-main-content flex-1 transition-all duration-300 ml-0 md:ml-[260px] bg-gray-50 w-full overflow-x-hidden">
         <DashboardHeader
           breadcrumbItems={[{ label: "Home", href: "/" }, { label: "Tickets" }]}
+          onMenuClick={() => setIsSidebarOpen(true)}
         />
 
         <div className="p-8">
@@ -116,7 +123,7 @@ export default function TicketPage() {
           </div>
 
           {/* Filters & Actions */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto shadow-sm">
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center gap-2 overflow-x-auto mb-4">
                 <span className="text-sm text-[#525866] font-medium">
@@ -124,41 +131,37 @@ export default function TicketPage() {
                 </span>
                 <button
                   onClick={() => setFilter("ALL")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    filter === "ALL"
-                      ? "bg-[#FFF1E7] text-[#FF7A00]"
-                      : "text-[#525866] hover:bg-gray-100"
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === "ALL"
+                    ? "bg-[#FFF1E7] text-[#FF7A00]"
+                    : "text-[#525866] hover:bg-gray-100"
+                    }`}
                 >
                   All Tickets
                 </button>
                 <button
                   onClick={() => setFilter("OPEN")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    filter === "OPEN"
-                      ? "bg-[#FFF1E7] text-[#FF7A00]"
-                      : "text-[#525866] hover:bg-gray-100"
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === "OPEN"
+                    ? "bg-[#FFF1E7] text-[#FF7A00]"
+                    : "text-[#525866] hover:bg-gray-100"
+                    }`}
                 >
                   Open
                 </button>
                 <button
                   onClick={() => setFilter("IN_PROGRESS")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    filter === "IN_PROGRESS"
-                      ? "bg-[#FFF1E7] text-[#FF7A00]"
-                      : "text-[#525866] hover:bg-gray-100"
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === "IN_PROGRESS"
+                    ? "bg-[#FFF1E7] text-[#FF7A00]"
+                    : "text-[#525866] hover:bg-gray-100"
+                    }`}
                 >
                   In Progress
                 </button>
                 <button
                   onClick={() => setFilter("RESOLVED")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    filter === "RESOLVED"
-                      ? "bg-[#FFF1E7] text-[#FF7A00]"
-                      : "text-[#525866] hover:bg-gray-100"
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === "RESOLVED"
+                    ? "bg-[#FFF1E7] text-[#FF7A00]"
+                    : "text-[#525866] hover:bg-gray-100"
+                    }`}
                 >
                   Resolved
                 </button>

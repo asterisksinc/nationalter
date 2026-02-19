@@ -218,7 +218,7 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm" style={{ minWidth: "500px" }}>
+        <table className="w-full text-sm" style={{ minWidth: "900px" }}>
           <thead className="bg-[#F5F7FA] border-b border-[#E1E4EA]">
             <tr>
               <th

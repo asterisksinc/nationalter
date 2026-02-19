@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { DashboardHeader } from "../component/DashboardHeader";
 import { DashboardSidebar } from "../component/dashboardsidebar";
 import "./analytics-dashboard.css";
@@ -20,18 +22,24 @@ import {
 } from "./components/analyticsData";
 
 export default function AnalyticsDashboard() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="zui-admin-layout min-h-screen">
-      <div className="ao-desktop-sidebar">
-        <DashboardSidebar activePage="analytics" />
-      </div>
-      <main className="kryx-main-content ao-main-shell">
+    <div className="zui-admin-layout min-h-screen relative">
+      <DashboardSidebar
+        activePage="analytics"
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+
+      <main className="kryx-main-content ao-main-shell ml-0 md:ml-[260px] overflow-x-hidden">
         <div className="ao-header-shell">
           <DashboardHeader
             breadcrumbItems={[
               { label: "Home", href: "/" },
               { label: "Analytics" },
             ]}
+            onMenuClick={() => setIsSidebarOpen(true)}
           />
         </div>
 

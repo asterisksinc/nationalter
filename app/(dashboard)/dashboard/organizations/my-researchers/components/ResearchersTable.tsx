@@ -88,7 +88,7 @@ export default function ResearchersTable({
     <>
       <div className="bg-white rounded-xl border border-[#E1E4EA] overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full" style={{ minWidth: "900px" }}>
             <thead>
               <tr className="border-b border-[#E1E4EA] bg-[#F5F5F5]">
                 <th className="w-12 px-4 py-4"></th>
@@ -121,18 +121,16 @@ export default function ResearchersTable({
                 return (
                   <tr
                     key={researcher.id}
-                    className={`border-b border-[#E1E4EA] last:border-b-0 transition-colors ${
-                      isSelected ? "bg-[#E8F5E9]" : "hover:bg-gray-50"
-                    }`}
+                    className={`border-b border-[#E1E4EA] last:border-b-0 transition-colors ${isSelected ? "bg-[#E8F5E9]" : "hover:bg-gray-50"
+                      }`}
                   >
                     <td className="px-4 py-4">
                       <div
                         onClick={() => handleCheckboxChange(researcher.id)}
-                        className={`w-5 h-5 rounded border-2 flex items-center justify-center cursor-pointer ${
-                          isSelected
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center cursor-pointer ${isSelected
                             ? "bg-[#22C55E] border-[#22C55E]"
                             : "border-[#D1D5DB] bg-white"
-                        }`}
+                          }`}
                       >
                         {isSelected && (
                           <svg
