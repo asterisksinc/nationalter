@@ -80,6 +80,9 @@ export async function POST(req: NextRequest) {
       email,
       mobile,
 
+      city,
+      state,
+
       // Medical specific
       medCouncilRegNo,
       stateCouncil,
@@ -210,6 +213,8 @@ export async function POST(req: NextRequest) {
             regCertificateUrl: regCertificateUrl || null,
             status: "PENDING",
             plan: "FREE",
+            city,
+            state,
             registration: {
               connect: {
                 id: registration.id,
@@ -235,6 +240,8 @@ export async function POST(req: NextRequest) {
             profilePhotoUrl,
             status: "PENDING",
             plan: "FREE",
+            city,
+            state,
             registration: {
               connect: {
                 id: registration.id,

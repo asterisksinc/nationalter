@@ -94,6 +94,8 @@ model Registration {
   status         RegistrationStatus @default(PENDING)
   authUserId     Int?     @unique
   ticketId       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   authUser       AuthUser? @relation(fields: [authUserId], references: [id])
@@ -124,6 +126,8 @@ model MedicalProfessional {
   regCertificateUrl    String?
   status               String
   plan                 String
+  city                 String   @db.VarChar(100)
+  state                String   @db.VarChar(100)
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -149,6 +153,8 @@ model Researchers {
   profilePhotoUrl           String
   status                    String
   plan                      String
+  city                 String   @db.VarChar(100)
+  state                String   @db.VarChar(100)
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -170,6 +176,8 @@ model OrgsRegistered {
   accreditationProofUrl     String
   status                    String
   plan                      String
+  city                 String   @db.VarChar(100)
+  state                String   @db.VarChar(100)
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -188,8 +196,8 @@ model Tickets {
   issueType    String
   description  String
   status       String
-  createdAt    DateTime
-  updatedAt    DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   issueReason      String?     
   links            String[]    
   attachments      String[]   
