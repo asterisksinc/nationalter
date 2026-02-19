@@ -1,6 +1,7 @@
 // app/page.tsx
 'use client';  // ← This line is already there
 import Image from 'next/image';
+import Link from "next/link";
 import './adminstyle.css';
 import { useEffect, useState } from 'react';
 import { DashboardSidebar } from './component/dashboardsidebar';
@@ -60,7 +61,7 @@ export default function HomePage() {
                     </div>
                     <div className="last-sync">Last synced: Oct 24, 2023 · 14:02 UTC</div>
                   </div>
-                  <button className="primary-btn" aria-label="Upload new dataset" style={{ borderRadius: '6px' }}
+                  {/* <button className="primary-btn" aria-label="Upload new dataset" style={{ borderRadius: '6px' }}
                     onClick={() => router.push("admin-overview/dataset/new")}>
                     <Image
                       src="/logos/upload.png"
@@ -70,7 +71,7 @@ export default function HomePage() {
                       priority
                     />
                     Upload New Dataset
-                  </button>
+                  </button> */}
                 </div>
 
               </div>
@@ -117,7 +118,7 @@ export default function HomePage() {
 
                   <div className="card-meta-row">
                     <span className="meta-label">Source</span>
-                    <span className="meta-value">researchers_v4_2025.csv</span>
+                    <span className="meta-value">adscientificindex</span>
                   </div>
                 </div>
 
@@ -161,7 +162,7 @@ export default function HomePage() {
 
                   <div className="card-meta-row">
                     <span className="meta-label">Source</span>
-                    <span className="meta-value">institutions_rankings_q2.csv</span>
+                    <span className="meta-value">adscientificindex</span>
                   </div>
                 </div>
                 <div className="summary-card summary-card-compact">
@@ -205,8 +206,9 @@ export default function HomePage() {
                   </div>
 
                   <div className="card-meta-row">
-                    <span className="meta-label" style={{ color: '#FF7A00' }}>Awaiting publish approval</span>
-                    <span className="meta-value"></span>
+                   <span className="meta-label">Source</span>
+                    <span className="meta-value">adscientificindex</span>
+         
                   </div>
                 </div>
               </div>
@@ -215,7 +217,9 @@ export default function HomePage() {
               {/* Ecosystem metrics row */}
               <div className='fle' style={{ paddingLeft: '32px', paddingRight: '32px' }}>
                 <div className="panel-title">Ecosystem Metrics</div>
-                <div className="panel-title1">View All Reports</div>
+                <Link href="admin-overview/analytics" className="panel-title1">
+  View All Reports
+</Link>
               </div>
               <div className="cards-row1" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
                 {/* Left card */}
