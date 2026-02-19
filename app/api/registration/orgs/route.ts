@@ -55,6 +55,8 @@ export async function POST(req: NextRequest) {
       number,
       letterOfAuthorizationUrl,
       accreditationProofUrl,
+      city,
+      state,
     } = body;
 
     const fieldErrors: Record<string, string> = {};
@@ -63,8 +65,8 @@ export async function POST(req: NextRequest) {
     if (!email) fieldErrors.email = "Email is required";
     if (!number) fieldErrors.number = "Mobile number is required";
 
-    if (name && !isValidDomain(name)) {
-      fieldErrors.name = "Enter a valid domain (e.g. university.edu.in)";
+    if (name && name.trim().length < 3) {
+      fieldErrors.name = "Organization name must be at least 3 characters";
     }
     if (domain && !isValidDomain(domain)) {
       fieldErrors.domain = "Enter a valid domain (e.g. university.edu.in)";
@@ -128,6 +130,8 @@ export async function POST(req: NextRequest) {
           accreditationProofUrl: accreditationProofUrl || null,
           status: "PENDING",
           plan: "FREE",
+          city,
+          state,
           registration: {
             connect: {
               id: registration.id,

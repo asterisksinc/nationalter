@@ -34,7 +34,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20",
+    "@types/node": "^20.19.33",
     "@types/nodemailer": "^7.0.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -42,9 +42,10 @@
     "eslint-config-next": "16.0.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed-admin.ts"
+    "seed": "tsx prisma/seed-admin.ts"
   }
 }
