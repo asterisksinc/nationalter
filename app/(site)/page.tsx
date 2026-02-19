@@ -44,9 +44,11 @@ export default function HomePage() {
           </div>
 
           {/* Text */}
-          <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap">
-            1,928,384+ Indian Researchers
-          </span>
+          <Link href="/leaderboard">
+            <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap cursor-pointer">
+              1,928,384+ Indian Researchers
+            </span>
+          </Link>
 
           {/* Arrow */}
           <svg

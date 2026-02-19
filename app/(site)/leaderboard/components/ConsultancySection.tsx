@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function ConsultancySection() {
@@ -37,7 +38,7 @@ export default function ConsultancySection() {
         <div className="mb-6 relative z-10 text-center">
           <span className="bg-[#FFF5EB] text-[#1E1E1E] pl-2 pr-4 py-1.5 rounded-full text-sm font-semibold border border-[#FFD6B3] flex items-center gap-2 justify-center mx-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></span>
-            CTA Goes Here
+            Contact Us
           </span>
         </div>
 
@@ -83,9 +84,9 @@ export default function ConsultancySection() {
         </div>
 
         {/* CTA Button */}
-        <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-lg shadow-orange-200 relative z-10">
-          CTA Button
-        </button>
+        <Link  href="/contact" className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm md:text-base hover:bg-[#e66e00] transition-all shadow-lg shadow-orange-200 relative z-10">
+        Contact Us
+        </Link>
       </div>
     </section>
   );
