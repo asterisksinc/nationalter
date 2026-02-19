@@ -82,7 +82,7 @@ export default function Footer() {
             </div>
 
             {/* Resources Column */}
-            <div className="flex flex-col min-w-[130px]">
+            {/* <div className="flex flex-col min-w-[130px]">
               <h3 className="text-base md:text-lg lg:text-xl font-semibold text-slate-900 mb-3 md:mb-4">
                 Resources
               </h3>
@@ -112,7 +112,7 @@ export default function Footer() {
                   eBooks
                 </a>
               </div>
-            </div>
+            </div> */}
 
             {/* Social Icons Column (Vertical Stack on Desktop, Horizontal on Mobile) */}
             <div className="flex flex-row lg:flex-col gap-2 md:gap-3 pt-0 md:pt-2 w-full lg:w-auto justify-start lg:justify-start">

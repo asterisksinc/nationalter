@@ -19,9 +19,10 @@ interface LeaderboardTableProps {
   totalCount: number;
   currentPage: number;
   onPageChange: (page: number) => void;
+  itemsPerPage: number;
 }
 
-const ITEMS_PER_PAGE = 10;
+ 
 const MAX_VISIBLE_PAGES = 5;
 
 const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
@@ -30,10 +31,11 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
   totalCount,
   currentPage,
   onPageChange,
+  itemsPerPage
 }) => {
-  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + data.length;
 
   /* -------- PAGE NUMBERS -------- */
