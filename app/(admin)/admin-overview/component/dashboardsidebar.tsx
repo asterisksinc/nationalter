@@ -1,150 +1,152 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   LayoutDashboard,
-  FileText,
-  BarChart2,
   Ticket,
-  Settings,
-  LogOut,
   UsersRound,
   ChartColumnIncreasing,
   Landmark,
   UserPlus,
+  LogOut,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
   activePage?:
-    | "overview"
-    | "usermanagement"
-    | "tickets"
-    | "datasets"
-    | "monetization"
-    | "analytics"
-    | "registrations";
+  | "overview"
+  | "usermanagement"
+  | "tickets"
+  | "datasets"
+  | "monetization"
+  | "analytics"
+  | "registrations";
 }
+
+/** Read admin email + role from the JWT stored in the 'nationciteId' cookie */
+function getAdminFromCookie(): { email: string; role: string } {
+  if (typeof document === "undefined") return { email: "", role: "ADMIN" };
+  try {
+    const cookie = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith("nationciteId="));
+    if (!cookie) return { email: "", role: "ADMIN" };
+    const token = cookie.split("=")[1];
+    const base64 = token.split(".")[1];
+    if (!base64) return { email: "", role: "ADMIN" };
+    const payload = JSON.parse(atob(base64.replace(/-/g, "+").replace(/_/g, "/")));
+    return { email: payload.email ?? "", role: payload.role ?? "ADMIN" };
+  } catch {
+    return { email: "", role: "ADMIN" };
+  }
+}
+
+/** Turn "admin@nationcite.com" → "Admin" or trim to 18 chars */
+function formatAdminName(email: string) {
+  if (!email) return "Administrator";
+  const local = email.split("@")[0];
+  const nice = local.charAt(0).toUpperCase() + local.slice(1).replace(/[._-]/g, " ");
+  return nice.length > 20 ? nice.slice(0, 18) + "…" : nice;
+}
+
+const FONT = "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 export const DashboardSidebar = ({
   activePage = "overview",
   isOpen = false,
   onClose,
-}: DashboardSidebarProps & {
-  isOpen?: boolean;
-  onClose?: () => void;
-}) => {
+}: DashboardSidebarProps & { isOpen?: boolean; onClose?: () => void }) => {
+  const [admin, setAdmin] = useState({ email: "", role: "ADMIN" });
+
+  useEffect(() => {
+    setAdmin(getAdminFromCookie());
+  }, []);
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("/api/auth/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-
+      const res = await fetch("/api/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" } });
       const result = await res.json();
-
       if (result.success) {
-        // Clear any client-side session data
         localStorage.clear();
         sessionStorage.clear();
-        
-        // redirect to clear all state and go to signin
         window.location.href = "/admin";
       } else {
         alert("Logout failed: " + result.message);
       }
-    } catch (err) {
-      console.error("Logout error:", err);
+    } catch {
       alert("Something went wrong during logout.");
     }
   };
 
+  /* ---- Avatar letters (e.g. "JD" from "john doe") ---- */
+  const initials = formatAdminName(admin.email)
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("") || "A";
+
   return (
     <>
-      {/* Mobile Backdrop */}
+      {/* Mobile backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
           onClick={onClose}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 40 }}
+          className="md:hidden"
         />
       )}
 
       <aside
-        className={`w-[260px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-50 transition-transform duration-300 md:translate-x-0 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ backgroundColor: "#f6f6f6" }}
+        className={`w-[260px] fixed h-full z-50 transition-transform duration-300 md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+        style={{ background: "#f6f6f6", borderRight: "1px solid #e5e5e5", display: "flex", flexDirection: "column", fontFamily: FONT }}
       >
-        <div
-          className="h-20 flex items-center px-6 border-b border-gray-100"
-          style={{ paddingLeft: "0px", borderColor: "#e5e5e5" }}
-        >
-          <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="NationCite Logo" className="h-28 w-auto" />
-            <button
-               onClick={onClose}
-               className="md:hidden ml-auto p-2 text-gray-500 hover:text-gray-700"
-            >
-              {/* Optional: Add a close icon here if needed, or just rely on backdrop */}
-            </button>
-          </div>
+        {/* Logo */}
+        <div style={{ padding: "0 0 0 0", borderBottom: "1px solid #e5e5e5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <img src="/logo.png" alt="NationCite" style={{ height: "112px", width: "auto" }} />
+          <button onClick={onClose} className="md:hidden" style={{ padding: "8px", background: "transparent", border: "none", cursor: "pointer" }} />
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          <SidebarItem
-            icon={<LayoutDashboard size={18} />}
-            label="Dashboard"
-            active={activePage === "overview"}
-            href="/admin-overview"
-          />
-          <SidebarItem
-            icon={<UserPlus size={18} />}
-            label="Registration Requests"
-            active={activePage === "registrations"}
-            href="/admin-overview/registration-requests"
-          />
-          <SidebarItem
-            icon={<UsersRound size={18} />}
-            label="User Management"
-            active={activePage === "usermanagement"}
-            href="/admin-overview/user-management"
-          />
-          <SidebarItem
-            icon={<ChartColumnIncreasing size={18} />}
-            label="Analytics"
-            active={activePage === "analytics"}
-            href="/admin-overview/analytics"
-          />
-          <SidebarItem
-            icon={<Landmark size={18} />}
-            label="Monetization"
-            active={activePage === "monetization"}
-            href="/admin-overview/monetization"
-          />
-          <SidebarItem
-            icon={<Ticket size={18} />}
-            label="Tickets"
-            active={activePage === "tickets"}
-            href="/admin-overview/tickets"
-          />
+        {/* Nav */}
+        <nav style={{ flex: 1, padding: "12px 16px", display: "flex", flexDirection: "column", gap: "2px", overflowY: "auto" }}>
+          <SidebarItem icon={<LayoutDashboard size={18} />} label="Dashboard" active={activePage === "overview"} href="/admin-overview" />
+          <SidebarItem icon={<UserPlus size={18} />} label="Registration Requests" active={activePage === "registrations"} href="/admin-overview/registration-requests" />
+          <SidebarItem icon={<UsersRound size={18} />} label="User Management" active={activePage === "usermanagement"} href="/admin-overview/user-management" />
+          <SidebarItem icon={<ChartColumnIncreasing size={18} />} label="Analytics" active={activePage === "analytics"} href="/admin-overview/analytics" />
+          <SidebarItem icon={<Landmark size={18} />} label="Monetization" active={activePage === "monetization"} href="/admin-overview/monetization" />
+          <SidebarItem icon={<Ticket size={18} />} label="Tickets" active={activePage === "tickets"} href="/admin-overview/tickets" />
         </nav>
 
-        <div className="p-4 border-t border-gray-100 mt-auto">
-          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
-            <img
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt="John Doe"
-              className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-none"
-            />
-            <div className="flex flex-col flex-1 min-w-0">
-              <span className="text-sm font-semibold text-gray-900 truncate">
-                John Doe
-              </span>
-              <span className="text-xs text-gray-500 truncate">
-                example@gmail.com
-              </span>
+        {/* Admin footer */}
+        <div style={{ borderTop: "1px solid #e5e5e5", padding: "12px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            {/* Avatar circle with initials */}
+            <div style={{
+              width: "34px", height: "34px", borderRadius: "50%",
+              background: "linear-gradient(135deg, #ff7a00, #e06a00)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#fff", fontSize: "13px", fontWeight: 700, fontFamily: FONT,
+              flexShrink: 0,
+            }}>
+              {initials}
             </div>
-            <button onClick={handleLogout} className="text-gray-400 hover:text-red-500 transition-colors">
-              <LogOut size={16} />
+
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: "13px", fontWeight: 600, color: "#0e121b", fontFamily: FONT, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {formatAdminName(admin.email)}
+              </div>
+              <div style={{ fontSize: "11px", color: "#525866", fontFamily: FONT, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {admin.email || "Administrator"}
+              </div>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              title="Logout"
+              style={{ padding: "4px", background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", display: "flex", alignItems: "center", flexShrink: 0, borderRadius: "4px" }}
+              onMouseEnter={(e) => { (e.currentTarget.style.color = "#ef4444"); }}
+              onMouseLeave={(e) => { (e.currentTarget.style.color = "#94a3b8"); }}
+            >
+              <LogOut size={15} />
             </button>
           </div>
         </div>

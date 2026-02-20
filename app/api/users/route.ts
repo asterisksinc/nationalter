@@ -76,6 +76,8 @@ export async function GET(req: NextRequest) {
         plan: plan,
         lastLogin: user.lastLoginAt ? getTimeAgo(user.lastLoginAt) : "Never",
         avatar: "/logos/user.png",
+        nationciteId: user.registration?.nationciteId || null,
+        registrationType: user.registration?.type || null,
       };
     });
 

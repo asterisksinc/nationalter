@@ -1,4 +1,4 @@
-import { funnelStages } from "./analyticsData";
+﻿import { funnelStages } from "./analyticsData";
 
 function userLabel(count: number) {
   return `${count.toLocaleString()} User`;

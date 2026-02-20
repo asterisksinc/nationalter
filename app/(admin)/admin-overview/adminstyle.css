@@ -795,6 +795,86 @@
   color: #000000;
 }
 
+.overview-panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-badge-change {
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.panel-badge-change.positive {
+  background: #e8f8ec;
+  color: #1ea55a;
+}
+
+.panel-badge-change.negative {
+  background: #fdeceb;
+  color: #d64e4a;
+}
+
+.overview-toggle {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 12px;
+  height: 32px;
+  padding: 0 10px;
+}
+
+.overview-line-chart {
+  height: 140px;
+  margin-bottom: 6px;
+}
+
+.active-subscribers-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 6px;
+}
+
+.active-subscribers-circle {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  flex-shrink: 0;
+}
+
+.active-subscribers-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-subscribers-percent {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 700;
+  color: #0e121b;
+}
+
+.active-subscribers-caption {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.active-subscribers-stats {
+  flex: 1;
+  font-size: 12px;
+}
+
 .fle {
   display: flex;
   justify-content: space-between;
@@ -2935,5 +3015,17 @@ select {
 
   .dot {
     font-size: 24px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .overview-panel-controls {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .active-subscribers-wrap {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

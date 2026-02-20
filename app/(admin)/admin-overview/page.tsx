@@ -1,48 +1,286 @@
 // app/page.tsx
-'use client';  // ← This line is already there
-import Image from 'next/image';
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import './adminstyle.css';
-import { useEffect, useState } from 'react';
-import { DashboardSidebar } from './component/dashboardsidebar';
-import { DashboardHeader } from './component/DashboardHeader';
-import { useRouter } from "next/navigation";
-const menuItems = [
-  { label: 'Dashboard', icon: 'one', key: 'dashboard' },
-  { label: 'User Management', icon: '2', key: 'users' },
-  { label: 'Analytics', icon: '3', key: 'analytics' },
-  { label: 'Monetization', icon: '4', key: 'monetization' },
-  { label: 'Compliance', icon: '5', key: 'compliance' },
-];
+import { useEffect, useMemo, useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import "./adminstyle.css";
+import { DashboardSidebar } from "./component/dashboardsidebar";
+import { DashboardHeader } from "./component/DashboardHeader";
+
+type MetricView = "all" | "researcher" | "organization" | "medical";
+
+type PublicDatasetResponse = {
+  success?: boolean;
+  count?: number;
+  totalCount?: number;
+};
+
+type RegistrationApiDay = {
+  total?: number;
+  medical?: number;
+  researcher?: number;
+  org?: number;
+};
+
+type RegistrationSeriesPoint = {
+  date: string;
+  label: string;
+  all: number;
+  researcher: number;
+  organization: number;
+  medical: number;
+};
+
+type OverviewApiResponse = {
+  success?: boolean;
+  data?: {
+    summary?: {
+      totalApprovedMedicalProfessionals?: number;
+      totalApprovedResearchers?: number;
+      totalApprovedOrganizations?: number;
+      totalApprovedOverall?: number;
+      totalRegistrationsAllTime?: number;
+    };
+  };
+};
+
 const users = [
-  { name: 'Danielle Rose', email: 'danielle@example.com', status: 'Active', plan: 'Enterprise', lastActive: '2 min ago' },
-  { name: 'Albert Henry', email: 'albert@example.com', status: 'Inactive', plan: 'Basic', lastActive: '1 week ago' },
-  { name: 'Brooke Sims', email: 'brooke@example.com', status: 'Active', plan: 'Enterprise', lastActive: '5 hours ago' },
-  { name: 'Janie Willis', email: 'janie@example.com', status: 'Inactive', plan: 'Basic', lastActive: '7 hours ago' },
-  { name: 'Eduardo Perez', email: 'eduardo@example.com', status: 'Active', plan: 'Enterprise', lastActive: '8 hours ago' },
-  { name: 'Tessa Norris', email: 'tessa@example.com', status: 'Inactive', plan: 'Basic', lastActive: '2 days ago' },
-  { name: 'Martin Murphy', email: 'martin@example.com', status: 'Active', plan: 'Enterprise', lastActive: '2 weeks ago' },
+  {
+    name: "Danielle Rose",
+    email: "danielle@example.com",
+    status: "Active",
+    plan: "Enterprise",
+    lastActive: "2 min ago",
+  },
+  {
+    name: "Albert Henry",
+    email: "albert@example.com",
+    status: "Inactive",
+    plan: "Basic",
+    lastActive: "1 week ago",
+  },
+  {
+    name: "Brooke Sims",
+    email: "brooke@example.com",
+    status: "Active",
+    plan: "Enterprise",
+    lastActive: "5 hours ago",
+  },
+  {
+    name: "Janie Willis",
+    email: "janie@example.com",
+    status: "Inactive",
+    plan: "Basic",
+    lastActive: "7 hours ago",
+  },
+  {
+    name: "Eduardo Perez",
+    email: "eduardo@example.com",
+    status: "Active",
+    plan: "Enterprise",
+    lastActive: "8 hours ago",
+  },
+  {
+    name: "Tessa Norris",
+    email: "tessa@example.com",
+    status: "Inactive",
+    plan: "Basic",
+    lastActive: "2 days ago",
+  },
+  {
+    name: "Martin Murphy",
+    email: "martin@example.com",
+    status: "Active",
+    plan: "Enterprise",
+    lastActive: "2 weeks ago",
+  },
 ];
+
+const numberFormatter = new Intl.NumberFormat("en-IN");
+
+function formatNumber(value: number) {
+  return numberFormatter.format(value);
+}
+
+function toLabel(dateKey: string) {
+  const date = new Date(`${dateKey}T00:00:00`);
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+  }).format(date);
+}
+
+function sumByView(view: MetricView, rows: RegistrationSeriesPoint[]) {
+  return rows.reduce((sum, row) => {
+    if (view === "all") return sum + row.all;
+    if (view === "researcher") return sum + row.researcher;
+    if (view === "organization") return sum + row.organization;
+    return sum + row.medical;
+  }, 0);
+}
+
+function growthPercent(current: number, previous: number) {
+  if (previous <= 0) return current > 0 ? 100 : 0;
+  return Number((((current - previous) / previous) * 100).toFixed(1));
+}
+
 export default function HomePage() {
-  const router = useRouter();
-
-
-  const [activePage, setActivePage] = useState('dashboard');
+  const [activePage] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [metricView, setMetricView] = useState<MetricView>("all");
+
+  const [scholarsPublicCount, setScholarsPublicCount] = useState(0);
+  const [orgsPublicCount, setOrgsPublicCount] = useState(0);
+
+  const [approvedMedical, setApprovedMedical] = useState(0);
+  const [approvedResearchers, setApprovedResearchers] = useState(0);
+  const [approvedOrganizations, setApprovedOrganizations] = useState(0);
+  const [approvedOverall, setApprovedOverall] = useState(0);
+  const [totalRegistrationsAllTime, setTotalRegistrationsAllTime] = useState(0);
+
+  const [registrationSeries, setRegistrationSeries] = useState<RegistrationSeriesPoint[]>([]);
+
+  useEffect(() => {
+    async function fetchDashboardData() {
+      try {
+        setIsLoading(true);
+
+        const [scholarsRes, orgsRes, overviewRes, registrationsRes] = await Promise.all([
+          fetch("/api/scholars?top=1"),
+          fetch("/api/orgs?top=1"),
+          fetch("/api/analytics/overview"),
+          fetch("/api/analytics/registrations"),
+        ]);
+
+        const scholarsData = (await scholarsRes.json()) as PublicDatasetResponse;
+        const orgsData = (await orgsRes.json()) as PublicDatasetResponse;
+        const overviewData = (await overviewRes.json()) as OverviewApiResponse;
+        const registrationsData = await registrationsRes.json();
+
+        setScholarsPublicCount(
+          Number(scholarsData?.totalCount ?? scholarsData?.count ?? 0)
+        );
+        setOrgsPublicCount(Number(orgsData?.totalCount ?? orgsData?.count ?? 0));
+
+        const summary = overviewData?.data?.summary;
+        setApprovedMedical(Number(summary?.totalApprovedMedicalProfessionals ?? 0));
+        setApprovedResearchers(Number(summary?.totalApprovedResearchers ?? 0));
+        setApprovedOrganizations(Number(summary?.totalApprovedOrganizations ?? 0));
+        setApprovedOverall(Number(summary?.totalApprovedOverall ?? 0));
+        setTotalRegistrationsAllTime(Number(summary?.totalRegistrationsAllTime ?? 0));
+
+        const daily = registrationsData?.data ?? {};
+        const rows = Object.entries(daily)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([date, rawPoint]) => {
+            const point = (rawPoint || {}) as RegistrationApiDay;
+            return {
+              date,
+              label: toLabel(date),
+              all: Number(point.total ?? 0),
+              researcher: Number(point.researcher ?? 0),
+              organization: Number(point.org ?? 0),
+              medical: Number(point.medical ?? 0),
+            };
+          });
+
+        setRegistrationSeries(rows);
+      } catch (error) {
+        console.error("Failed to fetch admin overview data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchDashboardData();
+  }, []);
+
+  const viewLabel = useMemo(() => {
+    if (metricView === "all") return "All Users";
+    if (metricView === "researcher") return "Researchers";
+    if (metricView === "organization") return "Organizations";
+    return "Medical Professionals";
+  }, [metricView]);
+
+  const last7Rows = useMemo(() => registrationSeries.slice(-7), [registrationSeries]);
+  const previous7Rows = useMemo(
+    () => registrationSeries.slice(-14, -7),
+    [registrationSeries]
+  );
+
+  const chartData = useMemo(
+    () =>
+      last7Rows.map((row) => ({
+        ...row,
+        value:
+          metricView === "all"
+            ? row.all
+            : metricView === "researcher"
+              ? row.researcher
+              : metricView === "organization"
+                ? row.organization
+                : row.medical,
+      })),
+    [last7Rows, metricView]
+  );
+
+  const currentWindow = useMemo(
+    () => sumByView(metricView, last7Rows),
+    [last7Rows, metricView]
+  );
+  const previousWindow = useMemo(
+    () => sumByView(metricView, previous7Rows),
+    [previous7Rows, metricView]
+  );
+
+  const growth = useMemo(
+    () => growthPercent(currentWindow, previousWindow),
+    [currentWindow, previousWindow]
+  );
+
+  const totalRecords = useMemo(() => {
+    if (metricView === "all") return scholarsPublicCount + orgsPublicCount;
+    if (metricView === "researcher") return scholarsPublicCount;
+    if (metricView === "organization") return orgsPublicCount;
+    return approvedMedical;
+  }, [metricView, scholarsPublicCount, orgsPublicCount, approvedMedical]);
+
+  const approvalRate = useMemo(() => {
+    if (totalRegistrationsAllTime <= 0) return 0;
+    return Math.min(
+      100,
+      Math.round((approvedOverall / totalRegistrationsAllTime) * 100)
+    );
+  }, [approvedOverall, totalRegistrationsAllTime]);
+
+  const circleCircumference = 2 * Math.PI * 52;
+  const circleOffset = circleCircumference * (1 - approvalRate / 100);
 
   return (
     <div className="admin-layout relative">
-      {/* Sidebar */}
       <DashboardSidebar
         activePage="overview"
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
 
-
-      {/* Main content */}
-      <main className="flex-1 transition-all duration-300 ml-0 md:ml-[260px] p-4 md:p-8 w-full overflow-x-hidden" style={{ paddingLeft: '0px', paddingTop: '0px', paddingRight: '0px' }}>
-        {/* Top bar */}
+      <main
+        className="flex-1 transition-all duration-300 ml-0 md:ml-[260px] p-4 md:p-8 w-full overflow-x-hidden"
+        style={{ paddingLeft: "0px", paddingTop: "0px", paddingRight: "0px" }}
+      >
         <DashboardHeader
           breadcrumbItems={[
             { label: "Home", href: "/" },
@@ -51,81 +289,73 @@ export default function HomePage() {
           onMenuClick={() => setIsSidebarOpen(true)}
         />
 
-        {/* Content area */}
-        <section className="admin-content" >
-          {activePage === 'dashboard' && (
+        <section className="admin-content">
+          {activePage === "dashboard" && (
             <>
-              {/* Breadcrumb + title row */}
               <div className="content-header">
                 <div>
-                  <h3 className='main-ct'>Command Center</h3>
-                  <p className="breadcrumb-current sub-ct">Real-time visibility into the NationCite data ecosystem. Monitor entity status and system health.</p>
+                  <h3 className="main-ct">Command Center</h3>
+                  <p className="breadcrumb-current sub-ct">
+                    Real-time visibility into the NationCite data ecosystem.
+                    Monitor entity status and system health.
+                  </p>
                 </div>
                 <div className="content-header-right">
-                  <div className='frxd'>
+                  <div className="frxd">
                     <div className="system-pill">
-                      <span className='dot'></span> SYSTEM ONLINE
+                      <span className="dot" /> SYSTEM ONLINE
                     </div>
-                    <div className="last-sync">Last synced: Oct 24, 2023 · 14:02 UTC</div>
+                    <div className="last-sync">
+                      Last synced: {new Date().toLocaleString("en-IN", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                        timeZone: "Asia/Kolkata",
+                      })}
+                    </div>
                   </div>
-                  {/* <button className="primary-btn" aria-label="Upload new dataset" style={{ borderRadius: '6px' }}
-                    onClick={() => router.push("admin-overview/dataset/new")}>
-                    <Image
-                      src="/logos/upload.png"
-                      alt="Upload icon"
-                      width={20}
-                      height={20}
-                      priority
-                    />
-                    Upload New Dataset
-                  </button> */}
                 </div>
-
               </div>
 
-              {/* Command center summary cards */}
-              <div className="cards-row" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+              <div
+                className="cards-row1"
+                style={{ paddingLeft: "32px", paddingRight: "32px" }}
+              >
                 <div className="summary-card summary-card-compact">
                   <div className="card-top-section">
                     <div className="left-section">
                       <Image
                         src="/logos/R1.png"
-                        alt="Researchers icon"
+                        alt="Scholars icon"
                         width={55}
                         height={55}
-                        style={{ borderRadius: '6px' }}
+                        style={{ borderRadius: "6px" }}
                         priority
                       />
 
                       <div className="title-value-column">
-                        <div className="card-title">Researchers</div>
-                        <div className="card-main-value">45,000</div>
+                        <div className="card-title">Scholar Public Data</div>
+                        <div className="card-main-value">
+                          {isLoading ? "--" : formatNumber(scholarsPublicCount)}
+                        </div>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: "flex" }}>
                       <div className="status-badge">
-                        <span className="status-dot"></span>
+                        <span className="status-dot" />
                         Live
                       </div>
-                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
-                        <Image
-                          src="/arrow.png"
-                          alt="Researchers icon"
-                          width={13}
-                          height={13}
-                          priority
-                        /></div></div>
+                    </div>
                   </div>
-                  <div className='line'></div>
-                  <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
+                  <div className="line" />
+                  <div className="card-meta-row meow" style={{ marginTop: "30px" }}>
                     <span className="meta-label">Last update</span>
-                    <span className="meta-value">Today, 09:58 AM</span>
+                    <span className="meta-value">Now</span>
                   </div>
 
                   <div className="card-meta-row">
                     <span className="meta-label">Source</span>
-                    <span className="meta-value">adscientificindex</span>
+                    <span className="meta-value">/api/scholars</span>
                   </div>
                 </div>
 
@@ -134,174 +364,188 @@ export default function HomePage() {
                     <div className="left-section">
                       <Image
                         src="/logos/M.png"
-                        alt="Researchers icon"
+                        alt="Organizations icon"
                         width={55}
                         height={55}
                         priority
-                        style={{ borderRadius: '6px' }}
-
+                        style={{ borderRadius: "6px" }}
                       />
 
                       <div className="title-value-column">
-                        <div className="card-title">Universities</div>
-                        <div className="card-main-value">850</div>
+                        <div className="card-title">Organization Public Data</div>
+                        <div className="card-main-value">
+                          {isLoading ? "--" : formatNumber(orgsPublicCount)}
+                        </div>
                       </div>
                     </div>
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: "flex" }}>
                       <div className="status-badge">
-                        <span className="status-dot"></span>
+                        <span className="status-dot" />
                         Live
                       </div>
-                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
-                        <Image
-                          src="/arrow.png"
-                          alt="Researchers icon"
-                          width={13}
-                          height={13}
-                          priority
-                        /></div></div>
-                  </div>
-                  <div className='line'></div>
-                  <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
-                    <span className="meta-label">Last update</span>
-                    <span className="meta-value">Yesterday, 11:42 PM</span>
-                  </div>
-
-                  <div className="card-meta-row">
-                    <span className="meta-label">Source</span>
-                    <span className="meta-value">adscientificindex</span>
-                  </div>
-                </div>
-                <div className="summary-card summary-card-compact">
-                  <div className="card-top-section">
-                    <div className="left-section">
-                      <Image
-                        src="/logos/U.png"
-                        alt="Researchers icon"
-                        width={55}
-                        height={55}
-                        priority
-                        style={{ borderRadius: '6px' }}
-
-                      />
-
-                      <div className="title-value-column">
-                        <div className="card-title">Medical Pros</div>
-                        <div className="card-main-value">12,050</div>
-                      </div>
                     </div>
-
-
-                    <div style={{ display: 'flex' }}>
-                      <div className="status-badge1">
-                        <span className="dot1"></span>
-                        Pending
-                      </div>
-                      <div style={{ marginLeft: '17px', marginTop: '7px' }}>
-                        <Image
-                          src="/arrow.png"
-                          alt="Researchers icon"
-                          width={13}
-                          height={13}
-                          priority
-                        /></div></div>
                   </div>
-                  <div className='line'></div>
-                  <div className="card-meta-row meow" style={{ marginTop: '30px' }}>
+                  <div className="line" />
+                  <div className="card-meta-row meow" style={{ marginTop: "30px" }}>
                     <span className="meta-label">Last update</span>
-                    <span className="meta-value">Draft saved</span>
+                    <span className="meta-value">Now</span>
                   </div>
 
                   <div className="card-meta-row">
                     <span className="meta-label">Source</span>
-                    <span className="meta-value">adscientificindex</span>
-
+                    <span className="meta-value">/api/orgs</span>
                   </div>
                 </div>
               </div>
 
-
-              {/* Ecosystem metrics row */}
-              <div className='fle' style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+              <div className="fle" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
                 <div className="panel-title">Ecosystem Metrics</div>
-                <Link href="admin-overview/analytics" className="panel-title1">
+                <Link href="/admin-overview/analytics" className="panel-title1">
                   View All Reports
                 </Link>
               </div>
-              <div className="cards-row1" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
-                {/* Left card */}
+
+              <div className="cards-row1" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
                 <div className="panel-card">
                   <div className="panel-header">
                     <div className="panel-header-left">
                       <div className="panel-subtitle">Total Records</div>
+                      <div className="panel-subtitle">{viewLabel}</div>
                     </div>
-                    <div className="system-pill">
-                      <span className="panel-badge">↑ 2.1%</span>
+                    <div className="overview-panel-controls">
+                      <span
+                        className={`panel-badge-change ${growth >= 0 ? "positive" : "negative"}`}
+                      >
+                        {growth >= 0 ? "?" : "?"} {Math.abs(growth)}%
+                      </span>
+                      <select
+                        className="overview-toggle"
+                        value={metricView}
+                        onChange={(event) =>
+                          setMetricView(event.target.value as MetricView)
+                        }
+                      >
+                        <option value="all">All Users</option>
+                        <option value="researcher">Researchers</option>
+                        <option value="organization">Organizations</option>
+                        <option value="medical">Medical</option>
+                      </select>
                     </div>
                   </div>
+
                   <div>
-                    <div className="panel-value">14.5M</div></div>
+                    <div className="panel-value">
+                      {isLoading ? "--" : formatNumber(totalRecords)}
+                    </div>
+                  </div>
 
-                  <div className="fake-bar-chart">
-                    <div className="bar bar-1" />
-                    <div className="bar bar-2" />
-                    <div className="bar bar-3" />
-                    <div className="bar bar-4" />
-                    <div className="bar bar-5" />
-                    <div className="bar bar-6" />
-                    <div className="bar bar-7" />
-
+                  <div className="overview-line-chart">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={chartData}
+                        margin={{ top: 8, right: 12, left: 0, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="overviewAreaFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#ff7a00" stopOpacity={0.35} />
+                            <stop offset="100%" stopColor="#ff7a00" stopOpacity={0.04} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid stroke="#eceff4" strokeDasharray="4 4" vertical={false} />
+                        <XAxis
+                          dataKey="label"
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fill: "#7d8798", fontSize: 11 }}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fill: "#7d8798", fontSize: 11 }}
+                          width={30}
+                        />
+                        <Tooltip
+                          formatter={(value) => [formatNumber(value as number), viewLabel]}
+                          labelFormatter={(label) => `Date: ${label}`}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#ff7a00"
+                          strokeWidth={2}
+                          fill="url(#overviewAreaFill)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
                   </div>
 
                   <div className="panel-footer">Data Growth Over Last 7 Days</div>
                 </div>
 
-                {/* Right card */}
                 <div className="panel-card">
                   <div className="panel-header">
                     <div>
                       <div className="panel-subtitle">Active Subscribers</div>
                     </div>
                     <div className="panel-header-right">
-                      <span className="system-pill">↑ 2.1%</span>
+                      <span className="panel-badge-change positive">Admin Approved</span>
                     </div>
                   </div>
 
-                  <div className="panel-value">842</div>
+                  <div className="panel-value">
+                    {isLoading ? "--" : formatNumber(approvedOverall)}
+                  </div>
 
-                  <div className="donut-row">
-                    <div className="fake-donut" />
-                    <div className="donut-legend">
+                  <div className="active-subscribers-wrap">
+                    <div className="active-subscribers-circle">
+                      <svg width="132" height="132" viewBox="0 0 132 132" aria-hidden="true">
+                        <circle
+                          cx="66"
+                          cy="66"
+                          r="52"
+                          stroke="#eceff4"
+                          strokeWidth="12"
+                          fill="none"
+                        />
+                        <circle
+                          cx="66"
+                          cy="66"
+                          r="52"
+                          stroke="#ff7a00"
+                          strokeWidth="12"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeDasharray={circleCircumference}
+                          strokeDashoffset={circleOffset}
+                          transform="rotate(-90 66 66)"
+                        />
+                      </svg>
+                      <div className="active-subscribers-center">
+                        <div className="active-subscribers-percent">{approvalRate}%</div>
+                        <div className="active-subscribers-caption">approved</div>
+                      </div>
+                    </div>
+
+                    <div className="active-subscribers-stats">
                       <div className="legend-item">
-                        <div className="legend-left">
-                          <span className="legend-dot legend-orange" />
-                          <span className='ms-2'> Enterprise</span>
-                        </div>
-                        <span className="legend-count">280</span>
+                        <div className="legend-left">Researchers</div>
+                        <span className="legend-count">{formatNumber(approvedResearchers)}</span>
                       </div>
                       <div className="legend-item">
-                        <div className="legend-left">
-                          <span className="legend-dot legend-gold" />
-                          <span className='ms-2'>  Standard</span>
-                        </div>
-                        <span className="legend-count">280</span>
+                        <div className="legend-left">Organizations</div>
+                        <span className="legend-count">{formatNumber(approvedOrganizations)}</span>
                       </div>
                       <div className="legend-item">
-                        <div className="legend-left">
-                          <span className="legend-dot legend-yellow" />
-                          <span className='ms-2'> Free</span>
-                        </div>
-                        <span className="legend-count">290</span>
+                        <div className="legend-left">Medical</div>
+                        <span className="legend-count">{formatNumber(approvedMedical)}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-
-              {/* Bottom row: alerts + activity + right metrics */}
-              <div className="cards-row cards-row--stretch" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
-                {/* System alerts */}
+              <div className="cards-row cards-row--stretch" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
                 <div className="panel-card">
                   <div className="panel-header3">
                     <div className="panel-title">System Alerts</div>
@@ -310,25 +554,28 @@ export default function HomePage() {
                   <div className="alert-list">
                     <div className="alert-item">
                       <span className="chip chip-critical">CRITICAL</span>
-                      <div className="fgg"> <div className="alert-text">API Latency Spike (EU-West)</div>
-                        <div className="alert-meta">2m ago</div></div>
-
+                      <div className="fgg">
+                        <div className="alert-text">API Latency Spike (EU-West)</div>
+                        <div className="alert-meta">2m ago</div>
+                      </div>
                     </div>
                     <div className="alert-item">
                       <span className="chip chip-warning">WARNING</span>
                       <div className="fgg">
                         <div className="alert-text">Data Sync Delayed: Universities</div>
-                        <div className="alert-meta">45m ago</div></div>
+                        <div className="alert-meta">45m ago</div>
+                      </div>
                     </div>
                     <div className="alert-item">
                       <span className="chip chip-info">INFO</span>
-                      <div className="fgg"><div className="alert-text">Scheduled Maintenance: Tomorrow</div>
-                        <div className="alert-meta">2h ago</div></div>
+                      <div className="fgg">
+                        <div className="alert-text">Scheduled Maintenance: Tomorrow</div>
+                        <div className="alert-meta">2h ago</div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Recent admin activity */}
                 <div className="panel-card">
                   <div className="panel-header3">
                     <div className="panel-title">Recent Admin Activity</div>
@@ -369,23 +616,21 @@ export default function HomePage() {
                         <div className="timeline-meta">Today at 09:55 AM</div>
                       </div>
                     </li>
-                    {/* add more li items as needed */}
                   </ul>
                 </div>
 
-                {/* Right column – two stacked cards */}
                 <div className="metrics-column">
-                  {/* Data Processing */}
                   <div className="metric-card">
                     <div className="metric-header">
-
-                      <div className="metric-icon purple-icon">   <Image
-                        src="/logos/db.png"
-                        alt="Researchers icon"
-                        width={24}
-                        height={24}
-                        priority
-                      /></div>
+                      <div className="metric-icon purple-icon">
+                        <Image
+                          src="/logos/db.png"
+                          alt="Researchers icon"
+                          width={24}
+                          height={24}
+                          priority
+                        />
+                      </div>
                       <div className="metric-title-group">
                         <div className="metric-title">Data Processing</div>
                         <div className="metric-value">12.4s</div>
@@ -400,16 +645,17 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Search Usage */}
                   <div className="metric-card">
                     <div className="metric-header">
-                      <div className="metric-icon violet-icon"> <Image
-                        src="/logos/s.png"
-                        alt="Researchers icon"
-                        width={24}
-                        height={24}
-                        priority
-                      /></div>
+                      <div className="metric-icon violet-icon">
+                        <Image
+                          src="/logos/s.png"
+                          alt="Researchers icon"
+                          width={24}
+                          height={24}
+                          priority
+                        />
+                      </div>
                       <div className="metric-title-group">
                         <div className="metric-title">Search Usage (24h)</div>
                         <div className="metric-value">9,482</div>
@@ -423,22 +669,25 @@ export default function HomePage() {
                     </ul>
                   </div>
                 </div>
-
               </div>
-            </>)}
-          {activePage === 'users' && (
+            </>
+          )}
+
+          {activePage === "users" && (
             <>
               <div className="content-header">
                 <div>
                   <h3>User Management</h3>
-                  <p>Manage users, monitor activity, and control access across the platform.</p>
+                  <p>
+                    Manage users, monitor activity, and control access across the
+                    platform.
+                  </p>
                 </div>
                 <div className="content-header-right">
                   <button className="primary-btn">Export Users</button>
                 </div>
               </div>
 
-              {/* Search and filters */}
               <div className="users-filters">
                 <input
                   type="text"
@@ -460,7 +709,6 @@ export default function HomePage() {
                 <button className="users-add-btn">+ Add User</button>
               </div>
 
-              {/* Users table */}
               <div className="users-table-wrapper">
                 <table className="users-table">
                   <thead>
@@ -497,7 +745,6 @@ export default function HomePage() {
             </>
           )}
         </section>
-
       </main>
     </div>
   );

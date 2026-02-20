@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { Edit2, Trash2, Search, Filter, X } from "lucide-react";
+import { Edit2, Trash2, Search, Filter, X, Loader2 } from "lucide-react";
 
 export interface PublicationData {
-  id: string;
+  id: number;
   title: string;
   author: string;
   authorImg: string;
@@ -11,15 +11,24 @@ export interface PublicationData {
   year: number;
   publisher: string;
   doi: string;
+  journalName: string;
+  field: string;
 }
 
 interface PublicationsTableProps {
   publications: PublicationData[];
+  onEdit?: (pub: PublicationData) => void;
+  onDelete?: (id: number) => void;
 }
 
-export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
+export const PublicationsTable = ({
+  publications,
+  onEdit,
+  onDelete,
+}: PublicationsTableProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [filters, setFilters] = useState({
     year: "",
     publicationType: "",
@@ -33,33 +42,29 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
   // Get unique years and publication types for filter options
   const uniqueYears = useMemo(
     () => [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a),
-    [publications],
+    [publications]
   );
   const uniqueTypes = useMemo(
     () => [...new Set(publications.map((p) => p.publicationType))],
-    [publications],
+    [publications]
   );
 
   // Filter and search publications
   const filteredPublications = useMemo(() => {
     return publications.filter((pub) => {
-      // Search filter
       const matchesSearch =
         searchQuery === "" ||
         pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pub.publisher.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pub.doi.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Year filter
       const matchesYear =
         filters.year === "" || pub.year === parseInt(filters.year);
 
-      // Publication type filter
       const matchesType =
         filters.publicationType === "" ||
         pub.publicationType === filters.publicationType;
 
-      // Min citations filter
       const matchesCitations =
         filters.minCitations === "" ||
         pub.citations >= parseInt(filters.minCitations);
@@ -98,6 +103,32 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
   const clearFilters = () => {
     setSearchQuery("");
     setFilters({ year: "", publicationType: "", minCitations: "" });
+  };
+
+  const handleDelete = async (pub: PublicationData) => {
+    if (!window.confirm(`Are you sure you want to delete "${pub.title}"?`)) {
+      return;
+    }
+
+    setDeletingId(pub.id);
+    try {
+      const response = await fetch(
+        `/api/publications/publication-update?id=${pub.id}`,
+        { method: "DELETE" }
+      );
+      const result = await response.json();
+
+      if (result.success) {
+        if (onDelete) onDelete(pub.id);
+      } else {
+        alert(result.message || "Failed to delete publication");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("An error occurred while deleting.");
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   const activeFilterCount = [
@@ -154,7 +185,6 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
         {/* Filter Dropdowns */}
         {showFilters && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 pb-2">
-            {/* Year Filter */}
             <select
               value={filters.year}
               onChange={(e) => setFilters({ ...filters, year: e.target.value })}
@@ -168,7 +198,6 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
               ))}
             </select>
 
-            {/* Publication Type Filter */}
             <select
               value={filters.publicationType}
               onChange={(e) =>
@@ -184,7 +213,6 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
               ))}
             </select>
 
-            {/* Min Citations Filter */}
             <input
               type="number"
               placeholder="Min citations..."
@@ -195,7 +223,6 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
               className="px-3 py-2 border border-[#E1E4EA] rounded-lg text-[14px] focus:outline-none focus:border-[#FF7A00] bg-white text-[#0E121B]"
             />
 
-            {/* Clear Filters */}
             {activeFilterCount > 0 && (
               <button
                 onClick={clearFilters}
@@ -261,52 +288,40 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
                 className="bg-[#FDFDFD] hover:bg-gray-50 transition-colors"
                 style={{ height: 54 }}
               >
-                {/* Title */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[12px] md:text-[14px] font-medium text-[#222530] line-clamp-2 max-w-full">
                     {pub.title}
                   </div>
                 </td>
-
-                {/* Citations */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[13px] md:text-[14px] font-medium text-[#525866]">
                     {pub.citations}
                   </div>
                 </td>
-
-                {/* Publication Type */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[12px] md:text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
                     {pub.publicationType}
                   </div>
                 </td>
-
-                {/* Year */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[13px] md:text-[14px] font-normal text-[#525866]">
                     {pub.year}
                   </div>
                 </td>
-
-                {/* Publisher */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[13px] md:text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
                     {pub.publisher}
                   </div>
                 </td>
-
-                {/* DOI */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="text-[13px] md:text-[14px] font-normal text-[#525866] truncate max-w-full overflow-hidden whitespace-nowrap">
                     {pub.doi}
                   </div>
                 </td>
-
-                {/* Actions */}
                 <td className="px-1.5 md:px-4 py-3 align-middle">
                   <div className="flex justify-end items-center gap-3">
                     <button
+                      onClick={() => onEdit && onEdit(pub)}
                       aria-label={`Edit ${pub.title}`}
                       title="Edit"
                       className="p-1.5 text-black hover:text-[#1D4ED8] transition-colors"
@@ -314,11 +329,17 @@ export const PublicationsTable = ({ publications }: PublicationsTableProps) => {
                       <Edit2 size={16} />
                     </button>
                     <button
+                      onClick={() => handleDelete(pub)}
+                      disabled={deletingId === pub.id}
                       aria-label={`Delete ${pub.title}`}
                       title="Delete"
-                      className="p-1.5 text-[#DC2626] hover:text-[#B91C1C] transition-colors"
+                      className="p-1.5 text-[#DC2626] hover:text-[#B91C1C] transition-colors disabled:opacity-50"
                     >
-                      <Trash2 size={16} />
+                      {deletingId === pub.id ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : (
+                        <Trash2 size={16} />
+                      )}
                     </button>
                   </div>
                 </td>

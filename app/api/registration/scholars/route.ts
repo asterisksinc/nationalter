@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
 import { Prisma } from "@prisma/client";
+import { createAdminNotification } from "@/lib/notifications";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -281,6 +282,15 @@ export async function POST(req: NextRequest) {
     } catch (mailError) {
       console.error("Mail sending failed:", mailError);
     }
+
+    // Notify admin about new registration
+    createAdminNotification({
+      type: "REGISTRATION_REQUEST",
+      title: `New ${type === "MEDICAL" ? "Medical" : "Researcher"} Registration`,
+      message: `${name} (${normalizedEmail}) submitted a registration request`,
+      redirectUrl: "/admin-overview/registration-requests",
+      referenceId: result.ticketId,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

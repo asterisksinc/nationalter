@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
 import { Prisma } from "@prisma/client";
+import { createAdminNotification } from "@/lib/notifications";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -180,6 +181,15 @@ export async function POST(req: NextRequest) {
     } catch (adminMailError) {
       console.error("Admin notification mail failed:", adminMailError);
     }
+
+    // Notify admin about new org registration
+    createAdminNotification({
+      type: "REGISTRATION_REQUEST",
+      title: "New Organization Registration",
+      message: `${name} (${normalizedEmail}) submitted an organization registration request`,
+      redirectUrl: "/admin-overview/registration-requests",
+      referenceId: result.ticketId,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

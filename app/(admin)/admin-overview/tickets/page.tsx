@@ -12,10 +12,12 @@ export default function TicketPage() {
   const router = useRouter();
   const [tickets, setTickets] = useState<TicketData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL"); // ALL, OPEN, IN_PROGRESS, RESOLVED
 
   const fetchTickets = async () => {
     setLoading(true);
+    setError(null);
     try {
       const queryParams = new URLSearchParams();
       queryParams.append("excludeRegistration", "true");
@@ -28,11 +30,16 @@ export default function TicketPage() {
       );
       const json = await res.json();
 
-      if (json.tickets) {
-        setTickets(json.tickets);
+      if (!res.ok) {
+        setError(json.error || `Server error (${res.status})`);
+        setTickets(json.tickets || []);
+        return;
       }
-    } catch (error) {
-      console.error("Failed to fetch tickets:", error);
+
+      setTickets(json.tickets || []);
+    } catch (err) {
+      console.error("Failed to fetch tickets:", err);
+      setError("Could not connect to the server. Is it running?");
     } finally {
       setLoading(false);
     }
@@ -97,6 +104,25 @@ export default function TicketPage() {
               <RefreshCw size={20} />
             </button>
           </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-start gap-3">
+              <span className="text-red-500 text-lg">⚠</span>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+                <p className="text-xs text-red-600 mt-1">
+                  Make sure you are logged in as an <strong>Admin</strong>. Try logging out and back in.
+                </p>
+              </div>
+              <button
+                onClick={fetchTickets}
+                className="text-xs px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          )}
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -176,7 +202,7 @@ export default function TicketPage() {
             />
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }

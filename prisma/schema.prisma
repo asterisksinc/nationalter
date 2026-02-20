@@ -275,3 +275,22 @@ model LoginLog {
   @@index([loginType])
   @@index([createdAt])
 }
+
+////////////////////////////////////////////////
+// NOTIFICATIONS
+////////////////////////////////////////////////
+
+model Notification {
+  id           Int      @id @default(autoincrement())
+  recipientId  String   // "ADMIN" for admin, or nationciteId for users
+  type         String   // TICKET_CREATED, REGISTRATION_REQUEST, TICKET_RESOLVED, TICKET_COMMENT, TICKET_UPDATED
+  title        String
+  message      String
+  redirectUrl  String
+  referenceId  String?  // ticketId or registrationId
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([recipientId, isRead])
+  @@index([createdAt])
+}

@@ -33,29 +33,33 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const scholars = await prisma.scholarsPublic.findMany({
-      take: top,
-      where,
-      orderBy: { worldRank: "asc" },
-      select: {
-        id: true,
-        nationciteId: true,
-        scholarName: true,
-        orgName: true,
-        worldRank: true,
-        countryRank: true,
-        universityRank: true,
-        mainSubject: true,
-        subField: true,
-        hIndexTotal: true,
-        hIndexLast5: true,
-        hIndexRatio: true,
-      },
-    });
+    const [totalCount, scholars] = await Promise.all([
+      prisma.scholarsPublic.count({ where }),
+      prisma.scholarsPublic.findMany({
+        take: top,
+        where,
+        orderBy: { worldRank: "asc" },
+        select: {
+          id: true,
+          nationciteId: true,
+          scholarName: true,
+          orgName: true,
+          worldRank: true,
+          countryRank: true,
+          universityRank: true,
+          mainSubject: true,
+          subField: true,
+          hIndexTotal: true,
+          hIndexLast5: true,
+          hIndexRatio: true,
+        },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,
       count: scholars.length,
+      totalCount,
       data: scholars,
     });
   } catch (error) {

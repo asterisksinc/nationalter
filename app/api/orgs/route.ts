@@ -22,24 +22,28 @@ export async function GET(req: NextRequest) {
         }
       : undefined;
 
-    const orgs = await prisma.orgsPublic.findMany({
-      where,
-      take: top,
-      orderBy: { worldRank: "asc" },
-      select: {
-        id: true,
-        nationciteId: true,
-        orgName: true,
-        worldRank: true,
-        countryRank: true,
-        hIndexTotal: true,
-        hIndexLast5: true,
-      },
-    });
+    const [totalCount, orgs] = await Promise.all([
+      prisma.orgsPublic.count({ where }),
+      prisma.orgsPublic.findMany({
+        where,
+        take: top,
+        orderBy: { worldRank: "asc" },
+        select: {
+          id: true,
+          nationciteId: true,
+          orgName: true,
+          worldRank: true,
+          countryRank: true,
+          hIndexTotal: true,
+          hIndexLast5: true,
+        },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,
       count: orgs.length,
+      totalCount,
       data: orgs,
     });
   } catch (error) {

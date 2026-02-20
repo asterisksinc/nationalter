@@ -4,6 +4,7 @@ import {
   ComposedChart,
   Line,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -15,6 +16,27 @@ type UserGrowthTrendProps = {
 };
 
 export function UserGrowthTrend({ data }: UserGrowthTrendProps) {
+  // Calculate intelligent Y-axis domain based on data
+  const calculateYAxisDomain = () => {
+    if (!data || data.length === 0) return [0, 100];
+    
+    const allValues = data.flatMap(point => [point.registrations || 0, point.logins || 0]);
+    const maxValue = Math.max(...allValues);
+    const meanValue = allValues.reduce((sum, val) => sum + val, 0) / allValues.length;
+    
+    // Use the higher of max or mean * 2 for better scaling
+    const suggestedMax = Math.max(maxValue, meanValue * 2);
+    
+    // Round up to next significant number for cleaner axis
+    const magnitude = Math.pow(10, Math.floor(Math.log10(suggestedMax)));
+    const normalizedMax = suggestedMax / magnitude;
+    const roundedMax = Math.ceil(normalizedMax) * magnitude;
+    
+    return [0, Math.max(roundedMax, 20)]; // Minimum of 20 for readability
+  };
+
+  const [yMin, yMax] = calculateYAxisDomain();
+
   return (
     <div className="ao-card ao-chart-wrapper">
       <div>
@@ -51,11 +73,26 @@ export function UserGrowthTrend({ data }: UserGrowthTrendProps) {
                 <YAxis
                   yAxisId="right"
                   orientation="right"
-                  domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.15)]}
+                  domain={[yMin, yMax]}
                   allowDecimals={false}
                   tickLine={false}
                   axisLine={false}
                   tick={{ fill: "#8b95a5", fontSize: 10 }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e7eaef',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    fontSize: '12px'
+                  }}
+                  labelStyle={{ color: '#374151', fontWeight: '600' }}
+                  formatter={(value, name) => [
+                    typeof value === 'number' ? value.toLocaleString() : value,
+                    name === 'registrations' ? 'New Registrations' : 'Portal Logins'
+                  ]}
+                  labelFormatter={(label) => `Date: ${label}`}
                 />
                 <Area
                   yAxisId="right"
@@ -66,11 +103,12 @@ export function UserGrowthTrend({ data }: UserGrowthTrendProps) {
                 />
                 <Line
                   yAxisId="right"
-                  type="linear"
+                  type="monotone"
                   dataKey="registrations"
                   stroke="#ff8515"
                   strokeWidth={2}
                   dot={false}
+                  activeDot={{ r: 5, fill: "#ff8515", stroke: "#ffffff", strokeWidth: 2 }}
                   strokeLinejoin="round"
                 />
                 <Line
@@ -81,6 +119,7 @@ export function UserGrowthTrend({ data }: UserGrowthTrendProps) {
                   strokeWidth={2}
                   strokeDasharray="4 4"
                   dot={false}
+                  activeDot={{ r: 5, fill: "#2a66e7", stroke: "#ffffff", strokeWidth: 2 }}
                 />
               </ComposedChart>
             </ResponsiveContainer>
