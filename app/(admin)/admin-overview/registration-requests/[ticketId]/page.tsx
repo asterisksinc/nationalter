@@ -288,7 +288,7 @@ export default function RegistrationReviewPage() {
   }
 
   const isAlreadyProcessed = data.registration.status !== "PENDING";
-
+   
   return (
     <div className="admin-layout">
       <DashboardSidebar activePage="registrations" />
@@ -304,7 +304,7 @@ export default function RegistrationReviewPage() {
               label: "Registration Requests",
               href: "/admin-overview/registration-requests",
             },
-            { label: "Review" },
+            { label: ticketId   },
           ]}
         />
 
@@ -324,18 +324,18 @@ export default function RegistrationReviewPage() {
             }}
           >
             <ArrowLeft size={18} />
-            Back to Registration Requests
+            {ticketId}
           </button>
 
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "end",
               alignItems: "center",
               marginBottom: "24px",
             }}
           >
-            <div>
+            {/* <div>
               <h2
                 style={{
                   fontSize: "24px",
@@ -347,9 +347,9 @@ export default function RegistrationReviewPage() {
                 Registration Review
               </h2>
               <p style={{ color: "#000", fontSize: "14px" }}>
-                Ticket ID: {ticketId}
+                Ticket ID: 
               </p>
-            </div>
+            </div> */}
 
             {isAlreadyProcessed && (
               <div
