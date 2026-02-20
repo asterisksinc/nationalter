@@ -60,10 +60,18 @@ export async function POST(req: NextRequest) {
     } = body;
 
     const fieldErrors: Record<string, string> = {};
-    if (!name) fieldErrors.name = "Official domain is required";
+    if (!name) fieldErrors.name = "Organization name is required";
     if (!domain) fieldErrors.domain = "Domain is required";
     if (!email) fieldErrors.email = "Email is required";
     if (!number) fieldErrors.number = "Mobile number is required";
+    if (!city) fieldErrors.city = "City is required";
+    if (!state) fieldErrors.state = "State is required";
+    if (!letterOfAuthorizationUrl) {
+      fieldErrors.letterOfAuthorizationUrl = "Letter of authorization is required";
+    }
+    if (!accreditationProofUrl) {
+      fieldErrors.accreditationProofUrl = "Accreditation proof is required";
+    }
 
     if (name && name.trim().length < 3) {
       fieldErrors.name = "Organization name must be at least 3 characters";
@@ -126,8 +134,8 @@ export async function POST(req: NextRequest) {
           domain: normalizedDomain,
           email: normalizedEmail,
           number: normalizedNumber,
-          letterOfAuthorizationUrl: letterOfAuthorizationUrl || null,
-          accreditationProofUrl: accreditationProofUrl || null,
+          letterOfAuthorizationUrl,
+          accreditationProofUrl,
           status: "PENDING",
           plan: "FREE",
           city,

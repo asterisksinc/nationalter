@@ -1,3 +1,7 @@
+"use client";
+
+import { useInViewOnce } from "./useInViewOnce";
+
 type SegmentCard = {
   title: string;
   growth: string;
@@ -16,10 +20,18 @@ type PersonaSegmentGridProps = {
 };
 
 export function PersonaSegmentGrid({ cards }: PersonaSegmentGridProps) {
+  const { ref, inView } = useInViewOnce<HTMLDivElement>();
+
   return (
-    <div className="ao-segment-grid">
-      {cards.map((card) => (
-        <div className="ao-card ao-segment-card" key={card.title}>
+    <div ref={ref} className="ao-segment-grid">
+      {cards.map((card, idx) => (
+        <div
+          className={`ao-card ao-segment-card transition-all duration-700 ease-out will-change-transform ${
+            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+          }`}
+          style={{ transitionDelay: `${idx * 90}ms` }}
+          key={card.title}
+        >
           <div className="ao-segment-header">
             <div className={`ao-segment-icon ${card.tone}`} />
             <div>

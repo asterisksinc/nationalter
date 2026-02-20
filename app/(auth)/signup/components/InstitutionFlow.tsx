@@ -41,11 +41,20 @@ export const InstitutionFlow = ({
         <div className="flex flex-col h-full justify-between">
           <div className="space-y-5 pb-2">
             <FormInput
-              label="Official Domain Name"
-              placeholder="e.g. university.edu.in"
+              label="Organization Name"
+              placeholder="e.g. National Institute of Technology"
               value={institutionForm.name}
               onChange={(value) => onChange?.("name", value)}
               error={getFieldError("name")}
+              required
+            />
+            <FormInput
+              label="Official Domain Name"
+              placeholder="e.g. university.edu.in"
+              value={institutionForm.domain}
+              onChange={(value) => onChange?.("domain", value)}
+              error={getFieldError("domain")}
+              required
             />
             <p className="text-[10px] md:text-xs text-neutral-500 -mt-1 ml-1">
               We will verify the domain DNS records automatically.
@@ -89,6 +98,22 @@ export const InstitutionFlow = ({
                 value={institutionForm.number}
                 onChange={(value) => onChange?.("number", value)}
                 error={getFieldError("number")}
+              />
+              <FormInput
+                label="City"
+                placeholder="e.g. Chennai"
+                value={institutionForm.city}
+                onChange={(value) => onChange?.("city", value)}
+                error={getFieldError("city")}
+                required
+              />
+              <FormInput
+                label="State"
+                placeholder="e.g. Tamil Nadu"
+                value={institutionForm.state}
+                onChange={(value) => onChange?.("state", value)}
+                error={getFieldError("state")}
+                required
               />
             </div>
             <div className="mt-auto pt-6 md:pt-4">
@@ -169,10 +194,14 @@ export const InstitutionFlow = ({
               onChange={(value) =>
                 onChange?.("letterOfAuthorizationUrl", value)
               }
+              value={institutionForm.letterOfAuthorizationUrl}
+              error={getFieldError("letterOfAuthorizationUrl")}
             />
             <FileUpload
               label="NAAC/ NIRF Accreditation Proof"
               onChange={(value) => onChange?.("accreditationProofUrl", value)}
+              value={institutionForm.accreditationProofUrl}
+              error={getFieldError("accreditationProofUrl")}
             />
           </div>
           <div className="mt-auto pt-6">

@@ -43,6 +43,8 @@ export default function RegisterPage() {
     primaryDomain: "",
     googleScholarUrl: "",
     profilePhotoUrl: "",
+    city: "",
+    state: "",
     email: "",
   });
   const buildResearcherPayload = () => {
@@ -55,6 +57,8 @@ export default function RegisterPage() {
       primaryDomain: researcherForm.primaryDomain,
       googleScholarUrl: researcherForm.googleScholarUrl,
       profilePhotoUrl: researcherForm.profilePhotoUrl,
+      city: researcherForm.city,
+      state: researcherForm.state,
       type: "RESEARCHER",
       email: researcherForm.instituteEmail.trim(),
       mobile: normalizeMobileDigits(researcherForm.mobile),
@@ -73,6 +77,8 @@ export default function RegisterPage() {
     researchFocus: "",
     medicalDegreeUrl: "",
     regCertificateUrl: "",
+    city: "",
+    state: "",
   });
   const buildMedicalPayload = () => {
     return {
@@ -87,12 +93,15 @@ export default function RegisterPage() {
       researchFocus: medicalForm.researchFocus,
       medicalDegreeUrl: medicalForm.medicalDegreeUrl,
       regCertificateUrl: medicalForm.regCertificateUrl,
+      city: medicalForm.city,
+      state: medicalForm.state,
     };
   };
   const handleMedicalInputChange = (field: string, value: string | File) => {
+    const normalizedValue = value instanceof File ? value.name : value;
     setMedicalForm((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: normalizedValue,
     }));
   };
   const [institutionForm, setInstitutionForm] = useState({
@@ -101,36 +110,41 @@ export default function RegisterPage() {
     email: "",
     number: "",
     name1: "",
-    letterOfAuthorizationUrl: "www.demo",
-    accreditationProofUrl: "www.demo",
+    city: "",
+    state: "",
+    letterOfAuthorizationUrl: "",
+    accreditationProofUrl: "",
   });
   const buildInstitutionPayload = () => {
     return {
-      type: "INSTITUTION",
       name: institutionForm.name,
-      domain: institutionForm.name,
+      domain: institutionForm.domain,
       email: institutionForm.email,
       number: normalizeMobileDigits(institutionForm.number),
       letterOfAuthorizationUrl: institutionForm.letterOfAuthorizationUrl,
       accreditationProofUrl: institutionForm.accreditationProofUrl,
+      city: institutionForm.city,
+      state: institutionForm.state,
     };
   };
   const handleInstitutionInputChange = (
     field: string,
     value: string | File,
   ) => {
+    const normalizedValue = value instanceof File ? value.name : value;
     setInstitutionForm((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: normalizedValue,
     }));
   };
 
   const router = useRouter();
 
   const handleInputChange = (field: string, value: string | File) => {
+    const normalizedValue = value instanceof File ? value.name : value;
     setResearcherForm((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: normalizedValue,
     }));
   };
 
@@ -214,6 +228,12 @@ export default function RegisterPage() {
       } else if (!validateMobile(researcherForm.mobile)) {
         errors.mobile = "Enter a valid mobile number";
       }
+      if (!validateRequired(researcherForm.city)) {
+        errors.city = "City is required";
+      }
+      if (!validateRequired(researcherForm.state)) {
+        errors.state = "State is required";
+      }
       if (!validateRequired(researcherForm.orcidId)) {
         errors.orcidId = "ORCID ID is required";
       } else if (!isValidOrcid(researcherForm.orcidId)) {
@@ -225,6 +245,9 @@ export default function RegisterPage() {
       }
       if (!validateRequired(researcherForm.googleScholarUrl)) {
         errors.googleScholarUrl = "Google Scholar URL is required";
+      }
+      if (!validateRequired(researcherForm.profilePhotoUrl)) {
+        errors.profilePhotoUrl = "Profile photo is required";
       }
     }
 
@@ -257,6 +280,12 @@ export default function RegisterPage() {
       } else if (!validateMobile(medicalForm.mobile)) {
         errors.mobile = "Enter a valid mobile number";
       }
+      if (!validateRequired(medicalForm.city)) {
+        errors.city = "City is required";
+      }
+      if (!validateRequired(medicalForm.state)) {
+        errors.state = "State is required";
+      }
     } else if (step === 2) {
       if (!validateRequired(medicalForm.primaryHospital)) {
         errors.primaryHospital = "Primary hospital is required";
@@ -279,9 +308,12 @@ export default function RegisterPage() {
 
     if (step === 1) {
       if (!validateRequired(institutionForm.name)) {
-        errors.name = "Official domain is required";
-      } else if (!validateDomain(institutionForm.name)) {
-        errors.name = "Enter a valid domain (e.g. university.edu.in)";
+        errors.name = "Organization name is required";
+      }
+      if (!validateRequired(institutionForm.domain)) {
+        errors.domain = "Official domain is required";
+      } else if (!validateDomain(institutionForm.domain)) {
+        errors.domain = "Enter a valid domain (e.g. university.edu.in)";
       }
     } else if (step === 2) {
       if (!validateRequired(institutionForm.name1)) {
@@ -296,6 +328,19 @@ export default function RegisterPage() {
         errors.number = "Mobile number is required";
       } else if (!validateMobile(institutionForm.number)) {
         errors.number = "Enter a valid mobile number";
+      }
+      if (!validateRequired(institutionForm.city)) {
+        errors.city = "City is required";
+      }
+      if (!validateRequired(institutionForm.state)) {
+        errors.state = "State is required";
+      }
+    } else if (step === 3) {
+      if (!validateRequired(institutionForm.letterOfAuthorizationUrl)) {
+        errors.letterOfAuthorizationUrl = "Letter of authorization is required";
+      }
+      if (!validateRequired(institutionForm.accreditationProofUrl)) {
+        errors.accreditationProofUrl = "Accreditation proof is required";
       }
     }
 
@@ -427,6 +472,8 @@ export default function RegisterPage() {
                   institution: 1,
                   instituteEmail: 2,
                   mobile: 2,
+                  city: 2,
+                  state: 2,
                   orcidId: 2,
                   primaryDomain: 3,
                   googleScholarUrl: 3,
@@ -439,6 +486,8 @@ export default function RegisterPage() {
                     stateCouncil: 1,
                     email: 1,
                     mobile: 1,
+                    city: 1,
+                    state: 1,
                     primaryHospital: 2,
                     specialty: 2,
                     researchFocus: 2,
@@ -451,6 +500,8 @@ export default function RegisterPage() {
                     name1: 2,
                     email: 2,
                     number: 2,
+                    city: 2,
+                    state: 2,
                     letterOfAuthorizationUrl: 3,
                     accreditationProofUrl: 3,
                   };

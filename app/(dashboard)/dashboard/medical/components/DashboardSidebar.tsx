@@ -11,7 +11,7 @@ import {
 import { SidebarItem } from "./SidebarItem";
 
 interface DashboardSidebarProps {
-  activePage?: "overview" | "publications" | "tickets" | "settings";
+  activePage?: "overview" | "publications" | "analytics" | "tickets" | "settings";
   isOpen?: boolean;
   onClose?: () => void;
 }
@@ -119,7 +119,12 @@ export const DashboardSidebar = ({
           active={activePage === "publications"}
           href="/dashboard/medical/publications"
         />
-        <SidebarItem icon={<BarChart2 size={18} />} label="Analytics" />
+        <SidebarItem
+          icon={<BarChart2 size={18} />}
+          label="Analytics"
+          active={activePage === "analytics"}
+          href="/dashboard/medical/analytics"
+        />
         <SidebarItem
           icon={<Ticket size={18} />}
           label="Ticket Center"

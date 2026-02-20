@@ -1,143 +1,153 @@
 "use client";
 
-import React, { useState } from "react";
-import { Check, Download } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Check, Download, Loader2 } from "lucide-react";
 import { ResearchersTable } from "./components";
 
 // --- Types ---
 
-interface Researcher {
-  id: string;
-  name: string;
-  avatar: string;
-  department: string;
-  hIndex: number;
-  citations: number;
-  contribution: string;
-  status: string;
+interface ScholarRow {
+  id: string; // nationciteId
+  nationciteId: string;
+  scholarName: string;
+  orgName: string;
+  mainSubject?: string | null;
+  subField?: string | null;
+  worldRank?: number | null;
+  countryRank?: number | null;
+  universityRank?: number | null;
+  hIndexTotal: number;
+  hIndexLast5: number;
+  hIndexRatio: number;
   isVerified: boolean;
 }
 
-// --- Mock Data ---
+type OrgMeResponse = {
+  success: boolean;
+  data?: {
+    organizationProfile?: { name?: string | null };
+    organizationMetrics?: { orgName?: string | null } | null;
+  };
+  message?: string;
+};
 
-const mockResearchers: Researcher[] = [
-  {
-    id: "RES-001",
-    name: "Dianne Russell",
-    avatar: "/avatars/dianne.jpg",
-    department: "Lorem ipsum",
-    hIndex: 33,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-  {
-    id: "RES-002",
-    name: "Albert Flores",
-    avatar: "/avatars/albert.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-  {
-    id: "RES-003",
-    name: "Courtney Henry",
-    avatar: "/avatars/courtney.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-  {
-    id: "RES-004",
-    name: "Brooklyn Simmons",
-    avatar: "/avatars/brooklyn.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: true,
-  },
-  {
-    id: "RES-005",
-    name: "Cameron Williamson",
-    avatar: "/avatars/cameron.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-  {
-    id: "RES-006",
-    name: "Annette Black",
-    avatar: "/avatars/annette.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: true,
-  },
-  {
-    id: "RES-007",
-    name: "Eleanor Pena",
-    avatar: "/avatars/eleanor.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: true,
-  },
-  {
-    id: "RES-008",
-    name: "Jacob Jones",
-    avatar: "/avatars/jacob.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: true,
-  },
-  {
-    id: "RES-009",
-    name: "Savannah Nguyen",
-    avatar: "/avatars/savannah.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-  {
-    id: "RES-010",
-    name: "Marvin McKinney",
-    avatar: "/avatars/marvin.jpg",
-    department: "Lorem ipsum",
-    hIndex: 42,
-    citations: 40,
-    contribution: "Lorem ipsum lorem ipsum",
-    status: "Journal",
-    isVerified: false,
-  },
-];
+type ScholarsResponse = {
+  success: boolean;
+  data?: Array<{
+    nationciteId: string;
+    scholarName: string;
+    orgName: string;
+    worldRank?: number | null;
+    countryRank?: number | null;
+    universityRank?: number | null;
+    mainSubject?: string | null;
+    subField?: string | null;
+    hIndexTotal: number;
+    hIndexLast5: number;
+    hIndexRatio: number;
+  }>;
+  message?: string;
+};
 
 // --- Main Component ---
 
 export default function MyResearchersPage() {
-  const [researchers, setResearchers] = useState<Researcher[]>(mockResearchers);
+  const [researchers, setResearchers] = useState<ScholarRow[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const selectedCount = useMemo(() => selectedIds.length, [selectedIds]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadResearchers() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const meRes = await fetch("/api/dashboard/org/me");
+        const meContentType = meRes.headers.get("content-type") || "";
+
+        if (!meContentType.includes("application/json")) {
+          const body = await meRes.text();
+          throw new Error(
+            `Unexpected response from org dashboard API (${meRes.status}): ${body.slice(0, 80)}`,
+          );
+        }
+
+        const meJson = (await meRes.json()) as OrgMeResponse;
+        if (!meRes.ok || !meJson.success) {
+          throw new Error(meJson.message || "Failed to load organization profile");
+        }
+
+        const orgName =
+          meJson.data?.organizationMetrics?.orgName ||
+          meJson.data?.organizationProfile?.name ||
+          "";
+
+        if (!orgName) {
+          throw new Error(
+            "Organization name not found; cannot load researchers for this organization.",
+          );
+        }
+
+        const scholarsRes = await fetch(
+          `/api/scholars?orgName=${encodeURIComponent(orgName)}&top=200`,
+        );
+        const scholarsContentType =
+          scholarsRes.headers.get("content-type") || "";
+
+        if (!scholarsContentType.includes("application/json")) {
+          const body = await scholarsRes.text();
+          throw new Error(
+            `Unexpected response from scholars API (${scholarsRes.status}): ${body.slice(0, 80)}`,
+          );
+        }
+
+        const scholarsJson = (await scholarsRes.json()) as ScholarsResponse;
+        if (!scholarsRes.ok || !scholarsJson.success || !scholarsJson.data) {
+          throw new Error(scholarsJson.message || "Failed to load scholars");
+        }
+
+        const rows: ScholarRow[] = scholarsJson.data.map((s) => ({
+          id: s.nationciteId,
+          nationciteId: s.nationciteId,
+          scholarName: s.scholarName,
+          orgName: s.orgName,
+          mainSubject: s.mainSubject,
+          subField: s.subField,
+          worldRank: s.worldRank,
+          countryRank: s.countryRank,
+          universityRank: s.universityRank,
+          hIndexTotal: s.hIndexTotal,
+          hIndexLast5: s.hIndexLast5,
+          hIndexRatio: s.hIndexRatio,
+          isVerified: false,
+        }));
+
+        if (cancelled) return;
+        setResearchers(rows);
+        setSelectedIds([]);
+      } catch (e) {
+        console.error(e);
+        if (cancelled) return;
+        const message =
+          e instanceof Error ? e.message : "Could not load researchers.";
+        setError(message);
+        setResearchers([]);
+        setSelectedIds([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadResearchers();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleRemoveResearcher = (id: string) => {
     setResearchers((prev) => prev.filter((r) => r.id !== id));
@@ -180,10 +190,11 @@ export default function MyResearchersPage() {
       <div className="mb-4 md:mb-6 flex flex-wrap items-center gap-3">
         <button
           onClick={handleVerifySelected}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#22C55E] rounded-[6px] text-sm font-semibold text-white hover:bg-[#16A34A] transition-colors"
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#22C55E] rounded-[6px] text-sm font-semibold text-white hover:bg-[#16A34A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={selectedCount === 0}
         >
           <Check size={16} strokeWidth={2.5} />
-          Verify Selected ({selectedIds.length})
+          Verify Selected ({selectedCount})
         </button>
         <button
           onClick={handleExportCSV}
@@ -195,15 +206,29 @@ export default function MyResearchersPage() {
       </div>
 
       {/* Researchers Table */}
-      <ResearchersTable
-        researchers={researchers}
-        selectedIds={selectedIds}
-        onSelectionChange={handleSelectionChange}
-        onRemoveResearcher={handleRemoveResearcher}
-      />
+      {loading ? (
+        <div className="bg-white rounded-xl border border-[#E1E4EA] p-8 flex items-center justify-center gap-3 text-[#525866]">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <div className="text-[14px]">Loading researchers…</div>
+        </div>
+      ) : error ? (
+        <div className="bg-white rounded-xl border border-[#E1E4EA] p-8">
+          <div className="text-[14px] font-semibold text-[#0E121B] mb-1">
+            Could not load researchers
+          </div>
+          <div className="text-[13px] text-[#525866]">{error}</div>
+        </div>
+      ) : (
+        <ResearchersTable
+          researchers={researchers}
+          selectedIds={selectedIds}
+          onSelectionChange={handleSelectionChange}
+          onRemoveResearcher={handleRemoveResearcher}
+        />
+      )}
 
       {/* No Results */}
-      {researchers.length === 0 && (
+      {!loading && !error && researchers.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-[#E1E4EA]">
           <div className="text-[16px] font-medium text-[#0E121B] mb-2">
             No researchers found

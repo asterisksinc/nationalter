@@ -36,9 +36,11 @@ export default function MedicalLayout({ children }: ResearchersLayoutProps) {
   const getActivePage = ():
     | "overview"
     | "publications"
+    | "analytics"
     | "tickets"
     | "settings" => {
     if (pathname.includes("/publications")) return "publications";
+    if (pathname.includes("/analytics")) return "analytics";
     if (pathname.includes("/tickets")) return "tickets";
     if (pathname.includes("/settings")) return "settings";
     return "overview";
@@ -53,6 +55,8 @@ export default function MedicalLayout({ children }: ResearchersLayoutProps) {
     switch (activePage) {
       case "publications":
         return [...baseItems, { label: "My Publications" }];
+      case "analytics":
+        return [...baseItems, { label: "Analytics" }];
       case "tickets":
         return [...baseItems, { label: "Ticket Center" }];
       case "settings":

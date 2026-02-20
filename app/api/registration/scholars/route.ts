@@ -108,6 +108,8 @@ export async function POST(req: NextRequest) {
     if (!name) fieldErrors.name = "Name is required";
     if (!email) fieldErrors.email = "Email is required";
     if (!mobile) fieldErrors.mobile = "Mobile number is required";
+    if (!city) fieldErrors.city = "City is required";
+    if (!state) fieldErrors.state = "State is required";
 
     if (email && !isValidEmail(email)) {
       fieldErrors.email = "Enter a valid email";
@@ -141,6 +143,7 @@ export async function POST(req: NextRequest) {
       }
       if (!primaryDomain) rErrors.primaryDomain = "Primary domain is required";
       if (!googleScholarUrl) rErrors.googleScholarUrl = "Google Scholar URL is required";
+      if (!profilePhotoUrl) rErrors.profilePhotoUrl = "Profile photo is required";
 
       if (Object.keys(rErrors).length > 0) {
         return badRequest("Please fix the highlighted fields", rErrors);

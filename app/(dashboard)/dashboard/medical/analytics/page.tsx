@@ -23,14 +23,14 @@ export default function AnalyticsPage() {
         setError(null);
 
         // Fetch dashboard data to get profile info
-        const dashboardRes = await fetch("/api/dashboard/org/me");
+        const dashboardRes = await fetch("/api/dashboard/scholar/me");
         const dashboardData = await dashboardRes.json();
 
         if (!dashboardData.success) {
           throw new Error(dashboardData.message || "Failed to fetch dashboard data");
         }
 
-        const { organizationProfile, organizationMetrics } = dashboardData.data;
+        const { scholarProfile, scholarMetrics } = dashboardData.data;
 
         // Fetch metrics from all available APIs (in parallel)
         // Note: ARIS requires a field parameter, so we'll need to handle that
@@ -65,32 +65,32 @@ export default function AnalyticsPage() {
         // Build analytics data structure
         const data = {
           profile: {
-            name: organizationProfile?.name || "Organization",
-            field: "Multi-disciplinary",
+            name: scholarProfile?.data?.name || "Scholar",
+            field: scholarMetrics?.mainSubject || "Multi-disciplinarykey",
             cohortSize: 0,
           },
           mainMetrics: [
             {
               label: "H-Index (Total)",
-              value: organizationMetrics?.hIndexTotal?.toString() || "0",
+              value: scholarMetrics?.hIndexTotal?.toString() || "0",
               change: "+0%",
               trend: "up",
             },
             {
               label: "H-Index (Last 5Y)",
-              value: organizationMetrics?.hIndexLast5?.toString() || "0",
+              value: scholarMetrics?.hIndexLast5?.toString() || "0",
               change: "+0%",
               trend: "up",
             },
             {
               label: "World Rank",
-              value: organizationMetrics?.worldRank ? `#${organizationMetrics.worldRank}` : "—",
+              value: scholarMetrics?.worldRank ? `#${scholarMetrics.worldRank}` : "—",
               change: "",
               trend: "up",
             },
             {
               label: "Country Rank",
-              value: organizationMetrics?.countryRank ? `#${organizationMetrics.countryRank}` : "—",
+              value: scholarMetrics?.countryRank ? `#${scholarMetrics.countryRank}` : "—",
               change: "",
               trend: "up",
             },
@@ -107,7 +107,7 @@ export default function AnalyticsPage() {
                 : "—",
             },
             breakdown: [
-              { label: "H-Index Impact", value: organizationMetrics?.hIndexTotal || 0, color: "bg-emerald-500" },
+              { label: "H-Index Impact", value: scholarMetrics?.hIndexTotal || 0, color: "bg-emerald-500" },
               { label: "Productivity", value: arisData.success ? arisData.data.publications : 0, color: "bg-blue-400" },
               { label: "Field Weight", value: arisData.success ? Math.round(arisData.data.fieldWeight * 10) : 0, color: "bg-purple-500" },
             ],
@@ -156,7 +156,7 @@ export default function AnalyticsPage() {
           ],
           percentile: {
             value: 0,
-            rank: organizationMetrics?.countryRank || 0,
+            rank: scholarMetrics?.countryRank || 0,
             total: 0,
           },
           trajectory: [],

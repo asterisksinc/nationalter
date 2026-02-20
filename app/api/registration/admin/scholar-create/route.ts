@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { requireAdmin } from "@/lib/auth";
 import { sendApprovalCredentialsMail } from "@/lib/mailer";
+import { Prisma } from "@prisma/client";
 
 ///////////////////////////////////////////////////////////
 // HELPERS
@@ -15,6 +16,10 @@ function generateTempPassword() {
 
 function normalizeMobile(input: string) {
   return input.replace(/\D/g, "");
+}
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 ///////////////////////////////////////////////////////////
@@ -87,11 +92,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!name || !email || !mobile || !city || !state) {
+    const fieldErrors: Record<string, string> = {};
+
+    if (!name) fieldErrors.name = "Name is required";
+    if (!email) fieldErrors.email = "Email is required";
+    if (email && !isValidEmail(email)) fieldErrors.email = "Invalid email";
+    if (!mobile) fieldErrors.mobile = "Mobile is required";
+    if (!city) fieldErrors.city = "City is required";
+    if (!state) fieldErrors.state = "State is required";
+
+    if (type === "MEDICAL") {
+      if (!medCouncilRegNo) fieldErrors.medCouncilRegNo = "Medical council registration number is required";
+      if (!stateCouncil) fieldErrors.stateCouncil = "State council is required";
+      if (!primaryHospital) fieldErrors.primaryHospital = "Primary hospital is required";
+      if (!specialty) fieldErrors.specialty = "Specialty is required";
+      if (!researchFocus) fieldErrors.researchFocus = "Research focus is required";
+    }
+
+    if (type === "RESEARCHER") {
+      if (!institute) fieldErrors.institute = "Institute is required";
+      if (!instituteEmail) fieldErrors.instituteEmail = "Institute email is required";
+      if (!orcidId) fieldErrors.orcidId = "ORCID ID is required";
+      if (!googleScholarUrl) fieldErrors.googleScholarUrl = "Google Scholar URL is required";
+      if (!primaryDomain) fieldErrors.primaryDomain = "Primary domain is required";
+      if (!profilePhotoUrl) fieldErrors.profilePhotoUrl = "Profile photo URL is required";
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
       return NextResponse.json(
         {
           success: false,
-          message: "Missing required fields",
+          message: "Validation failed",
+          fieldErrors,
         },
         { status: 400 }
       );
@@ -117,9 +149,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const normalizedMobile = normalizeMobile(mobile);
+
     const existingAuthUser = await prisma.authUser.findUnique({
       where: {
-        email,
+        email: normalizedEmail,
       },
     });
 
@@ -141,8 +176,6 @@ export async function POST(req: NextRequest) {
 
     const passwordHash = await bcrypt.hash(tempPassword, 10);
 
-    const normalizedMobile = normalizeMobile(mobile);
-
     ///////////////////////////////////////////////////////////
     // DB TRANSACTION
     ///////////////////////////////////////////////////////////
@@ -152,7 +185,7 @@ export async function POST(req: NextRequest) {
       // CREATE REGISTRATION
       ///////////////////////////////////////
 
-      await tx.registration.create({
+      const registration = await tx.registration.create({
         data: {
           nationciteId,
           type,
@@ -167,9 +200,10 @@ export async function POST(req: NextRequest) {
       if (type === "MEDICAL") {
         await tx.medicalProfessional.create({
           data: {
+            registration: { connect: { id: registration.id } },
             nationciteId,
             name,
-            email,
+            email: normalizedEmail,
             mobile: normalizedMobile,
             city,
             state,
@@ -192,9 +226,10 @@ export async function POST(req: NextRequest) {
       if (type === "RESEARCHER") {
         await tx.researchers.create({
           data: {
+            registration: { connect: { id: registration.id } },
             nationciteId,
             name,
-            email,
+            email: normalizedEmail,
             mobile: normalizedMobile,
             city,
             state,
@@ -222,11 +257,16 @@ export async function POST(req: NextRequest) {
 
       await tx.authUser.create({
         data: {
-          email,
+          email: normalizedEmail,
           passwordHash,
           role: "SCHOLAR",
           isEmailVerified: true,
           isActive: true,
+          registration: {
+            connect: {
+              id: registration.id,
+            },
+          },
         },
       });
     });
@@ -235,12 +275,16 @@ export async function POST(req: NextRequest) {
     // SEND EMAIL
     ///////////////////////////////////////////////////////////
 
-    await sendApprovalCredentialsMail({
-      to: email,
-      name,
-      username: email,
-      password: tempPassword,
-    });
+    try {
+      await sendApprovalCredentialsMail({
+        to: normalizedEmail,
+        name,
+        username: normalizedEmail,
+        password: tempPassword,
+      });
+    } catch (err) {
+      console.error("Mail send failed:", err);
+    }
 
     ///////////////////////////////////////////////////////////
     // RESPONSE
@@ -253,19 +297,40 @@ export async function POST(req: NextRequest) {
 
         data: {
           nationciteId,
-          email,
+          email: normalizedEmail,
           tempPassword,
         },
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const targets = error.meta?.target as string[] | undefined;
+      const fieldErrors: Record<string, string> = {};
+
+      if (targets?.includes("email")) fieldErrors.email = "Email already exists";
+      if (targets?.includes("mobile")) fieldErrors.mobile = "Mobile already exists";
+      if (targets?.includes("nationciteId")) fieldErrors.nationciteId = "NationCite ID already exists";
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Duplicate fields",
+          fieldErrors,
+        },
+        { status: 409 }
+      );
+    }
+
     console.error("Admin scholar create error:", error);
 
     return NextResponse.json(
       {
         success: false,
-        message: "Failed to create scholar",
+        message: error?.message || "Failed to create scholar",
       },
       { status: 500 }
     );

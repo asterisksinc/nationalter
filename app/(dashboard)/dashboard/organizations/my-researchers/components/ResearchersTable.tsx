@@ -4,15 +4,19 @@ import React, { useState } from "react";
 import { BadgeCheck, Info, UserMinus } from "lucide-react";
 import ViewResearcherModal from "./ViewResearcherModal";
 
-interface Researcher {
-  id: string;
-  name: string;
-  avatar: string;
-  department: string;
-  hIndex: number;
-  citations: number;
-  contribution: string;
-  status: string;
+export interface Researcher {
+  id: string; // nationciteId
+  nationciteId: string;
+  scholarName: string;
+  orgName: string;
+  mainSubject?: string | null;
+  subField?: string | null;
+  worldRank?: number | null;
+  countryRank?: number | null;
+  universityRank?: number | null;
+  hIndexTotal: number;
+  hIndexLast5: number;
+  hIndexRatio: number;
   isVerified: boolean;
 }
 
@@ -57,8 +61,8 @@ export default function ResearchersTable({
   };
 
   // Generate initials for avatar fallback
-  const getInitials = (name: string) => {
-    const parts = name.split(" ");
+  const getInitials = (fullName: string) => {
+    const parts = (fullName || "").trim().split(" ");
     if (parts.length >= 2) {
       return parts[0][0] + parts[1][0];
     }
@@ -66,7 +70,7 @@ export default function ResearchersTable({
   };
 
   // Generate a color based on name for avatar background
-  const getAvatarColor = (name: string) => {
+  const getAvatarColor = (fullName: string) => {
     const colors = [
       "#FF7A00",
       "#22C55E",
@@ -78,8 +82,8 @@ export default function ResearchersTable({
       "#EF4444",
     ];
     let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    for (let i = 0; i < fullName.length; i++) {
+      hash = fullName.charCodeAt(i) + ((hash << 5) - hash);
     }
     return colors[Math.abs(hash) % colors.length];
   };
@@ -96,19 +100,19 @@ export default function ResearchersTable({
                   Researcher Name
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
-                  H-index
+                  H-index (Total)
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
-                  Citations
+                  H-index (Last 5)
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
-                  Department
+                  Main Subject
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
-                  Contribution
+                  Sub Field
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
-                  Status
+                  World Rank
                 </th>
                 <th className="text-left px-4 py-4 text-[13px] font-semibold text-[#525866]">
                   Actions
@@ -155,30 +159,32 @@ export default function ResearchersTable({
                         <div
                           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0"
                           style={{
-                            backgroundColor: getAvatarColor(researcher.name),
+                            backgroundColor: getAvatarColor(researcher.scholarName),
                           }}
                         >
-                          {getInitials(researcher.name)}
+                          {getInitials(researcher.scholarName)}
                         </div>
                         <div className="text-[14px] font-medium text-[#0E121B]">
-                          {researcher.name}
+                          {researcher.scholarName}
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-4 text-[14px] text-[#525866]">
-                      {researcher.hIndex}
+                      {researcher.hIndexTotal}
                     </td>
                     <td className="px-4 py-4 text-[14px] text-[#525866]">
-                      {researcher.citations}
+                      {researcher.hIndexLast5}
                     </td>
                     <td className="px-4 py-4 text-[14px] text-[#525866]">
-                      {researcher.department}
+                      {researcher.mainSubject || "—"}
                     </td>
                     <td className="px-4 py-4 text-[14px] text-[#525866]">
-                      {researcher.contribution}
+                      {researcher.subField || "—"}
                     </td>
                     <td className="px-4 py-4 text-[14px] text-[#525866]">
-                      {researcher.status}
+                      {typeof researcher.worldRank === "number"
+                        ? `#${researcher.worldRank}`
+                        : "—"}
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">

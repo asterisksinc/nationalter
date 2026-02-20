@@ -83,7 +83,7 @@ export async function GET(
     }
 
     // Get registrant details
-    let registrantData: any = null;
+    let registrantData: Record<string, unknown> | null = null;
     let name = "";
     let institution = "";
 
@@ -108,8 +108,14 @@ export async function GET(
       nationciteId: string;
       name: string;
       organization?: string;
+      mainSubject?: string | null;
+      subField?: string | null;
       hIndexTotal?: number;
+      hIndexLast5?: number;
+      hIndexRatio?: number;
       worldRank?: number | null;
+      countryRank?: number | null;
+      universityRank?: number | null;
       matchScore?: number;
     }> = [];
 
@@ -193,8 +199,14 @@ export async function GET(
           nationciteId: s.nationciteId,
           name: s.scholarName,
           organization: s.orgName,
+          mainSubject: s.mainSubject,
+          subField: s.subField,
           hIndexTotal: s.hIndexTotal,
+          hIndexLast5: s.hIndexLast5,
+          hIndexRatio: s.hIndexRatio,
           worldRank: s.worldRank,
+          countryRank: s.countryRank,
+          universityRank: s.universityRank,
           matchScore: score,
         };
       });
@@ -248,7 +260,9 @@ export async function GET(
           nationciteId: o.nationciteId,
           name: o.orgName,
           hIndexTotal: o.hIndexTotal,
+          hIndexLast5: o.hIndexLast5,
           worldRank: o.worldRank,
+          countryRank: o.countryRank,
           matchScore: score,
         };
       });
@@ -264,7 +278,7 @@ export async function GET(
     }
 
     // If already approved, fetch the linked public record
-    let linkedPublicRecord: any = null;
+    let linkedPublicRecord: Record<string, unknown> | null = null;
     if (registration.status === "APPROVED" && registration.nationciteId) {
       if (registration.type === "MEDICAL" || registration.type === "RESEARCHER") {
         linkedPublicRecord = await prisma.scholarsPublic.findUnique({

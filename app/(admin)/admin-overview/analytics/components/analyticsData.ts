@@ -1,36 +1,65 @@
-export type TrendPoint = { label: string; mau: number; dau: number };
+export type TrendPoint = {
+  label: string;
+  registrations: number;
+  logins: number;
+};
 
-export const trendData: TrendPoint[] = [
-  { label: "Oct 7", mau: 19, dau: 5 },
-  { label: "", mau: 17, dau: 5.2 },
-  { label: "Oct 15", mau: 11, dau: 6 },
-  { label: "", mau: 14, dau: 7.8 },
-  { label: "", mau: 10, dau: 10.5 },
-  { label: "Oct 23", mau: 12, dau: 13.8 },
-  { label: "", mau: 9, dau: 17.4 },
-  { label: "", mau: 8, dau: 20 },
-  { label: "Oct 31", mau: 5.5, dau: 21.4 },
-  { label: "", mau: 4.2, dau: 21.8 },
-  { label: "Nov 8", mau: 7.2, dau: 21.1 },
-  { label: "", mau: 14.4, dau: 18.9 },
-  { label: "Nov 16", mau: 16.8, dau: 17.6 },
-  { label: "", mau: 24, dau: 16.1 },
-  { label: "", mau: 18.3, dau: 14.6 },
-  { label: "Nov 24", mau: 19.8, dau: 13.2 },
-  { label: "", mau: 20.4, dau: 11.9 },
-  { label: "", mau: 23, dau: 10.8 },
-  { label: "Dec 2", mau: 18, dau: 9.6 },
-  { label: "", mau: 16.3, dau: 8.8 },
-  { label: "Dec 10", mau: 18.8, dau: 8.2 },
-  { label: "", mau: 17.4, dau: 8 },
-  { label: "Dec 18", mau: 30.5, dau: 8.7 },
-  { label: "", mau: 23.8, dau: 9.8 },
-  { label: "", mau: 27.6, dau: 11.1 },
-  { label: "Dec 26", mau: 31.6, dau: 12.9 },
-  { label: "", mau: 22.4, dau: 14.8 },
-  { label: "", mau: 19.8, dau: 16.2 },
-  { label: "Jan 3", mau: 21.2, dau: 17.3 },
-];
+function formatMonthDay(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(date);
+}
+
+function clampInt(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, Math.round(value)));
+}
+
+function seededUnit(seed: number) {
+  // Deterministic 0..1 value based on a numeric seed.
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+// Dummy data (UI-only for now): last 30 days, oldest -> newest.
+// Rightmost X-axis point is always "today".
+export function buildLast30DaysTrendData(today = new Date()): TrendPoint[] {
+  const end = new Date(today);
+  end.setHours(0, 0, 0, 0);
+
+  const points: TrendPoint[] = [];
+
+  for (let offsetDays = 29; offsetDays >= 0; offsetDays -= 1) {
+    const d = new Date(end);
+    d.setDate(end.getDate() - offsetDays);
+
+    // A deterministic, date-based seed for stable looking (but spiky) trends.
+    const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+    const u = seededUnit(seed);
+
+    // Base undulation + jitter
+    const waveA = Math.sin(seed * 0.09);
+    const waveB = Math.cos(seed * 0.14);
+    const jitter = (u - 0.5) * 16;
+
+    // Occasional spikes (deterministic) to make the orange area visibly jagged.
+    const spikeA = seed % 6 === 0 ? 28 : 0;
+    const spikeB = seed % 11 === 0 ? 18 : 0;
+
+    const registrations = clampInt(12 + waveA * 8 + waveB * 6 + jitter + spikeA + spikeB, 0, 95);
+    const logins = clampInt(registrations * 4.2 + 35 + waveA * 12 + waveB * 10 + jitter * 1.5, 0, 260);
+
+    points.push({
+      label: formatMonthDay(d),
+      registrations,
+      logins,
+    });
+  }
+
+  return points;
+}
+
+export const trendData: TrendPoint[] = buildLast30DaysTrendData();
 
 export const sparklineSets = {
   greenA: "5,17 12,12 19,13 26,10 33,14 40,12 47,16 54,8 61,11 68,9",

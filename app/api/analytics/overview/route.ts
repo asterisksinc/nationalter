@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 //////////////////////////////////////////////////////
 // GET LAST 7 DAYS RANGE
@@ -19,8 +20,9 @@ function getLast7DaysRange() {
 // ANALYTICS OVERVIEW API
 // /api/analytics/overview
 //////////////////////////////////////////////////////
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    requireAdmin(req);
     const { start, end } = getLast7DaysRange();
 
     //////////////////////////////////////////////////////

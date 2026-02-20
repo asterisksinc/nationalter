@@ -95,6 +95,22 @@ export const MedicalFlow = ({
               error={getFieldError("mobile")}
               required
             />
+            <FormInput
+              label="City"
+              placeholder="e.g. Hyderabad"
+              value={medicalForm.city}
+              onChange={(value) => onChange?.("city", value)}
+              error={getFieldError("city")}
+              required
+            />
+            <FormInput
+              label="State"
+              placeholder="e.g. Telangana"
+              value={medicalForm.state}
+              onChange={(value) => onChange?.("state", value)}
+              error={getFieldError("state")}
+              required
+            />
           </div>
           <div className="mt-auto pt-6 md:pt-4">
             <button

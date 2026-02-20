@@ -76,6 +76,20 @@ export async function POST(req: NextRequest) {
     if (!number)
       fieldErrors.number = "Mobile number is required";
 
+    if (!city)
+      fieldErrors.city = "City is required";
+
+    if (!state)
+      fieldErrors.state = "State is required";
+
+    if (!letterOfAuthorizationUrl)
+      fieldErrors.letterOfAuthorizationUrl =
+        "Letter of authorization is required";
+
+    if (!accreditationProofUrl)
+      fieldErrors.accreditationProofUrl =
+        "Accreditation proof is required";
+
     if (email && !isValidEmail(email))
       fieldErrors.email = "Invalid email";
 
@@ -148,10 +162,8 @@ export async function POST(req: NextRequest) {
           domain: normalizedDomain,
           email: normalizedEmail,
           number: normalizedNumber,
-          letterOfAuthorizationUrl:
-            letterOfAuthorizationUrl || "",
-          accreditationProofUrl:
-            accreditationProofUrl || "",
+          letterOfAuthorizationUrl,
+          accreditationProofUrl,
           status: "APPROVED",
           plan: "FREE",
           city,

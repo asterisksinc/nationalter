@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const type = searchParams.get("type");
-    const status = searchParams.get("status") || "PENDING";
+    const status = searchParams.get("status");
 
     // Build filter for registrations
     const whereClause: Record<string, unknown> = {};
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 
     // Transform data for frontend
     const formattedRegistrations = registrations.map((reg) => {
-      let registrantData: any = null;
+      let registrantData: Record<string, unknown> | null = null;
       let name = "";
       let email = "";
 

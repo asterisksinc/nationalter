@@ -101,6 +101,22 @@ export const ResearcherFlow = ({
               required
             />
             <FormInput
+              label="City"
+              placeholder="e.g. Bengaluru"
+              value={researcherForm.city}
+              onChange={(value) => onChange?.("city", value)}
+              error={getFieldError("city")}
+              required
+            />
+            <FormInput
+              label="State"
+              placeholder="e.g. Karnataka"
+              value={researcherForm.state}
+              onChange={(value) => onChange?.("state", value)}
+              error={getFieldError("state")}
+              required
+            />
+            <FormInput
               label="ORCID ID"
               placeholder="e.g. 0000-0002-1825-0097"
               value={researcherForm.orcidId}
@@ -155,6 +171,7 @@ export const ResearcherFlow = ({
               subLabel="Upload a professional headshot."
               value={researcherForm.profilePhotoUrl}
               onChange={(value) => onChange?.("profilePhotoUrl", value as File)}
+              error={getFieldError("profilePhotoUrl")}
             />
           </div>
           <div className="mt-auto pt-6 md:pt-4">
