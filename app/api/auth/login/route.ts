@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { signJwt } from "@/lib/jwt";
+import { LoginType } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   try {
@@ -92,6 +93,28 @@ export async function POST(req: NextRequest) {
     await prisma.authUser.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date() },
+    });
+
+    let loginLogType: LoginType;
+
+    if (role === "ADMIN") {
+      loginLogType = LoginType.ADMIN;
+    } else if (registrationType === "RESEARCHER") {
+      loginLogType = LoginType.RESEARCHER;
+    } else if (registrationType === "MEDICAL") {
+      loginLogType = LoginType.MEDICAL_PROFESSIONAL;
+    } else if (registrationType === "ORG") {
+      loginLogType = LoginType.ORG;
+    } else {
+      throw new Error("Unknown login type");
+    }
+
+    // Create login log entry
+    await prisma.loginLog.create({
+      data: {
+        nationciteId: user.registration?.nationciteId || `ADMIN-${user.id}`,
+        loginType: loginLogType,
+      },
     });
 
     // Set HTTP-only cookies for authentication
