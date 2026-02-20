@@ -96,20 +96,20 @@ export default function AnalyticsPage() {
             },
           ],
           aris: {
-            score: arisData.success ? arisData.data.ARIS : 0,
+            score: arisData.success && arisData.data ? arisData.data.ARIS : 0,
             change: "+0%",
             percentile: 0,
-            status: arisData.success && arisData.data.ARIS > 70 ? "ELITE" : "EMERGING",
+            status: arisData.success && arisData.data && arisData.data.ARIS > 70 ? "ELITE" : "EMERGING",
             formula: {
               display: "H × ln(P+1) × FW",
-              values: arisData.success
+              values: arisData.success && arisData.data
                 ? `${arisData.data.hIndex} × ${arisData.data.productivityFactor} × ${arisData.data.fieldWeight}`
                 : "—",
             },
             breakdown: [
               { label: "H-Index Impact", value: scholarMetrics?.hIndexTotal || 0, color: "bg-emerald-500" },
-              { label: "Productivity", value: arisData.success ? arisData.data.publications : 0, color: "bg-blue-400" },
-              { label: "Field Weight", value: arisData.success ? Math.round(arisData.data.fieldWeight * 10) : 0, color: "bg-purple-500" },
+              { label: "Productivity", value: arisData.success && arisData.data ? arisData.data.publications : 0, color: "bg-blue-400" },
+              { label: "Field Weight", value: arisData.success && arisData.data ? Math.round(arisData.data.fieldWeight * 10) : 0, color: "bg-purple-500" },
             ],
           },
           coreMetrics: [
@@ -147,8 +147,8 @@ export default function AnalyticsPage() {
             },
             {
               label: "ARIS",
-              value: arisData.success ? arisData.data.ARIS.toFixed(0) : "—",
-              status: arisData.success && arisData.data.ARIS > 70 ? "Elite" : "Emerging",
+              value: arisData.success && arisData.data ? arisData.data.ARIS.toFixed(0) : "—",
+              status: arisData.success && arisData.data && arisData.data.ARIS > 70 ? "Elite" : "Emerging",
               percentile: "—",
               formula: "H×ln(P+1)×FW",
               statusColor: arisData.success && arisData.data.ARIS > 70 ? "text-emerald-600 bg-emerald-50" : "text-blue-600 bg-blue-50",
