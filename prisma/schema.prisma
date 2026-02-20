@@ -27,6 +27,13 @@ enum UserRole {
   ORG
 }
 
+enum LoginType {
+  ADMIN
+  RESEARCHER
+  MEDICAL_PROFESSIONAL
+  ORG
+}
+
 
 ////////////////////////////////////////////////
 // AUTH / CREDENTIALS
@@ -256,4 +263,15 @@ model Otp {
   createdAt   DateTime @default(now())
 
   @@index([mobile])
+}
+
+model LoginLog {
+  id           Int       @id @default(autoincrement())
+  nationciteId String    @db.VarChar(50)
+  loginType    LoginType
+  createdAt    DateTime  @default(now())
+
+  @@index([nationciteId])
+  @@index([loginType])
+  @@index([createdAt])
 }
