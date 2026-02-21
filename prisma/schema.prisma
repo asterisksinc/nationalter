@@ -54,6 +54,7 @@ model AuthUser {
   updatedAt       DateTime @updatedAt
 
   registration    Registration?
+  blogs           Blog[]
 }
 
 
@@ -135,6 +136,7 @@ model MedicalProfessional {
   plan                 String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -162,6 +164,7 @@ model Researchers {
   plan                      String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -185,6 +188,7 @@ model OrgsRegistered {
   plan                      String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -273,5 +277,29 @@ model LoginLog {
 
   @@index([nationciteId])
   @@index([loginType])
+  @@index([createdAt])
+}
+
+////////////////////////////////////////////////
+// BLOGS
+////////////////////////////////////////////////
+
+model Blog {
+  id            Int       @id @default(autoincrement())
+  nationciteId  String
+  title         String
+  subtitle      String?
+  mainText      String    @db.Text
+  images        String[]  // Array of image URLs
+
+  authorId      Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  author        AuthUser  @relation(fields: [authorId], references: [id])
+
+  @@index([nationciteId])
+  @@index([authorId])
   @@index([createdAt])
 }
