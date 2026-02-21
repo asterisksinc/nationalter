@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Bell, X, Check, CheckCheck } from "lucide-react";
+import { Bell, X, CheckCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Notification {
@@ -161,6 +161,8 @@ export function NotificationBell() {
         return "💬";
       case "TICKET_UPDATED":
         return "🔄";
+      case "CONTACT_QUERY":
+        return "📨";
       default:
         return "🔔";
     }

@@ -20,13 +20,43 @@ import {
 } from "./components/analyticsData";
 import type { TrendPoint, StateDetail } from "./components/analyticsData";
 
+type PersonaCard = {
+  title: string;
+  growth: string;
+  signupsLabel: string;
+  signupsValue: string;
+  conversion: string;
+  average: string;
+  distribution: string;
+  retention: string;
+  progress: string;
+  tone: string;
+};
+
+type OverviewSection = {
+  approvedCount?: number;
+  approvalRate?: number;
+};
+
+type OverviewData = {
+  summary?: {
+    totalApproved?: number;
+    avgActiveUsersPerDay?: number;
+    totalRegistrationsLast7Days?: number;
+    totalLoginsLast7Days?: number;
+  };
+  medicalProfessional?: OverviewSection;
+  researcher?: OverviewSection;
+  organization?: OverviewSection;
+};
+
 export default function AnalyticsDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [trendData, setTrendData] = useState<TrendPoint[]>([]);
   const [stateInfo, setStateInfo] = useState<Record<string, StateDetail>>({});
-  const [overview, setOverview] = useState<any>(null);
-  const [segmentCards, setSegmentCards] = useState<any[]>([]);
+  const [overview, setOverview] = useState<OverviewData | null>(null);
+  const [segmentCards, setSegmentCards] = useState<PersonaCard[]>([]);
 
   useEffect(() => {
     async function fetchAnalytics() {
@@ -52,24 +82,42 @@ export default function AnalyticsDashboard() {
 
           // Build segment cards from overview data
           const { medicalProfessional, researcher, organization } = overviewData.data;
-          const cards = [
+          const cards: PersonaCard[] = [
             {
-              label: "Medical Professionals",
-              value: medicalProfessional.approvedCount.toLocaleString(),
-              subtext: `${medicalProfessional.approvalRate}% approval rate`,
-              color: "#4CAF50" as const,
+              title: "Medical Professionals",
+              growth: `${medicalProfessional.approvalRate}% approval rate`,
+              signupsLabel: "Approved Profiles",
+              signupsValue: String(medicalProfessional.approvedCount ?? 0),
+              conversion: `${medicalProfessional.approvalRate}%`,
+              average: String(medicalProfessional.approvedCount ?? 0),
+              distribution: "Clinical Domains",
+              retention: "N/A",
+              progress: `${Math.min(100, Number(medicalProfessional.approvalRate || 0))}%`,
+              tone: "purple",
             },
             {
-              label: "Researchers",
-              value: researcher.approvedCount.toLocaleString(),
-              subtext: `${researcher.approvalRate}% approval rate`,
-              color: "#2196F3" as const,
+              title: "Researchers",
+              growth: `${researcher.approvalRate}% approval rate`,
+              signupsLabel: "Approved Profiles",
+              signupsValue: String(researcher.approvedCount ?? 0),
+              conversion: `${researcher.approvalRate}%`,
+              average: String(researcher.approvedCount ?? 0),
+              distribution: "Research Fields",
+              retention: "N/A",
+              progress: `${Math.min(100, Number(researcher.approvalRate || 0))}%`,
+              tone: "pink",
             },
             {
-              label: "Organizations",
-              value: organization.approvedCount.toLocaleString(),
-              subtext: `${organization.approvalRate}% approval rate`,
-              color: "#FF9800" as const,
+              title: "Organizations",
+              growth: `${organization.approvalRate}% approval rate`,
+              signupsLabel: "Approved Profiles",
+              signupsValue: String(organization.approvedCount ?? 0),
+              conversion: `${organization.approvalRate}%`,
+              average: String(organization.approvedCount ?? 0),
+              distribution: "Institution Types",
+              retention: "N/A",
+              progress: `${Math.min(100, Number(organization.approvalRate || 0))}%`,
+              tone: "blue",
             },
           ];
           setSegmentCards(cards);

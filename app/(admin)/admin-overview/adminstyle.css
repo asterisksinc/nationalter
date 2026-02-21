@@ -1711,7 +1711,7 @@
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: #475569;
 }
 
 .users-table-wrapper {
@@ -1993,7 +1993,12 @@ select {
   border: 1px solid #e2e8f0 !important;
   padding: 0 14px;
   font-size: 14px !important;
-  color: #525866 !important;
+  color: #0e121b !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #475569 !important;
 }
 
 .form-group {
@@ -2145,7 +2150,7 @@ select {
 }
 
 .profile-input::placeholder {
-  color: #9ca3af;
+  color: #475569;
 }
 
 .profile-input:focus,
@@ -2313,7 +2318,7 @@ select {
 }
 
 .users-search::placeholder {
-  color: #94a3b8;
+  color: #475569;
 }
 
 .filter-btn {

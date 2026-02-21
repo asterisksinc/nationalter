@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { DashboardSidebar } from "../../component/dashboardsidebar";
 import { TicketDetailView, TicketComments } from "@/components/shared/tickets";
 
@@ -10,21 +10,59 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+interface TicketComment {
+  id: number;
+  ticketId: string;
+  comments: string;
+  createdAt: string;
+}
+
+interface TicketState {
+  id: number;
+  ticketId: string;
+  nationciteId: string;
+  name: string;
+  type: string;
+  issueType: string;
+  description: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  priority?: string;
+  comments?: TicketComment[];
+  issueReason?: string;
+  links?: string[];
+  attachments?: string[];
+  impactLevel?: string;
+  preferredOutcome?: string;
+  relatedPublicationId?: number;
+  [key: string]: unknown;
+}
+
+interface RelatedPublication {
+  id: number;
+  title: string;
+  journalName: string;
+  datePublished: string;
+  citationsTotal?: number;
+  citationsLast5Years?: number;
+}
+
 export default function AdminTicketDetailPage({ params }: PageProps) {
   const router = useRouter();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [ticketId, setTicketId] = useState<string>("");
-  const [ticket, setTicket] = useState<any>(null);
-  const [relatedPublication, setRelatedPublication] = useState<any>(null);
+  const [ticket, setTicket] = useState<TicketState | null>(null);
+  const [relatedPublication, setRelatedPublication] = useState<RelatedPublication | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updating, setUpdating] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     params.then((p) => setTicketId(p.id));
   }, [params]);
 
-  const fetchTicketDetails = async () => {
+  const fetchTicketDetails = useCallback(async () => {
     if (!ticketId) return;
 
     setLoading(true);
@@ -39,7 +77,7 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
         throw new Error(ticketData.message || "Failed to fetch ticket");
       }
 
-      setTicket(ticketData.data);
+      setTicket(ticketData.data as TicketState);
 
       // Fetch related publication if exists
       if (ticketData.data.relatedPublicationId) {
@@ -49,25 +87,26 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
           );
           const pubData = await pubRes.json();
           if (pubData.success && pubData.data) {
-            setRelatedPublication(pubData.data);
+            setRelatedPublication(pubData.data as RelatedPublication);
           }
         } catch (pubError) {
           console.error("Failed to fetch publication:", pubError);
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching ticket:", err);
-      setError(err.message || "Failed to load ticket details");
+      const message = err instanceof Error ? err.message : "Failed to load ticket details";
+      setError(message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [ticketId]);
 
   useEffect(() => {
     if (ticketId) {
       fetchTicketDetails();
     }
-  }, [ticketId]);
+  }, [ticketId, fetchTicketDetails]);
 
   const handleBack = () => {
     router.push("/admin-overview/tickets");
@@ -84,7 +123,7 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ticketId: ticket.ticketId,
+          ticketId: String(ticket.ticketId),
           status: newStatus,
         }),
       });
@@ -97,8 +136,9 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
 
       // Refresh ticket details
       await fetchTicketDetails();
-    } catch (err: any) {
-      alert(err.message || "Failed to update status");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to update status";
+      alert(message);
     } finally {
       setUpdating(false);
     }
@@ -115,7 +155,7 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ticketId: ticket.ticketId,
+          ticketId: String(ticket.ticketId),
           priority: newPriority,
         }),
       });
@@ -128,8 +168,9 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
 
       // Refresh ticket details
       await fetchTicketDetails();
-    } catch (err: any) {
-      alert(err.message || "Failed to update priority");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to update priority";
+      alert(message);
     } finally {
       setUpdating(false);
     }
@@ -168,7 +209,7 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
           Ticket Not Found
         </div>
         <p className="text-gray-700">
-          The ticket you're looking for doesn't exist or has been removed.
+          The ticket you&apos;re looking for doesn&apos;t exist or has been removed.
         </p>
         <button
           onClick={handleBack}
@@ -179,8 +220,6 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
       </div>
     );
   }
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex relative">
@@ -252,7 +291,7 @@ export default function AdminTicketDetailPage({ params }: PageProps) {
 
             {/* Comments Section */}
             <TicketComments
-              ticketId={ticket.ticketId}
+              ticketId={String(ticket.ticketId)}
               comments={ticket.comments || []}
               isAdmin={true}
               onCommentAdded={fetchTicketDetails}

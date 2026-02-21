@@ -400,3 +400,24 @@ export async function sendAdminContactAlert({
     text: body,
   });
 }
+
+/* ======================================================
+   ADMIN REPLY - CONTACT FORM
+   ====================================================== */
+
+export async function sendContactReplyMail({
+  to,
+  subject,
+  body,
+}: {
+  to: string;
+  subject: string;
+  body: string;
+}) {
+  await transporter.sendMail({
+    from: `"NationCite Support" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    text: body,
+  });
+}

@@ -1,6 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
+import { Prisma } from "@prisma/client";
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : "";
+}
+
+function isAuthError(error: unknown) {
+  const message = getErrorMessage(error);
+  return message === "Unauthorized" || message === "Invalid or expired token" || message.includes("token");
+}
+
+function isNotificationTableMissing(error: unknown) {
+  if (!(error instanceof Prisma.PrismaClientKnownRequestError)) return false;
+  if (error.code !== "P2021") return false;
+  const target = String(error.meta?.table || error.meta?.modelName || "").toLowerCase();
+  return target.includes("notification") || getErrorMessage(error).toLowerCase().includes("notification");
+}
 
 /**
  * GET /api/notifications
@@ -76,10 +93,13 @@ export async function GET(req: NextRequest) {
     console.log(`[notifications API] Found ${notifications.length} notifications, ${unreadCount} unread`);
 
     return NextResponse.json({ success: true, data: notifications, unreadCount });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[notifications API] Error:', error);
-    if (error.message === "Unauthorized" || error.message?.includes("token")) {
+    if (isAuthError(error)) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+    }
+    if (isNotificationTableMissing(error)) {
+      return NextResponse.json({ success: true, data: [], unreadCount: 0 });
     }
     return NextResponse.json({ success: false, message: "Internal server error" }, { status: 500 });
   }
@@ -131,9 +151,12 @@ export async function PATCH(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    if (error.message === "Unauthorized" || error.message?.includes("token")) {
+  } catch (error: unknown) {
+    if (isAuthError(error)) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+    }
+    if (isNotificationTableMissing(error)) {
+      return NextResponse.json({ success: true });
     }
     console.error("Notification update error:", error);
     return NextResponse.json({ success: false, message: "Internal server error" }, { status: 500 });

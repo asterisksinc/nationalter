@@ -30,7 +30,7 @@ export function PersonaSegmentGrid({ cards }: PersonaSegmentGridProps) {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
           style={{ transitionDelay: `${idx * 90}ms` }}
-          key={card.title}
+          key={`${card.title}-${idx}`}
         >
           <div className="ao-segment-header">
             <div className={`ao-segment-icon ${card.tone}`} />

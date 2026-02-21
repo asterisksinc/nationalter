@@ -49,7 +49,7 @@ export default function ContactPage() {
       } else {
         setSubmitStatus('error');
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     }
 
@@ -70,14 +70,14 @@ export default function ContactPage() {
 
             {/* HEADING */}
             <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 text-center md:text-left font-bold text-black">
-              Let's Build India's Research
+              Let&apos;s Build India&apos;s Research
               <br />
               Transparency Together
             </div>
 
             {/* DESCRIPTION */}
             <p className="text-sm sm:text-base lg:text-md text-[#5C5C5C] leading-relaxed mb-6 lg:mb-12 text-center md:text-left max-w-[500px] mx-auto md:mx-0">
-              Whether you're a researcher seeking profile support, an
+              Whether you&apos;re a researcher seeking profile support, an
               institution exploring analytics, or a partner interested in
               collaboration – our team is here to assist you with verified,
               secure, and transparent solutions.
@@ -86,7 +86,7 @@ export default function ContactPage() {
             {/* Trusted By Section */}
             <div className="mt-auto pl-0 md:pl-8">
               <div className="text-sm sm:text-base font-medium text-[#1E1E1E] mb-4  md:text-left">
-                Trusted by 8,000+ Researchers India
+                Trusted by 8,000+ Researchers in India
               </div>
 
               <div className="flex flex-wrap gap-4 sm:gap-6 items-center">
@@ -121,7 +121,7 @@ export default function ContactPage() {
             {submitStatus === 'success' && (
               <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <div className="text-green-800 font-medium text-sm">Message sent successfully!</div>
-                <div className="text-green-600 text-xs">We'll get back to you soon.</div>
+                <div className="text-green-600 text-xs">We&apos;ll get back to you soon.</div>
               </div>
             )}
 
@@ -213,12 +213,12 @@ export default function ContactPage() {
                     <option value="" disabled className="text-black">
                       Choose from the option
                     </option>
-                    <option value="general" className="text-black">General Inquiry</option>
-                    <option value="support" className="text-black">Technical Support</option>
-                    <option value="partnership" className="text-black">Partnership</option>
-                    <option value="research" className="text-black">Research Collaboration</option>
-                    <option value="media" className="text-black">Media & Press</option>
-                    <option value="other" className="text-black">Other</option>
+                    <option value="General Inquiry" className="text-black">General Inquiry</option>
+                    <option value="Technical Support" className="text-black">Technical Support</option>
+                    <option value="Partnership" className="text-black">Partnership</option>
+                    <option value="Research Collaboration" className="text-black">Research Collaboration</option>
+                    <option value="Media & Press" className="text-black">Media & Press</option>
+                    <option value="Other" className="text-black">Other</option>
                   </select>
                   <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400 text-xs">
                     ▼

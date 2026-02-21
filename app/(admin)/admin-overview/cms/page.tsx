@@ -90,7 +90,7 @@ export default function CMSPage() {
         setFormError(""); setSaving(true);
 
         try {
-            const body: any = {
+            const body: Record<string, unknown> = {
                 title: title.trim(),
                 coverImage: coverImage.trim() || null,
                 intro: intro.trim(),
@@ -218,7 +218,7 @@ export default function CMSPage() {
                                 {loading ? (
                                     <tr><td colSpan={4} style={{ padding: "40px", textAlign: "center", color: "#94a3b8", fontSize: "13px" }}>Loading…</td></tr>
                                 ) : blogs.length === 0 ? (
-                                    <tr><td colSpan={4} style={{ padding: "40px", textAlign: "center", color: "#94a3b8", fontSize: "13px" }}>No blogs yet. Click "New Blog Post" to create one.</td></tr>
+                                    <tr><td colSpan={4} style={{ padding: "40px", textAlign: "center", color: "#94a3b8", fontSize: "13px" }}>No blogs yet. Click &quot;New Blog Post&quot; to create one.</td></tr>
                                 ) : blogs.map((blog) => (
                                     <tr key={blog.id} style={{ borderBottom: "1px solid #f1f5f9", transition: "background .1s" }}
                                         onMouseEnter={(e) => (e.currentTarget.style.background = "#fafbfc")}
@@ -277,26 +277,26 @@ export default function CMSPage() {
                                 <img src={previewBlog.coverImage} alt={previewBlog.title}
                                     style={{ width: "100%", height: "260px", objectFit: "cover", borderRadius: "12px", marginBottom: "20px" }} />
                             )}
-                            <h1 style={{ fontSize: "24px", fontWeight: 700, color: "#0e121b", fontFamily: FONT, marginBottom: "12px", lineHeight: 1.3 }}>
+                            <div style={{ fontSize: "24px", fontWeight: 700, color: "#0e121b", fontFamily: FONT, marginBottom: "12px", lineHeight: 1.3 }}>
                                 {previewBlog.title}
-                            </h1>
-                            <p style={{ fontSize: "14px", lineHeight: 1.7, color: "#475569", marginBottom: "24px", fontFamily: FONT }}>{previewBlog.intro}</p>
+                            </div>
+                            <div style={{ fontSize: "14px", lineHeight: 1.7, color: "#475569", marginBottom: "24px", fontFamily: FONT }}>{previewBlog.intro}</div>
 
                             {(previewBlog.sections as BlogSection[]).map((section, i) => (
                                 <div key={i} style={{ marginBottom: "24px" }}>
-                                    <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#0e121b", fontFamily: FONT, marginBottom: "8px" }}>{section.heading}</h2>
+                                    <div style={{ fontSize: "18px", fontWeight: 600, color: "#0e121b", fontFamily: FONT, marginBottom: "8px" }}>{section.heading}</div>
                                     {section.image && (
                                         <img src={section.image} alt={section.heading}
                                             style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px", marginBottom: "10px" }} />
                                     )}
-                                    <p style={{ fontSize: "13px", lineHeight: 1.7, color: "#475569", fontFamily: FONT }}>{section.text}</p>
+                                    <div style={{ fontSize: "13px", lineHeight: 1.7, color: "#475569", fontFamily: FONT }}>{section.text}</div>
                                 </div>
                             ))}
 
                             {previewBlog.conclusion && (
                                 <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "16px", marginTop: "16px" }}>
-                                    <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#0e121b", fontFamily: FONT, marginBottom: "8px" }}>Conclusion</h3>
-                                    <p style={{ fontSize: "13px", lineHeight: 1.7, color: "#475569", fontFamily: FONT }}>{previewBlog.conclusion}</p>
+                                    <div style={{ fontSize: "16px", fontWeight: 600, color: "#0e121b", fontFamily: FONT, marginBottom: "8px" }}>Conclusion</div>
+                                    <div style={{ fontSize: "13px", lineHeight: 1.7, color: "#475569", fontFamily: FONT }}>{previewBlog.conclusion}</div>
                                 </div>
                             )}
                         </div>
@@ -448,4 +448,5 @@ const labelStyle: React.CSSProperties = {
 const inputStyle: React.CSSProperties = {
     width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1px solid #e2e8f0",
     fontSize: "13px", fontFamily: "Inter, system-ui, sans-serif", outline: "none", background: "#fff",
+    color: "#0e121b",
 };
