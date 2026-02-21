@@ -136,6 +136,7 @@ model MedicalProfessional {
   plan                 String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -163,6 +164,7 @@ model Researchers {
   plan                      String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
@@ -186,6 +188,7 @@ model OrgsRegistered {
   plan                      String
   city                 String   @db.VarChar(100)
   state                String   @db.VarChar(100)
+  linkedAccounts       String[] @default([])
 
   // Relations
   registration Registration? @relation(fields: [registrationId], references: [id])
