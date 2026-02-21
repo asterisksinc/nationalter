@@ -35,6 +35,7 @@ enum LoginType {
 }
 
 
+
 ////////////////////////////////////////////////
 // AUTH / CREDENTIALS
 ////////////////////////////////////////////////
@@ -290,24 +291,26 @@ model Notification {
   @@index([recipientId, isRead])
   @@index([createdAt])
 }
-=======
-// BLOGS
 
+////////////////////////////////////////////////
+// BLOGS
+////////////////////////////////////////////////
 
 model Blog {
-  id            Int       @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   nationciteId  String
   title         String
-  subtitle      String?
-  mainText      String    @db.Text
-  images        String[]  // Array of image URLs
+  coverImage    String?
+  intro         String     @db.Text
+  sections      Json       // [{heading, text, image?}] — max 3 structured sections
+  conclusion    String?    @db.Text
 
   authorId      Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   // Relations
-  author        AuthUser  @relation(fields: [authorId], references: [id])
+  author        AuthUser   @relation(fields: [authorId], references: [id])
 
   @@index([nationciteId])
   @@index([authorId])

@@ -8,6 +8,7 @@ import {
   ChartColumnIncreasing,
   Landmark,
   UserPlus,
+  Newspaper,
   LogOut,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
@@ -20,6 +21,7 @@ interface DashboardSidebarProps {
   | "datasets"
   | "monetization"
   | "analytics"
+  | "cms"
   | "registrations";
 }
 
@@ -114,6 +116,7 @@ export const DashboardSidebar = ({
           <SidebarItem icon={<ChartColumnIncreasing size={18} />} label="Analytics" active={activePage === "analytics"} href="/admin-overview/analytics" />
           <SidebarItem icon={<Landmark size={18} />} label="Monetization" active={activePage === "monetization"} href="/admin-overview/monetization" />
           <SidebarItem icon={<Ticket size={18} />} label="Tickets" active={activePage === "tickets"} href="/admin-overview/tickets" />
+          <SidebarItem icon={<Newspaper size={18} />} label="CMS" active={activePage === "cms"} href="/admin-overview/cms" />
         </nav>
 
         {/* Admin footer */}
