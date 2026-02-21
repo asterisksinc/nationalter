@@ -358,7 +358,7 @@ export default function CMSPage() {
                             {/* Intro */}
                             <div>
                                 <label style={labelStyle}>Introduction *</label>
-                                <textarea value={intro} onChange={(e) => setIntro(e.target.value)} placeholder="Write a compelling introduction…"
+                                <textarea className="text-black!" value={intro} onChange={(e) => setIntro(e.target.value)} placeholder="Write a compelling introduction…"
                                     rows={3} style={{ ...inputStyle, resize: "vertical" as const }} />
                             </div>
 
@@ -447,5 +447,5 @@ const labelStyle: React.CSSProperties = {
 
 const inputStyle: React.CSSProperties = {
     width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1px solid #e2e8f0",
-    fontSize: "13px", fontFamily: "Inter, system-ui, sans-serif", outline: "none", background: "#fff",
+    fontSize: "13px", fontFamily: "Inter, system-ui, sans-serif", outline: "none", background: "#fff", color : "black"
 };

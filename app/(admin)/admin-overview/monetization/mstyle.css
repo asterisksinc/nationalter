@@ -2,6 +2,7 @@ body {
   font-family: Inter, sans-serif;
   background: #f6f7fb;
   border-color: #E1E4EA;
+  width: 80%;
 }
 
 /* Root Wrapper */
@@ -868,7 +869,18 @@ body {
       top: auto;
       border-radius: 12px 12px 0 0;
     }
+
+    body{
+      width: 90%;
+    }
   }
+
+  @media (max-width: 400px) {
+    body{
+      width: 100%;
+    }
+  }
+
 }
 
 .option input {

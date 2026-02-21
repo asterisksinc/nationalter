@@ -106,7 +106,7 @@ export default function MonetizationPage() {
 
           <div style={{ padding: '10px 32px' }}>
             <div className="mz-section-card" >
-              <div className="mz-section-title">Subscribers</div>
+              <div className="mz-section-title ">Subscribers</div>
               <table className="mz-table">
                 <thead className="mz-table-head">
                   <tr>
