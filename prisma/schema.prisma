@@ -34,6 +34,11 @@ enum LoginType {
   ORG
 }
 
+enum ContactStatus {
+  PENDING
+  RESOLVED
+  CLOSED
+}
 
 ////////////////////////////////////////////////
 // AUTH / CREDENTIALS
@@ -301,5 +306,27 @@ model Blog {
 
   @@index([nationciteId])
   @@index([authorId])
+  @@index([createdAt])
+}
+
+////////////////////////////////////////////////
+// CONTACT US (PUBLIC)
+////////////////////////////////////////////////
+
+model ContactUs {
+  id           Int           @id @default(autoincrement())
+
+  name         String
+  email        String
+  org          String?
+  inquiryType  String
+  message      String        @db.Text
+
+  status       ContactStatus @default(PENDING)
+
+  createdAt    DateTime      @default(now())
+
+  @@index([email])
+  @@index([status])
   @@index([createdAt])
 }
