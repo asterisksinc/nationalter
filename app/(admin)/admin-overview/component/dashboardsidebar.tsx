@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Ticket,
@@ -9,6 +9,7 @@ import {
   Landmark,
   UserPlus,
   Newspaper,
+  MessagesSquare,
   LogOut,
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
@@ -22,7 +23,8 @@ interface DashboardSidebarProps {
   | "monetization"
   | "analytics"
   | "cms"
-  | "registrations";
+  | "registrations"
+  | "contact";
 }
 
 /** Read admin email + role from the JWT stored in the 'nationciteId' cookie */
@@ -58,11 +60,7 @@ export const DashboardSidebar = ({
   isOpen = false,
   onClose,
 }: DashboardSidebarProps & { isOpen?: boolean; onClose?: () => void }) => {
-  const [admin, setAdmin] = useState({ email: "", role: "ADMIN" });
-
-  useEffect(() => {
-    setAdmin(getAdminFromCookie());
-  }, []);
+  const [admin] = useState(() => getAdminFromCookie());
 
   const handleLogout = async () => {
     try {
@@ -116,6 +114,7 @@ export const DashboardSidebar = ({
           <SidebarItem icon={<ChartColumnIncreasing size={18} />} label="Analytics" active={activePage === "analytics"} href="/admin-overview/analytics" />
           <SidebarItem icon={<Landmark size={18} />} label="Monetization" active={activePage === "monetization"} href="/admin-overview/monetization" />
           <SidebarItem icon={<Ticket size={18} />} label="Tickets" active={activePage === "tickets"} href="/admin-overview/tickets" />
+          <SidebarItem icon={<MessagesSquare size={18} />} label="Contact" active={activePage === "contact"} href="/admin-overview/contact" />
           <SidebarItem icon={<Newspaper size={18} />} label="CMS" active={activePage === "cms"} href="/admin-overview/cms" />
         </nav>
 

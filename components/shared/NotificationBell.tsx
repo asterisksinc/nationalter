@@ -39,7 +39,7 @@ export function NotificationBell() {
       const res = await fetch(`/api/notifications?${params.toString()}`, {
         credentials: 'include', // Include cookies for authentication
       });
-      
+
       console.log(`[NotificationBell] Response status: ${res.status}`);
       if (!res.ok) {
         console.error(`[NotificationBell] API error: ${res.status} ${res.statusText}`);
@@ -80,13 +80,13 @@ export function NotificationBell() {
 
     pollRef.current = setInterval(() => {
       if (document.visibilityState === "visible") {
-        fetchNotifications(true);
+        fetchNotifications(false); // always full fetch — avoids missed notifications with incremental `after` approach
       }
     }, POLL_INTERVAL);
 
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
-        fetchNotifications(true);
+        fetchNotifications(false);
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
@@ -239,11 +239,10 @@ export function NotificationBell() {
                 <button
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`w-full text-left px-4 py-3 border-b border-[#F0F1F3] last:border-b-0 flex gap-3 items-start transition-colors ${
-                    notification.isRead
+                  className={`w-full text-left px-4 py-3 border-b border-[#F0F1F3] last:border-b-0 flex gap-3 items-start transition-colors ${notification.isRead
                       ? "bg-white hover:bg-[#FAFBFC]"
                       : "bg-[#FFF8F0] hover:bg-[#FFF0E0]"
-                  }`}
+                    }`}
                 >
                   {/* Icon */}
                   <span className="text-base mt-0.5 flex-shrink-0">
@@ -254,11 +253,10 @@ export function NotificationBell() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <span
-                        className={`text-[13px] leading-[1.4] ${
-                          notification.isRead
+                        className={`text-[13px] leading-[1.4] ${notification.isRead
                             ? "text-[#525866] font-normal"
                             : "text-[#0E121B] font-medium"
-                        }`}
+                          }`}
                       >
                         {notification.title}
                       </span>

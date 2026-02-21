@@ -148,14 +148,21 @@ export async function PATCH(req: NextRequest) {
     });
 
     // Notify user that their registration was approved
+    const dashboardBase =
+      registration.type === "MEDICAL"
+        ? "/dashboard/medical"
+        : registration.type === "ORG"
+          ? "/dashboard/organizations"
+          : "/dashboard/researchers";
+
     createNotification({
       recipientId: nationciteId,
       type: "TICKET_RESOLVED",
       title: "Registration Approved!",
       message: `Your registration has been approved. Your NationCite ID is ${nationciteId}. Login credentials have been sent to your email.`,
-      redirectUrl: `/dashboard/researchers/tickets/${ticketId}`,
+      redirectUrl: `${dashboardBase}/tickets/${ticketId}`,
       referenceId: ticketId,
-    }).catch(() => {});
+    }).catch(() => { });
 
     return NextResponse.json({
       success: true,

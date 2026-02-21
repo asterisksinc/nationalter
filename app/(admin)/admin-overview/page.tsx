@@ -159,8 +159,8 @@ export default function HomePage() {
         setIsLoading(true);
 
         const [scholarsRes, orgsRes, overviewRes, registrationsRes] = await Promise.all([
-          fetch("/api/scholars?top=1"),
-          fetch("/api/orgs?top=1"),
+          fetch("/api/scholars?statsOnly=true"),
+          fetch("/api/orgs?statsOnly=true"),
           fetch("/api/analytics/overview"),
           fetch("/api/analytics/registrations"),
         ]);

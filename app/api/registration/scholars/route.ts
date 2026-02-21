@@ -52,13 +52,12 @@ function badRequest(message: string, fieldErrors?: Record<string, string>) {
  * Example: REG20250214AB12
  */
 function generateTempNationciteId() {
-  const date = new Date();
-  const ymd = date
-    .toISOString()
-    .slice(0, 10)
-    .replace(/-/g, "");
-  const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `REG${ymd}${rand}`;
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const rand = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
+
+  return `REG-${date}-${rand}`;
 }
 
 /**
@@ -66,9 +65,20 @@ function generateTempNationciteId() {
  * Example: TCK-20250214-0001
  */
 async function generateTicketId() {
-  const count = await prisma.tickets.count();
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  return `TCK-${date}-${String(count + 1).padStart(4, "0")}`;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const rand = Math.floor(Math.random() * 100000)
+      .toString()
+      .padStart(5, "0");
+    const candidate = `TCK-${date}-${rand}`;
+    const existing = await prisma.tickets.findUnique({
+      where: { ticketId: candidate },
+      select: { id: true },
+    });
+    if (!existing) return candidate;
+  }
+
+  throw new Error("Unable to generate unique ticket ID");
 }
 
 export async function POST(req: NextRequest) {
@@ -318,7 +328,6 @@ export async function POST(req: NextRequest) {
       if (targets.includes("instituteEmail")) {
         fieldErrors.instituteEmail = "This email is already registered";
       }
-
       return NextResponse.json(
         {
           success: false,

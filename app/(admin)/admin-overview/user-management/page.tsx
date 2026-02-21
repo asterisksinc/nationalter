@@ -22,8 +22,9 @@ export default function UserManagementPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed to fetch users");
       setUsers(json.data || []);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Failed to fetch users";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -40,8 +41,9 @@ export default function UserManagementPage() {
         throw new Error(json.error || "Delete failed");
       }
       await fetchUsers();
-    } catch (e: any) {
-      alert(e.message);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Delete failed";
+      alert(message);
     }
   };
 

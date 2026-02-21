@@ -9,7 +9,7 @@ export async function PUT(req: NextRequest) {
     // If user is regular user, they can only add comments to their own tickets
     const payload = requireAuth(req);
     const isAdmin = payload.role === "ADMIN";
-    
+
     const body = await req.json();
 
     const {
@@ -93,7 +93,7 @@ export async function PUT(req: NextRequest) {
           data: {
             status: status ?? ticket.status,
             nationciteId: nationciteId ?? ticket.nationciteId,
-            attachments: attachments ?? ticket.attachments, 
+            attachments: attachments ?? ticket.attachments,
             updatedAt: new Date(),
           },
         });
@@ -135,6 +135,14 @@ export async function PUT(req: NextRequest) {
             ? "TICKET_COMMENT"
             : "TICKET_UPDATED";
 
+        const regType = ticket.registration?.[0]?.type || "RESEARCHER";
+        const dashboardBase =
+          regType === "MEDICAL"
+            ? "/dashboard/medical"
+            : regType === "ORG"
+              ? "/dashboard/organizations"
+              : "/dashboard/researchers";
+
         createNotification({
           recipientId: ticket.nationciteId,
           type: notifType,
@@ -144,9 +152,9 @@ export async function PUT(req: NextRequest) {
               ? `New comment on ${ticketId}`
               : `Ticket ${ticketId} Updated`,
           message: changes.join(". "),
-          redirectUrl: `/dashboard/researchers/tickets/${ticketId}`,
+          redirectUrl: `${dashboardBase}/tickets/${ticketId}`,
           referenceId: ticketId,
-        }).catch(() => {});
+        }).catch(() => { });
       }
     }
 

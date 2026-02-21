@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,9 +15,10 @@ export async function GET(req: NextRequest) {
       parseInt(searchParams.get("top") || "100", 10),
       500 // safety cap
     );
+    const statsOnly = searchParams.get("statsOnly") === "true";
 
     // Build Prisma where filter dynamically
-    const where: any = {};
+    const where: Prisma.ScholarsPublicWhereInput = {};
 
     if (orgName) {
       where.orgName = orgName;
@@ -31,6 +33,16 @@ export async function GET(req: NextRequest) {
         contains: scholarName,
         mode: "insensitive", // case-insensitive search
       };
+    }
+
+    if (statsOnly) {
+      const totalCount = await prisma.scholarsPublic.count({ where });
+      return NextResponse.json({
+        success: true,
+        count: 0,
+        totalCount,
+        data: [],
+      });
     }
 
     const [totalCount, scholars] = await Promise.all([

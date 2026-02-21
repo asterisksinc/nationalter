@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
       parseInt(searchParams.get("top") || "100", 10),
       500
     );
+    const statsOnly = searchParams.get("statsOnly") === "true";
 
     const orgName = searchParams.get("orgName") || undefined;
 
@@ -21,6 +22,16 @@ export async function GET(req: NextRequest) {
           },
         }
       : undefined;
+
+    if (statsOnly) {
+      const totalCount = await prisma.orgsPublic.count({ where });
+      return NextResponse.json({
+        success: true,
+        count: 0,
+        totalCount,
+        data: [],
+      });
+    }
 
     const [totalCount, orgs] = await Promise.all([
       prisma.orgsPublic.count({ where }),
