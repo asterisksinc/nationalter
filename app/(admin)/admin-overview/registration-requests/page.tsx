@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardSidebar } from "../component/dashboardsidebar";
 import { DashboardHeader } from "../component/DashboardHeader";
-import { ChevronDown, Download, Plus, Users, Stethoscope, Building2, Hourglass } from "lucide-react";
+import { ChevronDown, Download, Plus, Users, Stethoscope, Building2, Hourglass, X } from "lucide-react";
 
 interface Registration {
   ticketId: string;
@@ -30,8 +30,48 @@ export default function RegistrationRequestsPage() {
   const [filterType, setFilterType] = useState<string>("ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showAddPanel, setShowAddPanel] = useState(false);
+  const [addMode, setAddMode] = useState<"SCHOLAR" | "ORG">("SCHOLAR");
+  const [scholarType, setScholarType] = useState<"RESEARCHER" | "MEDICAL">("RESEARCHER");
+  const [formSaving, setFormSaving] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [createdTicketId, setCreatedTicketId] = useState("");
+  const [createdInfo, setCreatedInfo] = useState("");
 
-  const fetchRegistrations = async () => {
+  const [scholarForm, setScholarForm] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    city: "",
+    state: "",
+    medCouncilRegNo: "",
+    stateCouncil: "",
+    primaryHospital: "",
+    specialty: "",
+    researchFocus: "",
+    medicalDegreeUrl: "",
+    regCertificateUrl: "",
+    institute: "",
+    instituteEmail: "",
+    orcidId: "",
+    institutionalIdCardUrl: "",
+    googleScholarUrl: "",
+    primaryDomain: "",
+    profilePhotoUrl: "",
+  });
+
+  const [orgForm, setOrgForm] = useState({
+    name: "",
+    domain: "",
+    email: "",
+    number: "",
+    city: "",
+    state: "",
+    letterOfAuthorizationUrl: "",
+    accreditationProofUrl: "",
+  });
+
+  const fetchRegistrations = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -46,11 +86,11 @@ export default function RegistrationRequestsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterType, filterStatus]);
 
   useEffect(() => {
     fetchRegistrations();
-  }, [filterType, filterStatus]);
+  }, [fetchRegistrations]);
 
   useEffect(() => {
     const fetchAllRegistrations = async () => {
@@ -65,6 +105,100 @@ export default function RegistrationRequestsPage() {
 
     fetchAllRegistrations();
   }, []);
+
+  const resetCreateState = () => {
+    setFormError("");
+    setCreatedTicketId("");
+    setCreatedInfo("");
+  };
+
+  const openCreatePanel = () => {
+    resetCreateState();
+    setShowAddPanel(true);
+  };
+
+  const closeCreatePanel = () => {
+    setShowAddPanel(false);
+    resetCreateState();
+  };
+
+  const handleCreateUser = async () => {
+    setFormSaving(true);
+    setFormError("");
+    setCreatedTicketId("");
+    setCreatedInfo("");
+
+    try {
+      if (addMode === "SCHOLAR") {
+        const payload = {
+          type: scholarType,
+          name: scholarForm.name,
+          email: scholarForm.email,
+          mobile: scholarForm.mobile,
+          city: scholarForm.city,
+          state: scholarForm.state,
+          medCouncilRegNo: scholarForm.medCouncilRegNo,
+          stateCouncil: scholarForm.stateCouncil,
+          primaryHospital: scholarForm.primaryHospital,
+          specialty: scholarForm.specialty,
+          researchFocus: scholarForm.researchFocus,
+          medicalDegreeUrl: scholarForm.medicalDegreeUrl,
+          regCertificateUrl: scholarForm.regCertificateUrl,
+          institute: scholarForm.institute,
+          instituteEmail: scholarForm.instituteEmail,
+          orcidId: scholarForm.orcidId,
+          institutionalIdCardUrl: scholarForm.institutionalIdCardUrl,
+          googleScholarUrl: scholarForm.googleScholarUrl,
+          primaryDomain: scholarForm.primaryDomain,
+          profilePhotoUrl: scholarForm.profilePhotoUrl,
+        };
+
+        const res = await fetch("/api/registration/scholars", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
+
+        const json = await res.json();
+        if (!res.ok || !json.success) {
+          throw new Error(json.message || "Failed to create registration request");
+        }
+
+        const ticketId = json.data?.ticketId || "";
+        setCreatedTicketId(ticketId);
+        setCreatedInfo(`${scholarType} registration request created and added to queue`);
+      }
+
+      if (addMode === "ORG") {
+        const res = await fetch("/api/registration/orgs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(orgForm),
+        });
+
+        const json = await res.json();
+        if (!res.ok || !json.success) {
+          throw new Error(json.message || "Failed to create organization request");
+        }
+
+        const ticketId = json.data?.ticketId || "";
+        setCreatedTicketId(ticketId);
+        setCreatedInfo("Organization registration request created and added to queue");
+      }
+
+      await fetchRegistrations();
+
+      const response = await fetch("/api/registration/requests", { credentials: "include" });
+      const data = await response.json();
+      setAllRegistrations(data.data || []);
+    } catch (error: unknown) {
+      setFormError(error instanceof Error ? error.message : "Failed to create");
+    } finally {
+      setFormSaving(false);
+    }
+  };
 
   const total = allRegistrations.length;
   const pendingCount = allRegistrations.filter((r) => r.status === "PENDING").length;
@@ -104,9 +238,12 @@ export default function RegistrationRequestsPage() {
                 Review, approve, or reject new registrations from researchers, medical professionals, and organizations.
               </div>
             </div>
-            <button className="flex items-center gap-2 bg-[#FF7F3E] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#e66a2e] transition-colors text-sm">
+            <button
+              onClick={openCreatePanel}
+              className="flex items-center gap-2 bg-[#FF7F3E] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#e66a2e] transition-colors text-sm"
+            >
               <Plus size={18} />
-              Add New User
+              Add Registration
             </button>
           </div>
 
@@ -208,8 +345,13 @@ export default function RegistrationRequestsPage() {
                         r.nationciteId?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         r.ticketId?.toLowerCase().includes(searchQuery.toLowerCase())
                       )
-                      .map((reg, index) => (
-                        <tr key={index} className="hover:bg-gray-50/50 transition-colors">
+                      .map((reg, index) => {
+                        const rowKey =
+                          reg.ticketId ||
+                          `${reg.type}-${reg.email}-${reg.createdAt}-${index}`;
+
+                        return (
+                        <tr key={rowKey} className="hover:bg-gray-50/50 transition-colors">
                           <td className="px-4 py-3 text-sm text-gray-900">{reg.ticketId}</td>
                           <td className="px-4 py-3">
                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -252,7 +394,8 @@ export default function RegistrationRequestsPage() {
                             </button>
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                   </tbody>
                 </table>
               )}
@@ -260,6 +403,138 @@ export default function RegistrationRequestsPage() {
           </div>
         </div>
       </main>
+
+      {showAddPanel && (
+        <div className="fixed inset-0 z-[70] bg-black/45" onClick={closeCreatePanel}>
+          <div
+            className="absolute right-0 top-0 h-full w-full max-w-[680px] bg-white shadow-2xl border-l border-gray-200 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <div>
+                <div className="text-lg font-semibold text-gray-900">Add Registration</div>
+                <div className="text-xs text-gray-600 mt-1">Create researcher, medical, or organization registration requests</div>
+              </div>
+              <button onClick={closeCreatePanel} className="p-2 rounded-md text-gray-500 hover:bg-gray-100">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                <button
+                  onClick={() => { setAddMode("SCHOLAR"); resetCreateState(); }}
+                  className={`px-3 py-2 rounded-md text-sm font-medium border ${addMode === "SCHOLAR" ? "bg-[#ffefe6] text-[#a34f25] border-[#ffb082]" : "bg-white text-gray-700 border-gray-200"}`}
+                >
+                  Add Researcher / Medical
+                </button>
+                <button
+                  onClick={() => { setAddMode("ORG"); resetCreateState(); }}
+                  className={`px-3 py-2 rounded-md text-sm font-medium border ${addMode === "ORG" ? "bg-[#ffefe6] text-[#a34f25] border-[#ffb082]" : "bg-white text-gray-700 border-gray-200"}`}
+                >
+                  Add Organization
+                </button>
+              </div>
+
+              {addMode === "SCHOLAR" && (
+                <div className="space-y-3">
+                  <FormLabel text="Type" />
+                  <select value={scholarType} onChange={(e) => setScholarType(e.target.value as "RESEARCHER" | "MEDICAL")} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900">
+                    <option value="RESEARCHER">Researcher</option>
+                    <option value="MEDICAL">Medical</option>
+                  </select>
+
+                  <FormGrid>
+                    <Field label="Name" value={scholarForm.name} onChange={(v) => setScholarForm((p) => ({ ...p, name: v }))} />
+                    <Field label="Email" value={scholarForm.email} onChange={(v) => setScholarForm((p) => ({ ...p, email: v }))} />
+                    <Field label="Mobile" value={scholarForm.mobile} onChange={(v) => setScholarForm((p) => ({ ...p, mobile: v }))} />
+                    <Field label="City" value={scholarForm.city} onChange={(v) => setScholarForm((p) => ({ ...p, city: v }))} />
+                    <Field label="State" value={scholarForm.state} onChange={(v) => setScholarForm((p) => ({ ...p, state: v }))} />
+                  </FormGrid>
+
+                  {scholarType === "RESEARCHER" && (
+                    <FormGrid>
+                      <Field label="Institute" value={scholarForm.institute} onChange={(v) => setScholarForm((p) => ({ ...p, institute: v }))} />
+                      <Field label="Institute Email" value={scholarForm.instituteEmail} onChange={(v) => setScholarForm((p) => ({ ...p, instituteEmail: v }))} />
+                      <Field label="ORCID ID" value={scholarForm.orcidId} onChange={(v) => setScholarForm((p) => ({ ...p, orcidId: v }))} />
+                      <Field label="Primary Domain" value={scholarForm.primaryDomain} onChange={(v) => setScholarForm((p) => ({ ...p, primaryDomain: v }))} />
+                      <Field label="Google Scholar URL" value={scholarForm.googleScholarUrl} onChange={(v) => setScholarForm((p) => ({ ...p, googleScholarUrl: v }))} />
+                      <Field label="Profile Photo URL" value={scholarForm.profilePhotoUrl} onChange={(v) => setScholarForm((p) => ({ ...p, profilePhotoUrl: v }))} />
+                      <Field label="Institutional ID Card URL" value={scholarForm.institutionalIdCardUrl} onChange={(v) => setScholarForm((p) => ({ ...p, institutionalIdCardUrl: v }))} />
+                    </FormGrid>
+                  )}
+
+                  {scholarType === "MEDICAL" && (
+                    <FormGrid>
+                      <Field label="Med Council Reg No" value={scholarForm.medCouncilRegNo} onChange={(v) => setScholarForm((p) => ({ ...p, medCouncilRegNo: v }))} />
+                      <Field label="State Council" value={scholarForm.stateCouncil} onChange={(v) => setScholarForm((p) => ({ ...p, stateCouncil: v }))} />
+                      <Field label="Primary Hospital" value={scholarForm.primaryHospital} onChange={(v) => setScholarForm((p) => ({ ...p, primaryHospital: v }))} />
+                      <Field label="Specialty" value={scholarForm.specialty} onChange={(v) => setScholarForm((p) => ({ ...p, specialty: v }))} />
+                      <Field label="Research Focus" value={scholarForm.researchFocus} onChange={(v) => setScholarForm((p) => ({ ...p, researchFocus: v }))} />
+                      <Field label="Medical Degree URL" value={scholarForm.medicalDegreeUrl} onChange={(v) => setScholarForm((p) => ({ ...p, medicalDegreeUrl: v }))} />
+                      <Field label="Reg Certificate URL" value={scholarForm.regCertificateUrl} onChange={(v) => setScholarForm((p) => ({ ...p, regCertificateUrl: v }))} />
+                    </FormGrid>
+                  )}
+                </div>
+              )}
+
+              {addMode === "ORG" && (
+                <FormGrid>
+                  <Field label="Organization Name" value={orgForm.name} onChange={(v) => setOrgForm((p) => ({ ...p, name: v }))} />
+                  <Field label="Domain" value={orgForm.domain} onChange={(v) => setOrgForm((p) => ({ ...p, domain: v }))} />
+                  <Field label="Email" value={orgForm.email} onChange={(v) => setOrgForm((p) => ({ ...p, email: v }))} />
+                  <Field label="Mobile Number" value={orgForm.number} onChange={(v) => setOrgForm((p) => ({ ...p, number: v }))} />
+                  <Field label="City" value={orgForm.city} onChange={(v) => setOrgForm((p) => ({ ...p, city: v }))} />
+                  <Field label="State" value={orgForm.state} onChange={(v) => setOrgForm((p) => ({ ...p, state: v }))} />
+                  <Field label="Letter Of Authorization URL" value={orgForm.letterOfAuthorizationUrl} onChange={(v) => setOrgForm((p) => ({ ...p, letterOfAuthorizationUrl: v }))} />
+                  <Field label="Accreditation Proof URL" value={orgForm.accreditationProofUrl} onChange={(v) => setOrgForm((p) => ({ ...p, accreditationProofUrl: v }))} />
+                </FormGrid>
+              )}
+
+              {formError && <div className="mt-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{formError}</div>}
+              {createdInfo && <div className="mt-4 text-sm text-green-800 bg-green-50 border border-green-200 rounded-md px-3 py-2">{createdInfo}</div>}
+              {createdTicketId && (
+                <div className="mt-3 text-sm text-[#a34f25] bg-orange-50 border border-orange-200 rounded-md px-3 py-2">
+                  New Registration Ticket ID: <span className="font-semibold">{createdTicketId}</span>
+                </div>
+              )}
+
+              <div className="mt-6 pt-4 border-t border-gray-200 flex justify-end gap-3">
+                <button onClick={closeCreatePanel} className="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button
+                  onClick={handleCreateUser}
+                  disabled={formSaving}
+                  className="px-4 py-2 rounded-lg bg-[#FF7F3E] text-white text-sm font-medium hover:bg-[#e66a2e] disabled:opacity-60"
+                >
+                  {formSaving ? "Creating..." : "Create"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FormLabel({ text }: { text: string }) {
+  return <div className="text-xs font-medium text-gray-700 mb-1">{text}</div>;
+}
+
+function FormGrid({ children }: { children: React.ReactNode }) {
+  return <div className="grid grid-cols-1 md:grid-cols-2 gap-3">{children}</div>;
+}
+
+function Field({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+  return (
+    <div>
+      <FormLabel text={label} />
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-600"
+        placeholder={label}
+      />
     </div>
   );
 }
