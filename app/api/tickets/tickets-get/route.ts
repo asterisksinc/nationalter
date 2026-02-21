@@ -55,11 +55,29 @@ export async function GET(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Tickets fetch error:", error);
 
+    // Return proper status codes for auth errors
+    if (
+      error.message === "Unauthorized" ||
+      error.message === "Invalid or expired token"
+    ) {
+      return NextResponse.json(
+        { error: "Unauthorized — please log in as admin", tickets: [] },
+        { status: 401 }
+      );
+    }
+
+    if (error.message === "Forbidden: Admin access required") {
+      return NextResponse.json(
+        { error: "Admin access required", tickets: [] },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", tickets: [] },
       { status: 500 }
     );
   }

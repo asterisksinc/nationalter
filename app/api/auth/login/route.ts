@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
     const user = await prisma.authUser.findUnique({
       where: { email },
       include: {
-        registration: true, 
+        registration: true,
       },
     });
-    
+
     console.log("[AUTH] User found:", !!user, user ? { role: user.role, hasReg: !!user.registration } : null);
 
     if (!user || !user.isActive) {
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const role = user.role; 
+    const role = user.role;
     const registrationType = user.registration?.type ?? null;
 
     // Validate login type matches user's actual registration type
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       const isOrgLogin = loginType === "Institution/ Organisation";
       const isResearcherLogin = loginType === "Researcher";
       const isMedicalLogin = loginType === "Medical Professional";
-      
+
       if (isOrgLogin && registrationType !== "ORG") {
         return NextResponse.json(
           { success: false, message: "This account is not registered as an organization" },
@@ -87,6 +87,7 @@ export async function POST(req: NextRequest) {
       email: user.email,
       role,
       registrationId: user.registration?.id ?? null,
+      nationciteId: user.registration?.nationciteId ?? null,
     });
 
     // Update last login

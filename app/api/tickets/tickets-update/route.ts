@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
+import { createNotification, createAdminNotification } from "@/lib/notifications";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -8,7 +9,7 @@ export async function PUT(req: NextRequest) {
     // If user is regular user, they can only add comments to their own tickets
     const payload = requireAuth(req);
     const isAdmin = payload.role === "ADMIN";
-    
+
     const body = await req.json();
 
     const {
@@ -92,7 +93,7 @@ export async function PUT(req: NextRequest) {
           data: {
             status: status ?? ticket.status,
             nationciteId: nationciteId ?? ticket.nationciteId,
-            attachments: attachments ?? ticket.attachments, 
+            attachments: attachments ?? ticket.attachments,
             updatedAt: new Date(),
           },
         });
@@ -120,6 +121,56 @@ export async function PUT(req: NextRequest) {
         });
       }
     });
+
+    // Notify ticket owner when admin makes changes
+    if (isAdmin && ticket.nationciteId) {
+      const changes: string[] = [];
+      if (status && status !== ticket.status) changes.push(`Status changed to ${status}`);
+      if (comment) changes.push("Admin added a comment");
+
+      if (changes.length > 0) {
+        const notifType = (status === "RESOLVED" || status === "CLOSED")
+          ? "TICKET_RESOLVED"
+          : comment && !status
+            ? "TICKET_COMMENT"
+            : "TICKET_UPDATED";
+
+        const regType = ticket.registration?.[0]?.type || "RESEARCHER";
+        const dashboardBase =
+          regType === "MEDICAL"
+            ? "/dashboard/medical"
+            : regType === "ORG"
+              ? "/dashboard/organizations"
+              : "/dashboard/researchers";
+
+        createNotification({
+          recipientId: ticket.nationciteId,
+          type: notifType,
+          title: notifType === "TICKET_RESOLVED"
+            ? `Ticket ${ticketId} Resolved`
+            : notifType === "TICKET_COMMENT"
+              ? `New comment on ${ticketId}`
+              : `Ticket ${ticketId} Updated`,
+          message: changes.join(". "),
+          redirectUrl: `${dashboardBase}/tickets/${ticketId}`,
+          referenceId: ticketId,
+        }).catch(() => { });
+      }
+    }
+
+    // Notify admin when user adds comment
+    if (!isAdmin && comment) {
+      console.log(`[tickets-update] User ${requesterNationciteId} commented on ticket ${ticketId}, notifying admin`);
+      createAdminNotification({
+        type: "TICKET_COMMENT",
+        title: `New comment on ${ticketId}`,
+        message: `${ticket.name} added a comment: ${comment.slice(0, 100)}${comment.length > 100 ? '...' : ''}`,
+        redirectUrl: `/admin-overview/tickets/${ticketId}`,
+        referenceId: ticketId,
+      }).catch((err) => {
+        console.error('[tickets-update] Failed to create admin notification:', err);
+      });
+    }
 
     return NextResponse.json(
       {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { randomUUID } from "crypto";
 import { requireAuth } from "@/lib/auth";
+import { createAdminNotification } from "@/lib/notifications";
 
 export async function POST(req: NextRequest) {
   try {
@@ -69,6 +70,15 @@ export async function POST(req: NextRequest) {
         comments: true,
       },
     });
+
+    // Notify admin about new ticket
+    createAdminNotification({
+      type: "TICKET_CREATED",
+      title: `New Ticket: ${issueType}`,
+      message: `${name} raised a ticket (${ticketId}) — ${description.slice(0, 80)}`,
+      redirectUrl: `/admin-overview/tickets/${ticketId}`,
+      referenceId: ticketId,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

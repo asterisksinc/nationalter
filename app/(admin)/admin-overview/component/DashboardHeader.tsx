@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Bell, ChevronRight, Menu } from "lucide-react";
+import { Search, ChevronRight, Menu } from "lucide-react";
+import { NotificationBell } from "@/components/shared/NotificationBell";
 import {
   AdminFunctionality,
   searchAdminFunctionalities,
@@ -112,13 +113,7 @@ export const DashboardHeader = ({
             />
           </div>
 
-          <button
-            className="relative p-2 rounded-md text-[#525866] hover:bg-gray-100 transition-colors"
-            aria-label="Notifications"
-          >
-            <Bell size={20} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#DF120B] rounded-full border border-white" />
-          </button>
+          <NotificationBell />
         </div>
 
         {/* Breadcrumb row */}
@@ -219,13 +214,7 @@ export const DashboardHeader = ({
               </div>
             )}
           </div>
-          <button
-            className="p-2 bg-white border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 relative shadow-none"
-            style={{ borderRadius: "6px" }}
-          >
-            <Bell size={20} />
-            <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white" />
-          </button>
+          <NotificationBell />
         </div>
       </header>
     </>

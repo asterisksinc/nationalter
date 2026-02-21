@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendRegistrationMail, sendAdminRegistrationAlert } from "@/lib/mailer";
 import { Prisma } from "@prisma/client";
+import { createAdminNotification } from "@/lib/notifications";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -56,7 +57,7 @@ function generateTempNationciteId() {
     .toString()
     .padStart(4, "0");
 
-  return `TCK-${date}-${rand}`;
+  return `REG-${date}-${rand}`;
 }
 
 /**
@@ -65,12 +66,19 @@ function generateTempNationciteId() {
  */
 async function generateTicketId() {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const rand = Math.floor(Math.random() * 100000)
-    .toString()
-    .padStart(5, "0");
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const rand = Math.floor(Math.random() * 100000)
+      .toString()
+      .padStart(5, "0");
+    const candidate = `TCK-${date}-${rand}`;
+    const existing = await prisma.tickets.findUnique({
+      where: { ticketId: candidate },
+      select: { id: true },
+    });
+    if (!existing) return candidate;
+  }
 
-  return `TCK-${date}-${rand}`;
-
+  throw new Error("Unable to generate unique ticket ID");
 }
 
 export async function POST(req: NextRequest) {
@@ -285,6 +293,15 @@ export async function POST(req: NextRequest) {
       console.error("Mail sending failed:", mailError);
     }
 
+    // Notify admin about new registration
+    createAdminNotification({
+      type: "REGISTRATION_REQUEST",
+      title: `New ${type === "MEDICAL" ? "Medical" : "Researcher"} Registration`,
+      message: `${name} (${normalizedEmail}) submitted a registration request`,
+      redirectUrl: "/admin-overview/registration-requests",
+      referenceId: result.ticketId,
+    }).catch(() => {});
+
     return NextResponse.json(
       {
         success: true,
@@ -311,7 +328,6 @@ export async function POST(req: NextRequest) {
       if (targets.includes("instituteEmail")) {
         fieldErrors.instituteEmail = "This email is already registered";
       }
-      console.log("Error : " , error.message  ) ;
       return NextResponse.json(
         {
           success: false,

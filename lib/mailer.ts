@@ -270,3 +270,133 @@ export async function sendAdminRegistrationAlert({
     text: body,
   });
 }
+
+/* ======================================================
+   CONTACT FORM MAIL
+   ====================================================== */
+
+function buildContactMail({
+  name,
+  inquiryType,
+}: {
+  name: string;
+  inquiryType: string;
+}) {
+  const subject = "NationCite | Contact Form Received";
+
+  const body = `
+Hello ${name},
+
+Thank you for reaching out to NationCite regarding ${inquiryType.toLowerCase()}.
+
+We have received your inquiry and our team will get back to you within 24-48 hours.
+
+If you have any urgent matters, please don't hesitate to reach out to us directly.
+
+Warm regards,  
+NationCite Team
+`;
+
+  return { subject, body };
+}
+
+export async function sendContactMail({
+  to,
+  name,
+  inquiryType,
+}: {
+  to: string;
+  name: string;
+  inquiryType: string;
+}) {
+  const { subject, body } = buildContactMail({
+    name,
+    inquiryType,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    text: body,
+  });
+}
+
+/* ======================================================
+   ADMIN NOTIFICATION - NEW CONTACT FORM
+   ====================================================== */
+
+function buildAdminContactAlert({
+  name,
+  email,
+  phone,
+  institution,
+  inquiryType,
+  message,
+}: {
+  name: string;
+  email: string;
+  phone: string;
+  institution: string;
+  inquiryType: string;
+  message: string;
+}) {
+  const subject = "📨 New Contact Form Submission | NationCite";
+
+  const body = `
+Hello Admin,
+
+A new contact form has been submitted on NationCite.
+
+👤 Name: ${name}
+📧 Email: ${email}
+📞 Phone: ${phone}
+🏢 Institution: ${institution}
+📋 Inquiry Type: ${inquiryType}
+
+💬 Message:
+${message}
+
+Please respond to this inquiry promptly.
+
+Admin Panel:
+${process.env.APP_URL}/admin
+
+Regards,
+NationCite System
+`;
+
+  return { subject, body };
+}
+
+export async function sendAdminContactAlert({
+  name,
+  email,
+  phone,
+  institution,
+  inquiryType,
+  message,
+}: {
+  name: string;
+  email: string;
+  phone: string;
+  institution: string;
+  inquiryType: string;
+  message: string;
+}) {
+  const { subject, body } = buildAdminContactAlert({
+    name,
+    email,
+    phone,
+    institution,
+    inquiryType,
+    message,
+  });
+
+  await transporter.sendMail({
+    from: `"NationCite System" <${process.env.MAIL_USER}>`,
+    to: process.env.ADMIN_EMAIL, // 👈 admin email here
+    subject,
+    text: body,
+  });
+}

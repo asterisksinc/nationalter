@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { Search, Bell, Plus, ChevronRight, Menu } from "lucide-react";
+import { Plus, ChevronRight, Menu } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import { NotificationBell } from "@/components/shared/NotificationBell";
 
 interface DashboardHeaderProps {
   breadcrumbItems: { label: string; href?: string }[];
@@ -51,10 +52,7 @@ export const DashboardHeader = ({
 
           <div className="flex items-center gap-3">
            
-            <button className="relative">
-              <Bell size={20} className="text-[#0E121B]" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-[#DF120B] rounded-full border border-white"></span>
-            </button>
+            <NotificationBell />
             <button
               onClick={handleRaise}
               className="w-8 h-8 bg-[#FF7A00] rounded-md flex items-center justify-center"
@@ -118,10 +116,7 @@ export const DashboardHeader = ({
         <div className="flex items-start  gap-[12px] h-full">
         
 
-          <button className="p-2.5 bg-white border border-[#E1E4EA] rounded-md text-[#525866] hover:text-[#0E121B] hover:bg-[#F5F7FA] relative h-10 w-10 flex items-center justify-center">
-            <Bell size={20} strokeWidth={1.5} />
-            <span className="absolute top-1 right-3 w-1.5 h-1.5 bg-[#DF120B] rounded-full"></span>
-          </button>
+          <NotificationBell />
 
           <button
             onClick={handleRaise}

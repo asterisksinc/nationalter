@@ -107,13 +107,16 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    return NextResponse.json(stateCounts);
+    return NextResponse.json({
+      success: true,
+      data: stateCounts,
+    });
 
   } catch (error) {
     console.error("Map analytics error:", error);
 
     return NextResponse.json(
-      { error: "Failed to fetch map analytics" },
+      { success: false, error: "Failed to fetch map analytics" },
       { status: 500 }
     );
   }

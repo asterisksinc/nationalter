@@ -1,4 +1,4 @@
-type SparklineSets = {
+﻿type SparklineSets = {
   greenA: string;
   greenB: string;
   greenC: string;

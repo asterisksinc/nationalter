@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Loader2 } from "lucide-react";
 import { AddPublicationModal, PublicationsTable } from "./components";
-import type { PublicationData } from "./components";
+import type { PublicationData, EditingPublication } from "./components";
 
 export default function PublicationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingPublication, setEditingPublication] =
+    useState<EditingPublication | null>(null);
 
   // --- INTEGRATION STATES ---
   const [publications, setPublications] = useState<PublicationData[]>([]);
@@ -20,18 +22,18 @@ export default function PublicationsPage() {
       const result = await response.json();
 
       if (result.success) {
-        // Map backend Prisma fields to match your frontend PublicationData interface
         const mappedData = result.publications.map((pub: any) => ({
           id: pub.id,
           title: pub.title,
-          author: "Researcher", // Fallback as backend doesn't provide author string yet
-          authorImg:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-          citations: pub.citationsTotal,
-          publicationType: "Journal",
+          author: "Researcher",
+          authorImg: "",
+          citations: pub.citationsTotal || 0,
+          publicationType: pub.field || "Journal",
           year: new Date(pub.datePublished).getFullYear(),
           publisher: pub.journalName,
           doi: pub.nationciteId,
+          journalName: pub.journalName,
+          field: pub.field || "",
         }));
         setPublications(mappedData);
       }
@@ -46,6 +48,33 @@ export default function PublicationsPage() {
   useEffect(() => {
     fetchPublications();
   }, []);
+
+  // --- EDIT HANDLER ---
+  const handleEdit = (pub: PublicationData) => {
+    setEditingPublication({
+      id: pub.id,
+      title: pub.title,
+      journalName: pub.journalName || pub.publisher,
+      year: pub.year,
+      field: pub.field || pub.publicationType,
+      doi: pub.doi,
+      publisher: pub.publisher,
+      authors: pub.author,
+    });
+    setIsModalOpen(true);
+  };
+
+  // --- DELETE HANDLER ---
+  const handleDelete = (id: number) => {
+    // Remove from local state immediately after API confirms success
+    setPublications((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  // --- CLOSE MODAL ---
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingPublication(null);
+  };
 
   return (
     <>
@@ -63,7 +92,10 @@ export default function PublicationsPage() {
       <div className="flex flex-col md:flex-row justify-end items-stretch md:items-center mb-6 gap-4">
         <div className="flex items-center gap-3 md:gap-4">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setEditingPublication(null);
+              setIsModalOpen(true);
+            }}
             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 md:py-2.5 border border-[#FF8D28] rounded-lg bg-white text-[14px] font-semibold text-[#FF8D28] hover:bg-orange-50 transition-colors whitespace-nowrap"
           >
             <Plus size={18} /> Add Publication
@@ -78,14 +110,19 @@ export default function PublicationsPage() {
           <p className="text-sm">Loading publications...</p>
         </div>
       ) : (
-        <PublicationsTable publications={publications} />
+        <PublicationsTable
+          publications={publications}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       )}
 
-      {/* Add Publication Modal */}
+      {/* Add / Edit Publication Modal */}
       <AddPublicationModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={() => fetchPublications()} // Pass refresh function to modal
+        onClose={handleCloseModal}
+        onSuccess={() => fetchPublications()}
+        editingPublication={editingPublication}
       />
     </>
   );

@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
       parseInt(searchParams.get("top") || "100", 10),
       500
     );
+    const statsOnly = searchParams.get("statsOnly") === "true";
 
     const orgName = searchParams.get("orgName") || undefined;
 
@@ -22,24 +23,38 @@ export async function GET(req: NextRequest) {
         }
       : undefined;
 
-    const orgs = await prisma.orgsPublic.findMany({
-      where,
-      take: top,
-      orderBy: { worldRank: "asc" },
-      select: {
-        id: true,
-        nationciteId: true,
-        orgName: true,
-        worldRank: true,
-        countryRank: true,
-        hIndexTotal: true,
-        hIndexLast5: true,
-      },
-    });
+    if (statsOnly) {
+      const totalCount = await prisma.orgsPublic.count({ where });
+      return NextResponse.json({
+        success: true,
+        count: 0,
+        totalCount,
+        data: [],
+      });
+    }
+
+    const [totalCount, orgs] = await Promise.all([
+      prisma.orgsPublic.count({ where }),
+      prisma.orgsPublic.findMany({
+        where,
+        take: top,
+        orderBy: { worldRank: "asc" },
+        select: {
+          id: true,
+          nationciteId: true,
+          orgName: true,
+          worldRank: true,
+          countryRank: true,
+          hIndexTotal: true,
+          hIndexLast5: true,
+        },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,
       count: orgs.length,
+      totalCount,
       data: orgs,
     });
   } catch (error) {

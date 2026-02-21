@@ -25,47 +25,39 @@ export async function GET(req: NextRequest) {
     requireAdmin(req);
     const { start, end } = getLast7DaysRange();
 
-    //////////////////////////////////////////////////////
-    // REGISTRATION COUNTS BY TYPE + STATUS (ALL TIME)
-    //////////////////////////////////////////////////////
-    const registrations = await prisma.registration.groupBy({
-      by: ["type", "status"],
-      _count: {
-        id: true,
-      },
-    });
-
-    //////////////////////////////////////////////////////
-    // LAST 7 DAYS REGISTRATIONS
-    //////////////////////////////////////////////////////
-    const last7DaysRegistrations = await prisma.registration.groupBy({
-      by: ["type"],
-      where: {
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
-      },
-      _count: {
-        id: true,
-      },
-    });
-
-    //////////////////////////////////////////////////////
-    // LAST 7 DAYS LOGIN COUNTS
-    //////////////////////////////////////////////////////
-    const last7DaysLogins = await prisma.loginLog.groupBy({
-      by: ["loginType"],
-      where: {
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
-      },
-      _count: {
-        id: true,
-      },
-    });
+    const [registrations, last7DaysRegistrations, last7DaysLogins] =
+      await Promise.all([
+        prisma.registration.groupBy({
+          by: ["type", "status"],
+          _count: {
+            id: true,
+          },
+        }),
+        prisma.registration.groupBy({
+          by: ["type"],
+          where: {
+            createdAt: {
+              gte: start,
+              lte: end,
+            },
+          },
+          _count: {
+            id: true,
+          },
+        }),
+        prisma.loginLog.groupBy({
+          by: ["loginType"],
+          where: {
+            createdAt: {
+              gte: start,
+              lte: end,
+            },
+          },
+          _count: {
+            id: true,
+          },
+        }),
+      ]);
 
     //////////////////////////////////////////////////////
     // TYPES CONFIG
@@ -98,7 +90,21 @@ export async function GET(req: NextRequest) {
     //////////////////////////////////////////////////////
     // BUILD RESULT OBJECT
     //////////////////////////////////////////////////////
-    const result: any = {};
+    const result: Record<
+      string,
+      {
+        approvedCount: number;
+        pendingCount: number;
+        rejectedCount: number;
+        totalCount: number;
+        approvalPercentage: number;
+        approvalRate: number;
+        last7Registrations: number;
+        last7Logins: number;
+        avgRegistrationsPerDay: number;
+        avgActiveUsersPerDay: number;
+      }
+    > = {};
 
     for (const type of types) {
       const approved =
@@ -158,11 +164,35 @@ export async function GET(req: NextRequest) {
       //////////////////////////////////////////////////////
       result[type.label] = {
         approvedCount: approved,
+        pendingCount: pending,
+        rejectedCount: rejected,
+        totalCount: total,
         approvalPercentage,
+        approvalRate: approvalPercentage,
+        last7Registrations,
+        last7Logins,
         avgRegistrationsPerDay,
         avgActiveUsersPerDay,
       };
     }
+
+    const totalRegistrationsAllTime = registrations.reduce(
+      (sum, r) => sum + r._count.id,
+      0
+    );
+    const totalRegistrationsLast7Days = last7DaysRegistrations.reduce(
+      (sum, r) => sum + r._count.id,
+      0
+    );
+    const totalLoginsLast7Days = last7DaysLogins.reduce(
+      (sum, l) => sum + l._count.id,
+      0
+    );
+    const totalApprovedOverall =
+      totalApprovedMedicalProfessionals +
+      totalApprovedResearchers +
+      totalApprovedOrganizations;
+    const avgActiveUsersPerDay = Number((totalLoginsLast7Days / 7).toFixed(2));
 
     //////////////////////////////////////////////////////
     // FINAL RESPONSE
@@ -174,10 +204,12 @@ export async function GET(req: NextRequest) {
           totalApprovedMedicalProfessionals,
           totalApprovedResearchers,
           totalApprovedOrganizations,
-          totalApprovedOverall:
-            totalApprovedMedicalProfessionals +
-            totalApprovedResearchers +
-            totalApprovedOrganizations,
+          totalApprovedOverall,
+          totalApproved: totalApprovedOverall,
+          totalRegistrationsAllTime,
+          totalRegistrationsLast7Days,
+          totalLoginsLast7Days,
+          avgActiveUsersPerDay,
         },
 
         medicalProfessional: result.medicalProfessional,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, CheckCircle, Loader2 } from "lucide-react";
 
 export type ModalStep =
@@ -20,23 +20,58 @@ export interface AddPublicationForm {
   doi?: string;
 }
 
+export interface EditingPublication {
+  id: number;
+  title: string;
+  journalName: string;
+  year: number;
+  field: string;
+  doi: string;
+  publisher: string;
+  authors: string;
+}
+
 interface AddPublicationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  editingPublication?: EditingPublication | null;
 }
 
 export const AddPublicationModal = ({
   isOpen,
   onClose,
-  onSuccess
+  onSuccess,
+  editingPublication,
 }: AddPublicationModalProps) => {
-  const [step, setStep] = useState<ModalStep>("choose");
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state
+  const isEditMode = !!editingPublication;
+
+  const [step, setStep] = useState<ModalStep>(isEditMode ? "manual-form" : "choose");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<AddPublicationForm>({
-    method: "doi",
+    method: "manual",
   });
   const [confirmed, setConfirmed] = useState(false);
+
+  // Pre-fill form when editing
+  useEffect(() => {
+    if (editingPublication) {
+      setFormData({
+        method: "manual",
+        title: editingPublication.title,
+        authors: editingPublication.authors || "",
+        journal: editingPublication.journalName,
+        year: String(editingPublication.year),
+        publicationType: editingPublication.field,
+        publisher: editingPublication.publisher || "",
+        doi: editingPublication.doi || "",
+      });
+      setStep("manual-form");
+      setConfirmed(false);
+    } else {
+      resetModal();
+    }
+  }, [editingPublication, isOpen]);
 
   const handleMethodSelect = (method: "doi" | "manual") => {
     setFormData({ ...formData, method });
@@ -49,7 +84,7 @@ export const AddPublicationModal = ({
 
   const handleDoiNext = () => {
     setStep("fetching");
-    // Simulate fetching
+    // Simulate DOI lookup (real implementation would call CrossRef or similar)
     setTimeout(() => {
       setFormData({
         ...formData,
@@ -58,47 +93,87 @@ export const AddPublicationModal = ({
         journal: "Journal of Medical AI Research",
         year: "2024",
         publisher: "Elsevier",
-        doi: "10.1234/jmar.2024.5678",
+        publicationType: "Journal Article",
+        doi: formData.doiUrl || "10.1234/jmar.2024.5678",
       });
       setStep("review");
     }, 2000);
   };
 
   const handleManualNext = () => {
+    // Basic validation
+    if (!formData.title?.trim()) {
+      alert("Please enter a publication title.");
+      return;
+    }
+    if (!formData.journal?.trim()) {
+      alert("Please enter the journal or conference name.");
+      return;
+    }
+    if (!formData.year?.trim()) {
+      alert("Please enter the year of publication.");
+      return;
+    }
     setStep("review");
   };
 
   const handleSubmit = async () => {
     if (!confirmed) return;
-  
+
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/publications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Mapping frontend formData to backend Prisma schema
-          nationciteId: formData.doi || "Manual-Entry", 
-          title: formData.title,
-          journalName: formData.journal,
-          
-          datePublished: formData.year ? `${formData.year}-01-01` : new Date().toISOString(),
-          citationsTotal: 0, 
-          citationsLast5Years: 0,
-        }),
-      });
-  
-      const result = await response.json();
-  
-      if (result.success) {
-         
-        if (onSuccess) onSuccess();
-        onClose();
-        resetModal();
+      if (isEditMode && editingPublication) {
+        // UPDATE existing publication
+        const response = await fetch("/api/publications/publication-update", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: editingPublication.id,
+            title: formData.title,
+            journalName: formData.journal,
+            datePublished: formData.year ? `${formData.year}-01-01` : undefined,
+            field: formData.publicationType || "General",
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          if (onSuccess) onSuccess();
+          onClose();
+          resetModal();
+        } else {
+          alert(result.message || "Failed to update publication");
+        }
       } else {
-        alert(result.message || "Failed to save publication");
+        // CREATE new publication
+        const response = await fetch("/api/publications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formData.title,
+            journalName: formData.journal,
+            datePublished: formData.year
+              ? `${formData.year}-01-01`
+              : new Date().toISOString(),
+            publicationType: formData.publicationType || "General",
+            authors: formData.authors,
+            publisher: formData.publisher,
+            doi: formData.doi,
+            citationsTotal: 0,
+            citationsLast5Years: 0,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          if (onSuccess) onSuccess();
+          onClose();
+          resetModal();
+        } else {
+          alert(result.message || "Failed to save publication");
+        }
       }
     } catch (error) {
       console.error("Submission error:", error);
@@ -132,8 +207,8 @@ export const AddPublicationModal = ({
           <X size={20} />
         </button>
 
-        {/* Step 1: Choose Method */}
-        {step === "choose" && (
+        {/* Step 1: Choose Method (only for new publications) */}
+        {step === "choose" && !isEditMode && (
           <div className="p-6">
             <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
               Add Missing Publication
@@ -161,7 +236,7 @@ export const AddPublicationModal = ({
                   {formData.method === "doi" && (
                     <input
                       type="text"
-                      placeholder="Enter the DOI/ URL"
+                      placeholder="e.g., 10.1000/xyz123 or https://doi.org/10.1000/xyz123"
                       value={formData.doiUrl || ""}
                       onChange={(e) =>
                         setFormData({ ...formData, doiUrl: e.target.value })
@@ -215,7 +290,7 @@ export const AddPublicationModal = ({
 
               <input
                 type="text"
-                placeholder="Enter the DOI/ URL"
+                placeholder="e.g., 10.1000/xyz123 or https://doi.org/10.1000/xyz123"
                 value={formData.doiUrl || ""}
                 onChange={(e) =>
                   setFormData({ ...formData, doiUrl: e.target.value })
@@ -237,97 +312,145 @@ export const AddPublicationModal = ({
         {step === "manual-form" && (
           <div className="p-6">
             <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
-              Add Missing Publication
+              {isEditMode ? "Edit Publication" : "Add Missing Publication"}
             </div>
 
             <div className="mb-4">
-              <label className="flex items-start gap-3 mb-6">
-                <input
-                  type="radio"
-                  checked
-                  readOnly
-                  className="mt-1 w-4 h-4 accent-[#f76a23]"
-                />
-                <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
-                  Add Manually
-                </span>
-              </label>
+              {!isEditMode && (
+                <label className="flex items-start gap-3 mb-6">
+                  <input
+                    type="radio"
+                    checked
+                    readOnly
+                    className="mt-1 w-4 h-4 accent-[#f76a23]"
+                  />
+                  <span className="text-[14px] font-medium leading-[120%] text-[#0E121B]">
+                    Add Manually
+                  </span>
+                </label>
+              )}
 
               <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Publication Title*"
-                  value={formData.title || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
-                />
-
-                <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                    Publication Title <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
-                    placeholder="Author(s)*"
-                    value={formData.authors || ""}
+                    placeholder="e.g., Impact of Artificial Intelligence on Drug Discovery in Oncology"
+                    value={formData.title || ""}
                     onChange={(e) =>
-                      setFormData({ ...formData, authors: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
-                  />
-                  <input
-                    type="text"
-                    placeholder="DOI"
-                    value={formData.doi || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, doi: e.target.value })
+                      setFormData({ ...formData, title: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                 </div>
 
-                <input
-                  type="text"
-                  placeholder="Journal / Conference name*"
-                  value={formData.journal || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, journal: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                      Author(s) <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Smith, J., Lee, K., Patel, R."
+                      value={formData.authors || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, authors: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                      DOI
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., 10.1038/s41586-021-03819-2"
+                      value={formData.doi || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, doi: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    />
+                  </div>
+                </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                    Journal / Conference Name <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
-                    placeholder="Publisher Name"
-                    value={formData.publisher || ""}
+                    placeholder="e.g., Nature Medicine, IEEE Conference on AI"
+                    value={formData.journal || ""}
                     onChange={(e) =>
-                      setFormData({ ...formData, publisher: e.target.value })
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Publication Type"
-                    value={formData.publicationType || ""}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        publicationType: e.target.value,
-                      })
+                      setFormData({ ...formData, journal: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
                   />
                 </div>
 
-                <input
-                  type="text"
-                  placeholder="Year of publication*"
-                  value={formData.year || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, year: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                      Publisher
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Springer Nature, Elsevier, Wiley"
+                      value={formData.publisher || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, publisher: e.target.value })
+                      }
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                      Publication Type
+                    </label>
+                    <select
+                      value={formData.publicationType || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          publicationType: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#0E121B] focus:outline-none focus:border-[#f76a23] bg-white"
+                    >
+                      <option value="">Select type...</option>
+                      <option value="Journal Article">Journal Article</option>
+                      <option value="Conference Paper">Conference Paper</option>
+                      <option value="Book Chapter">Book Chapter</option>
+                      <option value="Review Article">Review Article</option>
+                      <option value="Clinical Trial">Clinical Trial</option>
+                      <option value="Case Report">Case Report</option>
+                      <option value="Thesis">Thesis / Dissertation</option>
+                      <option value="Preprint">Preprint</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[12px] font-medium text-[#525866] mb-1">
+                    Year of Publication <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="e.g., 2024"
+                    min="1900"
+                    max="2099"
+                    value={formData.year || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, year: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-2xl text-[14px] font-normal leading-[150%] tracking-[-0.02em] placeholder-[#8E8E93] focus:outline-none focus:border-[#f76a23]"
+                  />
+                </div>
               </div>
             </div>
 
@@ -350,7 +473,7 @@ export const AddPublicationModal = ({
             <div className="border-2 border-dashed border-blue-300 rounded-2xl p-12 flex flex-col items-center justify-center">
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-3" />
               <p className="text-[14px] font-normal leading-[150%] tracking-[-0.02em] text-[#525866]">
-                Fetching Data (Loading symbol)
+                Looking up publication details…
               </p>
             </div>
           </div>
@@ -360,14 +483,14 @@ export const AddPublicationModal = ({
         {step === "review" && (
           <div className="p-6">
             <div className="text-[16px] font-semibold leading-5 tracking-[-0.006em] text-[#0E121B] mb-6">
-              Add Missing Publication
+              {isEditMode ? "Review Changes" : "Review & Submit"}
             </div>
 
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-4 text-green-600">
                 <CheckCircle size={18} />
                 <span className="text-[14px] font-semibold leading-[120%]">
-                  Paper Found
+                  {isEditMode ? "Ready to Update" : "Paper Found"}
                 </span>
               </div>
 
@@ -385,12 +508,12 @@ export const AddPublicationModal = ({
                     Authors
                   </span>
                   <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                    {formData.authors}
+                    {formData.authors || "—"}
                   </p>
                 </div>
                 <div>
                   <span className="font-semibold leading-[120%] text-[#0E121B]">
-                    Journal / Conference name
+                    Journal / Conference Name
                   </span>
                   <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
                     {formData.journal}
@@ -398,28 +521,42 @@ export const AddPublicationModal = ({
                 </div>
                 <div>
                   <span className="font-semibold leading-[120%] text-[#0E121B]">
-                    Year of publication
+                    Year of Publication
                   </span>
                   <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
                     {formData.year}
                   </p>
                 </div>
-                <div>
-                  <span className="font-semibold leading-[120%] text-[#0E121B]">
-                    Publisher
-                  </span>
-                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                    {formData.publisher}
-                  </p>
-                </div>
-                <div>
-                  <span className="font-semibold leading-[120%] text-[#0E121B]">
-                    DOI
-                  </span>
-                  <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
-                    {formData.doi}
-                  </p>
-                </div>
+                {formData.publisher && (
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Publisher
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.publisher}
+                    </p>
+                  </div>
+                )}
+                {formData.publicationType && (
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      Publication Type
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.publicationType}
+                    </p>
+                  </div>
+                )}
+                {formData.doi && (
+                  <div>
+                    <span className="font-semibold leading-[120%] text-[#0E121B]">
+                      DOI
+                    </span>
+                    <p className="font-normal leading-[150%] tracking-[-0.02em] text-[#333333]">
+                      {formData.doi}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <label className="flex items-start gap-3 mt-6 cursor-pointer">
@@ -430,31 +567,40 @@ export const AddPublicationModal = ({
                   className="mt-1 w-4 h-4 text-green-600 focus:ring-green-500 rounded"
                 />
                 <span className="text-[12px] font-normal leading-[120%] text-[#333333]">
-                  I confirm that I am an author or co-author of this
-                  publication. I understand that any false or misleading
-                  information may result in strict action.
+                  {isEditMode
+                    ? "I confirm the updated details are accurate."
+                    : "I confirm that I am an author or co-author of this publication. I understand that any false or misleading information may result in strict action."}
                 </span>
               </label>
             </div>
 
-            <button
-              onClick={handleSubmit}
-              disabled={!confirmed || isSubmitting}
-              className={`w-full text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                confirmed && !isSubmitting
-                  ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setStep("manual-form")}
+                className="flex-1 text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors border border-gray-300 text-[#525866] hover:bg-gray-50"
+              >
+                Back to Edit
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={!confirmed || isSubmitting}
+                className={`flex-1 text-[14px] font-semibold leading-[120%] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${confirmed && !isSubmitting
+                    ? "bg-[#f76a23] hover:bg-[#e05a1a] text-white"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  }`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {isEditMode ? "Updating..." : "Submitting..."}
+                  </>
+                ) : isEditMode ? (
+                  "Update"
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
           </div>
         )}
       </div>

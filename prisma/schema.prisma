@@ -40,6 +40,7 @@ enum ContactStatus {
   CLOSED
 }
 
+
 ////////////////////////////////////////////////
 // AUTH / CREDENTIALS
 ////////////////////////////////////////////////
@@ -239,9 +240,7 @@ model TicketComments {
   ticket Tickets @relation(fields: [ticketId], references: [ticketId])
 }
 
-////////////////////////////////////////////////
-// PUBLICATIONS
-////////////////////////////////////////////////
+
 
 model Publication {
   id                  Int       @id @default(autoincrement())
@@ -256,9 +255,6 @@ model Publication {
   updatedAt           DateTime  @updatedAt
 }
 
-////////////////////////////////////////////////
-// OTP AUTHENTICATION (MOBILE LOGIN)
-////////////////////////////////////////////////
 
 model Otp {
   id          Int      @id @default(autoincrement())
@@ -285,24 +281,41 @@ model LoginLog {
   @@index([createdAt])
 }
 
+
+model Notification {
+  id           Int      @id @default(autoincrement())
+  recipientId  String   // "ADMIN" for admin, or nationciteId for users
+  type         String   // TICKET_CREATED, REGISTRATION_REQUEST, TICKET_RESOLVED, TICKET_COMMENT, TICKET_UPDATED
+  title        String
+  message      String
+  redirectUrl  String
+  referenceId  String?  // ticketId or registrationId
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([recipientId, isRead])
+  @@index([createdAt])
+}
+
 ////////////////////////////////////////////////
 // BLOGS
 ////////////////////////////////////////////////
 
 model Blog {
-  id            Int       @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   nationciteId  String
   title         String
-  subtitle      String?
-  mainText      String    @db.Text
-  images        String[]  // Array of image URLs
+  coverImage    String?
+  intro         String     @db.Text
+  sections      Json       // [{heading, text, image?}] — max 3 structured sections
+  conclusion    String?    @db.Text
 
   authorId      Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   // Relations
-  author        AuthUser  @relation(fields: [authorId], references: [id])
+  author        AuthUser   @relation(fields: [authorId], references: [id])
 
   @@index([nationciteId])
   @@index([authorId])
@@ -318,6 +331,7 @@ model ContactUs {
 
   name         String
   email        String
+  phone        String?
   org          String?
   inquiryType  String
   message      String        @db.Text

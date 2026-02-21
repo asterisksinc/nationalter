@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { sendApprovalCredentialsMail } from "@/lib/mailer";
 import { requireAdmin } from "@/lib/auth";
+import { createNotification } from "@/lib/notifications";
 
 /**
  * Generate random temporary password
@@ -145,6 +146,23 @@ export async function PATCH(req: NextRequest) {
       username: email,
       password: tempPassword,
     });
+
+    // Notify user that their registration was approved
+    const dashboardBase =
+      registration.type === "MEDICAL"
+        ? "/dashboard/medical"
+        : registration.type === "ORG"
+          ? "/dashboard/organizations"
+          : "/dashboard/researchers";
+
+    createNotification({
+      recipientId: nationciteId,
+      type: "TICKET_RESOLVED",
+      title: "Registration Approved!",
+      message: `Your registration has been approved. Your NationCite ID is ${nationciteId}. Login credentials have been sent to your email.`,
+      redirectUrl: `${dashboardBase}/tickets/${ticketId}`,
+      referenceId: ticketId,
+    }).catch(() => { });
 
     return NextResponse.json({
       success: true,

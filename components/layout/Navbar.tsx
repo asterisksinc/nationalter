@@ -164,6 +164,13 @@ export default function Navbar() {
               Blogs
             </Link>
 
+            <Link
+              href="/contact"
+              className="text-neutral-900 font-medium text-sm tracking-normal hover:text-[#FF7A00] transition-colors"
+            >
+              Contact
+            </Link>
+
             {isLoggedIn ? (
               <div className="relative group">
                 <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
@@ -345,6 +352,13 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blogs
+              </Link>
+              <Link
+                href="/contact"
+                className="text-neutral-900 font-medium text-base py-2 px-2 rounded hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
               </Link>
               {isLoggedIn ? (
                 <>
