@@ -51,6 +51,8 @@ model AuthUser {
   passwordHash    String
   role            UserRole @default(SCHOLAR)
 
+  googleId        String?  @unique
+
   isEmailVerified Boolean  @default(false)
   isActive        Boolean  @default(true)
 
