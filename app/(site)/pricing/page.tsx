@@ -7,9 +7,23 @@ import PricingSection from "@/components/site/PricingSection";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
 import "./pricing-style.css";
+import Head from "next/head";
 
 export default function PricingPage() {
   return (
+    <> <Head>
+        <title>NationCite Pricing | Research Analytics Plans</title>
+        <meta
+          name="description"
+          content="Access verified researcher rankings, institutional dashboards, and cohort analytics with flexible subscription plans. View Pricing Options."
+        />
+        <meta 
+          name="keywords" 
+          content="research ranking subscription India, institutional analytics pricing, h-index dashboard India" 
+        />
+        <meta property="og:title" content="NationCite Pricing | Research Analytics Plans" />
+        <meta property="og:description" content="Flexible plans for researchers, universities, and enterprises." />
+      </Head>
     <div className="bg-white  font-sans">
       {/* Hero / Pricing Section */}
       <SiteHero className="hero">
@@ -214,7 +228,7 @@ export default function PricingPage() {
 
       {/* Bottom CTA */}
       <FinalCTA />
-    </div>
+    </div></>
   );
 }
 
@@ -228,6 +242,7 @@ function ComparisonTable({
   rows: (string | boolean)[][];
 }) {
   return (
+    <> 
     <div className=" ">
       <h4 className="mb-6 sm:mb-8 md:mb-10 lg:mb-10 text-center sm:text-left">
         {title}
@@ -282,6 +297,6 @@ function ComparisonTable({
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 }

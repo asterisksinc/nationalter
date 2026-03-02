@@ -6,6 +6,7 @@ import Badge from "@/components/ui/Badge";
 import SiteHero from "@/components/site/SiteHero";
 import FinalCTA from "@/components/site/FinalCTA";
 import FAQSection from "@/components/site/FAQSection";
+import Head from "next/head";
 
 interface BlogCard {
   id: number;
@@ -46,6 +47,19 @@ export default function BlogPage() {
   }, [search, sortBy]);
 
   return (
+    <> <Head>
+        <title>India Research Insights | H-Index & Citation Trends</title>
+        <meta
+          name="description"
+          content="Read data-driven analysis on Indian research trends, citation benchmarks, institutional performance, and academic policy insights. Explore Articles."
+        />
+        <meta 
+          name="keywords" 
+          content="India research trends, h-index insights India, citation analysis India" 
+        />
+        <meta property="og:title" content="India Research Insights | H-Index & Citation Trends" />
+        <meta property="og:description" content="Data-driven analysis of Indian research trends and citation benchmarks." />
+      </Head>
     <main className="w-full bg-white">
       {/* Hero Section */}
       <SiteHero>
@@ -152,6 +166,6 @@ export default function BlogPage() {
 
       <FAQSection />
       <FinalCTA />
-    </main>
+    </main></>
   );
 }

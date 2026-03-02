@@ -7,6 +7,7 @@ import TrustedBy from "@/components/site/TrustedBy";
 import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
 import { Check } from "lucide-react";
+import Head from "next/head";
 
 export default function AboutPage() {
   const scrollToNextSection = () => {
@@ -16,6 +17,19 @@ export default function AboutPage() {
   };
 
   return (
+    <><Head>
+        <title>About NationCite | India's Research Ranking Platform</title>
+        <meta
+          name="description"
+          content="NationCite unifies India's researcher and institutional rankings into one transparent platform with verified metrics and compliance standards. Learn More."
+        />
+        <meta 
+          name="keywords" 
+          content="about NationCite, India research ranking platform, h-index India platform" 
+        />
+        <meta property="og:title" content="About NationCite | India's Research Ranking Platform" />
+        <meta property="og:description" content="NationCite: India's unified research ranking platform with verified h-index metrics." />
+      </Head>
     <main className="w-full bg-white">
       {/* Hero Section */}
       <SiteHero>
@@ -328,6 +342,6 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Banner Section */}
-    </main>
+    </main></>
   );
 }

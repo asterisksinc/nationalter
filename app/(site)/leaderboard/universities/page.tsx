@@ -12,6 +12,7 @@ import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
+import Head from "next/head";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -121,6 +122,19 @@ useEffect(() => {
   }
 
   return (
+    <>     <Head>
+        <title>India University Rankings by H-Index | 2026 Data</title>
+        <meta
+          name="description"
+          content="Compare IITs, NITs, and Indian universities by verified h-index performance, citation impact, and faculty cohorts. View Institutional Rankings."
+        />
+        <meta 
+          name="keywords" 
+          content="India university research ranking, IIT research ranking, university h-index India" 
+        />
+        <meta property="og:title" content="India University Rankings by H-Index | 2026 Data" />
+        <meta property="og:description" content="Compare IITs, NITs, and universities by verified h-index and citations." />
+      </Head>
     <div className="min-h-screen bg-white font-sans">
       <SiteHero>
         <Badge>Leaderboard</Badge>
@@ -241,6 +255,6 @@ useEffect(() => {
       <ThreeBlocksSection />
       <FAQSection />
       <LeaderboardFinalCTA />
-    </div>
+    </div></>
   );
 }
