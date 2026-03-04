@@ -7,6 +7,7 @@ import { SigninFlowRenderer } from "./components/SigninFlowRenderer";
 import { UserTypeCard } from "../signup/components/UserTypeCard";
 import { Icon } from "../signup/components/Icon";
 import { useSearchParams } from "next/navigation";
+import Head from "next/head";
 
 // Reuse Types
 enum UserType {
@@ -184,6 +185,15 @@ export default function LoginPage() {
 
   // MAIN LOGIN FORM VIEW (Step 1 & 2)
   return (
+    <>  <Head>
+        <title>NationCite Login | Researcher Dashboard Access</title>
+        <meta
+          name="description"
+          content="Login to manage your verified research profile, track h-index growth, and access institutional analytics securely."
+        />
+        <meta name="keywords" content="NationCite login, researcher dashboard login India" />
+        <meta property="og:title" content="NationCite Login | Researcher Dashboard Access" />
+      </Head>
     <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
       {/* Sidebar */}
       <div
@@ -260,6 +270,6 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 }

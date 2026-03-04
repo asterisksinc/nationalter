@@ -10,8 +10,19 @@ import PricingSection from "@/components/site/PricingSection";
 import ResearchIntelligence from "@/components/site/ResearchIntelligence";
 import FinalCTA from "@/components/site/FinalCTA";
 import LeaderboardWidget from "@/components/site/LeaderboardWidget";
+import Head from "next/head";
 export default function HomePage() {
   return (
+    <>      <Head>
+        <title>India H-Index Rankings 2026 | Verified Research Data</title>
+        <meta
+          name="description"
+          content="Explore India h-index rankings across researchers, universities, and states with transparent, verified metrics and daily updates. View Leaderboard."
+        />
+        <meta name="keywords" content="India h-index ranking, Indian researcher rankings, h-index India 2026, research rankings India" />
+        <meta property="og:title" content="India H-Index Rankings 2026 | Verified Research Data" />
+        <meta property="og:description" content="Explore India h-index rankings across researchers, universities, and states." />
+      </Head>
     <div className="min-h-screen  bg-white font-sans">
       {/* Hero Section */}
       <SiteHero>
@@ -112,6 +123,6 @@ export default function HomePage() {
       <PricingSection />
       <ResearchIntelligence />
       <FinalCTA />
-    </div>
+    </div></>
   );
 }

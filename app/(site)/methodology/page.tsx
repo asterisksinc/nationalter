@@ -1,5 +1,5 @@
 import React from "react";
-import { Metadata } from "next";
+import { Metadata as MetaType } from "next";
 import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
 import ThreeCardsSection from "../leaderboard/components/ThreeCardsSection";
@@ -12,9 +12,15 @@ import FinalCTA from "@/components/site/FinalCTA";
 import Thebigcard from "../methodology/components/Thebigcard";
 import RightCard from "../methodology/components/Rightcard";
 
-export const metadata: Metadata = {
-  title: "Methodology | Nationcite",
-  description: "Nationcite's H-Index Methodology",
+export const metadata: MetaType = {
+  title: "H-Index Methodology India | Transparent Ranking Model",
+  description: "Understand how NationCite calculates h-index rankings using verified citation datasets, audit logs, and anti-gaming safeguards. Review Methodology.",
+  keywords: "h-index calculation India, research ranking methodology India, citation metrics India",
+  openGraph: {
+    title: "H-Index Methodology India | Transparent Ranking Model",
+    description: "NationCite's verified h-index calculation methodology with anti-gaming safeguards.",
+    type: "article",
+  },
 };
 
 export default function MethodologyPage() {

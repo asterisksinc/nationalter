@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import FinalCTA from "@/components/site/FinalCTA";
+import Head from "next/head";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -58,6 +59,15 @@ export default function ContactPage() {
 
   return (
     <>
+       <Head>
+        <title>Contact NationCite | Research Ranking Support</title>
+        <meta
+          name="description"
+          content="Get assistance with profile claims, institutional dashboards, and ranking inquiries. Contact NationCite's research support team today."
+        />
+        <meta name="keywords" content="contact NationCite, research ranking support India" />
+        <meta property="og:title" content="Contact NationCite | Research Ranking Support" />
+      </Head>
       {/* Hero/Contact Section */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] pt-32 pb-12 bg-white min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">

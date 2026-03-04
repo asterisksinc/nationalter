@@ -9,6 +9,7 @@ import { FlowRenderer } from "./components/FlowRenderer";
 import { Icon } from "./components/Icon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pickStoredUploadValue, uploadFileToS3 } from "@/lib/uploads/client";
+import Head from "next/head";
 
 // Types
 enum UserType {
@@ -809,6 +810,14 @@ export default function RegisterPage() {
   // WIZARD LAYOUT (Steps 1+)
   return (
     <>
+       <Head>
+        <title>Create Research Profile | Join NationCite Today</title>
+        <meta
+          name="description"
+          content="Sign up to claim your research profile, verify citation data, and track your national ranking across disciplines and institutions."
+        />
+        <meta name="keywords" content="create research profile India, sign up h-index platform" />
+      </Head>
       <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
         {/* Mobile Progress Bar with Back Button */}
         <div className="md:hidden w-full px-4 pt-5 pb-4 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50 border-b border-orange-200">

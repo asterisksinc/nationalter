@@ -13,6 +13,7 @@ import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
+import Head from "next/head";
 
 const MOCK_DATA: LeaderboardEntry[] = [
   {
@@ -113,6 +114,19 @@ export default function DoctorsLeaderboardPage() {
   const totalCount = MOCK_DATA.length;
 
   return (
+    <> <Head>
+        <title>Top Medical Researchers India | H-Index Ranking</title>
+        <meta
+          name="description"
+          content="Discover India's top medical professionals ranked by verified h-index and citation impact. Benchmark specialties, states, and institutions. Explore Now."
+        />
+        <meta 
+          name="keywords" 
+          content="Indian medical researcher rankings, doctor h-index India, medical research leaderboard" 
+        />
+        <meta property="og:title" content="Top Medical Researchers India | H-Index Ranking" />
+        <meta property="og:description" content="India's top doctors ranked by verified h-index and citations." />
+      </Head>
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
       <SiteHero>
@@ -228,6 +242,6 @@ export default function DoctorsLeaderboardPage() {
       <FAQSection />
 
       <LeaderboardFinalCTA />
-    </div>
+    </div></>
   );
 }

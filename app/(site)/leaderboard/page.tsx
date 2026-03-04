@@ -9,9 +9,25 @@ import ThreeBlocksSection from "./components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "./components/LeaderboardFinalCTA";
 import LeaderboardWidget from "@/components/site/LeaderboardWidget";
+import Head from "next/head";
 
 export default function LeaderboardPage() {
   return (
+    <> <Head>
+        <title>Top Indian Researchers by H-Index | 2026 Rankings</title>
+        <meta
+          name="description"
+          content="View India's leading researchers ranked by verified h-index, citations, and disciplines. Filter by state, IITs, NITs, and institutions. Explore Rankings."
+        />
+        <meta 
+          name="keywords" 
+          content="Indian researcher rankings, India scientist h-index list, top researchers India" 
+        />
+        <meta property="og:title" content="Top Indian Researchers by H-Index | 2026 Rankings" />
+        <meta property="og:description" content="India's verified researcher rankings by h-index, citations, and discipline." />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
       <SiteHero>
@@ -51,6 +67,6 @@ export default function LeaderboardPage() {
       <FAQSection />
 
       <LeaderboardFinalCTA />
-    </div>
+    </div></>
   );
 }

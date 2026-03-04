@@ -4,6 +4,7 @@ import "./style.css";
 import Link from "next/link";
 import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
+import Head from "next/head";
 
 type LegalSection = {
   title: string;
@@ -179,6 +180,14 @@ export default function LegalPage() {
 
   return (
     <>
+      <Head>
+        <title>Privacy Policy | Research Data Protection India</title>
+        <meta
+          name="description"
+          content="Review how NationCite protects researcher data, consent logs, and citation records under India's data protection framework."
+        />
+        <meta name="keywords" content="researcher privacy policy India, DPDP compliance research platform" />
+      </Head>
       <SiteHero>
         <Badge>
           {activeTab === "privacy" ? "Privacy Policy" : "Terms of Service"}
