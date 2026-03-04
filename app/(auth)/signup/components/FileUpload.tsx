@@ -23,10 +23,12 @@ export const FileUpload = ({
   value
 }: FileUploadProps) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [localFilename, setLocalFilename] = React.useState<string>("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setLocalFilename(file.name);
       if (onChange) {
         onChange(file);
       }
@@ -81,9 +83,9 @@ export const FileUpload = ({
       </div>
 
       {/* Show current filename */}
-      {filename && (
+      {(filename || localFilename || value) && (
         <p className="text-xs text-neutral-700 mt-1 ml-1 truncate">
-          Selected: {filename}
+          Selected: {filename || localFilename || String(value).split("/").pop()}
         </p>
       )}
 

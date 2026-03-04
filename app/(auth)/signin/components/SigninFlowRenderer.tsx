@@ -139,7 +139,15 @@ export const SigninFlowRenderer = ({
   };
 
   const GoogleButton = () => (
-    <button className="w-full flex items-center justify-center gap-3 py-3 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-all group">
+    <button
+      type="button"
+      disabled={isLoading}
+      onClick={() => {
+        const loginType = encodeURIComponent(userType || "");
+        window.location.href = `/api/auth/google/start?mode=signin&loginType=${loginType}`;
+      }}
+      className="w-full flex items-center justify-center gap-3 py-3 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-all group disabled:opacity-60 disabled:cursor-not-allowed"
+    >
       <img
         src="https://www.google.com/favicon.ico"
         alt="Google"

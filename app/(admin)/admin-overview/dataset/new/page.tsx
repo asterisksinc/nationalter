@@ -7,6 +7,7 @@ import './dstyle.css'
 import '../../adminstyle.css';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
+import { pickStoredUploadValue, uploadFileToS3 } from "@/lib/uploads/client";
 
 
 export default function NewDatasetPage() {
@@ -14,9 +15,25 @@ export default function NewDatasetPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const handleUpload = () => {
-    // simulate upload success
-    setShowMappingPreview(true);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string>("");
+  const [uploadedSource, setUploadedSource] = useState<string>("");
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    setIsUploading(true);
+    setUploadError("");
+
+    try {
+      const uploaded = await uploadFileToS3(selectedFile, "datasets");
+      setUploadedSource(pickStoredUploadValue(uploaded));
+      setShowMappingPreview(true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Upload failed";
+      setUploadError(message);
+    } finally {
+      setIsUploading(false);
+    }
   };
   const [selectedAction, setSelectedAction] = useState('append'); // Add this state
 
@@ -24,6 +41,9 @@ export default function NewDatasetPage() {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
+      setShowMappingPreview(false);
+      setUploadError("");
+      setUploadedSource("");
     }
   };
   // <section className="confirm-step-wrapper">
@@ -274,9 +294,21 @@ export default function NewDatasetPage() {
               )}
 
               {selectedFile && !showMappingPreview && (
-                <button className="upload-btn" onClick={handleUpload}>
-                  Upload File
+                <button className="upload-btn" onClick={handleUpload} disabled={isUploading}>
+                  {isUploading ? "Uploading..." : "Upload File"}
                 </button>
+              )}
+
+              {uploadError && (
+                <p style={{ color: "#b91c1c", fontSize: 12, marginTop: 10 }}>
+                  {uploadError}
+                </p>
+              )}
+
+              {uploadedSource && (
+                <p style={{ color: "#0f766e", fontSize: 12, marginTop: 10 }}>
+                  Uploaded: {uploadedSource.split("/").pop()}
+                </p>
               )}
               {showMappingPreview && (
                 <>

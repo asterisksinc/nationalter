@@ -6,6 +6,7 @@ import { SigninSidebar } from "./components/SigninSidebar";
 import { SigninFlowRenderer } from "./components/SigninFlowRenderer";
 import { UserTypeCard } from "../signup/components/UserTypeCard";
 import { Icon } from "../signup/components/Icon";
+import { useSearchParams } from "next/navigation";
 
 // Reuse Types
 enum UserType {
@@ -18,6 +19,15 @@ export default function LoginPage() {
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
+  const searchParams = useSearchParams();
+  const authError = searchParams.get("error");
+
+  const authErrorMessage =
+    authError === "google_oauth_no_account"
+      ? "No account found for that Google email. Please sign up first or contact support."
+      : authError
+        ? "Google sign-in failed. Please try again."
+        : "";
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -120,6 +130,12 @@ export default function LoginPage() {
                 </p>
               </div>
 
+              {authErrorMessage && (
+                <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {authErrorMessage}
+                </div>
+              )}
+
               {/* Selection Cards */}
               <div className="w-full bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col">
                 <div className="space-y-4 mb-6">
@@ -211,6 +227,12 @@ export default function LoginPage() {
                 </span>
               </p>
             </div>
+
+            {authErrorMessage && (
+              <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {authErrorMessage}
+              </div>
+            )}
 
             {/* Form Container */}
             <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm md:shadow-none flex flex-col h-full md:h-auto">

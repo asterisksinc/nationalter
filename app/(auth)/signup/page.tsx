@@ -7,7 +7,8 @@ import { SignupSidebar } from "./components/SignupSidebar";
 import { UserTypeCard } from "./components/UserTypeCard";
 import { FlowRenderer } from "./components/FlowRenderer";
 import { Icon } from "./components/Icon";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { pickStoredUploadValue, uploadFileToS3 } from "@/lib/uploads/client";
 
 // Types
 enum UserType {
@@ -98,10 +99,18 @@ export default function RegisterPage() {
     };
   };
   const handleMedicalInputChange = (field: string, value: string | File) => {
-    const normalizedValue = value instanceof File ? value.name : value;
+    if (value instanceof File) {
+      setMedicalForm((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+      void uploadAndSetField(setMedicalForm, field, value, "registration/medical");
+      return;
+    }
+
     setMedicalForm((prev) => ({
       ...prev,
-      [field]: normalizedValue,
+      [field]: value,
     }));
   };
   const [institutionForm, setInstitutionForm] = useState({
@@ -131,22 +140,108 @@ export default function RegisterPage() {
     field: string,
     value: string | File,
   ) => {
-    const normalizedValue = value instanceof File ? value.name : value;
+    if (value instanceof File) {
+      // Keep field empty until upload finishes (prevents submitting just the filename)
+      setInstitutionForm((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+      void uploadAndSetField(setInstitutionForm, field, value, "registration/org");
+      return;
+    }
+
     setInstitutionForm((prev) => ({
       ...prev,
-      [field]: normalizedValue,
+      [field]: value,
     }));
   };
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [uploadingFields, setUploadingFields] = useState<Record<string, boolean>>({});
+
+  const hasUploadsInProgress = Object.values(uploadingFields).some(Boolean);
+
+  const setUploading = (field: string, uploading: boolean) => {
+    setUploadingFields((prev) => ({ ...prev, [field]: uploading }));
+  };
+
+  const uploadAndSetField = async <T extends Record<string, unknown>>(
+    setter: React.Dispatch<React.SetStateAction<T>>,
+    field: string,
+    file: File,
+    folder: string,
+  ) => {
+    setUploading(field, true);
+    setValidationErrors((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+
+    try {
+      const uploaded = await uploadFileToS3(file, folder);
+      const stored = pickStoredUploadValue(uploaded);
+      setter((prev) => ({
+        ...prev,
+        [field]: stored,
+      }) as T);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Upload failed";
+      setValidationErrors((prev) => ({
+        ...prev,
+        [field]: message,
+      }));
+    } finally {
+      setUploading(field, false);
+    }
+  };
 
   const handleInputChange = (field: string, value: string | File) => {
-    const normalizedValue = value instanceof File ? value.name : value;
+    if (value instanceof File) {
+      setResearcherForm((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+      void uploadAndSetField(
+        setResearcherForm,
+        field,
+        value,
+        "registration/researcher",
+      );
+      return;
+    }
+
     setResearcherForm((prev) => ({
       ...prev,
-      [field]: normalizedValue,
+      [field]: value,
     }));
   };
+
+  // Prefill from Google OAuth signup (or any link with ?email=&name=)
+  useEffect(() => {
+    const prefillEmail = searchParams.get("email");
+    const prefillName = searchParams.get("name");
+
+    if (prefillEmail) {
+      const email = prefillEmail.trim();
+      if (email) {
+        setResearcherForm((p) => ({ ...p, instituteEmail: email, email }));
+        setMedicalForm((p) => ({ ...p, email }));
+        setInstitutionForm((p) => ({ ...p, email }));
+      }
+    }
+
+    if (prefillName) {
+      const name = prefillName.trim();
+      if (name) {
+        setResearcherForm((p) => ({ ...p, name }));
+        setMedicalForm((p) => ({ ...p, name }));
+        setInstitutionForm((p) => ({ ...p, name1: name }));
+      }
+    }
+  }, [searchParams]);
 
   // Validation state
   const [validationErrors, setValidationErrors] = useState<
@@ -385,6 +480,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (hasUploadsInProgress) {
+      setApiError("Please wait for file uploads to finish.");
+      return;
+    }
+
     // Validate current step before proceeding
     if (!validateCurrentStep()) {
       return;
@@ -408,6 +508,11 @@ export default function RegisterPage() {
   const submitRegistration = async () => {
     // Prevent double submission
     if (hasSubmitted || isSubmitting) {
+      return;
+    }
+
+    if (hasUploadsInProgress) {
+      setApiError("Please wait for file uploads to finish.");
       return;
     }
 
@@ -653,6 +758,31 @@ export default function RegisterPage() {
                     className="w-full bg-[var(--color-primary)] text-white py-3.5 md:py-3 text-sm md:text-base font-semibold rounded-xl hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
                   >
                     Next
+                  </button>
+
+                  <div className="relative flex py-6 items-center">
+                    <div className="flex-grow border-t border-neutral-200"></div>
+                    <span className="flex-shrink mx-4 text-neutral-400 text-xs">
+                      or
+                    </span>
+                    <div className="flex-grow border-t border-neutral-200"></div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      window.location.href = "/api/auth/google/start?mode=signup";
+                    }}
+                    className="w-full flex items-center justify-center gap-3 py-3 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-all group"
+                  >
+                    <img
+                      src="https://www.google.com/favicon.ico"
+                      alt="Google"
+                      className="w-5 h-5"
+                    />
+                    <span className="text-neutral-700 font-medium text-sm group-hover:text-black">
+                      Continue with Google
+                    </span>
                   </button>
                 </div>
 

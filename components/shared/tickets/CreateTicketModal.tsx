@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { X, ArrowLeft, Upload, CheckCircle, Loader2 } from "lucide-react";
+import { pickStoredUploadValue, uploadFileToS3 } from "@/lib/uploads/client";
 
 // --- Types & Enums ---
 
@@ -215,6 +216,12 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
+      let attachmentValue: string | null = null;
+      if (formData.uploadedFile) {
+        const uploaded = await uploadFileToS3(formData.uploadedFile, "tickets");
+        attachmentValue = pickStoredUploadValue(uploaded);
+      }
+
       const ticketData = {
         nationciteId,
         name: userName,
@@ -223,7 +230,7 @@ export const CreateTicketModal: React.FC<CreateTicketModalProps> = ({
         description: formData.additionalNotes || "N/A",
         issueReason: formData.issueReason || null,
         links: formData.supportLinks ? [formData.supportLinks] : [],
-        attachments: formData.uploadedFile ? [formData.uploadedFile.name] : [],
+        attachments: attachmentValue ? [attachmentValue] : [],
         impactLevel: formData.impactLevel || null,
         preferredOutcome: formData.preferredOutcome || null,
         comment: formData.selectedPaper

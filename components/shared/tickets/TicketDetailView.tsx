@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { PriorityBadge } from "./PriorityBadge";
+import { isProbablyUrl } from "@/lib/uploads/client";
 
 interface Publication {
   id: number;
@@ -78,6 +79,29 @@ export function TicketDetailView({
         return "text-blue-600 bg-blue-50 border-blue-200";
       default:
         return "text-gray-600 bg-gray-50 border-gray-200";
+    }
+  };
+
+  const openAttachment = async (attachment: string) => {
+    try {
+      if (isProbablyUrl(attachment)) {
+        window.open(attachment, "_blank", "noopener,noreferrer");
+        return;
+      }
+
+      const res = await fetch(
+        `/api/uploads/access?ref=${encodeURIComponent(attachment)}`,
+        { credentials: "include" },
+      );
+      const json = await res.json();
+      if (!res.ok || !json?.success) {
+        throw new Error(json?.message || "Unable to open attachment");
+      }
+
+      window.open(json.data.url, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unable to open attachment";
+      alert(message);
     }
   };
 
@@ -237,19 +261,18 @@ export function TicketDetailView({
                   </label>
                   <div className="space-y-2">
                     {ticket.attachments.map((attachment, index) => (
-                      <a
+                      <button
                         key={index}
-                        href={attachment}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:underline p-2 bg-gray-50 rounded-lg"
+                        type="button"
+                        onClick={() => void openAttachment(attachment)}
+                        className="w-full text-left flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:underline p-2 bg-gray-50 rounded-lg"
                       >
                         <Paperclip size={14} />
                         <span className="break-all">
                           {attachment.split("/").pop() ||
                             `Attachment ${index + 1}`}
                         </span>
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
