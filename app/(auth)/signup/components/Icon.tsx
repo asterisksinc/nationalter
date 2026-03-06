@@ -12,6 +12,8 @@ import {
   Stethoscope,
   AlertCircle,
   X,
+    Eye,
+    EyeOff,
 } from "lucide-react";
 
 interface IconProps {
@@ -24,7 +26,7 @@ interface IconProps {
 export const Icon = ({
   name,
   className = "",
-  size = 20,
+  size = 30,
   strokeWidth,
 }: IconProps) => {
   const props = { className, size, strokeWidth };
@@ -56,6 +58,10 @@ export const Icon = ({
       return <AlertCircle {...props} />;
     case "x":
       return <X {...props} />;
+    case "eye":
+      return <Eye {...props} />;
+    case "eye-off":
+      return <EyeOff {...props} />;
     default:
       return null;
   }

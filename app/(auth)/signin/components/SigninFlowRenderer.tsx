@@ -414,12 +414,14 @@ export const SigninFlowRenderer = ({
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
+                className="pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-2 text-neutral-500 hover:text-neutral-700 transition-colors z-30"
                 title={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <Icon name="eye-off" size={18} />
@@ -489,12 +491,14 @@ export const SigninFlowRenderer = ({
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
+                className="pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors z-30"
                 title={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <Icon name="eye-off" size={18} />
@@ -555,12 +559,14 @@ export const SigninFlowRenderer = ({
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
+                className="pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors z-30"
                 title={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <Icon name="eye-off" size={18} />
@@ -618,12 +624,14 @@ export const SigninFlowRenderer = ({
                 placeholder="••••••••"
                 value={password}
                 onChange={setPassword}
+                className="pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors z-30"
                 title={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <Icon name="eye-off" size={18} />

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Download } from "lucide-react";
 import ScientometricCard from "./components/ScientometricCard";
 import CoreMetrics from "./components/CoreMetrics";
 import PercentileChart from "./components/PercentileChart";
@@ -230,28 +229,7 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="flex w-full sm:w-auto flex-wrap md:flex-nowrap items-center gap-2">
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
-            <span>Last 30 Days</span>
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm transition-colors">
-            <Download className="w-4 h-4" />
-            <span>Export Data</span>
-          </button>
-        </div>
+        {/* Controls removed: Last 30 Days and Export Data removed per request */}
       </div>
 
       {/* Main Content */}

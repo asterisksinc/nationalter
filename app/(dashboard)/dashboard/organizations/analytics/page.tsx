@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Download, X } from "lucide-react";
 import ScientometricCard from "./components/ScientometricCard";
 import CoreMetrics from "./components/CoreMetrics";
 import PercentileChart from "./components/PercentileChart";
@@ -191,29 +190,6 @@ export default function AnalyticsPage() {
     fetchAnalytics();
   }, []);
 
-  const handleExportData = () => {
-    if (!analyticsData) return;
-
-    const exportData = {
-      profile: analyticsData.profile,
-      mainMetrics: analyticsData.mainMetrics,
-      coreMetrics: analyticsData.coreMetrics,
-      aris: analyticsData.aris,
-      percentile: analyticsData.percentile,
-      timestamp: new Date().toISOString(),
-    };
-
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `analytics-export-${new Date().toISOString().split("T")[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
 
   if (loading) {
     return (
@@ -254,15 +230,7 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="flex w-full sm:w-auto flex-wrap md:flex-nowrap items-center gap-2">
-          <button 
-            onClick={handleExportData}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            <span>Export Data</span>
-          </button>
-        </div>
+        {/* Export Data control removed per request */}
       </div>
 
       {/* Main Content */}
