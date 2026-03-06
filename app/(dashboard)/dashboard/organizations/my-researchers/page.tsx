@@ -181,8 +181,7 @@ export default function MyResearchersPage() {
           My Researchers
         </div>
         <div className="text-[13px] md:text-sm font-normal leading-6 tracking-[-0.02em] text-[#525866]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor.
+          Manage and verify researchers affiliated with your institute. View their research profiles, bibliometric indicators, and verification status.
         </div>
       </div>
 

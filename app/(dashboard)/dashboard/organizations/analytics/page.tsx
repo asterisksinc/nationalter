@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Download } from "lucide-react";
+import { Download, X } from "lucide-react";
 import ScientometricCard from "./components/ScientometricCard";
 import CoreMetrics from "./components/CoreMetrics";
 import PercentileChart from "./components/PercentileChart";
@@ -191,6 +191,30 @@ export default function AnalyticsPage() {
     fetchAnalytics();
   }, []);
 
+  const handleExportData = () => {
+    if (!analyticsData) return;
+
+    const exportData = {
+      profile: analyticsData.profile,
+      mainMetrics: analyticsData.mainMetrics,
+      coreMetrics: analyticsData.coreMetrics,
+      aris: analyticsData.aris,
+      percentile: analyticsData.percentile,
+      timestamp: new Date().toISOString(),
+    };
+
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `analytics-export-${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) {
     return (
       <div className="px-2 sm:px-0 md:pr-4 py-2 max-w-[1600px] mx-auto">
@@ -231,39 +255,10 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="flex w-full sm:w-auto flex-wrap md:flex-nowrap items-center gap-2">
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
-            <span>Last 30 Days</span>
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-              />
-            </svg>
-            <span>Filter</span>
-          </button>
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm transition-colors">
+          <button 
+            onClick={handleExportData}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-[#FF7A00] hover:bg-[#E66E00] text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm transition-colors"
+          >
             <Download className="w-4 h-4" />
             <span>Export Data</span>
           </button>
@@ -295,7 +290,6 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Footer Controls */}
-
       <div className="mt-8 text-center text-xs text-gray-400 space-y-1 pb-8">
         <div>
           All bibliometric indicators were normalized within discipline-specific
