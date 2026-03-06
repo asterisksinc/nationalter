@@ -36,9 +36,9 @@ export default function UserManagementPage() {
     if (!confirm(`Delete ${user.name} (${user.email})? This cannot be undone.`)) return;
     try {
       const res = await fetch(`/api/delete-user?id=${user.id}`, { method: "DELETE" });
+      const json = await res.json();
       if (!res.ok) {
-        const json = await res.json();
-        throw new Error(json.error || "Delete failed");
+        throw new Error(json.message || json.error || "Delete failed");
       }
       await fetchUsers();
     } catch (e: unknown) {
