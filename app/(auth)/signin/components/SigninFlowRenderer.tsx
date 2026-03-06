@@ -27,6 +27,7 @@ export const SigninFlowRenderer = ({
   // const [step, setStep] = useState(1); // MIGRATED TO PROPS
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(60);
+  const [otpError, setOtpError] = useState("");
 
   // Form States
   const [mobile, setMobile] = useState("");
@@ -35,6 +36,27 @@ export const SigninFlowRenderer = ({
   const [orcid, setOrcid] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+
+  const resolveRedirectUrl = (
+    role?: string,
+    registrationType?: string | null,
+  ) => {
+    if (role === "ADMIN") return "/admin-overview";
+    if (role === "ORG") return "/dashboard/organizations";
+    if (role === "SCHOLAR") {
+      if (
+        registrationType === "MEDICAL" ||
+        registrationType === "Medical Professional"
+      ) {
+        return "/dashboard/medical";
+      }
+
+      return "/dashboard/researchers";
+    }
+
+    return "/dashboard";
+  };
+
   const handleEmailPassSubmit = async () => {
     setIsLoading(true);
     console.log("[AUTH] Starting login...", { email, userType });
@@ -85,22 +107,7 @@ export const SigninFlowRenderer = ({
       // Small delay to ensure cookies are saved
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      let redirectUrl = "/dashboard";
-      if (userRole === "ADMIN") {
-        redirectUrl = "/admin-overview";
-      } else if (userRole === "ORG") {
-        redirectUrl = "/dashboard/organizations";
-      } else if (userRole === "SCHOLAR") {
-        // Check for both backend enum value "MEDICAL" and possible frontend display value "Medical Professional"
-        if (
-          registrationType === "MEDICAL" ||
-          registrationType === "Medical Professional"
-        ) {
-          redirectUrl = "/dashboard/medical";
-        } else {
-          redirectUrl = "/dashboard/researchers";
-        }
-      }
+      const redirectUrl = resolveRedirectUrl(userRole, registrationType);
 
       console.log("[AUTH] Redirecting to:", redirectUrl);
       window.location.href = redirectUrl;
@@ -120,22 +127,103 @@ export const SigninFlowRenderer = ({
     return () => clearInterval(interval);
   }, [step, timer]);
 
-  const handleMobileSubmit = () => {
+  const handleMobileSubmit = async () => {
+    setOtpError("");
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobile,
+          loginType: userType,
+        }),
+      });
+
+      const result = await res.json();
+      if (!result.success) {
+        setOtpError(result.message || "Failed to send OTP");
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(false);
       setStep(2); // Move to OTP
       setTimer(60);
-    }, 1000);
+      setOtp(["", "", "", ""]);
+    } catch (err) {
+      console.error("[AUTH] OTP send error:", err);
+      setOtpError("Failed to send OTP");
+      setIsLoading(false);
+    }
   };
 
-  const handleOtpSubmit = () => {
+  const handleOtpSubmit = async () => {
+    setOtpError("");
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const enteredOtp = otp.join("");
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobile,
+          otp: enteredOtp,
+          loginType: userType,
+        }),
+        credentials: "include",
+      });
+
+      const result = await res.json();
+      if (!result.success) {
+        setOtpError(result.message || "OTP verification failed");
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(false);
+      const redirectUrl = resolveRedirectUrl(
+        result.data?.role,
+        result.data?.registrationType,
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      window.location.href = redirectUrl;
       onSuccess();
-    }, 1000);
+    } catch (err) {
+      console.error("[AUTH] OTP verify error:", err);
+      setOtpError("OTP verification failed");
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setOtpError("");
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobile,
+          loginType: userType,
+        }),
+      });
+
+      const result = await res.json();
+      if (!result.success) {
+        setOtpError(result.message || "Failed to resend OTP");
+        setIsLoading(false);
+        return;
+      }
+
+      setTimer(60);
+      setOtp(["", "", "", ""]);
+      setIsLoading(false);
+    } catch (err) {
+      console.error("[AUTH] OTP resend error:", err);
+      setOtpError("Failed to resend OTP");
+      setIsLoading(false);
+    }
   };
 
   const GoogleButton = () => (
@@ -235,11 +323,17 @@ export const SigninFlowRenderer = ({
           <button
             className="text-[var(--color-primary)] font-medium hover:underline disabled:opacity-50"
             disabled={timer > 0}
-            onClick={() => setTimer(60)}
+            onClick={() => void handleResendOtp()}
           >
             Resend
           </button>
         </div>
+
+        {otpError && (
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {otpError}
+          </div>
+        )}
 
         {/* ACTION BUTTONS */}
         <div className="flex flex-col gap-4">
@@ -294,7 +388,7 @@ export const SigninFlowRenderer = ({
 
           {mobile && (
             <button
-              onClick={handleMobileSubmit}
+              onClick={() => void handleMobileSubmit()}
               className="w-full bg-[var(--color-primary)] text-white py-3 mt-2 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all"
             >
               {isLoading ? "Sending OTP..." : "Send OTP"}

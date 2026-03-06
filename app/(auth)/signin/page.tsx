@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { SigninSidebar } from "./components/SigninSidebar";
 import { SigninFlowRenderer } from "./components/SigninFlowRenderer";
@@ -16,7 +16,7 @@ enum UserType {
   Researcher = "Researcher",
 }
 
-export default function LoginPage() {
+function SigninContent() {
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -271,5 +271,20 @@ export default function LoginPage() {
         </div>
       </div>
     </div></>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen w-full flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-neutral-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SigninContent />
+    </Suspense>
   );
 }

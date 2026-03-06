@@ -15,10 +15,6 @@ interface FlowRendererProps {
   userType: string;
   step: number;
   onNext: () => void;
-  onSendOtp?: () => void;
-  otpSent: boolean;
-  setOtpSent: (value: boolean) => void;
-  timer: number;
   onChange?: (field: string, value: string | File) => void;
   researcherForm: Record<string, string>;
   medicalForm: Record<string, string>;
@@ -30,10 +26,6 @@ export const FlowRenderer = ({
   userType,
   step,
   onNext,
-  onSendOtp,
-  otpSent,
-  setOtpSent,
-  timer,
   onChange,
   researcherForm,
   medicalForm,
@@ -170,10 +162,6 @@ export const FlowRenderer = ({
       <InstitutionFlow
         step={step}
         onNext={onNext}
-        onSendOtp={onSendOtp}
-        otpSent={otpSent}
-        setOtpSent={setOtpSent}
-        timer={timer}
         onChange={onChange}
         institutionForm={institutionForm}
         getFieldError={getFieldError}

@@ -3,6 +3,20 @@ import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 
+function normalizeMobile(input: string) {
+  const cleanedMobile = String(input ?? "").replace(/\s+/g, "");
+
+  if (cleanedMobile.startsWith("+91")) {
+    return cleanedMobile.slice(3);
+  }
+
+  if (cleanedMobile.startsWith("91") && cleanedMobile.length === 12) {
+    return cleanedMobile.slice(2);
+  }
+
+  return cleanedMobile.replace(/\D/g, "");
+}
+
 // ✅ Initialize SNS
 const sns = new SNSClient({
   region: process.env.AWS_REGION,
@@ -24,7 +38,7 @@ function hashOtp(otp: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { mobile } = await req.json();
+    const { mobile, loginType } = await req.json();
 
     if (!mobile) {
       return NextResponse.json(
@@ -33,17 +47,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 🔥 Clean input (remove spaces)
-    const cleanedMobile = mobile.replace(/\s+/g, "");
-
-    // ✅ Normalize for DB lookup (store without +91)
-    let dbMobile = cleanedMobile;
-
-    if (cleanedMobile.startsWith("+91")) {
-      dbMobile = cleanedMobile.slice(3);
-    } else if (cleanedMobile.startsWith("91") && cleanedMobile.length === 12) {
-      dbMobile = cleanedMobile.slice(2);
-    }
+    const dbMobile = normalizeMobile(mobile);
 
     // ✅ Check DB
     const medical = await prisma.medicalProfessional.findUnique({
@@ -63,6 +67,33 @@ export async function POST(req: NextRequest) {
         { success: false, message: "Mobile not registered" },
         { status: 404 }
       );
+    }
+
+    if (loginType) {
+      const isMedicalLogin = loginType === "Medical Professional";
+      const isResearcherLogin = loginType === "Researcher";
+      const isOrgLogin = loginType === "Institution/ Organisation";
+
+      if (isMedicalLogin && !medical) {
+        return NextResponse.json(
+          { success: false, message: "This mobile is not registered as a medical professional" },
+          { status: 403 }
+        );
+      }
+
+      if (isResearcherLogin && !researcher) {
+        return NextResponse.json(
+          { success: false, message: "This mobile is not registered as a researcher" },
+          { status: 403 }
+        );
+      }
+
+      if (isOrgLogin && !org) {
+        return NextResponse.json(
+          { success: false, message: "This mobile is not registered as an organization" },
+          { status: 403 }
+        );
+      }
     }
 
     // ✅ Generate OTP

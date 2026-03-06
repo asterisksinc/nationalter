@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       { message: "Contact form submitted successfully", data: { id: contactEntry.id } },
       { status: 200 }
     );
-  } catch (error) {
+    } catch (error) {
     console.error("Error processing contact form:", error);
     return NextResponse.json(
       { error: "Internal server error" },

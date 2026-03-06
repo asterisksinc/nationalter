@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { SignupNavbar } from "./components/SignupNavbar";
 import { SignupSidebar } from "./components/SignupSidebar";
@@ -26,15 +26,13 @@ enum FlowStep {
   Dashboard = 5,
 }
 
-export default function RegisterPage() {
+function SignupContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [apiError, setApiError] = useState<string>("");
 
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [otpSent, setOtpSent] = useState(false);
-  const [timer, setTimer] = useState(60);
   const [researcherForm, setResearcherForm] = useState({
     name: "",
     institution: "",
@@ -458,19 +456,7 @@ export default function RegisterPage() {
     return result.valid;
   };
 
-  // Timer effect for OTP
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    if (otpSent && timer > 0) {
-      interval = setInterval(() => setTimer((p) => p - 1), 1000);
-    }
-    return () => clearInterval(interval);
-  }, [otpSent, timer]);
-
-  // Reset OTP state when step changes
-  useEffect(() => {
-    setOtpSent(false);
-    setTimer(60);
     setValidationErrors({});
     setApiError(""); // Clear API errors when navigating between steps
   }, [currentStep]);
@@ -501,11 +487,6 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSendInstitutionOtp = () => {
-    // Validate step 2 (Authentication) fields before showing OTP UI
-    if (!validateCurrentStep()) return;
-    setOtpSent(true);
-  };
   const submitRegistration = async () => {
     // Prevent double submission
     if (hasSubmitted || isSubmitting) {
@@ -517,7 +498,7 @@ export default function RegisterPage() {
       return;
     }
 
-    let payload: any;
+    let payload: Record<string, unknown>;
     let apiUrl = "";
 
     switch (userType) {
@@ -964,14 +945,6 @@ export default function RegisterPage() {
                           userType={userType}
                           step={currentStep}
                           onNext={handleNextStep}
-                          onSendOtp={
-                            userType === UserType.Institution
-                              ? handleSendInstitutionOtp
-                              : undefined
-                          }
-                          otpSent={otpSent}
-                          setOtpSent={setOtpSent}
-                          timer={timer}
                           onChange={
                             userType === UserType.Medical
                               ? handleMedicalInputChange
@@ -1006,5 +979,20 @@ export default function RegisterPage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen w-full flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-neutral-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SignupContent />
+    </Suspense>
   );
 }
