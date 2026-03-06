@@ -34,7 +34,6 @@ export async function GET(req: NextRequest) {
         },
       },
       select: {
-        nationciteId: true,
         type: true,
         status: true,
         createdAt: true,

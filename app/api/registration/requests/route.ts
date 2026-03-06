@@ -85,6 +85,22 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Registration requests fetch error:", error);
 
+    if (error instanceof Error) {
+      if (error.message === "Unauthorized") {
+        return NextResponse.json(
+          { success: false, message: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+
+      if (error.message.startsWith("Forbidden")) {
+        return NextResponse.json(
+          { success: false, message: error.message },
+          { status: 403 }
+        );
+      }
+    }
+
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 }

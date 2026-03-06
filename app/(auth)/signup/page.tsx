@@ -26,6 +26,15 @@ enum FlowStep {
   Dashboard = 5,
 }
 
+const DEFAULT_UPLOAD_URLS = {
+  researcherIdCard: "https://example.com/researcher-id-card.pdf",
+  researcherProfilePhoto: "https://example.com/profile-photo.jpg",
+  medicalDegree: "https://example.com/medical-degree.pdf",
+  medicalCertificate: "https://example.com/registration-certificate.pdf",
+  orgAuthorization: "https://example.com/letter-of-authorization.pdf",
+  orgAccreditation: "https://example.com/accreditation-proof.pdf",
+};
+
 function SignupContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -39,10 +48,10 @@ function SignupContent() {
     instituteEmail: "",
     orcidId: "",
     mobile: "",
-    institutionalIdCardUrl: "",
+    institutionalIdCardUrl: DEFAULT_UPLOAD_URLS.researcherIdCard,
     primaryDomain: "",
     googleScholarUrl: "",
-    profilePhotoUrl: "",
+    profilePhotoUrl: DEFAULT_UPLOAD_URLS.researcherProfilePhoto,
     city: "",
     state: "",
     email: "",
@@ -53,10 +62,12 @@ function SignupContent() {
       institute: researcherForm.institution,
       instituteEmail: researcherForm.instituteEmail.trim(),
       orcidId: normalizeOrcid(researcherForm.orcidId),
-      institutionalIdCardUrl: researcherForm.institutionalIdCardUrl,
+      institutionalIdCardUrl:
+        researcherForm.institutionalIdCardUrl || DEFAULT_UPLOAD_URLS.researcherIdCard,
       primaryDomain: researcherForm.primaryDomain,
       googleScholarUrl: researcherForm.googleScholarUrl,
-      profilePhotoUrl: researcherForm.profilePhotoUrl,
+      profilePhotoUrl:
+        researcherForm.profilePhotoUrl || DEFAULT_UPLOAD_URLS.researcherProfilePhoto,
       city: researcherForm.city,
       state: researcherForm.state,
       type: "RESEARCHER",
@@ -75,8 +86,8 @@ function SignupContent() {
     primaryHospital: "",
     specialty: "",
     researchFocus: "",
-    medicalDegreeUrl: "",
-    regCertificateUrl: "",
+    medicalDegreeUrl: DEFAULT_UPLOAD_URLS.medicalDegree,
+    regCertificateUrl: DEFAULT_UPLOAD_URLS.medicalCertificate,
     city: "",
     state: "",
   });
@@ -91,8 +102,10 @@ function SignupContent() {
       primaryHospital: medicalForm.primaryHospital,
       specialty: medicalForm.specialty,
       researchFocus: medicalForm.researchFocus,
-      medicalDegreeUrl: medicalForm.medicalDegreeUrl,
-      regCertificateUrl: medicalForm.regCertificateUrl,
+      medicalDegreeUrl:
+        medicalForm.medicalDegreeUrl || DEFAULT_UPLOAD_URLS.medicalDegree,
+      regCertificateUrl:
+        medicalForm.regCertificateUrl || DEFAULT_UPLOAD_URLS.medicalCertificate,
       city: medicalForm.city,
       state: medicalForm.state,
     };
@@ -120,8 +133,8 @@ function SignupContent() {
     name1: "",
     city: "",
     state: "",
-    letterOfAuthorizationUrl: "",
-    accreditationProofUrl: "",
+    letterOfAuthorizationUrl: DEFAULT_UPLOAD_URLS.orgAuthorization,
+    accreditationProofUrl: DEFAULT_UPLOAD_URLS.orgAccreditation,
   });
   const buildInstitutionPayload = () => {
     return {
@@ -129,8 +142,10 @@ function SignupContent() {
       domain: institutionForm.domain,
       email: institutionForm.email,
       number: normalizeMobileDigits(institutionForm.number),
-      letterOfAuthorizationUrl: institutionForm.letterOfAuthorizationUrl,
-      accreditationProofUrl: institutionForm.accreditationProofUrl,
+      letterOfAuthorizationUrl:
+        institutionForm.letterOfAuthorizationUrl || DEFAULT_UPLOAD_URLS.orgAuthorization,
+      accreditationProofUrl:
+        institutionForm.accreditationProofUrl || DEFAULT_UPLOAD_URLS.orgAccreditation,
       city: institutionForm.city,
       state: institutionForm.state,
     };
@@ -340,9 +355,6 @@ function SignupContent() {
       if (!validateRequired(researcherForm.googleScholarUrl)) {
         errors.googleScholarUrl = "Google Scholar URL is required";
       }
-      if (!validateRequired(researcherForm.profilePhotoUrl)) {
-        errors.profilePhotoUrl = "Profile photo is required";
-      }
     }
 
     return { valid: Object.keys(errors).length === 0, errors };
@@ -430,12 +442,7 @@ function SignupContent() {
         errors.state = "State is required";
       }
     } else if (step === 3) {
-      if (!validateRequired(institutionForm.letterOfAuthorizationUrl)) {
-        errors.letterOfAuthorizationUrl = "Letter of authorization is required";
-      }
-      if (!validateRequired(institutionForm.accreditationProofUrl)) {
-        errors.accreditationProofUrl = "Accreditation proof is required";
-      }
+      // Document uploads are now optional
     }
 
     return { valid: Object.keys(errors).length === 0, errors };

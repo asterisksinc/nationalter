@@ -36,6 +36,7 @@ export const SigninFlowRenderer = ({
   const [orcid, setOrcid] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const resolveRedirectUrl = (
     role?: string,
@@ -409,11 +410,23 @@ export const SigninFlowRenderer = ({
             <div className="relative">
               <FormInput
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <Icon name="eye-off" size={18} />
+                ) : (
+                  <Icon name="eye" size={18} />
+                )}
+              </button>
               <button
                 type="button"
                 onClick={() => setIsForgotPasswordOpen(true)}
@@ -472,11 +485,23 @@ export const SigninFlowRenderer = ({
             <div className="relative">
               <FormInput
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <Icon name="eye-off" size={18} />
+                ) : (
+                  <Icon name="eye" size={18} />
+                )}
+              </button>
               <button
                 type="button"
                 onClick={() => setIsForgotPasswordOpen(true)}
@@ -526,11 +551,23 @@ export const SigninFlowRenderer = ({
             <div className="relative">
               <FormInput
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={setPassword}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <Icon name="eye-off" size={18} />
+                ) : (
+                  <Icon name="eye" size={18} />
+                )}
+              </button>
               <button
                 type="button"
                 onClick={() => setIsForgotPasswordOpen(true)}
@@ -577,11 +614,23 @@ export const SigninFlowRenderer = ({
             <div className="relative">
               <FormInput
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
                 onChange={setPassword}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-12 top-[30px] text-neutral-500 hover:text-neutral-700 transition-colors"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <Icon name="eye-off" size={18} />
+                ) : (
+                  <Icon name="eye" size={18} />
+                )}
+              </button>
               <button
                 type="button"
                 onClick={() => setIsForgotPasswordOpen(true)}

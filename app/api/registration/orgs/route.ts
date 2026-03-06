@@ -67,12 +67,7 @@ export async function POST(req: NextRequest) {
     if (!number) fieldErrors.number = "Mobile number is required";
     if (!city) fieldErrors.city = "City is required";
     if (!state) fieldErrors.state = "State is required";
-    if (!letterOfAuthorizationUrl) {
-      fieldErrors.letterOfAuthorizationUrl = "Letter of authorization is required";
-    }
-    if (!accreditationProofUrl) {
-      fieldErrors.accreditationProofUrl = "Accreditation proof is required";
-    }
+    // Document uploads are now optional
 
     if (name && name.trim().length < 3) {
       fieldErrors.name = "Organization name must be at least 3 characters";

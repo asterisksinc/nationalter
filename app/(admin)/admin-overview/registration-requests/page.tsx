@@ -26,6 +26,7 @@ export default function RegistrationRequestsPage() {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [allRegistrations, setAllRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<string>("ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
@@ -73,6 +74,7 @@ export default function RegistrationRequestsPage() {
 
   const fetchRegistrations = useCallback(async () => {
     setLoading(true);
+    setLoadError("");
     try {
       const params = new URLSearchParams();
       if (filterType !== "ALL") params.append("type", filterType);
@@ -80,9 +82,16 @@ export default function RegistrationRequestsPage() {
 
       const response = await fetch(`/api/registration/requests?${params}`, { credentials: "include" });
       const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to load registrations");
+      }
+
       setRegistrations(data.data || []);
     } catch (err) {
       console.error(err);
+      setRegistrations([]);
+      setLoadError(err instanceof Error ? err.message : "Failed to load registrations");
     } finally {
       setLoading(false);
     }
@@ -97,9 +106,15 @@ export default function RegistrationRequestsPage() {
       try {
         const response = await fetch("/api/registration/requests", { credentials: "include" });
         const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || "Failed to load registration totals");
+        }
+
         setAllRegistrations(data.data || []);
       } catch (err) {
         console.error(err);
+        setAllRegistrations([]);
       }
     };
 
@@ -228,6 +243,12 @@ export default function RegistrationRequestsPage() {
         />
 
         <div className="p-4 md:p-6">
+          {loadError && (
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {loadError}
+            </div>
+          )}
+
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start pb-4 gap-4 border-b border-gray-200 mb-4">
             <div>
