@@ -41,10 +41,8 @@ export function MrrAndMetricsRow({ sparklines }: MrrAndMetricsRowProps) {
       </div>
 
       <div className="ao-card ao-metrics-card">
-        <div className="ao-metrics-head">Lorem ipsum dolor sit amet</div>
-        <div className="ao-metrics-sub">
-          Inventore veritatis et quasi architecto beatae vita
-        </div>
+        <div className="ao-metrics-head">Platform Metrics</div>
+        <div className="ao-metrics-sub">Overview of MRR, active users, registrations, and core KPIs.</div>
 
         <div className="ao-metrics-grid">
           <div className="ao-metric-cell">
