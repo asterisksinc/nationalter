@@ -346,3 +346,15 @@ model ContactUs {
   @@index([status])
   @@index([createdAt])
 }
+
+////////////////////////////////////////////////
+// CMS (KEY VALUE STORAGE FOR SITE CONTENT)
+////////////////////////////////////////////////
+
+model Cms {
+  key       String   @id @db.Text
+  value     Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
