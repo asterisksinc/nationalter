@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { DashboardSidebar } from "../component/dashboardsidebar";
 import { DashboardHeader } from "../component/DashboardHeader";
 import {
-    Eye, Trash2, Search, RefreshCw, Plus, Edit, X, Save, ImageIcon,
+    Eye, Trash2, Search, RefreshCw, Plus, Edit, X, Save, ImageIcon, MapPin,
 } from "lucide-react";
 import "../adminstyle.css";
 
@@ -151,15 +152,25 @@ export default function CMSPage() {
                                 Create, edit and manage blog posts for the public site.
                             </div>
                         </div>
-                        <button onClick={openNew} style={{
-                            display: "flex", alignItems: "center", gap: "8px",
-                            padding: "10px 20px", borderRadius: "10px", border: "none", cursor: "pointer",
-                            background: "linear-gradient(135deg, #ff7a00, #e06a00)", color: "#fff",
-                            fontSize: "13px", fontWeight: 600, fontFamily: FONT,
-                            boxShadow: "0 2px 8px rgba(255,122,0,0.25)",
-                        }}>
-                            <Plus size={16} /> New Blog Post
-                        </button>
+                        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                            <Link href="/admin-overview/cms-planning" style={{
+                                display: "flex", alignItems: "center", gap: "8px",
+                                padding: "10px 20px", borderRadius: "10px", border: "1px solid #e2e8f0",
+                                background: "#fff", color: "#525866", textDecoration: "none",
+                                fontSize: "13px", fontWeight: 600, fontFamily: FONT,
+                            }}>
+                                <MapPin size={16} /> CMS Planning
+                            </Link>
+                            <button onClick={openNew} style={{
+                                display: "flex", alignItems: "center", gap: "8px",
+                                padding: "10px 20px", borderRadius: "10px", border: "none", cursor: "pointer",
+                                background: "linear-gradient(135deg, #ff7a00, #e06a00)", color: "#fff",
+                                fontSize: "13px", fontWeight: 600, fontFamily: FONT,
+                                boxShadow: "0 2px 8px rgba(255,122,0,0.25)",
+                            }}>
+                                <Plus size={16} /> New Blog Post
+                            </button>
+                        </div>
                     </div>
                 </div>
 
