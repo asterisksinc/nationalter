@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DashboardSidebar } from "../component/dashboardsidebar";
 import { DashboardHeader } from "../component/DashboardHeader";
 import {
-    ChevronDown, Search, Upload, Plus, Link as LinkIcon,
+    ChevronDown, Search, Upload, Link as LinkIcon,
     Type, AlignLeft, Image as ImageIcon, Repeat, MapPin,
 } from "lucide-react";
 import "../adminstyle.css";
@@ -110,13 +110,6 @@ function RepeatableField({ field }: { field: CMSField }) {
                         padding: "2px 8px", borderRadius: "999px", fontWeight: 600,
                     }}>REPEATABLE</span>
                 </label>
-                <button style={{
-                    display: "flex", alignItems: "center", gap: "4px", padding: "5px 12px",
-                    borderRadius: "8px", border: "1px dashed #ff7a00", background: "transparent",
-                    cursor: "pointer", fontSize: "11px", color: "#ff7a00", fontFamily: FONT, fontWeight: 600,
-                }}>
-                    <Plus size={12} /> Add Item
-                </button>
             </div>
 
             {/* Single sample item */}

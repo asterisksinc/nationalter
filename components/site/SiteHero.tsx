@@ -5,6 +5,15 @@ type SiteHeroProps = {
   layout?: "contained" | "raw";
   className?: string;
   useDefaultBackground?: boolean;
+  cms?: {
+    desktop_background_image?: string;
+    mobile_background_image?: string;
+  };
+};
+
+const DEFAULT_CMS = {
+  desktop_background_image: "/Bg.jpg",
+  mobile_background_image: "/Mobile_Responsive.jpg",
 };
 
 export default function SiteHero({
@@ -12,7 +21,10 @@ export default function SiteHero({
   layout = "contained",
   className = "",
   useDefaultBackground = true,
+  cms,
 }: SiteHeroProps) {
+  const heroCms = { ...DEFAULT_CMS, ...(cms || {}) };
+
   return (
     <section
       className={`relative w-full overflow-visible bg-white bg-cover bg-no-repeat bg-top
@@ -21,7 +33,7 @@ export default function SiteHero({
       style={{
         ...(useDefaultBackground
           ? {
-              backgroundImage: "url(/Bg.jpg)",
+              backgroundImage: `url(${heroCms.desktop_background_image})`,
               backgroundSize: "cover",
               backgroundPosition: "center top",
             }
@@ -33,7 +45,7 @@ export default function SiteHero({
         <div
           className="absolute inset-0 bg-cover bg-no-repeat bg-top md:hidden"
           style={{
-            backgroundImage: "url(/Mobile_Responsive.jpg)",
+            backgroundImage: `url(${heroCms.mobile_background_image})`,
             backgroundSize: "cover",
             backgroundPosition: "top center",
           }}

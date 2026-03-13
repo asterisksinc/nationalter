@@ -13,10 +13,35 @@ import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
 
 const ITEMS_PER_PAGE = 10;
 
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "Leaderboard",
+    heading: "Top Universities & Institutions",
+    subheading:
+      "Discover India's leading universities and research institutions excelling in research output and academic excellence. Ranked by H-Index and research contributions.",
+    cta_label: "Explore Universities",
+  },
+  table: {
+    title: "Universities Leaderboard",
+    search_placeholder: "Search universities...",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Everything You Need to Know About Us",
+    body:
+      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+  },
+};
+
 export default function UniversitiesLeaderboardPage() {
+  const cms = useCmsPage("leaderboard-universities", DEFAULT_CMS);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [data, setData] = useState<LeaderboardEntry[]>([]);
@@ -101,10 +126,10 @@ useEffect(() => {
   if (loading && data.length === 0) {
     return (
       <div className="min-h-screen bg-white font-sans">
-        <SiteHero>
-          <Badge>Leaderboard</Badge>
+        <SiteHero cms={cms.hero}>
+          <Badge>{cms.hero.badge_text}</Badge>
           <h1 className="font-inter md:max-w-[700px] mb-8 text-center">
-            Top Universities & Institutions
+            {cms.hero.heading}
           </h1>
         </SiteHero>
         <section className="w-full section-padding py-0 bg-white">
@@ -136,18 +161,16 @@ useEffect(() => {
         <meta property="og:description" content="Compare IITs, NITs, and universities by verified h-index and citations." />
       </Head>
     <div className="min-h-screen bg-white font-sans">
-      <SiteHero>
-        <Badge>Leaderboard</Badge>
+      <SiteHero cms={cms.hero}>
+        <Badge>{cms.hero.badge_text}</Badge>
         <h1 className="font-inter md:max-w-[700px] mb-8 text-center">
-          Top Universities & Institutions
+          {cms.hero.heading}
         </h1>
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          Discover India's leading universities and research institutions
-          excelling in research output and academic excellence. Ranked by
-          H-Index and research contributions.
+          {cms.hero.subheading}
         </p>
         <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6">
-          Explore Universities
+          {cms.hero.cta_label}
         </button>
       </SiteHero>
 
@@ -166,7 +189,7 @@ useEffect(() => {
                     <div className="p-2 bg-orange-50 rounded-md sm:rounded-lg text-[#FF7A00]">
                       <Sparkles size={20} />
                     </div>
-                    Universities Leaderboard
+                    {cms.table.title}
                   </h3>
                   {debouncedSearchTerm && (
                     <p className="text-xs text-slate-500 mt-2 font-inter">
@@ -181,7 +204,7 @@ useEffect(() => {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search universities..."
+                    placeholder={cms.table.search_placeholder}
                     className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-none"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -253,7 +276,7 @@ useEffect(() => {
         ]}
       />
       <ThreeBlocksSection />
-      <FAQSection />
+      <FAQSection cms={cms.faq} />
       <LeaderboardFinalCTA />
     </div></>
   );

@@ -1,0 +1,243 @@
+**Task: Integrate CMS system into the existing Next.js website using the existing `Cms` table schema.**
+
+### Context
+
+We already created a database table:
+
+```
+Cms
+-----
+key TEXT PRIMARY KEY
+value JSONB
+createdAt TIMESTAMP
+updatedAt TIMESTAMP
+```
+
+Each CMS entry will follow the format:
+
+```
+key = "page.section"
+value = JSON content
+```
+
+Example:
+
+```
+key: home.hero
+value:
+{
+  "title": "Welcome to our platform",
+  "subtitle": "AI powered research",
+  "image": "/hero.png"
+}
+```
+
+The goal is to **replace hardcoded public content with temporary variables that will later be populated from the CMS API**.
+
+---
+
+# Phase 1 — Introduce Temporary CMS Variables
+
+For every page, create a **temporary CMS object at the top of the page**.
+
+Example:
+
+```javascript
+const cms = {
+  hero: {
+    title: "Current hero title",
+    subtitle: "Current subtitle",
+    image: "/images/hero.png"
+  },
+  features: {
+    heading: "Current feature heading",
+    items: ["Feature 1", "Feature 2"]
+  }
+}
+```
+
+Then replace the hardcoded values in the components.
+
+Example before:
+
+```
+<h1>Welcome to our platform</h1>
+```
+
+Example after:
+
+```
+<h1>{cms.hero.title}</h1>
+```
+
+Example with images:
+
+```
+<Image src={cms.hero.image} />
+```
+
+This ensures **all content is accessed through variables instead of static text**.
+
+---
+
+# Phase 2 — CMS Key Naming Convention
+
+Every CMS section must follow this naming format:
+
+```
+page.section
+```
+
+Examples:
+
+```
+home.hero
+home.features
+home.cta
+about.team
+about.mission
+contact.form
+```
+
+The section name used in the frontend variables must match the CMS key.
+
+Example:
+
+```
+cms.hero
+cms.features
+cms.team
+```
+
+---
+
+# Phase 3 — API to Fetch CMS Content
+
+Create an API endpoint:
+
+```
+GET /api/cms/[page]
+```
+
+Example request:
+
+```
+GET /api/cms/home
+```
+
+Database query:
+
+```
+SELECT key, value
+FROM "Cms"
+WHERE key LIKE 'home.%'
+```
+
+Transform response into a simple object.
+
+Example API response:
+
+```
+{
+  "hero": {...},
+  "features": {...},
+  "cta": {...}
+}
+```
+
+---
+
+# Phase 4 — Replace Temporary Variables With API Data
+
+After the API is ready, update the page.
+
+Example:
+
+```
+const cms = await fetch("/api/cms/home").then(r => r.json())
+```
+
+If API fails, fallback to the temporary CMS variables.
+
+Example:
+
+```
+const cms = fetchedCMS || defaultCMS
+```
+
+---
+
+# Phase 5 — Admin Update Flow
+
+Admin CMS will send updates using POST.
+
+Endpoint:
+
+```
+POST /api/cms/update
+```
+
+Body example:
+
+```
+{
+  "key": "home.hero",
+  "value": {
+    "title": "Updated hero title",
+    "subtitle": "New subtitle",
+    "image": "/hero2.png"
+  }
+}
+```
+
+Database operation:
+
+```
+INSERT INTO "Cms" (key, value, "updatedAt")
+VALUES (...)
+ON CONFLICT (key)
+DO UPDATE SET value = EXCLUDED.value
+```
+
+---
+
+# Phase 6 — Render Flow
+
+Final rendering pipeline:
+
+```
+Admin CMS
+   ↓ POST
+Database (Cms table)
+   ↓
+GET /api/cms/page
+   ↓
+Next.js page receives CMS JSON
+   ↓
+Components read cms variables
+   ↓
+Page renders dynamic content
+```
+
+---
+
+# Phase 7 — Important Rules
+
+1. No hardcoded public content should remain in components.
+2. All content must be accessed through the `cms` variable.
+3. Each section corresponds to a CMS key.
+4. API returns all sections for a page in a single request.
+5. Components should remain reusable.
+
+---
+
+# Expected Result
+
+The website will be fully CMS-driven where:
+
+* Admin updates content through CMS
+* Database stores JSON content
+* Pages fetch CMS content dynamically
+* No redeployment is required to change content
+
+---

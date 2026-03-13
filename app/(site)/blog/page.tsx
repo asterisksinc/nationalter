@@ -18,6 +18,40 @@ interface BlogCard {
 }
 
 export default function BlogPage() {
+  const cms = {
+    hero: {
+      desktop_background_image: "/Bg.jpg",
+      mobile_background_image: "/Mobile_Responsive.jpg",
+      badge_text: "Resources",
+      heading_line_1: "Insights & Research",
+      heading_line_2: "from NationCite",
+      subheading:
+        "Stay updated with the latest articles on academic research, publishing, and the future of scholarly communication.",
+    },
+    listing: {
+      search_placeholder: "Search for articles…",
+      loading_text: "Loading articles…",
+      empty_filtered_text: "No articles match your search.",
+      empty_text: "No articles published yet.",
+      read_more_label: "Read more",
+    },
+    faq: {
+      kicker: "Know Nationcite",
+      title: "Everything You Need to Know About Us",
+      body:
+        "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+    },
+    final_cta: {
+      kicker: "Get Verified",
+      heading: "Your work deserves to be seen",
+      body:
+        "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
+      primary_cta_label: "Claim My Profile Now",
+      banner_image: "/CTA Section Image - Nationcite.png",
+      banner_alt: "Nationcite CTA Section",
+    },
+  };
+
   const [blogs, setBlogs] = useState<BlogCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -62,15 +96,14 @@ export default function BlogPage() {
       </Head>
     <main className="w-full bg-white">
       {/* Hero Section */}
-      <SiteHero>
-        <Badge>Resources</Badge>
+      <SiteHero cms={cms.hero}>
+        <Badge>{cms.hero.badge_text}</Badge>
         <h1 className="mb-8">
-          Insights & Research
-          <br className="hidden sm:block" /> from NationCite
+          {cms.hero.heading_line_1}
+          <br className="hidden sm:block" /> {cms.hero.heading_line_2}
         </h1>
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
-          Stay updated with the latest articles on academic research,
-          publishing, and the future of scholarly communication.
+          {cms.hero.subheading}
         </p>
       </SiteHero>
 
@@ -82,7 +115,7 @@ export default function BlogPage() {
             <div className="w-full sm:flex-1">
               <input
                 type="text"
-                placeholder="Search for articles…"
+                placeholder={cms.listing.search_placeholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-4 py-2 sm:py-2.5 text-sm text-black rounded-md sm:rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent font-inter placeholder-gray-500"
@@ -120,12 +153,12 @@ export default function BlogPage() {
           {/* Blog Grid */}
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="text-gray-400 text-sm font-inter">Loading articles…</div>
+              <div className="text-gray-400 text-sm font-inter">{cms.listing.loading_text}</div>
             </div>
           ) : blogs.length === 0 ? (
             <div className="flex justify-center items-center py-20">
               <div className="text-gray-400 text-sm font-inter">
-                {search ? "No articles match your search." : "No articles published yet."}
+                {search ? cms.listing.empty_filtered_text : cms.listing.empty_text}
               </div>
             </div>
           ) : (
@@ -154,7 +187,7 @@ export default function BlogPage() {
                     </p>
                     <Link href={`/blog/${blog.id}`}
                       className="text-sm sm:text-sm md:text-sm lg:text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] transition-colors inline-flex items-center gap-1">
-                      Read more <span>→</span>
+                      {cms.listing.read_more_label} <span>→</span>
                     </Link>
                   </div>
                 </article>
@@ -164,8 +197,8 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <FAQSection />
-      <FinalCTA />
+      <FAQSection cms={cms.faq} />
+      <FinalCTA cms={cms.final_cta} />
     </main></>
   );
 }

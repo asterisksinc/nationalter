@@ -19,7 +19,7 @@ export default function RightCard() {
         {/* Right Column: Text Content */}
         <div className="space-y-4 text-[#5C5C5C] text-center md:text-left">
           <p className="text-sm sm:text-base leading-relaxed">
-            Nationcite was born from a simple realization: businesses don't fail
+            Nationcite was born from a simple realization: businesses don&apos;t fail
             due to lack of ideas, they fail due to lack of execution-grade
             systems. We exist to bridge this gap by building digital products,
             platforms, and infrastructures that are reliable, scalable, and

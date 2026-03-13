@@ -10,8 +10,33 @@ import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "./components/LeaderboardFinalCTA";
 import LeaderboardWidget from "@/components/site/LeaderboardWidget";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
+
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "Leaderboard",
+    heading_prefix: "Top Researchers & ",
+    heading_highlight: "Institutions",
+    heading_line_2: "Shaping the Future",
+    subheading:
+      "Discover the top researchers and institutions driving innovation and making an impact in their fields. Our comprehensive rankings highlight the leaders in academic research and scholarly achievement",
+  },
+  widget: {
+    title: "Researched H-Index Portal",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Everything You Need to Know About Us",
+    body:
+      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+  },
+};
 
 export default function LeaderboardPage() {
+  const cms = useCmsPage("leaderboard", DEFAULT_CMS);
+
   return (
     <> <Head>
         <title>Top Indian Researchers by H-Index | 2026 Rankings</title>
@@ -30,22 +55,21 @@ export default function LeaderboardPage() {
 
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-      <SiteHero>
+      <SiteHero cms={cms.hero}>
         {/* BADGE */}
-        <Badge>Leaderboard</Badge>
+        <Badge>{cms.hero.badge_text}</Badge>
 
         {/* HEADING */}
         <h1 className="font-inter mb-8 text-center">
-          Top Researchers & <span className="text-[#FF7A00]">Institutions</span>
+          {cms.hero.heading_prefix}
+          <span className="text-[#FF7A00]">{cms.hero.heading_highlight}</span>
           <br />
-          Shaping the Future
+          {cms.hero.heading_line_2}
         </h1>
 
         {/* DESCRIPTION */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          Discover the top researchers and institutions driving innovation and
-          making an impact in their fields. Our comprehensive rankings highlight
-          the leaders in academic research and scholarly achievement
+          {cms.hero.subheading}
         </p>
       </SiteHero>
 
@@ -53,7 +77,7 @@ export default function LeaderboardPage() {
       <section className="w-full section-padding py-8 sm:py-12 md:py-14 lg:py-16 bg-white">
         <div className="w-full mx-auto">
           <div className="w-full bg-white rounded-md sm:rounded-lg shadow-lg overflow-hidden">
-            <LeaderboardWidget />
+            <LeaderboardWidget title={cms.widget.title} />
           </div>
         </div>
       </section>
@@ -64,7 +88,7 @@ export default function LeaderboardPage() {
 
       <ThreeBlocksSection />
 
-      <FAQSection />
+      <FAQSection cms={cms.faq} />
 
       <LeaderboardFinalCTA />
     </div></>

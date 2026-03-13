@@ -1,43 +1,59 @@
 import React from "react";
 
-export default function ResearchIntelligence() {
+type ResearchItem = {
+  title: string;
+  desc: string;
+};
+
+type ResearchCms = {
+  kicker?: string;
+  heading?: string;
+  subheading?: string;
+  items?: ResearchItem[];
+  cta_label?: string;
+};
+
+const DEFAULT_ITEMS: ResearchItem[] = [
+  {
+    title: "How to boost your H-index in 6 months",
+    desc: "Actionable steps to get your old work noticed again.",
+  },
+  {
+    title: "The Grant Writing Checklist",
+    desc: "What the committees are actually looking for this year.",
+  },
+  {
+    title: 'Stop ignoring "Altmetrics"',
+    desc: "Why social media mentions are starting to matter for tenure.",
+  },
+  {
+    title: "Understanding the Nationcite Algorithm",
+    desc: "How we calculate your rank compared to your peers.",
+  },
+];
+
+export default function ResearchIntelligence({ cms }: { cms?: ResearchCms }) {
+  const items = cms?.items && cms.items.length > 0 ? cms.items : DEFAULT_ITEMS;
+
   return (
     <section className="w-full py-12 md:py-16 bg-white section-padding">
       <div className="w-full mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
           <div className="mb-4">
             <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
-              Intelligence
+              {cms?.kicker || "Intelligence"}
             </span>
           </div>
           <h3 className="text-[#1E1E1E] text-2xl md:text-3xl mb-4 text-center">
-            The Research Playbook
+            {cms?.heading || "The Research Playbook"}
           </h3>
           <p className="text-[#5C5C5C] mx-auto text-center text-sm sm:text-base leading-relaxed">
-            Strategies to increase your citations, win grants, and publish in Q1
-            journals.
+            {cms?.subheading || "Strategies to increase your citations, win grants, and publish in Q1 journals."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            {
-              title: "How to boost your H-index in 6 months",
-              desc: "Actionable steps to get your old work noticed again.",
-            },
-            {
-              title: "The Grant Writing Checklist",
-              desc: "What the committees are actually looking for this year.",
-            },
-            {
-              title: 'Stop ignoring "Altmetrics"',
-              desc: "Why social media mentions are starting to matter for tenure.",
-            },
-            {
-              title: "Understanding the Nationcite Algorithm",
-              desc: "How we calculate your rank compared to your peers.",
-            },
-          ].map((item, i) => (
+          {items.map((item, i) => (
             <div
               key={i}
               className="group cursor-pointer research-card bg-[#F5F5F5] rounded-md sm:rounded-lg overflow-hidden flex flex-col h-full"
@@ -63,7 +79,7 @@ export default function ResearchIntelligence() {
         </div>
         <div className="flex justify-center mt-6 md:mt-12">
           <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-sm sm:text-base md:text-lg hover:bg-[#E66A00] transition-colors shadow-lg shadow-orange-200 w-auto max-w-sm text-center">
-            Read All Guides
+            {cms?.cta_label || "Read All Guides"}
           </button>
         </div>
       </div>

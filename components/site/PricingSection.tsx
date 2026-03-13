@@ -2,68 +2,94 @@ import React, { useState } from "react";
 import { Check } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 
+type PricingPlan = {
+  title: string;
+  price: string;
+  description: string;
+  btnText: string;
+  btnStyle: string;
+  highlight: boolean;
+  features: string[];
+};
+
+type PricingCms = {
+  badge_text?: string;
+  heading?: string;
+  billing_cycle_labels?: {
+    monthly?: string;
+    alternate?: string;
+  };
+  plans?: PricingPlan[];
+  includes_label?: string;
+  audience_note?: string;
+  footer_note?: string;
+};
+
+const DEFAULT_PLANS: PricingPlan[] = [
+  {
+    title: "Verified Professional",
+    price: "₹999",
+    description: "Build credibility. Track your research impact.",
+    btnText: "Get Verified",
+    btnStyle:
+      "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
+    highlight: false,
+    features: [
+      "Citation & rank trend tracking",
+      "Downloadable profile report",
+      "Verified profile badge",
+      "Priority & personalized support",
+      "Monthly auto-refresh",
+      "Premium Profile Coach access",
+    ],
+  },
+  {
+    title: "Verified Professional",
+    price: "₹999",
+    description: "Build credibility. Track your research impact.",
+    btnText: "Request Access",
+    btnStyle:
+      "bg-[#FF9534] border border-[#FF9534] text-white hover:bg-[#E6862D] shadow-md",
+    highlight: true,
+    features: [
+      "Citation & rank trend tracking",
+      "Verified profile badge",
+      "Priority & personalized support",
+      "Monthly auto-refresh",
+      "Downloadable profile report",
+      "Premium Profile Coach access",
+    ],
+  },
+  {
+    title: "Verified Professional",
+    price: "₹999",
+    description: "Build credibility. Track your research impact.",
+    btnText: "Contact Sales",
+    btnStyle:
+      "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
+    highlight: false,
+    features: [
+      "Citation & rank trend tracking",
+      "Verified profile badge",
+      "Priority & personalized support",
+      "Monthly auto-refresh",
+      "Downloadable profile report",
+      "Premium Profile Coach access",
+    ],
+  },
+];
+
 export default function PricingSection({
   className,
   isHero = false,
+  cms,
 }: {
   className?: string;
   isHero?: boolean;
+  cms?: PricingCms;
 }) {
   const [billingCycle, setBillingCycle] = useState("monthly");
-
-  const plans = [
-    {
-      title: "Verified Professional",
-      price: "₹999",
-      description: "Build credibility. Track your research impact.",
-      btnText: "Get Verified",
-      btnStyle:
-        "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
-      highlight: false,
-      features: [
-        "Citation & rank trend tracking",
-        "Downloadable profile report",
-        "Verified profile badge",
-        "Priority & personalized support",
-        "Monthly auto-refresh",
-        "Premium Profile Coach access",
-      ],
-    },
-    {
-      title: "Verified Professional",
-      price: "₹999",
-      description: "Build credibility. Track your research impact.",
-      btnText: "Request Access",
-      btnStyle:
-        "bg-[#FF9534] border border-[#FF9534] text-white hover:bg-[#E6862D] shadow-md",
-      highlight: true,
-      features: [
-        "Citation & rank trend tracking",
-        "Verified profile badge",
-        "Priority & personalized support",
-        "Monthly auto-refresh",
-        "Downloadable profile report",
-        "Premium Profile Coach access",
-      ],
-    },
-    {
-      title: "Verified Professional",
-      price: "₹999",
-      description: "Build credibility. Track your research impact.",
-      btnText: "Contact Sales",
-      btnStyle:
-        "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
-      highlight: false,
-      features: [
-        "Citation & rank trend tracking",
-        "Verified profile badge",
-        "Priority & personalized support",
-        "Monthly auto-refresh",
-        "Downloadable profile report",
-        "Premium Profile Coach access",
-      ],
-    },
-  ];
+  const plans = cms?.plans && cms.plans.length > 0 ? cms.plans : DEFAULT_PLANS;
 
   return (
     <section
@@ -80,10 +106,10 @@ export default function PricingSection({
             isHero ? "" : ""
           }`}
         >
-          <Badge>Membership</Badge>
+          <Badge>{cms?.badge_text || "Membership"}</Badge>
 
           <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug mb-4 sm:mb-6 md:mb-6 lg:mb-8 text-[#111111] text-center">
-            Fair Plans for Serious Professionals
+            {cms?.heading || "Fair Plans for Serious Professionals"}
           </h3>
 
           {/* Toggle Switch */}
@@ -97,7 +123,7 @@ export default function PricingSection({
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                Monthly
+                {cms?.billing_cycle_labels?.monthly || "Monthly"}
               </button>
               <button
                 onClick={() => setBillingCycle("switch")}
@@ -107,7 +133,7 @@ export default function PricingSection({
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                Switch
+                {cms?.billing_cycle_labels?.alternate || "Switch"}
               </button>
             </div>
           </div>
@@ -159,7 +185,7 @@ export default function PricingSection({
               <div className="p-4 sm:p-5 md:p-6 lg:p-8 bg-white flex-1 flex flex-col">
                 <div className="mb-5">
                   <span className="font-inter text-sm sm:text-base font-semibold text-[#111111] block mb-3 md:mb-4">
-                    What&apos;s Included
+                    {cms?.includes_label || "What&apos;s Included"}
                   </span>
                   <div className="space-y-3 sm:space-y-3 md:space-y-4">
                     {plan.features.map((feature, j) => (
@@ -181,10 +207,10 @@ export default function PricingSection({
                 </div>
                 <div className="mt-auto pt-3">
                   <p className="font-inter text-sm sm:text-sm font-semibold text-[#111111] mb-1">
-                    For Individual researchers, faculty, authors
+                    {cms?.audience_note || "For Individual researchers, faculty, authors"}
                   </p>
                   <p className="font-inter text-sm text-[#FF9534] italic font-medium">
-                    Note: Best value for professionals
+                    {cms?.footer_note || "Note: Best value for professionals"}
                   </p>
                 </div>
               </div>

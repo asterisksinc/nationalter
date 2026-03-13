@@ -5,11 +5,43 @@ import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
 import TrustedBy from "@/components/site/TrustedBy";
 import FAQSection from "@/components/site/FAQSection";
-import FinalCTA from "@/components/site/FinalCTA";
 import { Check } from "lucide-react";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
+
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "About Nationcite",
+    heading:
+      "The Digital Backbone of India's Research Ecosystem",
+    subheading:
+      "Nationcite is not just an index; we are the intelligence layer for Indian academia.",
+    cta_label: "Explore Our Vision",
+  },
+  trusted_by: {
+    heading: "Trusted by India&apos;s Top Institutions",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Transparency is Our Currency",
+    body:
+      "You have questions about how your reputation is managed. We have clear answers.",
+  },
+  final_cta: {
+    kicker: "Join the Ecosystem",
+    heading: "Claim Your Place on the Leaderboard",
+    body:
+      "Your hard work deserves to be recognized. Join the platform that is defining the standard for Indian research excellence.",
+    secondary_cta_label: "Search Directory",
+    primary_cta_label: "Get Verified Now",
+  },
+};
 
 export default function AboutPage() {
+  const cms = useCmsPage("about", DEFAULT_CMS);
+
   const scrollToNextSection = () => {
     const heroSection = document.querySelector("section");
     const nextSection = heroSection?.nextElementSibling;
@@ -18,36 +50,35 @@ export default function AboutPage() {
 
   return (
     <><Head>
-        <title>About NationCite | India's Research Ranking Platform</title>
+        <title>About NationCite | India&apos;s Research Ranking Platform</title>
         <meta
           name="description"
-          content="NationCite unifies India's researcher and institutional rankings into one transparent platform with verified metrics and compliance standards. Learn More."
+          content="NationCite unifies India&apos;s researcher and institutional rankings into one transparent platform with verified metrics and compliance standards. Learn More."
         />
         <meta 
           name="keywords" 
           content="about NationCite, India research ranking platform, h-index India platform" 
         />
-        <meta property="og:title" content="About NationCite | India's Research Ranking Platform" />
-        <meta property="og:description" content="NationCite: India's unified research ranking platform with verified h-index metrics." />
+        <meta property="og:title" content="About NationCite | India&apos;s Research Ranking Platform" />
+        <meta property="og:description" content="NationCite: India&apos;s unified research ranking platform with verified h-index metrics." />
       </Head>
     <main className="w-full bg-white">
       {/* Hero Section */}
-      <SiteHero>
+      <SiteHero cms={cms.hero}>
         {/* BADGE */}
-        <Badge>About Nationcite</Badge>
+        <Badge>{cms.hero.badge_text}</Badge>
 
         {/* HEADING */}
         <h1 className="mb-8 text-center">
           <span className="block sm:inline">
-            The Digital Backbone of&nbsp; India&apos;s Research&nbsp; Ecosystem
+            {cms.hero.heading}
           </span>
           <span className="block sm:inline"></span>
         </h1>
 
         {/* DESCRIPTION */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
-          Nationcite is not just an index; we are the intelligence layer for
-          Indian academia.
+          {cms.hero.subheading}
         </p>
 
         {/* CTA */}
@@ -56,7 +87,7 @@ export default function AboutPage() {
             onClick={scrollToNextSection}
             className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6"
           >
-            Explore Our Vision
+            {cms.hero.cta_label}
           </button>
         </div>
       </SiteHero>
@@ -113,7 +144,7 @@ export default function AboutPage() {
           </p>
           <br />
           <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">
-            At our core, we are data architects. We don&apos;t just "list"
+            At our core, we are data architects. We don&apos;t just &quot;list&quot;
             researchers; we benchmark them. By blending verified manual curation
             with advanced analytics, we create the single source of truth that
             universities, grant committees, and policymakers can trust.
@@ -131,7 +162,7 @@ export default function AboutPage() {
         <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg"></div>
       </section>
 
-      <TrustedBy />
+      <TrustedBy cms={cms.trusted_by} />
 
       {/* The Minds Powering Nationcite Section */}
       <section className="w-full py-10 sm:py-16 md:py-24 lg:py-32 section-padding bg-white">
@@ -263,8 +294,8 @@ export default function AboutPage() {
       </section>
 
       <FAQSection
-        kicker="Know Nationcite"
-        title="Transparency is Our Currency"
+        kicker={cms.faq.kicker}
+        title={cms.faq.title}
         faqItems={[
           {
             question: "What exactly does Nationcite do?",
@@ -298,8 +329,7 @@ export default function AboutPage() {
           },
         ]}
       >
-        You have questions about how your reputation is managed. We have clear
-        answers.
+        {cms.faq.body}
       </FAQSection>
 
       {/* Custom CTA for About Page */}
@@ -307,26 +337,25 @@ export default function AboutPage() {
         <div className="w-full mx-auto flex flex-col items-center text-center">
           <div className="mb-8 md:mb-10">
             <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
-              Join the Ecosystem
+              {cms.final_cta.kicker}
             </span>
           </div>
 
           <h3 className="text-[#1E1E1E] mb-8 md:mb-12 text-3xl md:text-3xl text-center">
-            Claim Your Place on the Leaderboard
+            {cms.final_cta.heading}
           </h3>
 
           <p className="text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px] text-center leading-relaxed">
-            Your hard work deserves to be recognized. Join the platform that is
-            defining the standard for Indian research excellence.
+            {cms.final_cta.body}
           </p>
 
           <div className="flex py-6 flex-row md:flex-row gap-3 justify-center items-center">
             <button className="font-inter bg-[#1E1E1E] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-black transition-colors w-auto text-center whitespace-nowrap">
-              Search Directory
+              {cms.final_cta.secondary_cta_label}
             </button>
 
             <button className="font-inter bg-[#FF7A00] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-auto text-center whitespace-nowrap">
-              Get Verified Now
+              {cms.final_cta.primary_cta_label}
             </button>
           </div>
         </div>

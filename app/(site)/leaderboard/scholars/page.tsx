@@ -12,10 +12,35 @@ import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
+import { useCmsPage } from "@/lib/use-cms-page";
 
 const ITEMS_PER_PAGE = 10;
 
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "Leaderboard",
+    heading: "Top Researchers & Scholars",
+    subheading:
+      "Explore India's leading researchers and scholars who are advancing knowledge and global research.",
+    cta_label: "Explore Scholars",
+  },
+  table: {
+    title: "Scholars Leaderboard",
+    search_placeholder: "Search scholars, IISc Bangalore, Physics...",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Everything You Need to Know About Us",
+    body:
+      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+  },
+};
+
 export default function ScholarsLeaderboardPage() {
+  const cms = useCmsPage("leaderboard-scholars", DEFAULT_CMS);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState<LeaderboardEntry[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -94,10 +119,10 @@ export default function ScholarsLeaderboardPage() {
   if (loading && allData.length === 0) {
     return (
       <div className="min-h-screen bg-white font-sans">
-        <SiteHero>
-          <Badge>Leaderboard</Badge>
+        <SiteHero cms={cms.hero}>
+          <Badge>{cms.hero.badge_text}</Badge>
           <h1 className="font-inter mb-8 md:max-w-[700px] text-center">
-            Top Researchers & Scholars
+            {cms.hero.heading}
           </h1>
         </SiteHero>
         <section className="w-full section-padding py-0 bg-white">
@@ -117,17 +142,16 @@ export default function ScholarsLeaderboardPage() {
   /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-white font-sans">
-      <SiteHero>
-        <Badge>Leaderboard</Badge>
+      <SiteHero cms={cms.hero}>
+        <Badge>{cms.hero.badge_text}</Badge>
         <h1 className="font-inter mb-8 md:max-w-[700px] text-center">
-          Top Researchers & Scholars
+          {cms.hero.heading}
         </h1>
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          Explore India's leading researchers and scholars who are
-          advancing knowledge and global research.
+          {cms.hero.subheading}
         </p>
         <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6">
-          Explore Scholars
+          {cms.hero.cta_label}
         </button>
       </SiteHero>
 
@@ -146,7 +170,7 @@ export default function ScholarsLeaderboardPage() {
                     <div className="p-2 bg-orange-50 rounded-md sm:rounded-lg text-[#FF7A00]">
                       <Sparkles size={20} />
                     </div>
-                    Scholars Leaderboard
+                    {cms.table.title}
                   </h3>
                   {searchTerm && (
                     <p className="text-xs text-slate-500 mt-2 font-inter">
@@ -161,7 +185,7 @@ export default function ScholarsLeaderboardPage() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search scholars, IISc Bangalore, Physics..."
+                    placeholder={cms.table.search_placeholder}
                     className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-none"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -233,7 +257,7 @@ export default function ScholarsLeaderboardPage() {
         ]}
       />
       <ThreeBlocksSection />
-      <FAQSection />
+      <FAQSection cms={cms.faq} />
       <LeaderboardFinalCTA />
     </div>
   );

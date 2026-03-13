@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Instagram, Twitter, Youtube, X } from "lucide-react";
 
 export default function Footer() {
@@ -27,30 +28,30 @@ export default function Footer() {
                 Company
               </h3>
               <div className="flex flex-col gap-2 md:gap-4">
-                <a
+                <Link
                   href="/about"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   About
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/methodology"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Methodology
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/blog"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Blogs
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/contact"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Contact
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -60,24 +61,24 @@ export default function Footer() {
                 Leaderboards
               </h3>
               <div className="flex flex-col gap-2 md:gap-4">
-                <a
+                <Link
                   href="/leaderboard/scholars"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Researchers
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/leaderboard/universities"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Universities
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/leaderboard/doctors"
                   className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
                 >
                   Medical Professionals
-                </a>
+                </Link>
               </div>
             </div>
 

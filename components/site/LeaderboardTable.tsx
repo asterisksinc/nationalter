@@ -45,7 +45,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
       1,
       currentPage - Math.floor(MAX_VISIBLE_PAGES / 2)
     );
-    let end = Math.min(totalPages, start + MAX_VISIBLE_PAGES - 1);
+    const end = Math.min(totalPages, start + MAX_VISIBLE_PAGES - 1);
 
     if (end - start + 1 < MAX_VISIBLE_PAGES) {
       start = Math.max(1, end - MAX_VISIBLE_PAGES + 1);

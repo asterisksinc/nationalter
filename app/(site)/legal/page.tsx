@@ -5,6 +5,7 @@ import Link from "next/link";
 import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
 
 type LegalSection = {
   title: string;
@@ -171,7 +172,27 @@ const termsOfServiceSections: LegalSection[] = [
 
 type TabType = "privacy" | "terms";
 
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    privacy_badge: "Privacy Policy",
+    terms_badge: "Terms of Service",
+    privacy_heading: "NationCite's Privacy Policy",
+    terms_heading: "NationCite's Terms of Service",
+    privacy_summary:
+      "Your privacy matters to us. This policy explains how we collect, use, and protect your personal information when you use NationCite.",
+    terms_summary:
+      "Please read these terms carefully before using NationCite. By using our services, you agree to be bound by these terms.",
+    privacy_tab_label: "Privacy Policy",
+    terms_tab_label: "Terms of Service",
+    last_updated_prefix: "Last Updated:",
+  },
+};
+
 export default function LegalPage() {
+  const cms = useCmsPage("legal", DEFAULT_CMS);
+
   const [activeTab, setActiveTab] = useState<TabType>("privacy");
 
   const sections =
@@ -188,19 +209,19 @@ export default function LegalPage() {
         />
         <meta name="keywords" content="researcher privacy policy India, DPDP compliance research platform" />
       </Head>
-      <SiteHero>
+      <SiteHero cms={cms.hero}>
         <Badge>
-          {activeTab === "privacy" ? "Privacy Policy" : "Terms of Service"}
+          {activeTab === "privacy" ? cms.hero.privacy_badge : cms.hero.terms_badge}
         </Badge>
         <h1 className="mb-8">
           {activeTab === "privacy"
-            ? "NationCite's Privacy Policy"
-            : "NationCite's Terms of Service"}
+            ? cms.hero.privacy_heading
+            : cms.hero.terms_heading}
         </h1>
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[600px] mx-auto">
           {activeTab === "privacy"
-            ? "Your privacy matters to us. This policy explains how we collect, use, and protect your personal information when you use NationCite."
-            : "Please read these terms carefully before using NationCite. By using our services, you agree to be bound by these terms."}
+            ? cms.hero.privacy_summary
+            : cms.hero.terms_summary}
         </p>
         {/* Tab Switcher */}
         <div className="flex justify-center gap-4 mt-4">
@@ -212,7 +233,7 @@ export default function LegalPage() {
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
-            Privacy Policy
+            {cms.hero.privacy_tab_label}
           </button>
           <button
             onClick={() => setActiveTab("terms")}
@@ -222,7 +243,7 @@ export default function LegalPage() {
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
-            Terms of Service
+            {cms.hero.terms_tab_label}
           </button>
         </div>
       </SiteHero>
@@ -231,7 +252,7 @@ export default function LegalPage() {
         <article className="w-full max-w-4xl px-6 md:px-8">
           {/* Last Updated */}
           <p className="text-sm text-gray-500 mb-8 text-center md:text-left">
-            Last Updated: {lastUpdated}
+            {cms.hero.last_updated_prefix} {lastUpdated}
           </p>
 
           {/* Table of Contents */}

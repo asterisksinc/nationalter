@@ -8,8 +8,41 @@ import FAQSection from "@/components/site/FAQSection";
 import FinalCTA from "@/components/site/FinalCTA";
 import "./pricing-style.css";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
+
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+  },
+  pricing: {
+    badge_text: "Membership",
+    heading: "Fair Plans for Serious Professionals",
+  },
+  tables: {
+    overview_title: "Overview & Pricing",
+    addons_title: "Add-ons (Optional for all)",
+  },
+  faq: {
+    kicker: "Lorem ipsum",
+    title: "Lorem ipsum dolor self amet consectetyr alit",
+    body:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  final_cta: {
+    kicker: "Get Verified",
+    heading: "Your work deserves to be seen",
+    body:
+      "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
+    primary_cta_label: "Claim My Profile Now",
+    banner_image: "/CTA Section Image - Nationcite.png",
+    banner_alt: "Nationcite CTA Section",
+  },
+};
 
 export default function PricingPage() {
+  const cms = useCmsPage("pricing", DEFAULT_CMS);
+
   return (
     <> <Head>
         <title>NationCite Pricing | Research Analytics Plans</title>
@@ -26,8 +59,8 @@ export default function PricingPage() {
       </Head>
     <div className="bg-white  font-sans">
       {/* Hero / Pricing Section */}
-      <SiteHero className="hero">
-        <PricingSection className="bg-transparent pt-38 " isHero />
+      <SiteHero className="hero" cms={cms.hero}>
+        <PricingSection className="bg-transparent pt-38 " isHero cms={cms.pricing} />
       </SiteHero>
 
       {/* Comparison Tables Section */}
@@ -36,7 +69,7 @@ export default function PricingPage() {
           {/* Table 1: Overview & Pricing */}
           <div className="space-y-7">
             <h4 className="mb-6 sm:mb-8 md:mb-10 lg:mb-10 text-center sm:text-left">
-              Overview & Pricing
+              {cms.tables.overview_title}
             </h4>
             <div className="mt-4 sm:mt-6 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
@@ -177,7 +210,7 @@ export default function PricingPage() {
           {/* Table 6: Add-ons */}
           <div>
             <h4 className="mb-3 sm:mb-4 md:mb-5 lg:mb-6   text-center sm:text-left">
-              Add-ons (Optional for all)
+              {cms.tables.addons_title}
             </h4>
             <div className="border mt-6 border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden max-w-2xl">
               <div className="overflow-x-auto">
@@ -212,8 +245,8 @@ export default function PricingPage() {
 
       {/* FAQ Section */}
       <FAQSection
-        kicker="Lorem ipsum"
-        title="Lorem ipsum dolor self amet consectetyr alit"
+        kicker={cms.faq.kicker}
+        title={cms.faq.title}
         questions={[
           "Lorem ipsum dolor self amet, consectetur",
           "Lorem ipsum dolor self amet, consectetur",
@@ -222,12 +255,11 @@ export default function PricingPage() {
           "Lorem ipsum dolor self amet, consectetur",
         ]}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        {cms.faq.body}
       </FAQSection>
 
       {/* Bottom CTA */}
-      <FinalCTA />
+      <FinalCTA cms={cms.final_cta} />
     </div></>
   );
 }

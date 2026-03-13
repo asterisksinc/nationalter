@@ -14,6 +14,29 @@ import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
 import LeaderboardFinalCTA from "../components/LeaderboardFinalCTA";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
+
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "Leaderboard",
+    heading: "Top Doctors & Medical Researchers",
+    subheading:
+      "Discover the top doctors and medical researchers driving innovation and making an impact in healthcare. Our comprehensive rankings highlight the leaders in medical research.",
+    cta_label: "Explore Doctors",
+  },
+  table: {
+    title: "Doctors Leaderboard",
+    search_placeholder: "Search doctors...",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Everything You Need to Know About Us",
+    body:
+      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+  },
+};
 
 const MOCK_DATA: LeaderboardEntry[] = [
   {
@@ -109,6 +132,8 @@ const MOCK_DATA: LeaderboardEntry[] = [
 ];
 
 export default function DoctorsLeaderboardPage() {
+  const cms = useCmsPage("leaderboard-doctors", DEFAULT_CMS);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = MOCK_DATA.length;
@@ -129,25 +154,23 @@ export default function DoctorsLeaderboardPage() {
       </Head>
     <div className="min-h-screen bg-white font-sans">
       {/* Hero Section */}
-      <SiteHero>
+      <SiteHero cms={cms.hero}>
         {/* BADGE */}
-        <Badge>Leaderboard</Badge>
+        <Badge>{cms.hero.badge_text}</Badge>
 
         {/* Main Heading */}
         <h1 className="font-inter md:max-w-[700px] mb-8 text-center">
-          Top Doctors & Medical Researchers
+          {cms.hero.heading}
         </h1>
 
         {/* Subheading */}
         <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          Discover the top doctors and medical researchers driving innovation
-          and making an impact in healthcare. Our comprehensive rankings
-          highlight the leaders in medical research.
+          {cms.hero.subheading}
         </p>
 
         {/* CTA BUTTON */}
         <button className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6">
-          Explore Doctors
+          {cms.hero.cta_label}
         </button>
       </SiteHero>
 
@@ -169,7 +192,7 @@ export default function DoctorsLeaderboardPage() {
                     <div className="p-2 bg-orange-50 rounded-md sm:rounded-lg text-[#FF7A00]">
                       <Sparkles size={20} />
                     </div>
-                    Doctors Leaderboard
+                    {cms.table.title}
                   </h3>
                 </div>
 
@@ -179,7 +202,7 @@ export default function DoctorsLeaderboardPage() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search doctors..."
+                    placeholder={cms.table.search_placeholder}
                     className="pl-10 pr-4 py-3 w-full md:w-[320px] bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/20 focus:border-[#FF7A00] transition-all shadow-none"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -239,7 +262,7 @@ export default function DoctorsLeaderboardPage() {
 
       <ThreeBlocksSection />
 
-      <FAQSection />
+      <FAQSection cms={cms.faq} />
 
       <LeaderboardFinalCTA />
     </div></>

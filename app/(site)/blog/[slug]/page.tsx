@@ -25,6 +25,24 @@ interface Blog {
 }
 
 export default function BlogPostPage() {
+  const cms = {
+    hero: {
+      badge_text: "Blog",
+      desktop_background_image: "/Bg.jpg",
+      mobile_background_image: "/Mobile_Responsive.jpg",
+    },
+    states: {
+      loading_text: "Loading article…",
+      back_to_articles_label: "← Back to all articles",
+      not_found_text: "Blog not found",
+      failed_text: "Failed to load blog",
+    },
+    article: {
+      section_prefix: "Section",
+      conclusion_heading: "Conclusion",
+    },
+  };
+
   const params = useParams();
   const slug = params.slug as string;
   const [blog, setBlog] = useState<Blog | null>(null);
@@ -38,12 +56,12 @@ export default function BlogPostPage() {
         const res = await fetch(`/api/blogs/${slug}`);
         const json = await res.json();
         if (!json.success || !json.blog) {
-          setError("Blog not found");
+          setError(cms.states.not_found_text);
           return;
         }
         setBlog(json.blog);
       } catch {
-        setError("Failed to load blog");
+        setError(cms.states.failed_text);
       } finally {
         setLoading(false);
       }
@@ -54,7 +72,7 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <main className="w-full bg-white min-h-screen flex items-center justify-center">
-        <p className="text-gray-400 text-sm font-inter">Loading article…</p>
+        <p className="text-gray-400 text-sm font-inter">{cms.states.loading_text}</p>
       </main>
     );
   }
@@ -62,9 +80,9 @@ export default function BlogPostPage() {
   if (error || !blog) {
     return (
       <main className="w-full bg-white min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-500 text-base font-inter">{error || "Blog not found"}</p>
+        <p className="text-gray-500 text-base font-inter">{error || cms.states.not_found_text}</p>
         <Link href="/blog" className="text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] font-inter">
-          ← Back to all articles
+          {cms.states.back_to_articles_label}
         </Link>
       </main>
     );
@@ -78,8 +96,8 @@ export default function BlogPostPage() {
 
   return (
     <>
-      <SiteHero>
-        <Badge>Blog</Badge>
+      <SiteHero cms={cms.hero}>
+        <Badge>{cms.hero.badge_text}</Badge>
         <h1 className="mb-8" style={{ maxWidth: "700px", margin: "0 auto 2rem" }}>
           {blog.title}
         </h1>
@@ -120,7 +138,7 @@ export default function BlogPostPage() {
         <section key={index} className="w-full flex justify-center bg-white">
           <article className="w-full max-w-5xl px-6 md:px-0 text-center md:text-left">
             <p className="toptitle mb-2 text-center md:text-left text-xs sm:text-sm text-[#FF7A00]">
-              Section {index + 1}
+              {cms.article.section_prefix} {index + 1}
             </p>
             <h2 className="topsubtitle mb-6 text-center md:text-left" style={{ fontSize: "28px", lineHeight: "1.2" }}>
               {section.heading}
@@ -153,7 +171,7 @@ export default function BlogPostPage() {
               marginTop: "8px",
             }}>
               <h2 className="topsubtitle mb-6 text-center md:text-left" style={{ fontSize: "28px", lineHeight: "1.2" }}>
-                Conclusion
+                {cms.article.conclusion_heading}
               </h2>
               <div className="topbody text-sm sm:text-base text-[#5C5C5C]" style={{ lineHeight: "1.8" }}>
                 {blog.conclusion}
@@ -170,7 +188,7 @@ export default function BlogPostPage() {
             href="/blog"
             className="text-sm font-medium text-[#FF7A00] hover:text-[#ff8d28] transition-colors inline-flex items-center gap-1 font-inter"
           >
-            ← Back to all articles
+            {cms.states.back_to_articles_label}
           </Link>
         </div>
       </section>

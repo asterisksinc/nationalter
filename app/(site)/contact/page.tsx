@@ -3,8 +3,42 @@
 import { useState } from "react";
 import FinalCTA from "@/components/site/FinalCTA";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
+
+const DEFAULT_CMS = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    kicker: "Get in Touch with Nationcite",
+    heading_line_1: "Let's Build India's Research",
+    heading_line_2: "Transparency Together",
+    body:
+      "Whether you're a researcher seeking profile support, an institution exploring analytics, or a partner interested in collaboration – our team is here to assist you with verified, secure, and transparent solutions.",
+    trusted_by_text: "Trusted by 8,000+ Researchers in India",
+  },
+  form: {
+    title: "Contact Form",
+    success_title: "Message sent successfully!",
+    success_body: "We'll get back to you soon.",
+    error_title: "Failed to send message",
+    error_body: "Please try again later.",
+    submit_label: "Submit",
+    submitting_label: "Submitting...",
+  },
+  final_cta: {
+    kicker: "Get Verified",
+    heading: "Your work deserves to be seen",
+    body:
+      "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
+    primary_cta_label: "Claim My Profile Now",
+    banner_image: "/CTA Section Image - Nationcite.png",
+    banner_alt: "Nationcite CTA Section",
+  },
+};
 
 export default function ContactPage() {
+  const cms = useCmsPage("contact", DEFAULT_CMS);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -75,28 +109,25 @@ export default function ContactPage() {
           <div className="flex flex-col justify-center text-center md:text-left h-full">
             {/* BADGE */}
             <div className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-3 py-1 rounded-[6px] font-medium text-xs tracking-wide uppercase mb-4 w-fit md:w-fit mx-auto md:mx-0">
-              Get in Touch with Nationcite
+              {cms.hero.kicker}
             </div>
 
             {/* HEADING */}
             <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 text-center md:text-left font-bold text-black">
-              Let&apos;s Build India&apos;s Research
+              {cms.hero.heading_line_1}
               <br />
-              Transparency Together
+              {cms.hero.heading_line_2}
             </div>
 
             {/* DESCRIPTION */}
             <p className="text-sm sm:text-base lg:text-md text-[#5C5C5C] leading-relaxed mb-6 lg:mb-12 text-center md:text-left max-w-[500px] mx-auto md:mx-0">
-              Whether you&apos;re a researcher seeking profile support, an
-              institution exploring analytics, or a partner interested in
-              collaboration – our team is here to assist you with verified,
-              secure, and transparent solutions.
+              {cms.hero.body}
             </p>
 
             {/* Trusted By Section */}
             <div className="mt-auto pl-0 md:pl-8">
               <div className="text-sm sm:text-base font-medium text-[#1E1E1E] mb-4  md:text-left">
-                Trusted by 8,000+ Researchers in India
+                {cms.hero.trusted_by_text}
               </div>
 
               <div className="flex flex-wrap gap-4 sm:gap-6 items-center">
@@ -126,19 +157,19 @@ export default function ContactPage() {
 
           {/* Right Column - Form */}
           <div className="bg-white shadow-xl rounded-xl p-5 sm:p-6 lg:p-8 border border-gray-100">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1E1E1E] mb-4">Contact Form</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1E1E1E] mb-4">{cms.form.title}</div>
             
             {submitStatus === 'success' && (
               <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className="text-green-800 font-medium text-sm">Message sent successfully!</div>
-                <div className="text-green-600 text-xs">We&apos;ll get back to you soon.</div>
+                <div className="text-green-800 font-medium text-sm">{cms.form.success_title}</div>
+                <div className="text-green-600 text-xs">{cms.form.success_body}</div>
               </div>
             )}
 
             {submitStatus === 'error' && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <div className="text-red-800 font-medium text-sm">Failed to send message</div>
-                <div className="text-red-600 text-xs">Please try again later.</div>
+                <div className="text-red-800 font-medium text-sm">{cms.form.error_title}</div>
+                <div className="text-red-600 text-xs">{cms.form.error_body}</div>
               </div>
             )}
 
@@ -257,14 +288,14 @@ export default function ContactPage() {
                 disabled={isSubmitting}
                 className="w-full bg-[#FF7A00] text-white px-6 py-2.5 rounded-[7px] text-sm font-medium hover:bg-[#ff8d28] active:bg-[#ff6d00] transition duration-200 shadow-md hover:shadow-lg focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
               >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                {isSubmitting ? cms.form.submitting_label : cms.form.submit_label}
               </button>
             </form>
           </div>
         </div>
       </section>
 
-      <FinalCTA />
+      <FinalCTA cms={cms.final_cta} />
     </>
   );
 }

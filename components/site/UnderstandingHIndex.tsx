@@ -18,8 +18,14 @@ const CheckerboardPattern = ({ className }: { className?: string }) => (
   </div>
 );
 
-export default function UnderstandingHIndex() {
-  const cards = [
+type HIndexCms = {
+  heading?: string;
+  subheading?: string;
+  cards?: Array<{ title: string; description: string }>;
+};
+
+export default function UnderstandingHIndex({ cms }: { cms?: HIndexCms }) {
+  const fallbackCards = [
     {
       title: "Productivity meets Impact",
       description:
@@ -47,17 +53,35 @@ export default function UnderstandingHIndex() {
     },
   ];
 
+  return renderComponent({
+    header: {
+      heading: cms?.heading || "The Number That Defines Your Career",
+      subheading:
+        cms?.subheading ||
+        "Your H-index is more than just a statistic. In modern academia, it is your currency. Here is why it matters.",
+    },
+    cards: cms?.cards && cms.cards.length > 0 ? cms.cards : fallbackCards,
+  });
+}
+
+function renderComponent({
+  header,
+  cards,
+}: {
+  header: { heading: string; subheading: string };
+  cards: Array<{ title: string; description: string }>;
+}) {
+
   return (
     <section className="w-full bg-white py-12 md:py-16 section-padding">
       <div className="w-full mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
-            The Number That Defines Your Career
+            {header.heading}
           </h3>
           <p className="text-gray-500 max-w-[350px] md:max-w-[700px] text-center text-sm sm:text-base leading-relaxed">
-            Your H-index is more than just a statistic. In modern academia, it
-            is your currency. Here is why it matters.
+            {header.subheading}
           </p>
         </div>
 

@@ -15,6 +15,14 @@ interface Product {
   slug: string;
 }
 
+type TransparencyCms = {
+  heading?: string;
+  subheading?: string;
+  cta_label?: string;
+  cta_url?: string;
+  items?: Product[];
+};
+
 const products: Product[] = [
   {
     id: "open-data",
@@ -48,8 +56,11 @@ const products: Product[] = [
   },
 ];
 
-export default function TransparencySection() {
-  const [activeService, setActiveService] = useState(products[0].id);
+export default function TransparencySection({ cms }: { cms?: TransparencyCms }) {
+  const renderedProducts = cms?.items && cms.items.length > 0 ? cms.items : products;
+  const headingText = cms?.heading || "Built on Transparency.\nGoverned by Data Integrity.";
+  const headingLines = headingText.split("\n");
+  const [activeService, setActiveService] = useState(renderedProducts[0].id);
   const serviceRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const scrollToService = (id: string) => {
@@ -61,7 +72,7 @@ export default function TransparencySection() {
   useEffect(() => {
     const onScroll = () => {
       const mid = window.innerHeight / 2;
-      for (const p of products) {
+      for (const p of renderedProducts) {
         const el = serviceRefs.current[p.id];
         if (!el) continue;
         const rect = el.getBoundingClientRect();
@@ -74,7 +85,7 @@ export default function TransparencySection() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [renderedProducts]);
 
   return (
     <section className="py-12 md:py-16 w-full px-4 md:px-[72px]">
@@ -82,14 +93,16 @@ export default function TransparencySection() {
         {/* HEADER */}
         <div className="mb-16 w-full text-center md:text-left">
           <h3 className="text-center md:text-left">
-            Built on Transparency.
-            <br />
-            Governed by Data Integrity.
+            {headingLines.map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index < headingLines.length - 1 ? <br /> : null}
+              </React.Fragment>
+            ))}
           </h3>
           <p className="mt-4 text-sm sm:text-base max-w-xl text-gray-600 text-center md:text-left">
-            NationCite follows a reproducible, evidence-backed methodology using
-            global open and licensed bibliometric sources. Every metric is
-            source-labeled and continuously updated.
+            {cms?.subheading ||
+              "NationCite follows a reproducible, evidence-backed methodology using global open and licensed bibliometric sources. Every metric is source-labeled and continuously updated."}
           </p>
         </div>
 
@@ -98,7 +111,7 @@ export default function TransparencySection() {
           <div className="md:block">
             <div className="md:sticky md:top-32 space-y-6 md:space-y-10">
               <ul className="space-y-4 md:space-y-6">
-                {products.map((p) => (
+                {renderedProducts.map((p) => (
                   <li
                     key={p.id}
                     onClick={() => scrollToService(p.id)}
@@ -119,17 +132,17 @@ export default function TransparencySection() {
               </ul>
 
               <Link
-                href="/methodology"
+                href={cms?.cta_url || "/methodology"}
                 className="inline-block px-3 py-2 rounded-md sm:rounded-lg text-xs md:text-sm bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
               >
-                View Full Methodology
+                {cms?.cta_label || "View Full Methodology"}
               </Link>
             </div>
           </div>
 
           {/* RIGHT SCROLLABLE CONTENT */}
           <div className="space-y-6 md:space-y-16">
-            {products.map((p) => (
+            {renderedProducts.map((p) => (
               <div
                 key={p.id}
                 ref={(el) => {

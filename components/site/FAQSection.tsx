@@ -4,6 +4,18 @@ import React, { useState } from "react";
 
 export type FAQItem = { question: string; answer: string };
 
+type FAQCms = {
+  title?: string;
+  kicker?: string;
+  body?: string;
+  questions?: string[];
+  faqItems?: FAQItem[];
+  emptyAnswer?: string;
+};
+
+const DEFAULT_EMPTY_ANSWER =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
+
 export default function FAQSection({
   title = "Everything You Need to Know About Us",
   kicker = "Know Nationcite",
@@ -16,14 +28,22 @@ export default function FAQSection({
   ],
   faqItems,
   children,
+  cms,
 }: {
   title?: string;
   kicker?: string;
   questions?: string[];
   faqItems?: FAQItem[];
   children?: React.ReactNode;
+  cms?: FAQCms;
 }) {
   const [openFaqIndex, setOpenFaqIndex] = useState(-1);
+
+  const effectiveTitle = cms?.title || title;
+  const effectiveKicker = cms?.kicker || kicker;
+  const effectiveQuestions = cms?.questions || questions;
+  const effectiveFaqItems = cms?.faqItems || faqItems;
+  const effectiveBody = cms?.body;
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? -1 : index);
@@ -31,7 +51,7 @@ export default function FAQSection({
 
   // Use faqItems if provided, otherwise use questions array for backwards compatibility
   const displayItems =
-    faqItems || questions.map((q) => ({ question: q, answer: "" }));
+    effectiveFaqItems || effectiveQuestions.map((q) => ({ question: q, answer: "" }));
 
   return (
     <section className="w-full section-padding pt-12 md:pt-24 flex flex-col items-center">
@@ -52,7 +72,7 @@ export default function FAQSection({
     mb-4
   "
         >
-          {kicker}
+          {effectiveKicker}
         </span>
 
         <div className="w-full flex justify-center">
@@ -66,18 +86,12 @@ export default function FAQSection({
       leading-snug
     "
           >
-            {title}
+            {effectiveTitle}
           </h3>
         </div>
 
         <p className="text-[#5C5C5C] text-center text-sm sm:text-base leading-relaxed">
-          {children ?? (
-            <>
-              This section answers the most common questions about Nationcite,
-              who we are, how we operate, and what makes our company different
-              in the digital ecosystem.
-            </>
-          )}
+          {children ?? effectiveBody ?? ""}
         </p>
       </div>
 
@@ -141,7 +155,7 @@ export default function FAQSection({
                   <div className="bg-gray-50 p-6 rounded-md sm:rounded-lg border border-gray-100">
                     <p>
                       {item.answer ||
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."}
+                        cms?.emptyAnswer || DEFAULT_EMPTY_ANSWER}
                     </p>
                   </div>
                 </div>
