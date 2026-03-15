@@ -128,7 +128,7 @@ function FieldEditor({
             }}
           />
           <label htmlFor={inputId} style={uploadButtonStyle}>
-            Upload Image (coming soon)
+            Upload Image 
           </label>
 
           <button
