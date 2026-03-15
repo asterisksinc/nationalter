@@ -2,10 +2,7 @@ import React from "react";
 import { Metadata as MetaType } from "next";
 import SiteHero from "@/components/site/SiteHero";
 import Badge from "@/components/ui/Badge";
-import ThreeCardsSection from "../leaderboard/components/ThreeCardsSection";
-import ConsultancySection from "../leaderboard/components/ConsultancySection";
 import ThreeBlocksSection from "../leaderboard/components/ThreeBlocksSection";
-import LeaderboardFinalCTA from "../leaderboard/components/LeaderboardFinalCTA";
 import FAQSection from "@/components/site/FAQSection";
 import TrustedBy from "@/components/site/TrustedBy";
 import FinalCTA from "@/components/site/FinalCTA";
@@ -37,11 +34,72 @@ const DEFAULT_CMS = {
   trusted_by: {
     heading: "Trusted by India&apos;s Top Institutions",
   },
+  big_card: {
+    kicker: "Lorem ipsum",
+    heading: "Lorem ipsum\ndolor self amet",
+    paragraphs: [
+      { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis." },
+      { text: "Tempus leo eu aenean sed diam urna tempor, Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere." },
+      { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis." },
+    ],
+    image: "",
+  },
+  narrative: {
+    kicker: "How we Calculate",
+    heading: "Lorem ipsum dolor\nSelf Amet",
+    paragraphs: [
+      { text: "Nationcite was born from a simple realization: businesses don't fail due to lack of ideas, they fail due to lack of execution-grade systems." },
+      { text: "At our core, we are architects of digital ecosystems with strategy, design, engineering, and automation." },
+      { text: "We partner with startups, enterprises, and innovators to power digital journeys with precision and accountability." },
+    ],
+  },
+  resources: {
+    heading: "Research Intelligence & Academic Insight",
+    subheading:
+      "Stay informed with data literacy, ranking methodology, and research visibility best practices.",
+    cards: Array.from({ length: 3 }, () => ({
+      title: "Lorem ipsum dolor slef amet",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image: "",
+      link_label: "Learn More",
+      link_url: "#",
+    })),
+    cta_label: "Explore All Resources",
+    cta_url: "#",
+  },
   faq: {
     kicker: "Know Nationcite",
     title: "Everything You Need to Know About Us",
     body:
       "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+    faq_items: [
+      {
+        question: "How does Nationcite ensure project quality?",
+        answer:
+          "We follow a documented and reproducible ranking methodology, combining automated processing with verification checkpoints.",
+      },
+      {
+        question: "What industries do you specialize in?",
+        answer:
+          "Nationcite focuses on academic and research ecosystems, including researchers, institutions, and policy-support analytics.",
+      },
+      {
+        question: "Can you handle enterprise-scale infrastructure?",
+        answer:
+          "Yes. The platform supports large-scale indexing with audit-ready updates and secure data handling.",
+      },
+      {
+        question: "What is your engagement model?",
+        answer:
+          "We support self-serve and institutional workflows with verification, reporting, and support tiers.",
+      },
+      {
+        question: "How do you handle data security?",
+        answer:
+          "We apply strict access controls and operational best practices to protect identity and publication-linked records.",
+      },
+    ],
   },
   final_cta: {
     kicker: "Get Verified",
@@ -84,14 +142,19 @@ export default async function MethodologyPage() {
       <TrustedBy cms={cms.trusted_by} />
 
       {/* Big Card Section */}
-      <Thebigcard />
+      <Thebigcard cms={cms.big_card} />
 
       {/* Right Card Sections */}
-      <RightCard />
+      <RightCard cms={cms.narrative} />
 
-      <ThreeBlocksSection />
+      <ThreeBlocksSection cms={cms.resources} />
 
-      <FAQSection cms={cms.faq} />
+      <FAQSection
+        cms={{
+          ...cms.faq,
+          faqItems: cms.faq.faq_items,
+        }}
+      />
       <FinalCTA cms={cms.final_cta} />
     </main>
   );

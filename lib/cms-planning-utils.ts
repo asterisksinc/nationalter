@@ -4,7 +4,6 @@ const PAGE_KEY_MAP: Record<string, string> = {
   leaderboard_scholars: "leaderboard-scholars",
   leaderboard_universities: "leaderboard-universities",
   leaderboard_doctors: "leaderboard-doctors",
-  blog_listing: "blog",
 };
 
 export function resolvePlanningPageKey(rawPageKey: string): string {
@@ -26,11 +25,7 @@ export function resolvePlanningSectionKey(rawPageKey: string, rawSectionKey: str
   }
 
   const sectionMap: Record<string, string> = {
-    blog_hero: "hero",
-    blog_controls: "listing",
-    blog_grid: "listing",
-    blog_faq: "faq",
-    blog_final_cta: "final_cta",
+    about_cta_banner: "final_cta",
     contact_hero: "hero",
     contact_form: "form",
     contact_final_cta: "final_cta",
@@ -56,7 +51,8 @@ function defaultForField(field: CMSField): unknown {
         defaultForField(subField),
       ]),
     );
-    return [nested];
+    const count = Math.max(1, field.repeatableCount || 1);
+    return Array.from({ length: count }, () => ({ ...nested }));
   }
 
   return field.placeholder || "";

@@ -7,7 +7,6 @@ import SiteHero from "@/components/site/SiteHero";
 import FinalCTA from "@/components/site/FinalCTA";
 import FAQSection from "@/components/site/FAQSection";
 import Head from "next/head";
-import { useCmsPage } from "@/lib/use-cms-page";
 
 interface BlogCard {
   id: number;
@@ -18,42 +17,64 @@ interface BlogCard {
   author: { name: string };
 }
 
-export default function BlogPage() {
-  const DEFAULT_CMS = {
-    hero: {
-      desktop_background_image: "/Bg.jpg",
-      mobile_background_image: "/Mobile_Responsive.jpg",
-      badge_text: "Resources",
-      heading_line_1: "Insights & Research",
-      heading_line_2: "from NationCite",
-      subheading:
-        "Stay updated with the latest articles on academic research, publishing, and the future of scholarly communication.",
-    },
-    listing: {
-      search_placeholder: "Search for articles…",
-      loading_text: "Loading articles…",
-      empty_filtered_text: "No articles match your search.",
-      empty_text: "No articles published yet.",
-      read_more_label: "Read more",
-    },
-    faq: {
-      kicker: "Know Nationcite",
-      title: "Everything You Need to Know About Us",
-      body:
-        "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
-    },
-    final_cta: {
-      kicker: "Get Verified",
-      heading: "Your work deserves to be seen",
-      body:
-        "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
-      primary_cta_label: "Claim My Profile Now",
-      banner_image: "/CTA Section Image - Nationcite.png",
-      banner_alt: "Nationcite CTA Section",
-    },
-  };
+const BLOG_PORTAL_CONTENT = {
+  hero: {
+    desktop_background_image: "/Bg.jpg",
+    mobile_background_image: "/Mobile_Responsive.jpg",
+    badge_text: "Resources",
+    heading_line_1: "Insights & Research",
+    heading_line_2: "from NationCite",
+    subheading:
+      "Stay updated with the latest articles on academic research, publishing, and the future of scholarly communication.",
+  },
+  listing: {
+    search_placeholder: "Search for articles…",
+    loading_text: "Loading articles…",
+    empty_filtered_text: "No articles match your search.",
+    empty_text: "No articles published yet.",
+    read_more_label: "Read more",
+  },
+  faq: {
+    kicker: "Know Nationcite",
+    title: "Everything You Need to Know About Us",
+    body:
+      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+    faq_items: [
+      {
+        question: "How often are blog insights updated?",
+        answer: "We publish new and refreshed research insights regularly based on active editorial and analytics cycles.",
+      },
+      {
+        question: "Are blog rankings data-backed?",
+        answer: "Yes. Content is aligned with verified citation and ranking methodology where applicable.",
+      },
+      {
+        question: "Can institutions contribute?",
+        answer: "Institutions and experts can collaborate through our editorial and partnership channels.",
+      },
+      {
+        question: "Do posts include practical guidance?",
+        answer: "Articles are designed to include actionable frameworks, not just commentary.",
+      },
+      {
+        question: "Can I reference this content for academic planning?",
+        answer: "Yes, the content is intended to support decision-making and strategic research planning.",
+      },
+    ],
+  },
+  final_cta: {
+    kicker: "Get Verified",
+    heading: "Your work deserves to be seen",
+    body:
+      "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
+    primary_cta_label: "Claim My Profile Now",
+    banner_image: "/CTA Section Image - Nationcite.png",
+    banner_alt: "Nationcite CTA Section",
+  },
+};
 
-  const cms = useCmsPage("blog", DEFAULT_CMS);
+export default function BlogPage() {
+  const cms = BLOG_PORTAL_CONTENT;
 
   const [blogs, setBlogs] = useState<BlogCard[]>([]);
   const [loading, setLoading] = useState(true);
@@ -200,7 +221,12 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <FAQSection cms={cms.faq} />
+      <FAQSection
+        cms={{
+          ...cms.faq,
+          faqItems: cms.faq.faq_items,
+        }}
+      />
       <FinalCTA cms={cms.final_cta} />
     </main></>
   );

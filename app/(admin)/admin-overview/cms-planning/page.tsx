@@ -65,6 +65,7 @@ function FieldEditor({
   onChange: (path: Array<string | number>, value: unknown) => void;
   path?: Array<string | number>;
 }) {
+  const [selectedFileName, setSelectedFileName] = useState("");
   const fieldPath = [...path, field.key];
 
   if (field.type === "repeatable") {
@@ -99,6 +100,62 @@ function FieldEditor({
 
   const currentValue = typeof value === "string" ? value : "";
   const inputType = field.type === "url" || field.type === "image" ? "url" : "text";
+
+  if (field.type === "image") {
+    const inputId = `image-upload-${fieldPath.join("-")}`;
+
+    return (
+      <div style={{ marginBottom: "16px" }}>
+        <label style={labelStyle}>{field.label}</label>
+        <input
+          type={inputType}
+          value={currentValue}
+          onChange={(e) => onChange(fieldPath, e.target.value)}
+          placeholder={field.placeholder || "https://..."}
+          style={inputStyle}
+        />
+
+        <div style={{ display: "flex", gap: "8px", marginTop: "8px", flexWrap: "wrap" }}>
+          <input
+            id={inputId}
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              setSelectedFileName(file.name);
+            }}
+          />
+          <label htmlFor={inputId} style={uploadButtonStyle}>
+            Upload Image (coming soon)
+          </label>
+
+          <button
+            type="button"
+            onClick={() => onChange(fieldPath, "/dummy/placeholder-image.png")}
+            style={smallButtonStyle}
+          >
+            Use Placeholder
+          </button>
+        </div>
+
+        <div style={{ ...hintTextStyle, marginTop: "6px" }}>
+          {selectedFileName
+            ? `Selected: ${selectedFileName}. Backend upload is not wired yet.`
+            : "You can paste an image URL now. Upload action is UI-ready and pending backend wiring."}
+        </div>
+
+        <div style={{ marginTop: "10px" }}>
+          <img
+            src={currentValue || "/dummy/placeholder-image.png"}
+            alt={field.label}
+            style={imagePreviewStyle}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (field.type === "textarea") {
     return (
@@ -425,4 +482,34 @@ const emptyBoxStyle: React.CSSProperties = {
   fontSize: "12px",
   color: "#94a3b8",
   fontFamily: FONT,
+};
+
+const uploadButtonStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "6px",
+  padding: "10px 12px",
+  borderRadius: "10px",
+  border: "1px solid #e2e8f0",
+  background: "#fff",
+  cursor: "pointer",
+  fontSize: "12px",
+  color: "#475569",
+  fontFamily: FONT,
+};
+
+const hintTextStyle: React.CSSProperties = {
+  fontSize: "11px",
+  color: "#64748b",
+  fontFamily: FONT,
+};
+
+const imagePreviewStyle: React.CSSProperties = {
+  width: "100%",
+  maxWidth: "240px",
+  height: "120px",
+  objectFit: "cover",
+  border: "1px solid #e2e8f0",
+  borderRadius: "8px",
+  background: "#f8fafc",
 };

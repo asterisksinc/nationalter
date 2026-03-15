@@ -29,6 +29,14 @@ const FaqSchema = z.object({
   kicker: z.string(),
   title: z.string(),
   body: z.string(),
+  faq_items: z
+    .array(
+      z.object({
+        question: z.string().optional(),
+        answer: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 const HomeHeroSchema = HeroBgSchema.extend({
@@ -173,13 +181,27 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
     cta_label: z.string(),
   }),
   "about.trusted_by": z.object({ heading: z.string(), logos: z.array(LogoSchema).optional() }),
-  "about.faq": FaqSchema,
+  "about.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(6)
+      .optional(),
+  }),
   "about.final_cta": z.object({
     kicker: z.string(),
     heading: z.string(),
     body: z.string(),
     secondary_cta_label: z.string(),
     primary_cta_label: z.string(),
+    secondary_cta_url: z.string().optional(),
+    primary_cta_url: z.string().optional(),
+    banner_image: z.string().optional(),
+    banner_alt: z.string().optional(),
   }),
 
   "pricing.hero": HeroBgSchema,
@@ -188,7 +210,17 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
     overview_title: z.string(),
     addons_title: z.string(),
   }),
-  "pricing.faq": FaqSchema,
+  "pricing.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(5)
+      .optional(),
+  }),
   "pricing.final_cta": FinalCtaSchema,
 
   "methodology.hero": HeroBgSchema.extend({
@@ -198,40 +230,64 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
     cta_label: z.string(),
   }),
   "methodology.trusted_by": z.object({ heading: z.string(), logos: z.array(LogoSchema).optional() }),
-  "methodology.faq": FaqSchema,
+  "methodology.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(5)
+      .optional(),
+  }),
   "methodology.final_cta": FinalCtaSchema,
 
   "leaderboard-scholars.hero": LeaderboardHeroSchema,
   "leaderboard-scholars.table": LeaderboardTableSchema,
-  "leaderboard-scholars.faq": FaqSchema,
+  "leaderboard-scholars.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(5)
+      .optional(),
+  }),
 
   "leaderboard-universities.hero": LeaderboardHeroSchema,
   "leaderboard-universities.table": LeaderboardTableSchema,
-  "leaderboard-universities.faq": FaqSchema,
+  "leaderboard-universities.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(5)
+      .optional(),
+  }),
 
   "leaderboard-doctors.hero": LeaderboardHeroSchema,
   "leaderboard-doctors.table": LeaderboardTableSchema,
-  "leaderboard-doctors.faq": FaqSchema,
+  "leaderboard-doctors.faq": FaqSchema.extend({
+    faq_items: z
+      .array(
+        z.object({
+          question: z.string().optional(),
+          answer: z.string().optional(),
+        }),
+      )
+      .length(5)
+      .optional(),
+  }),
 
   "contact.hero": ContactHeroSchema,
   "contact.form": ContactFormSchema,
   "contact.final_cta": FinalCtaSchema,
-
-  "blog.hero": HeroBgSchema.extend({
-    badge_text: z.string(),
-    heading_line_1: z.string(),
-    heading_line_2: z.string(),
-    subheading: z.string(),
-  }),
-  "blog.listing": z.object({
-    search_placeholder: z.string().optional(),
-    loading_text: z.string().optional(),
-    empty_text: z.string().optional(),
-    empty_filtered_text: z.string().optional(),
-    read_more_label: z.string().optional(),
-  }),
-  "blog.faq": FaqSchema,
-  "blog.final_cta": FinalCtaSchema,
 
   "legal.hero": HeroBgSchema.extend({
     privacy_badge: z.string(),
@@ -252,7 +308,12 @@ function fieldToSchema(field: CMSField): z.ZodTypeAny {
     for (const subField of field.subFields || []) {
       shape[subField.key] = fieldToSchema(subField).optional();
     }
-    return z.array(z.object(shape).strict()).optional();
+
+    const arraySchema = z.array(z.object(shape).strict());
+    if (field.repeatableCount && field.repeatableCount > 0) {
+      return arraySchema.length(field.repeatableCount).optional();
+    }
+    return arraySchema.optional();
   }
 
   return z.string().optional();

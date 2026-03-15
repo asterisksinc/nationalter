@@ -28,6 +28,33 @@ const DEFAULT_CMS = {
     title: "Lorem ipsum dolor self amet consectetyr alit",
     body:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    faq_items: [
+      {
+        question: "Lorem ipsum dolor self amet, consectetur",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      },
+      {
+        question: "Lorem ipsum dolor self amet, consectetur",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      },
+      {
+        question: "Lorem ipsum dolor self amet, consectetur",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      },
+      {
+        question: "Lorem ipsum dolor self amet, consectetur",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      },
+      {
+        question: "Lorem ipsum dolor self amet, consectetur",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      },
+    ],
   },
   final_cta: {
     kicker: "Get Verified",
@@ -245,18 +272,11 @@ export default function PricingPage() {
 
       {/* FAQ Section */}
       <FAQSection
-        kicker={cms.faq.kicker}
-        title={cms.faq.title}
-        questions={[
-          "Lorem ipsum dolor self amet, consectetur",
-          "Lorem ipsum dolor self amet, consectetur",
-          "Lorem ipsum dolor self amet, consectetur",
-          "Lorem ipsum dolor self amet, consectetur",
-          "Lorem ipsum dolor self amet, consectetur",
-        ]}
-      >
-        {cms.faq.body}
-      </FAQSection>
+        cms={{
+          ...cms.faq,
+          faqItems: cms.faq.faq_items,
+        }}
+      />
 
       {/* Bottom CTA */}
       <FinalCTA cms={cms.final_cta} />

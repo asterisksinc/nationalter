@@ -9,6 +9,7 @@ export interface CMSField {
     type: FieldType;
     placeholder?: string;
     subFields?: CMSField[];
+    repeatableCount?: number;
 }
 
 export interface CMSSection {
@@ -28,7 +29,13 @@ const txt = (key: string, label: string, placeholder = ""): CMSField => ({ key, 
 const ta = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "textarea", placeholder });
 const img = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "image", placeholder });
 const url = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "url", placeholder });
-const rep = (key: string, label: string, subFields: CMSField[]): CMSField => ({ key, label, type: "repeatable", subFields });
+const rep = (key: string, label: string, subFields: CMSField[], repeatableCount = 1): CMSField => ({
+    key,
+    label,
+    type: "repeatable",
+    subFields,
+    repeatableCount,
+});
 
 /* ═══════════════════════════════════════════════════ */
 export const CMS_PAGES: CMSPage[] = [
@@ -112,7 +119,7 @@ export const CMS_PAGES: CMSPage[] = [
                 fields: [
                     txt("widget_title", "Widget Title", "Scholar Leaderboard"),
                     txt("search_placeholder", "Search Placeholder", "Search scholars…"),
-                    rep("tab_labels", "Tab Labels", [txt("label", "Label", "Scholars")]),
+                    rep("tab_labels", "Tab Labels", [txt("label", "Label", "Scholars")], 3),
                     txt("loading_text", "Loading Text", "Loading…"),
                     txt("empty_state_text", "Empty State Text", "No results found"),
                     txt("error_title", "Error Title", "Something went wrong"),
@@ -125,7 +132,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading", "Trusted By Leading Institutions"),
                     rep("logos", "Institution Logos", [
                         txt("name", "Name", "MIT"), img("image", "Logo"), url("url", "URL", "https://…"),
-                    ]),
+                    ], 8),
                 ],
             },
             {
@@ -137,7 +144,7 @@ export const CMS_PAGES: CMSPage[] = [
                         txt("title", "Title", "What is H-Index?"),
                         ta("description", "Description", "The H-index is…"),
                         img("image", "Image"),
-                    ]),
+                    ], 5),
                 ],
             },
             {
@@ -150,7 +157,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("items", "Transparency Items", [
                         txt("id", "ID"), txt("title", "Title"), txt("tagline", "Tagline"), txt("category", "Category"),
                         ta("description", "Description"), img("image", "Image"), txt("slug", "Slug"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -173,7 +180,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Resource Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"), url("url", "URL"),
-                    ]),
+                    ], 4),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
@@ -211,7 +218,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "about_who_we_are", title: "Who We Are",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"),
-                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph Text")]),
+                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph Text")], 3),
                 ],
             },
             {
@@ -224,7 +231,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading"),
                     rep("members", "Team Members", [
                         txt("name", "Name"), txt("role", "Role"), img("image", "Photo"), ta("bio_short", "Short Bio"),
-                    ]),
+                    ], 8),
                 ],
             },
             {
@@ -233,13 +240,14 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("reasons", "Reasons", [
                         txt("title", "Title"), ta("description", "Description"), img("icon", "Icon"),
-                    ]),
+                    ], 15),
                 ],
             },
             {
                 key: "about_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 6),
                 ],
             },
             {
@@ -282,6 +290,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "pricing_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 5),
                 ],
             },
             {
@@ -310,21 +319,21 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "methodology_trusted_by", title: "Trusted By",
                 fields: [
                     txt("heading", "Heading"),
-                    rep("logos", "Logos", [txt("name", "Name"), img("image", "Logo"), url("url", "URL")]),
+                    rep("logos", "Logos", [txt("name", "Name"), img("image", "Logo"), url("url", "URL")], 8),
                 ],
             },
             {
                 key: "methodology_big_card", title: "Big Card",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"),
-                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph")]), img("image", "Image"),
+                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph")], 3), img("image", "Image"),
                 ],
             },
             {
                 key: "methodology_narrative", title: "Narrative Split",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"),
-                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph")]),
+                    rep("paragraphs", "Paragraphs", [ta("text", "Paragraph")], 3),
                 ],
             },
             {
@@ -334,7 +343,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("cards", "Resource Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
                         txt("link_label", "Link Label"), url("link_url", "Link URL"),
-                    ]),
+                    ], 3),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
@@ -342,6 +351,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "methodology_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 5),
                 ],
             },
             {
@@ -383,7 +393,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -394,7 +404,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("tabs", "Tabs", [
                         txt("label", "Tab Label"), txt("title", "Tab Title"), ta("body", "Tab Body"),
                         img("image", "Tab Image"), img("icon", "Tab Icon"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -404,7 +414,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
                         txt("link_label", "Link Label"), url("link_url", "Link URL"),
-                    ]),
+                    ], 3),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
@@ -412,7 +422,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "lb_scholars_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 5),
                 ],
             },
             {
@@ -450,7 +460,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -461,7 +471,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("tabs", "Tabs", [
                         txt("label", "Tab Label"), txt("title", "Tab Title"), ta("body", "Tab Body"),
                         img("image", "Tab Image"), img("icon", "Tab Icon"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -471,7 +481,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
                         txt("link_label", "Link Label"), url("link_url", "Link URL"),
-                    ]),
+                    ], 3),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
@@ -479,7 +489,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "lb_universities_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 5),
                 ],
             },
             {
@@ -517,7 +527,7 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -528,7 +538,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("tabs", "Tabs", [
                         txt("label", "Tab Label"), txt("title", "Tab Title"), ta("body", "Tab Body"),
                         img("image", "Tab Image"), img("icon", "Tab Icon"),
-                    ]),
+                    ], 3),
                 ],
             },
             {
@@ -538,7 +548,7 @@ export const CMS_PAGES: CMSPage[] = [
                     rep("cards", "Cards", [
                         txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
                         txt("link_label", "Link Label"), url("link_url", "Link URL"),
-                    ]),
+                    ], 3),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
@@ -546,7 +556,7 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "lb_doctors_faq", title: "FAQ",
                 fields: [
                     txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")], 5),
                 ],
             },
             {
@@ -556,70 +566,6 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
                     txt("secondary_cta_label", "Secondary CTA Label"), url("secondary_cta_url", "Secondary CTA URL"),
                     img("background_image", "Background Image"),
-                ],
-            },
-        ],
-    },
-
-    /* ── 8. Blog Listing ── */
-    {
-        key: "blog_listing", title: "Blog Listing",
-        sections: [
-            {
-                key: "blog_hero", title: "Hero",
-                fields: [
-                    txt("badge_text", "Badge Text"),
-                    txt("heading_line_1", "Heading Line 1"),
-                    txt("heading_line_2", "Heading Line 2"),
-                    ta("subheading", "Subheading"),
-                ],
-            },
-            {
-                key: "blog_controls", title: "Search & Sort Controls",
-                fields: [
-                    txt("search_placeholder", "Search Placeholder"),
-                    txt("loading_text", "Loading Text"), txt("empty_text", "Empty State Text"),
-                    txt("empty_filtered_text", "Empty Filtered State Text"),
-                ],
-            },
-            {
-                key: "blog_grid", title: "Article Grid Chrome",
-                fields: [
-                    txt("read_more_label", "Read More Label", "Read More"),
-                ],
-            },
-            {
-                key: "blog_faq", title: "FAQ",
-                fields: [
-                    txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
-                ],
-            },
-            {
-                key: "blog_final_cta", title: "Final CTA",
-                fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("primary_cta_label", "Primary CTA Label"), img("banner_image", "Banner Image"),
-                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
-                ],
-            },
-        ],
-    },
-
-    /* ── 9. Blog Detail ── */
-    {
-        key: "blog_detail", title: "Blog Detail (Article Model)",
-        sections: [
-            {
-                key: "blog_article", title: "Article Fields",
-                fields: [
-                    txt("badge_text", "Badge Text"), txt("back_link_label", "Back Link Label", "← Back to Blog"),
-                    txt("article_title", "Article Title"), ta("article_intro", "Article Intro"),
-                    img("cover_image", "Cover Image"), txt("author_name", "Author Name"), txt("publish_date", "Publish Date"),
-                    rep("sections", "Content Sections", [
-                        txt("heading", "Section Heading"), ta("text", "Section Text"), img("image", "Section Image"),
-                    ]),
-                    ta("conclusion", "Conclusion"),
                 ],
             },
         ],

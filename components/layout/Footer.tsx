@@ -82,39 +82,6 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Resources Column */}
-            {/* <div className="flex flex-col min-w-[130px]">
-              <h3 className="text-base md:text-lg lg:text-xl font-semibold text-slate-900 mb-3 md:mb-4">
-                Resources
-              </h3>
-              <div className="flex flex-col gap-2 md:gap-4">
-                <a
-                  href="/blog"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
-                >
-                  Blog
-                </a>
-                <a
-                  href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
-                >
-                  Case Studies
-                </a>
-                <a
-                  href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
-                >
-                  Whitepapers
-                </a>
-                <a
-                  href="/contact"
-                  className="text-slate-700 hover:text-slate-900 transition-colors text-sm md:text-sm"
-                >
-                  eBooks
-                </a>
-              </div>
-            </div> */}
-
             {/* Social Icons Column (Vertical Stack on Desktop, Horizontal on Mobile) */}
             <div className="flex flex-row lg:flex-col gap-2 md:gap-3 pt-0 md:pt-2 w-full lg:w-auto justify-start lg:justify-start">
               <a

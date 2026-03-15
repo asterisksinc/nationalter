@@ -8,7 +8,6 @@ import LeaderboardTable, {
   LeaderboardEntry,
 } from "@/components/site/LeaderboardTable";
 import ThreeCardsSection from "../components/ThreeCardsSection";
-import ConsultancySection from "../components/ConsultancySection";
 import TabContentToggle from "../components/TabContentToggle";
 import ThreeBlocksSection from "../components/ThreeBlocksSection";
 import FAQSection from "@/components/site/FAQSection";
@@ -30,11 +29,63 @@ const DEFAULT_CMS = {
     title: "Doctors Leaderboard",
     search_placeholder: "Search doctors...",
   },
+  three_cards: {
+    heading: "Lorem Ipsum",
+    subheading:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    cards: Array.from({ length: 3 }, () => ({
+      title: "Lorem ipsum dolor sit amet",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image: "",
+    })),
+  },
+  tab_toggle: {
+    badge_text: "Powered by Industry Experts",
+    title: "Custom Consultancy Calls",
+    cta_label: "Explore All Resources",
+    cta_url: "#",
+    tabs: [
+      { label: "Feature 1", title: "Feature 1", body: "Placeholder content for feature 1", image: "", icon: "" },
+      { label: "Feature 2", title: "Feature 2", body: "Placeholder content for feature 2", image: "", icon: "" },
+      { label: "Feature 3", title: "Feature 3", body: "Placeholder content for feature 3", image: "", icon: "" },
+    ],
+  },
+  three_blocks: {
+    heading: "Research Intelligence & Academic Insight",
+    subheading:
+      "Stay informed with data literacy, ranking methodology, and research visibility best practices.",
+    cards: Array.from({ length: 3 }, () => ({
+      title: "Lorem ipsum dolor slef amet",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image: "",
+      link_label: "Learn More",
+      link_url: "#",
+    })),
+    cta_label: "Explore All Resources",
+    cta_url: "#",
+  },
   faq: {
     kicker: "Know Nationcite",
     title: "Everything You Need to Know About Us",
     body:
       "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+    faq_items: [
+      { question: "What is the doctors leaderboard based on?", answer: "The doctors leaderboard is based on verified publication and citation-linked impact signals." },
+      { question: "Can medical profiles be corrected?", answer: "Yes. Profile correction requests are supported for verified identity and publication mapping issues." },
+      { question: "Are specialties represented?", answer: "Yes. Specialty context can be used when exploring and interpreting ranking data." },
+      { question: "How often are rankings recalculated?", answer: "Rankings are recalculated in regular data refresh windows." },
+      { question: "Can institutions use this for hiring context?", answer: "Yes. Institutions can use leaderboard context for research visibility and benchmarking workflows." },
+    ],
+  },
+  final_cta: {
+    heading: "Lorem ipsum dolor self amet consectetur",
+    primary_cta_label: "CTA Button",
+    primary_cta_url: "#",
+    secondary_cta_label: "CTA Button",
+    secondary_cta_url: "#",
+    background_image: "",
   },
 };
 
@@ -223,48 +274,33 @@ export default function DoctorsLeaderboardPage() {
         </div>
       </section>
 
-      <ThreeCardsSection />
+      <ThreeCardsSection cms={cms.three_cards} />
 
       <TabContentToggle
-        title="Custom Consultancy Calls"
-        description="Powered by Industry Experts"
-        ctaText="Explore All Resources"
-        tabs={[
-          {
-            id: "feature1",
-            label: "Feature 1",
-            content: (
-              <div className="text-center text-slate-600">
-                Placeholder content for feature 1
-              </div>
-            ),
-          },
-          {
-            id: "feature2",
-            label: "Feature 2",
-            content: (
-              <div className="text-center text-slate-600">
-                Placeholder content for feature 2
-              </div>
-            ),
-          },
-          {
-            id: "feature3",
-            label: "Feature 3",
-            content: (
-              <div className="text-center text-slate-600">
-                Placeholder content for feature 3
-              </div>
-            ),
-          },
-        ]}
+        title={cms.tab_toggle.title}
+        description={cms.tab_toggle.badge_text}
+        ctaText={cms.tab_toggle.cta_label}
+        ctaLink={cms.tab_toggle.cta_url}
+        tabs={(cms.tab_toggle.tabs || []).map((tab: any, index: number) => ({
+          id: `feature${index + 1}`,
+          label: tab.label || `Feature ${index + 1}`,
+          content: (
+            <div className="max-w-2xl mx-auto text-center text-slate-700">
+              {tab.image ? (
+                <img src={tab.image} alt={tab.title || tab.label || "Feature"} className="w-full h-56 object-cover rounded-md sm:rounded-lg mb-4" />
+              ) : null}
+              <h4 className="text-lg font-semibold mb-2">{tab.title || tab.label}</h4>
+              <p>{tab.body}</p>
+            </div>
+          ),
+        }))}
       />
 
-      <ThreeBlocksSection />
+      <ThreeBlocksSection cms={cms.three_blocks} />
 
-      <FAQSection cms={cms.faq} />
+      <FAQSection cms={{ ...cms.faq, faqItems: cms.faq.faq_items }} />
 
-      <LeaderboardFinalCTA />
+      <LeaderboardFinalCTA cms={cms.final_cta} />
     </div></>
   );
 }

@@ -23,11 +23,93 @@ const DEFAULT_CMS = {
   trusted_by: {
     heading: "Trusted by India&apos;s Top Institutions",
   },
+  image_collage: {
+    left_image: "",
+    left_image_alt: "Image 1",
+    right_image: "",
+    right_image_alt: "Image 2",
+  },
+  who_we_are: {
+    kicker: "Who we are",
+    heading: "Where Scientific Rigor Meets Digital Precision",
+    paragraphs: [
+      { text: "Nationcite was born from a critical gap in the academic landscape: while Indian researchers were producing world-class work, their impact was often lost in fragmented, unverified databases. We exist to solve this visibility crisis by building a unified, high-integrity infrastructure that validates every citation and every scholar." },
+      { text: "At our core, we are data architects. We don&apos;t just \"list\" researchers; we benchmark them. By blending verified manual curation with advanced analytics, we create the single source of truth that universities, grant committees, and policymakers can trust." },
+      { text: "Today, Nationcite stands as the definitive platform for academic benchmarking, empowering thousands of researchers to reclaim the credit they deserve and helping institutions measure their true standing in the global arena." },
+    ],
+  },
+  feature_visual: {
+    image: "",
+    alt_text: "Feature visual",
+  },
+  team: {
+    heading: "The Architects of Integrity",
+    members: Array.from({ length: 8 }, () => ({
+      name: "Team Member Name",
+      role: "Lorem ipsum dolor sit amet,",
+      image: "",
+      bio_short: "",
+    })),
+  },
+  reasons: {
+    heading: "Why Researchers Choose Nationcite",
+    subheading:
+      "A verified platform built for precision, transparency, and long-term academic growth.",
+    reasons: [
+      { title: "Vision-Driven", description: "We don't just count citations; we are building the future of academic reputation." },
+      { title: "Verified Truth", description: "We rely on human-governed data, not just blind algorithms." },
+      { title: "Execution-Focused", description: "We turn complex bibliometric data into clear, actionable rankings." },
+      { title: "Scalable Systems", description: "Built to index millions of papers without compromising speed." },
+      { title: "Transparent Workflows", description: "You see exactly how your score is calculated. No black boxes." },
+      { title: "Long-Term Partnerships", description: "We grow with you, from your first paper to your emeritus status." },
+      { title: "Data-Backed Decisions", description: "Every rank and metric is defensible and audit-ready." },
+      { title: "Security-First", description: "Your profile data is protected by enterprise-grade encryption." },
+      { title: "Future-Ready", description: "Our infrastructure evolves faster than the academic landscape." },
+      { title: "End-to-End Ownership", description: "From data ingestion to final ranking, we control the quality chain." },
+      { title: "Precision Engineering", description: "We distinguish between \"A. Sharma\" and \"Aditya Sharma\" with zero error." },
+      { title: "Growth-Oriented", description: "Our tools are designed to help you increase your H-index, not just watch it." },
+      { title: "Automation Expertise", description: "Smart workflows that handle the heavy lifting of data entry." },
+      { title: "Compliance-Ready", description: "Fully aligned with national data standards and DPDP protocols." },
+      { title: "Global Standards", description: "We benchmark Indian research against international metrics." },
+    ],
+  },
   faq: {
     kicker: "Know Nationcite",
     title: "Transparency is Our Currency",
     body:
       "You have questions about how your reputation is managed. We have clear answers.",
+    faq_items: [
+      {
+        question: "What exactly does Nationcite do?",
+        answer:
+          "We are India's centralized H-index registry. We verify researchers, calculate their true impact, and rank them on a national leaderboard.",
+      },
+      {
+        question: "How is this different from Google Scholar?",
+        answer:
+          "Google Scholar is automated and often inaccurate. Nationcite uses verified, curated data to ensure 100% attribution accuracy.",
+      },
+      {
+        question: "Is my data safe?",
+        answer:
+          "Absolutely. We adhere to strict data protection laws and give you total control over your profile visibility.",
+      },
+      {
+        question: "How do you handle name duplicates?",
+        answer:
+          "We use a hybrid system of unique identifiers (like ORCID) and manual human review to ensure citations are assigned correctly.",
+      },
+      {
+        question: "Can institutions use this for accreditation?",
+        answer:
+          "Yes. Our reports are designed to support NAAC, NIRF, and grant applications with verified data.",
+      },
+      {
+        question: "How does the ranking system work?",
+        answer:
+          "Rankings are dynamic, based on a composite score of H-index, total citations, and recent impact velocity.",
+      },
+    ],
   },
   final_cta: {
     kicker: "Join the Ecosystem",
@@ -36,6 +118,8 @@ const DEFAULT_CMS = {
       "Your hard work deserves to be recognized. Join the platform that is defining the standard for Indian research excellence.",
     secondary_cta_label: "Search Directory",
     primary_cta_label: "Get Verified Now",
+    banner_image: "/CTA Section Image - Nationcite.png",
+    banner_alt: "Nationcite CTA Section",
   },
 };
 
@@ -97,16 +181,20 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
           {/* 70% block */}
           <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
-            <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">
-              Image 1{" "}
-            </span>
+            {cms.image_collage.left_image ? (
+              <img src={cms.image_collage.left_image} alt={cms.image_collage.left_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
+            ) : (
+              <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.left_image_alt}</span>
+            )}
           </div>
 
           {/* 30% block */}
           <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[350px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
-            <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">
-              Image 2{" "}
-            </span>
+            {cms.image_collage.right_image ? (
+              <img src={cms.image_collage.right_image} alt={cms.image_collage.right_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
+            ) : (
+              <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.right_image_alt}</span>
+            )}
           </div>
         </div>
       </section>
@@ -127,39 +215,24 @@ export default function AboutPage() {
   shadow-none mb-3 sm:mb-4 md:mb-4 lg:mb-4  
 "
           >
-            Who we are
+            {cms.who_we_are.kicker}
           </span>
           <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug">
-            Where Scientific Rigor Meets Digital Precision
+            {cms.who_we_are.heading}
           </h3>
         </div>
         <div className="space-y-3 sm:space-y-6 md:space-y-6 lg:space-y-8 text-[#5C5C5C] text-center md:text-left">
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">
-            Nationcite was born from a critical gap in the academic landscape:
-            while Indian researchers were producing world-class work, their
-            impact was often lost in fragmented, unverified databases. We exist
-            to solve this visibility crisis by building a unified,
-            high-integrity infrastructure that validates every citation and
-            every scholar.
-          </p>
+          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[0]?.text}</p>
           <br />
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">
-            At our core, we are data architects. We don&apos;t just &quot;list&quot;
-            researchers; we benchmark them. By blending verified manual curation
-            with advanced analytics, we create the single source of truth that
-            universities, grant committees, and policymakers can trust.
-          </p>
+          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[1]?.text}</p>
           <br />
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">
-            Today, Nationcite stands as the definitive platform for academic
-            benchmarking, empowering thousands of researchers to reclaim the
-            credit they deserve and helping institutions measure their true
-            standing in the global arena.
-          </p>
+          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[2]?.text}</p>
         </div>
       </section>
       <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
-        <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg"></div>
+        <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg overflow-hidden">
+          {cms.feature_visual.image ? <img src={cms.feature_visual.image} alt={cms.feature_visual.alt_text} className="w-full h-full object-cover" /> : null}
+        </div>
       </section>
 
       <TrustedBy cms={cms.trusted_by} />
@@ -168,26 +241,28 @@ export default function AboutPage() {
       <section className="w-full py-10 sm:py-16 md:py-24 lg:py-32 section-padding bg-white">
         <div className="flex flex-col items-center gap-8 sm:gap-10 md:gap-10 lg:gap-12">
           <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl text-center text-[#1E1E1E]">
-            The Architects of Integrity
+            {cms.team.heading}
           </h3>
 
           {/* Team Grid */}
           <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
-            {Array.from({ length: 8 }).map((_, index) => (
+            {(cms.team.members || []).slice(0, 8).map((member: any, index: number) => (
               <div
                 key={index}
                 className="group cursor-pointer rounded-md sm:rounded-lg bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Image Placeholder */}
-                <div className="w-full aspect-square rounded-md sm:rounded-lg bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4" />
+                <div className="w-full aspect-square rounded-md sm:rounded-lg bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4 overflow-hidden">
+                  {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : null}
+                </div>
 
                 {/* Text */}
                 <div>
                   <h5 className="p2 px-3 text-base sm:text-base md:text-base lg:text-base font-medium text-[#1E1E1E] leading-snug">
-                    Team Member Name
+                    {member.name}
                   </h5>
                   <p className="p3 text-sm sm:text-sm md:text-sm lg:text-sm px-3 text-[#6B6B6B] mt-1 leading-relaxed">
-                    Lorem ipsum dolor sit amet,
+                    {member.role}
                   </p>
                 </div>
               </div>
@@ -200,77 +275,15 @@ export default function AboutPage() {
       <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
         <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start text-center lg:text-left">
           <h3 className="mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-xl sm:text-2xl md:text-2xl lg:text-3xl">
-            Why Researchers Choose Nationcite
+            {cms.reasons.heading}
           </h3>
           <p className="text-sm sm:text-base md:text-base lg:text-base text-[#5C5C5C] leading-relaxed">
-            A verified platform built for precision, transparency, and long-term
-            academic growth.
+            {cms.reasons.subheading}
           </p>
         </div>
 
         <div className="lg:w-3/5 lg:ml-auto flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6 lg:max-w-xl">
-          {[
-            {
-              title: "Vision-Driven",
-              desc: "We don't just count citations; we are building the future of academic reputation.",
-            },
-            {
-              title: "Verified Truth",
-              desc: "We rely on human-governed data, not just blind algorithms.",
-            },
-            {
-              title: "Execution-Focused",
-              desc: "We turn complex bibliometric data into clear, actionable rankings.",
-            },
-            {
-              title: "Scalable Systems",
-              desc: "Built to index millions of papers without compromising speed.",
-            },
-            {
-              title: "Transparent Workflows",
-              desc: "You see exactly how your score is calculated. No black boxes.",
-            },
-            {
-              title: "Long-Term Partnerships",
-              desc: "We grow with you, from your first paper to your emeritus status.",
-            },
-            {
-              title: "Data-Backed Decisions",
-              desc: "Every rank and metric is defensible and audit-ready.",
-            },
-            {
-              title: "Security-First",
-              desc: "Your profile data is protected by enterprise-grade encryption.",
-            },
-            {
-              title: "Future-Ready",
-              desc: "Our infrastructure evolves faster than the academic landscape.",
-            },
-            {
-              title: "End-to-End Ownership",
-              desc: "From data ingestion to final ranking, we control the quality chain.",
-            },
-            {
-              title: "Precision Engineering",
-              desc: 'We distinguish between "A. Sharma" and "Aditya Sharma" with zero error.',
-            },
-            {
-              title: "Growth-Oriented",
-              desc: "Our tools are designed to help you increase your H-index, not just watch it.",
-            },
-            {
-              title: "Automation Expertise",
-              desc: "Smart workflows that handle the heavy lifting of data entry.",
-            },
-            {
-              title: "Compliance-Ready",
-              desc: "Fully aligned with national data standards and DPDP protocols.",
-            },
-            {
-              title: "Global Standards",
-              desc: "We benchmark Indian research against international metrics.",
-            },
-          ].map((reason, i) => (
+          {(cms.reasons.reasons || []).map((reason: any, i: number) => (
             <div
               key={i}
               className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-none hover:shadow-md transition-shadow"
@@ -284,7 +297,7 @@ export default function AboutPage() {
                     {reason.title}
                   </h5>
                   <p className="text-sm sm:text-sm md:text-sm lg:text-base text-[#5C5C5C] mt-1 leading-relaxed">
-                    {reason.desc}
+                    {reason.description}
                   </p>
                 </div>
               </div>
@@ -294,43 +307,11 @@ export default function AboutPage() {
       </section>
 
       <FAQSection
-        kicker={cms.faq.kicker}
-        title={cms.faq.title}
-        faqItems={[
-          {
-            question: "What exactly does Nationcite do?",
-            answer:
-              "We are India's centralized H-index registry. We verify researchers, calculate their true impact, and rank them on a national leaderboard.",
-          },
-          {
-            question: "How is this different from Google Scholar?",
-            answer:
-              "Google Scholar is automated and often inaccurate. Nationcite uses verified, curated data to ensure 100% attribution accuracy.",
-          },
-          {
-            question: "Is my data safe?",
-            answer:
-              "Absolutely. We adhere to strict data protection laws and give you total control over your profile visibility.",
-          },
-          {
-            question: "How do you handle name duplicates?",
-            answer:
-              "We use a hybrid system of unique identifiers (like ORCID) and manual human review to ensure citations are assigned correctly.",
-          },
-          {
-            question: "Can institutions use this for accreditation?",
-            answer:
-              "Yes. Our reports are designed to support NAAC, NIRF, and grant applications with verified data.",
-          },
-          {
-            question: "How does the ranking system work?",
-            answer:
-              "Rankings are dynamic, based on a composite score of H-index, total citations, and recent impact velocity.",
-          },
-        ]}
-      >
-        {cms.faq.body}
-      </FAQSection>
+        cms={{
+          ...cms.faq,
+          faqItems: cms.faq.faq_items,
+        }}
+      />
 
       {/* Custom CTA for About Page */}
       <section className="w-full py-12 md:py-16 bg-white section-padding">
@@ -363,8 +344,8 @@ export default function AboutPage() {
         {/* Full-width Image Section */}
         <div className="w-full mt-12 md:mt-16">
           <img
-            src="/CTA Section Image - Nationcite.png"
-            alt="Nationcite CTA Section"
+            src={cms.final_cta.banner_image}
+            alt={cms.final_cta.banner_alt}
             className="w-full h-auto rounded-md sm:rounded-lg"
           />
         </div>
