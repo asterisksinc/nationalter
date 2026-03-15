@@ -143,7 +143,7 @@ function FieldEditor({
         <div style={{ ...hintTextStyle, marginTop: "6px" }}>
           {selectedFileName
             ? `Selected: ${selectedFileName}. Backend upload is not wired yet.`
-            : "You can paste an image URL now. Upload action is UI-ready and pending backend wiring."}
+            : "paste URL or upload img"}
         </div>
 
         <div style={{ marginTop: "10px" }}>
