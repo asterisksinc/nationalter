@@ -13,7 +13,7 @@ export async function getCmsPageServer<T extends CmsMap>(
 ): Promise<T> {
   const normalizedPage = page.trim().toLowerCase();
 
-  if (!/^[a-z0-9-]+$/.test(normalizedPage)) {
+  if (!/^[a-z0-9_-]+$/.test(normalizedPage)) {
     return defaults;
   }
 

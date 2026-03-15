@@ -108,7 +108,7 @@ export default function HomePage() {
           </div>
 
           {/* Text */}
-          <Link href="/leaderboard">
+          <Link href="/leaderboard/scholars">
             <span className="text-sm font-medium text-[#1E1E1E] whitespace-nowrap cursor-pointer">
               {cms.hero.top_message}
             </span>
@@ -147,7 +147,7 @@ export default function HomePage() {
         {/* CTA Buttons */}
         <div className="flex flex-row mt-10 justify-center gap-4 w-full">
           <Link
-            href="/leaderboard"
+            href="/leaderboard/scholars"
             className="flex-1 sm:flex-none font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200"
           >
             {cms.hero.primary_cta_label}

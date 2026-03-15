@@ -23,6 +23,7 @@ interface DashboardSidebarProps {
   | "monetization"
   | "analytics"
   | "cms"
+  | "blogs"
   | "registrations"
   | "contact";
 }
@@ -115,7 +116,8 @@ export const DashboardSidebar = ({
           <SidebarItem icon={<Landmark size={18} />} label="Monetization" active={activePage === "monetization"} href="/admin-overview/monetization" />
           <SidebarItem icon={<Ticket size={18} />} label="Tickets" active={activePage === "tickets"} href="/admin-overview/tickets" />
           <SidebarItem icon={<MessagesSquare size={18} />} label="Contact" active={activePage === "contact"} href="/admin-overview/contact" />
-          <SidebarItem icon={<Newspaper size={18} />} label="CMS" active={activePage === "cms"} href="/admin-overview/cms" />
+          <SidebarItem icon={<Newspaper size={18} />} label="CMS" active={activePage === "cms"} href="/admin-overview/cms-planning" />
+          <SidebarItem icon={<Newspaper size={18} />} label="Blogs" active={activePage === "blogs"} href="/admin-overview/blogs" />
         </nav>
 
         {/* Admin footer */}

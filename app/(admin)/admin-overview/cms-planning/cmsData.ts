@@ -26,7 +26,7 @@ export interface CMSPage {
 /* ─── helpers ─── */
 const txt = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "text", placeholder });
 const ta = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "textarea", placeholder });
-const img = (key: string, label: string): CMSField => ({ key, label, type: "image" });
+const img = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "image", placeholder });
 const url = (key: string, label: string, placeholder = ""): CMSField => ({ key, label, type: "url", placeholder });
 const rep = (key: string, label: string, subFields: CMSField[]): CMSField => ({ key, label, type: "repeatable", subFields });
 
@@ -97,18 +97,14 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "home_hero", title: "Hero Section",
                 fields: [
-                    rep("badge_avatars", "Badge Avatar Images", [img("image", "Avatar")]),
-                    txt("top_message_text", "Top Message Text", "150+ Students Enrolled"),
-                    txt("top_message_link_label", "Top Message Link Label", "Learn More"),
-                    url("top_message_link_url", "Top Message Link URL", "/about"),
-                    txt("heading", "Heading", "Your Ultimate Academic Mentorship…"),
+                    txt("top_message", "Top Message Text", "1,928,384+ Indian Researchers"),
+                    txt("heading_line_1", "Heading Line 1", "India's H-Index"),
+                    txt("heading_line_2", "Heading Line 2", "Leaderboard Portal"),
                     ta("subheading", "Subheading", "Unlock Your Potential with…"),
-                    txt("primary_cta_label", "Primary CTA Label", "Get Started"),
-                    url("primary_cta_url", "Primary CTA URL", "/register"),
-                    txt("secondary_cta_label", "Secondary CTA Label", "Learn More"),
-                    url("secondary_cta_url", "Secondary CTA URL", "/about"),
-                    img("desktop_bg", "Desktop Background Image"),
-                    img("mobile_bg", "Mobile Background Image"),
+                    txt("primary_cta_label", "Primary CTA Label", "Claim My Profile"),
+                    txt("secondary_cta_label", "Secondary CTA Label", "Search Directory"),
+                    img("desktop_background_image", "Desktop Background Image"),
+                    img("mobile_background_image", "Mobile Background Image"),
                 ],
             },
             {
@@ -152,25 +148,23 @@ export const CMS_PAGES: CMSPage[] = [
                     txt("cta_label", "CTA Label", "View All"),
                     url("cta_url", "CTA URL"),
                     rep("items", "Transparency Items", [
-                        txt("title", "Title"), txt("tagline", "Tagline"), txt("category", "Category"),
-                        ta("description", "Description"), img("image", "Image"), url("detail_url", "Detail URL"),
+                        txt("id", "ID"), txt("title", "Title"), txt("tagline", "Tagline"), txt("category", "Category"),
+                        ta("description", "Description"), img("image", "Image"), txt("slug", "Slug"),
                     ]),
                 ],
             },
             {
                 key: "home_pricing", title: "Pricing Preview",
                 fields: [
-                    txt("kicker", "Kicker", "Pricing"),
+                    txt("badge_text", "Badge Text", "Membership"),
                     txt("heading", "Heading", "Choose Your Plan"),
-                    rep("billing_labels", "Billing Cycle Labels", [txt("label", "Label", "Monthly")]),
-                    rep("plans", "Plans", [
-                        txt("title", "Title", "Free"), txt("price", "Price", "$0"),
-                        txt("billing_suffix", "Billing Suffix", "/month"),
-                        ta("description", "Description"), txt("button_label", "Button Label", "Get Started"),
-                        url("button_url", "Button URL"), txt("highlight", "Highlight Badge", "Popular"),
-                        txt("audience_note", "Audience Note"), txt("footer_note", "Footer Note"),
-                        ta("features", "Features (one per line)"),
+                    rep("billing_cycle_labels", "Billing Cycle Labels", [
+                        txt("monthly", "Monthly Label", "Monthly"),
+                        txt("alternate", "Alternate Label", "Switch"),
                     ]),
+                    txt("includes_label", "Includes Label", "What's Included"),
+                    txt("audience_note", "Audience Note"),
+                    txt("footer_note", "Footer Note"),
                 ],
             },
             {
@@ -187,8 +181,9 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "home_final_cta", title: "Final CTA",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
+                    txt("primary_cta_label", "Primary CTA Label"),
                     img("banner_image", "Banner Image"),
+                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
                 ],
             },
         ],
@@ -244,8 +239,7 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "about_faq", title: "FAQ",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
                 ],
             },
             {
@@ -267,37 +261,35 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "pricing_hero", title: "Hero Pricing Block",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"),
-                    rep("billing_labels", "Billing Cycle Labels", [txt("label", "Label")]),
-                    rep("plans", "Plans", [
-                        txt("title", "Title"), txt("price", "Price"), txt("billing_suffix", "Suffix"),
-                        ta("description", "Description"), txt("button_label", "Button Label"),
-                        url("button_url", "Button URL"), txt("highlight", "Highlight"), ta("features", "Features"),
+                    txt("badge_text", "Badge Text"), txt("heading", "Heading"),
+                    rep("billing_cycle_labels", "Billing Cycle Labels", [
+                        txt("monthly", "Monthly Label"),
+                        txt("alternate", "Alternate Label"),
                     ]),
+                    txt("includes_label", "Includes Label"),
+                    txt("audience_note", "Audience Note"),
+                    txt("footer_note", "Footer Note"),
                 ],
             },
             {
                 key: "pricing_tables", title: "Comparison Tables",
                 fields: [
-                    rep("tables", "Tables", [
-                        txt("title", "Table Title"),
-                        ta("headers", "Column Headers (comma-separated)"),
-                        ta("rows", "Table Rows (one row per line, cells comma-separated)"),
-                    ]),
+                    txt("overview_title", "Overview Title"),
+                    txt("addons_title", "Addons Title"),
                 ],
             },
             {
                 key: "pricing_faq", title: "FAQ",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
                 ],
             },
             {
                 key: "pricing_final_cta", title: "Final CTA",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"), img("banner_image", "Banner Image"),
+                    txt("primary_cta_label", "Primary CTA Label"), img("banner_image", "Banner Image"),
+                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
                 ],
             },
         ],
@@ -349,106 +341,44 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "methodology_faq", title: "FAQ",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                    txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
                 ],
             },
             {
                 key: "methodology_final_cta", title: "Final CTA",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"), img("banner_image", "Banner Image"),
+                    txt("primary_cta_label", "Primary CTA Label"), img("banner_image", "Banner Image"),
+                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
                 ],
             },
         ],
     },
 
-    /* ── 6. Leaderboard Hub ── */
-    {
-        key: "leaderboard_hub", title: "Leaderboard Hub",
-        sections: [
-            {
-                key: "lb_hub_hero", title: "Hero",
-                fields: [
-                    txt("badge_text", "Badge Text"), txt("heading", "Heading"), ta("subheading", "Subheading"),
-                ],
-            },
-            {
-                key: "lb_hub_widget", title: "Widget Chrome",
-                fields: [
-                    txt("title", "Title"), txt("search_placeholder", "Search Placeholder"),
-                    rep("tab_labels", "Tab Labels", [txt("label", "Label")]),
-                    txt("loading_text", "Loading Text"), txt("error_text", "Error Text"),
-                ],
-            },
-            {
-                key: "lb_hub_three_cards", title: "Three Cards",
-                fields: [
-                    txt("heading", "Heading"), ta("subheading", "Subheading"),
-                    rep("cards", "Cards", [
-                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
-                    ]),
-                ],
-            },
-            {
-                key: "lb_hub_consultancy", title: "Consultancy",
-                fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    rep("features", "Features", [txt("text", "Feature Text")]),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
-                ],
-            },
-            {
-                key: "lb_hub_three_blocks", title: "Three Blocks",
-                fields: [
-                    txt("heading", "Heading"), ta("subheading", "Subheading"),
-                    rep("cards", "Cards", [
-                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
-                        txt("link_label", "Link Label"), url("link_url", "Link URL"),
-                    ]),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
-                ],
-            },
-            {
-                key: "lb_hub_faq", title: "FAQ",
-                fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
-                ],
-            },
-            {
-                key: "lb_hub_final_cta", title: "Final CTA",
-                fields: [
-                    txt("heading", "Heading"),
-                    txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
-                    txt("secondary_cta_label", "Secondary CTA Label"), url("secondary_cta_url", "Secondary CTA URL"),
-                    img("background_image", "Background Image"),
-                ],
-            },
-        ],
-    },
+    
+    
 
     /* ── 7. Leaderboard Detail (template) ── */
     {
-        key: "leaderboard_detail", title: "Leaderboard Detail",
+        key: "leaderboard_scholars", title: "Leaderboard Scholars",
         sections: [
             {
-                key: "lb_detail_hero", title: "Hero",
+                key: "lb_scholars_hero", title: "Hero",
                 fields: [
                     txt("badge_text", "Badge Text"), txt("heading", "Heading"), ta("subheading", "Subheading"),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
                 ],
             },
             {
-                key: "lb_detail_table", title: "Table Chrome",
+                key: "lb_scholars_table", title: "Table Chrome",
                 fields: [
-                    txt("table_title", "Table Title"), txt("search_placeholder", "Search Placeholder"),
+                    txt("title", "Table Title"), txt("search_placeholder", "Search Placeholder"),
                     txt("loading_text", "Loading Text"), txt("error_title", "Error Title"),
                     ta("error_body", "Error Body"), txt("retry_label", "Retry Label"),
                 ],
             },
             {
-                key: "lb_detail_three_cards", title: "Three Cards",
+                key: "lb_scholars_three_cards", title: "Three Cards",
                 fields: [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Cards", [
@@ -457,7 +387,7 @@ export const CMS_PAGES: CMSPage[] = [
                 ],
             },
             {
-                key: "lb_detail_tab_toggle", title: "Tab Content Toggle",
+                key: "lb_scholars_tab_toggle", title: "Tab Content Toggle",
                 fields: [
                     txt("badge_text", "Badge Text"), txt("title", "Title"),
                     txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
@@ -468,7 +398,7 @@ export const CMS_PAGES: CMSPage[] = [
                 ],
             },
             {
-                key: "lb_detail_three_blocks", title: "Three Blocks",
+                key: "lb_scholars_three_blocks", title: "Three Blocks",
                 fields: [
                     txt("heading", "Heading"), ta("subheading", "Subheading"),
                     rep("cards", "Cards", [
@@ -479,14 +409,148 @@ export const CMS_PAGES: CMSPage[] = [
                 ],
             },
             {
-                key: "lb_detail_faq", title: "FAQ",
+                key: "lb_scholars_faq", title: "FAQ",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
+                    txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
                     rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
                 ],
             },
             {
-                key: "lb_detail_final_cta", title: "Final CTA",
+                key: "lb_scholars_final_cta", title: "Final CTA",
+                fields: [
+                    txt("heading", "Heading"),
+                    txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
+                    txt("secondary_cta_label", "Secondary CTA Label"), url("secondary_cta_url", "Secondary CTA URL"),
+                    img("background_image", "Background Image"),
+                ],
+            },
+        ],
+    },
+    {
+        key: "leaderboard_universities", title: "Leaderboard Universities",
+        sections: [
+            {
+                key: "lb_universities_hero", title: "Hero",
+                fields: [
+                    txt("badge_text", "Badge Text"), txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                ],
+            },
+            {
+                key: "lb_universities_table", title: "Table Chrome",
+                fields: [
+                    txt("title", "Table Title"), txt("search_placeholder", "Search Placeholder"),
+                    txt("loading_text", "Loading Text"), txt("error_title", "Error Title"),
+                    ta("error_body", "Error Body"), txt("retry_label", "Retry Label"),
+                ],
+            },
+            {
+                key: "lb_universities_three_cards", title: "Three Cards",
+                fields: [
+                    txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    rep("cards", "Cards", [
+                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
+                    ]),
+                ],
+            },
+            {
+                key: "lb_universities_tab_toggle", title: "Tab Content Toggle",
+                fields: [
+                    txt("badge_text", "Badge Text"), txt("title", "Title"),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                    rep("tabs", "Tabs", [
+                        txt("label", "Tab Label"), txt("title", "Tab Title"), ta("body", "Tab Body"),
+                        img("image", "Tab Image"), img("icon", "Tab Icon"),
+                    ]),
+                ],
+            },
+            {
+                key: "lb_universities_three_blocks", title: "Three Blocks",
+                fields: [
+                    txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    rep("cards", "Cards", [
+                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
+                        txt("link_label", "Link Label"), url("link_url", "Link URL"),
+                    ]),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                ],
+            },
+            {
+                key: "lb_universities_faq", title: "FAQ",
+                fields: [
+                    txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                ],
+            },
+            {
+                key: "lb_universities_final_cta", title: "Final CTA",
+                fields: [
+                    txt("heading", "Heading"),
+                    txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
+                    txt("secondary_cta_label", "Secondary CTA Label"), url("secondary_cta_url", "Secondary CTA URL"),
+                    img("background_image", "Background Image"),
+                ],
+            },
+        ],
+    },
+    {
+        key: "leaderboard_doctors", title: "Leaderboard Doctors",
+        sections: [
+            {
+                key: "lb_doctors_hero", title: "Hero",
+                fields: [
+                    txt("badge_text", "Badge Text"), txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                ],
+            },
+            {
+                key: "lb_doctors_table", title: "Table Chrome",
+                fields: [
+                    txt("title", "Table Title"), txt("search_placeholder", "Search Placeholder"),
+                    txt("loading_text", "Loading Text"), txt("error_title", "Error Title"),
+                    ta("error_body", "Error Body"), txt("retry_label", "Retry Label"),
+                ],
+            },
+            {
+                key: "lb_doctors_three_cards", title: "Three Cards",
+                fields: [
+                    txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    rep("cards", "Cards", [
+                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
+                    ]),
+                ],
+            },
+            {
+                key: "lb_doctors_tab_toggle", title: "Tab Content Toggle",
+                fields: [
+                    txt("badge_text", "Badge Text"), txt("title", "Title"),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                    rep("tabs", "Tabs", [
+                        txt("label", "Tab Label"), txt("title", "Tab Title"), ta("body", "Tab Body"),
+                        img("image", "Tab Image"), img("icon", "Tab Icon"),
+                    ]),
+                ],
+            },
+            {
+                key: "lb_doctors_three_blocks", title: "Three Blocks",
+                fields: [
+                    txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    rep("cards", "Cards", [
+                        txt("title", "Title"), ta("description", "Description"), img("image", "Image"),
+                        txt("link_label", "Link Label"), url("link_url", "Link URL"),
+                    ]),
+                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"),
+                ],
+            },
+            {
+                key: "lb_doctors_faq", title: "FAQ",
+                fields: [
+                    txt("kicker", "Kicker"), txt("title", "Heading"), ta("body", "Body"),
+                    rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
+                ],
+            },
+            {
+                key: "lb_doctors_final_cta", title: "Final CTA",
                 fields: [
                     txt("heading", "Heading"),
                     txt("primary_cta_label", "Primary CTA Label"), url("primary_cta_url", "Primary CTA URL"),
@@ -504,15 +568,17 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "blog_hero", title: "Hero",
                 fields: [
-                    txt("badge_text", "Badge Text"), txt("heading", "Heading"), ta("subheading", "Subheading"),
+                    txt("badge_text", "Badge Text"),
+                    txt("heading_line_1", "Heading Line 1"),
+                    txt("heading_line_2", "Heading Line 2"),
+                    ta("subheading", "Subheading"),
                 ],
             },
             {
                 key: "blog_controls", title: "Search & Sort Controls",
                 fields: [
                     txt("search_placeholder", "Search Placeholder"),
-                    rep("sort_options", "Sort Options", [txt("label", "Label"), txt("value", "Value")]),
-                    txt("loading_text", "Loading Text"), txt("empty_state_text", "Empty State Text"),
+                    txt("loading_text", "Loading Text"), txt("empty_text", "Empty State Text"),
                     txt("empty_filtered_text", "Empty Filtered State Text"),
                 ],
             },
@@ -520,13 +586,12 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "blog_grid", title: "Article Grid Chrome",
                 fields: [
                     txt("read_more_label", "Read More Label", "Read More"),
-                    img("fallback_cover", "Fallback Cover Image"),
                 ],
             },
             {
                 key: "blog_faq", title: "FAQ",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
+                    txt("kicker", "Kicker"), txt("title", "Title"), ta("body", "Body"),
                     rep("faq_items", "FAQ Items", [txt("question", "Question"), ta("answer", "Answer")]),
                 ],
             },
@@ -534,7 +599,8 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "blog_final_cta", title: "Final CTA",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"), img("banner_image", "Banner Image"),
+                    txt("primary_cta_label", "Primary CTA Label"), img("banner_image", "Banner Image"),
+                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
                 ],
             },
         ],
@@ -566,17 +632,17 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "contact_hero", title: "Hero Copy",
                 fields: [
-                    txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("trust_statement", "Trust Statement"),
-                    rep("logos", "Trust Logos", [txt("name", "Name"), img("image", "Logo"), url("url", "URL")]),
+                    txt("kicker", "Kicker"),
+                    txt("heading_line_1", "Heading Line 1"),
+                    txt("heading_line_2", "Heading Line 2"),
+                    ta("body", "Body"),
+                    txt("trusted_by_text", "Trusted By Text"),
                 ],
             },
             {
                 key: "contact_form", title: "Form Configuration",
                 fields: [
-                    txt("form_title", "Form Title"), ta("field_labels", "Field Labels (one per line)"),
-                    ta("placeholders", "Placeholders (one per line)"),
-                    rep("inquiry_types", "Inquiry Types", [txt("label", "Label")]),
+                    txt("title", "Form Title"),
                     txt("success_title", "Success Title"), ta("success_body", "Success Body"),
                     txt("error_title", "Error Title"), ta("error_body", "Error Body"),
                     txt("submit_label", "Submit Label", "Send Message"),
@@ -587,7 +653,8 @@ export const CMS_PAGES: CMSPage[] = [
                 key: "contact_final_cta", title: "Final CTA",
                 fields: [
                     txt("kicker", "Kicker"), txt("heading", "Heading"), ta("body", "Body"),
-                    txt("cta_label", "CTA Label"), url("cta_url", "CTA URL"), img("banner_image", "Banner Image"),
+                    txt("primary_cta_label", "Primary CTA Label"), img("banner_image", "Banner Image"),
+                    txt("banner_alt", "Banner Alt Text", "Nationcite CTA Section"),
                 ],
             },
         ],
@@ -600,10 +667,12 @@ export const CMS_PAGES: CMSPage[] = [
             {
                 key: "legal_hero", title: "Hero",
                 fields: [
-                    txt("privacy_badge_text", "Privacy Badge Text"), txt("terms_badge_text", "Terms Badge Text"),
+                    txt("privacy_badge", "Privacy Badge Text"), txt("terms_badge", "Terms Badge Text"),
                     txt("privacy_heading", "Privacy Heading"), txt("terms_heading", "Terms Heading"),
                     ta("privacy_summary", "Privacy Summary"), ta("terms_summary", "Terms Summary"),
-                    rep("tab_labels", "Tab Labels", [txt("label", "Label")]),
+                    txt("privacy_tab_label", "Privacy Tab Label"),
+                    txt("terms_tab_label", "Terms Tab Label"),
+                    txt("last_updated_prefix", "Last Updated Prefix"),
                 ],
             },
             {

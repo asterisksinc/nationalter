@@ -7,6 +7,7 @@ import SiteHero from "@/components/site/SiteHero";
 import FinalCTA from "@/components/site/FinalCTA";
 import FAQSection from "@/components/site/FAQSection";
 import Head from "next/head";
+import { useCmsPage } from "@/lib/use-cms-page";
 
 interface BlogCard {
   id: number;
@@ -18,7 +19,7 @@ interface BlogCard {
 }
 
 export default function BlogPage() {
-  const cms = {
+  const DEFAULT_CMS = {
     hero: {
       desktop_background_image: "/Bg.jpg",
       mobile_background_image: "/Mobile_Responsive.jpg",
@@ -51,6 +52,8 @@ export default function BlogPage() {
       banner_alt: "Nationcite CTA Section",
     },
   };
+
+  const cms = useCmsPage("blog", DEFAULT_CMS);
 
   const [blogs, setBlogs] = useState<BlogCard[]>([]);
   const [loading, setLoading] = useState(true);

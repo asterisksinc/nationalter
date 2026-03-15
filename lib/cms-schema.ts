@@ -1,4 +1,9 @@
 import { z } from "zod";
+import { CMSField, CMS_PAGES } from "@/app/(admin)/admin-overview/cms-planning/cmsData";
+import {
+  resolvePlanningPageKey,
+  resolvePlanningSectionKey,
+} from "@/lib/cms-planning-utils";
 
 const LogoSchema = z.object({
   name: z.string(),
@@ -72,10 +77,19 @@ const PricingSectionSchema = z.object({
   badge_text: z.string().optional(),
   heading: z.string().optional(),
   billing_cycle_labels: z
-    .object({
-      monthly: z.string().optional(),
-      alternate: z.string().optional(),
-    })
+    .union([
+      z.object({
+        monthly: z.string().optional(),
+        alternate: z.string().optional(),
+      }),
+      z.array(
+        z.object({
+          monthly: z.string().optional(),
+          alternate: z.string().optional(),
+        }),
+      ),
+    ])
+    .transform((value) => (Array.isArray(value) ? (value[0] || {}) : value))
     .optional(),
   includes_label: z.string().optional(),
   audience_note: z.string().optional(),
@@ -187,10 +201,6 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
   "methodology.faq": FaqSchema,
   "methodology.final_cta": FinalCtaSchema,
 
-  "leaderboard.hero": LeaderboardHeroSchema,
-  "leaderboard.widget": z.object({ title: z.string() }),
-  "leaderboard.faq": FaqSchema,
-
   "leaderboard-scholars.hero": LeaderboardHeroSchema,
   "leaderboard-scholars.table": LeaderboardTableSchema,
   "leaderboard-scholars.faq": FaqSchema,
@@ -207,6 +217,22 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
   "contact.form": ContactFormSchema,
   "contact.final_cta": FinalCtaSchema,
 
+  "blog.hero": HeroBgSchema.extend({
+    badge_text: z.string(),
+    heading_line_1: z.string(),
+    heading_line_2: z.string(),
+    subheading: z.string(),
+  }),
+  "blog.listing": z.object({
+    search_placeholder: z.string().optional(),
+    loading_text: z.string().optional(),
+    empty_text: z.string().optional(),
+    empty_filtered_text: z.string().optional(),
+    read_more_label: z.string().optional(),
+  }),
+  "blog.faq": FaqSchema,
+  "blog.final_cta": FinalCtaSchema,
+
   "legal.hero": HeroBgSchema.extend({
     privacy_badge: z.string(),
     terms_badge: z.string(),
@@ -220,12 +246,48 @@ const CmsSchemas: Record<string, z.ZodTypeAny> = {
   }),
 };
 
+function fieldToSchema(field: CMSField): z.ZodTypeAny {
+  if (field.type === "repeatable") {
+    const shape: Record<string, z.ZodTypeAny> = {};
+    for (const subField of field.subFields || []) {
+      shape[subField.key] = fieldToSchema(subField).optional();
+    }
+    return z.array(z.object(shape).strict()).optional();
+  }
+
+  return z.string().optional();
+}
+
+function buildPlanningSchemas() {
+  const dynamicSchemas: Record<string, z.ZodTypeAny> = {};
+
+  for (const page of CMS_PAGES) {
+    const pageKey = resolvePlanningPageKey(page.key);
+    for (const section of page.sections) {
+      const sectionKey = resolvePlanningSectionKey(page.key, section.key);
+      const schemaKey = `${pageKey}.${sectionKey}`;
+      if (CmsSchemas[schemaKey]) continue;
+
+      const shape: Record<string, z.ZodTypeAny> = {};
+      for (const field of section.fields) {
+        shape[field.key] = fieldToSchema(field);
+      }
+
+      dynamicSchemas[schemaKey] = z.object(shape).strict();
+    }
+  }
+
+  return dynamicSchemas;
+}
+
+const PlanningSchemas = buildPlanningSchemas();
+
 export function getCmsSchema(key: string) {
-  return CmsSchemas[key];
+  return CmsSchemas[key] || PlanningSchemas[key];
 }
 
 export function validateCmsPayload(key: string, value: unknown) {
-  const schema = CmsSchemas[key];
+  const schema = getCmsSchema(key);
   if (!schema) {
     return {
       success: false as const,

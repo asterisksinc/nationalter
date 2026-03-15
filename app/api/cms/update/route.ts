@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!/^[a-z0-9-]+\.[a-z0-9_-]+$/i.test(key)) {
+    if (!/^[a-z0-9_-]+\.[a-z0-9_-]+$/i.test(key)) {
       return NextResponse.json(
         { success: false, message: "Invalid key format. Expected page.section" },
         { status: 400 },

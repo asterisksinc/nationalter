@@ -15,7 +15,7 @@ export async function GET(
     const { page } = await params;
     const normalizedPage = decodeURIComponent(page || "").trim().toLowerCase();
 
-    if (!/^[a-z0-9-]+$/.test(normalizedPage)) {
+    if (!/^[a-z0-9_-]+$/.test(normalizedPage)) {
       return NextResponse.json(
         { success: false, message: "Invalid page key" },
         { status: 400 },

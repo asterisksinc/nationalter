@@ -15,10 +15,16 @@ export function mergeCmsWithDefaults<T extends CmsMap>(
   const merged: Record<string, unknown> = { ...defaults };
 
   for (const [section, value] of Object.entries(incoming)) {
-    const defaultSection = merged[section];
+    const defaultSection = Object.prototype.hasOwnProperty.call(merged, section)
+      ? merged[section]
+      : undefined;
 
     if (isPlainObject(defaultSection) && isPlainObject(value)) {
-      merged[section] = { ...defaultSection, ...value };
+      merged[section] = mergeCmsWithDefaults(defaultSection as CmsMap, value);
+      continue;
+    }
+
+    if (value === "" || value === null || value === undefined) {
       continue;
     }
 
