@@ -9,6 +9,10 @@ import FinalCTA from "@/components/site/FinalCTA";
 import Thebigcard from "../methodology/components/Thebigcard";
 import RightCard from "../methodology/components/Rightcard";
 import { getCmsPageServer } from "@/lib/cms-server";
+import ResearchAnalytics from "./components/ResearchAnalytics";
+import PerformanceCategories from "./components/PerformanceCategories";
+import Framework from "./components/Framework";
+import PracticalApplications from "./components/PracticalApplications";
 
 export const metadata: MetaType = {
   title: "H-Index Methodology India | Transparent Ranking Model",
@@ -25,88 +29,233 @@ const DEFAULT_CMS = {
   hero: {
     desktop_background_image: "/Bg.jpg",
     mobile_background_image: "/Mobile_Responsive.jpg",
-    badge_text: "Methodology",
-    heading: "Built on Transparency Governed by Data Integrity",
+    badge_text: "Scientometric Framework",
+    heading: "Transparent Research Intelligence. Scientifically Measured.",
     subheading:
-      "Nationcite follows a reproducible, evidence-backed methodology using global open and licensed bibliometric sources.",
-    cta_label: "Explore Methodology",
+      "NationCite evaluates research through a transparent, field-normalized scientometric framework that combines globally recognized bibliometric indicators with advanced research analytics to deliver fair, reproducible, and evidence-based academic evaluation.",
+    cta_label: "Explore the Methodology",
   },
   trusted_by: {
-    heading: "Trusted by India&apos;s Top Institutions",
+    heading: "Built for Researchers. Trusted by Institutions. Designed for Responsible Research Assessment.",
   },
   big_card: {
-    kicker: "Lorem ipsum",
-    heading: "Lorem ipsum\ndolor self amet",
+    kicker: "Framework Overview",
+    heading: "Built on Transparency.\n Powered by Research Analytics.",
     paragraphs: [
-      { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis." },
-      { text: "Tempus leo eu aenean sed diam urna tempor, Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere." },
-      { text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis." },
+      { text: "NationCite employs a structured scientometric framework that evaluates academic performance using verified publication and citation data from recognized indexing databases." },
+      { text: "Rather than relying solely on publication volume or citation counts, the framework combines traditional bibliometric indicators with advanced analytical metrics that measure research quality, productivity efficiency, citation influence, and scholarly momentum." },
+      { text: "Every researcher is evaluated within their respective discipline using field-normalized percentile rankings to eliminate structural differences between research domains. This ensures fair comparisons across varying citation cultures, publication practices, and career stages while rewarding sustained academic excellence rather than inflated publication counts." },
+      { text: "The result is a transparent, reproducible, and academically defensible evaluation system designed to support researchers, institutions, funders, and policymakers with meaningful research intelligence." },
     ],
     image: "",
   },
   narrative: {
-    kicker: "How we Calculate",
-    heading: "Lorem ipsum dolor\nSelf Amet",
+    kicker: "Verified Data Sources",
+    heading: "Every Evaluation Begins With Trusted Research Data",
     paragraphs: [
-      { text: "Nationcite was born from a simple realization: businesses don't fail due to lack of ideas, they fail due to lack of execution-grade systems." },
-      { text: "At our core, we are architects of digital ecosystems with strategy, design, engineering, and automation." },
-      { text: "We partner with startups, enterprises, and innovators to power digital journeys with precision and accountability." },
+      { text: "NationCite exclusively analyzes verified bibliographic records from internationally recognized academic indexing databases such as Scopus, Web of Science, and other validated repositories." },
+      { text: "Only peer-reviewed indexed publications, authenticated researcher profiles, and verified citation records are considered during evaluation. Self-reported metrics, duplicate records, and unverifiable publications are excluded to preserve methodological integrity." },
+      // { text: "We partner with startups, enterprises, and innovators to power digital journeys with precision and accountability." },
     ],
   },
+  research_analytics: {
+    heading: "Five Dimensions of Research Excellence",
+    image: "",
+    description: "Rather than relying on a single indicator, NationCite evaluates every researcher across five complementary scientometric dimensions that collectively measure productivity, efficiency, research quality, citation influence, and sustained scholarly impact.",
+    analytics: [
+      {
+        kicker: "ARIS",
+        title: "Adjusted Research Impact Score",
+        description: "Balances publication output, citation impact, and field normalization to provide a comprehensive measure of overall research strength while reducing disciplinary bias."
+      },
+      {
+        kicker: "PIBI",
+        title: "Productivity–Impact Balance Index",
+        description: "Measures how efficiently publication volume translates into meaningful scholarly influence, rewarding balanced research rather than excessive low-impact publishing."
+      },
+      {
+        kicker: "CWIE",
+        title: "Citation-Weighted Impact Efficiency",
+        description: "Evaluates how effectively citations contribute to overall academic influence by combining citation depth, H-index strength, and publication volume into a unified efficiency metric."
+      },
+      {
+        kicker: "PQLI",
+        title: "Publication Quality Load Index",
+        description: "Measures the concentration of research quality across publications by identifying how consistently published work contributes to long-term scholarly impact."
+      },
+      {
+        kicker: "CMSS",
+        title: "Citation Momentum Strength Score",
+        description: "Captures sustained research momentum by combining structural citation strength with portfolio-wide citation intensity to identify enduring academic influence."
+      },
+    ]
+  },
+  evaluation: {
+    kicker: "Fair Evaluation",
+    heading: "Compare Researchers Within Their Discipline Not Across Different Worlds.",
+    description: "Citation cultures differ significantly across research fields. NationCite removes this structural bias by evaluating researchers exclusively within their primary discipline. Every analytical metric is converted into a field-normalized percentile, ensuring fair, meaningful, and academically responsible comparisons regardless of subject area or publication practices."
+  },
+  performance: {
+    heading: "Performance Categories",
+    categories: [
+      {
+        icon: "",
+        title: "Elite",
+        description: "Top 10% within the discipline."
+      },
+      {
+        icon: "",
+        title: "High",
+        description: "Among the strongest researchers in the field."
+      },
+      {
+        icon: "",
+        title: "Above Average",
+        description: "Consistently outperforming the majority of peers."
+      },
+      {
+        icon: "",
+        title: "Average",
+        description: "Demonstrating steady scholarly contribution."
+      }
+    ]
+  },
+  framework: {
+    badge_text: "Responsible Research Assessment",
+    heading: "Designed for Accuracy. Built for Academic Trust",
+    description: "The NationCite framework is designed around internationally accepted principles of responsible research assessment. Every calculation is transparent, every methodology is documented, and every ranking emphasizes balanced scholarly contribution rather than isolated metrics or publication volume.",
+    cards: [
+      {
+        icon: "",
+        title: "Reduce Disciplinary Bias",
+        description: "Ensures fair comparisons through field-normalized evaluation."
+      },
+      {
+        icon: "",
+        title: "Reward Meaningful Impact",
+        description: "Recognizes sustained scholarly influence rather than publication quantity."
+      },
+      {
+        icon: "",
+        title: "Transparent Methodology",
+        description: "Every analytical framework and calculation is publicly documented."
+      },
+      {
+        icon: "",
+        title: "Difficult to Manipulate",
+        description: "Verified data sources and structured evaluation reduce opportunities for metric inflation."
+      },
+      {
+        icon: "",
+        title: "Reproducible Results",
+        description: "Version-controlled methodologies ensure long-term consistency and auditability."
+      },
+      {
+        icon: "",
+        title: "Supports Better Decisions",
+        description: "Provides valuable insights for researchers, institutions, funding agencies, and policymakers."
+      }
+    ]
+  },
+  practical_applications: {
+    badge_text: "Who Benefits",
+    heading: "Research Intelligence That Supports Better Academic Decisions",
+    applications: [
+      {
+        image: "",
+        title: "Researchers",
+        description: "Benchmark performance, strengthen promotion dossiers, and monitor long-term scholarly growth."
+      },
+      {
+        image: "",
+        title: "Universities",
+        description: "Support faculty evaluation, recruitment, institutional benchmarking, and strategic planning."
+      },
+      {
+        image: "",
+        title: "Funding Agencies",
+        description: "Compare research performance fairly across disciplines using normalized analytics."
+      },
+      {
+        image: "",
+        title: "Policymakers",
+        description: "Access evidence-based national and regional research intelligence for informed policy development."
+      },
+    ]
+  },
   resources: {
-    heading: "Research Intelligence & Academic Insight",
+    badge_text: "Knowledge Centre",
+    heading: "Understand Research Metrics Beyond Traditional Bibliometrics",
     subheading:
-      "Stay informed with data literacy, ranking methodology, and research visibility best practices.",
-    cards: Array.from({ length: 3 }, () => ({
-      title: "Lorem ipsum dolor slef amet",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "",
-      link_label: "Learn More",
-      link_url: "#",
-    })),
-    cta_label: "Explore All Resources",
+      "Explore expert guides that explain modern scientometric evaluation, responsible research assessment, field normalization, and advanced academic analytics through practical, evidence-based learning.",
+    cards: [
+      {
+        title: "Understanding ARIS",
+        description:
+          "Discover how NationCite measures balanced research impact beyond publication counts.",
+        image: "",
+        link_label: "Learn More",
+        link_url: "#",
+      },
+      {
+        title: "Why Field Normalization Matters",
+        description:
+          "Learn how percentile benchmarking eliminates structural bias between research disciplines.",
+        image: "",
+        link_label: "Learn More",
+        link_url: "#",
+      },
+      {
+        title: "Five Metrics. One Complete Picture.",
+        description:
+          "Understand how ARIS, PIBI, CWIE, PQLI, and CMSS work together to evaluate research excellence.",
+        image: "",
+        link_label: "Learn More",
+        link_url: "#",
+      },
+    ],
+    cta_label: "Explore Knowledge Centre",
     cta_url: "#",
   },
   faq: {
-    kicker: "Know Nationcite",
-    title: "Everything You Need to Know About Us",
+    kicker: "Methodology FAQs",
+    title: "Everything You Need to Know About NationCite Evaluation",
     body:
-      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+      "Answers to common questions about data integrity, scientometric calculations, field normalization, and responsible research assessment.",
     faq_items: [
       {
-        question: "How does Nationcite ensure project quality?",
+        question: "Where does NationCite obtain its research data?",
         answer:
-          "We follow a documented and reproducible ranking methodology, combining automated processing with verification checkpoints.",
+          "NationCite uses verified publication and citation records from recognized academic indexing databases such as Scopus, Web of Science, and other validated repositories.",
       },
       {
-        question: "What industries do you specialize in?",
+        question: "Why doesn't NationCite rely on publication count alone?",
         answer:
-          "Nationcite focuses on academic and research ecosystems, including researchers, institutions, and policy-support analytics.",
+          "Research quality cannot be measured by publication volume alone. NationCite combines productivity, citation influence, quality concentration, efficiency, and scholarly momentum for balanced evaluation.",
       },
       {
-        question: "Can you handle enterprise-scale infrastructure?",
+        question: "What makes NationCite different from traditional rankings?",
         answer:
-          "Yes. The platform supports large-scale indexing with audit-ready updates and secure data handling.",
+          "Traditional rankings often rely on isolated metrics. NationCite integrates five complementary scientometric indicators with field-normalized percentiles for a more complete assessment of research performance.",
       },
       {
-        question: "What is your engagement model?",
+        question: "How does field normalization improve fairness?",
         answer:
-          "We support self-serve and institutional workflows with verification, reporting, and support tiers.",
+          "Researchers are evaluated only against peers within the same discipline, eliminating bias caused by differences in citation practices and publication cultures across fields.",
       },
       {
-        question: "How do you handle data security?",
+        question: "Can these metrics replace peer review?",
         answer:
-          "We apply strict access controls and operational best practices to protect identity and publication-linked records.",
+          "No. NationCite is designed to complement expert peer review by providing transparent, quantitative research intelligence that supports evidence-based academic decision-making.",
       },
     ],
   },
   final_cta: {
-    kicker: "Get Verified",
-    heading: "Your work deserves to be seen",
+    kicker: "Join the Framework",
+    heading: "Measure Research with Transparency. Build Credibility with Evidence.",
     body:
-      "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
-    primary_cta_label: "Claim My Profile Now",
+      "Join India's next-generation scientometric platform built on transparent analytics, verified research data, and field-normalized evaluation. Claim your profile, understand your research performance, and benchmark your academic journey with confidence.",
+    primary_cta_label: "Claim Your Research Profile",
     banner_image: "/CTA Section Image - Nationcite.png",
     banner_alt: "Nationcite CTA Section",
   },
@@ -146,6 +295,16 @@ export default async function MethodologyPage() {
 
       {/* Right Card Sections */}
       <RightCard cms={cms.narrative} />
+
+      <ResearchAnalytics cms={cms.research_analytics} />
+
+      <RightCard cms={cms.evaluation} />
+
+      <PerformanceCategories cms={cms.performance} />
+
+      <Framework cms={cms.framework} />
+
+      <PracticalApplications cms={cms.practical_applications} />
 
       <ThreeBlocksSection cms={cms.resources} />
 

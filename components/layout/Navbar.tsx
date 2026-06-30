@@ -80,8 +80,8 @@ export default function Navbar() {
       }`}
     >
       {/* Desktop: Centered white container */}
-      <div className="hidden md:flex md:justify-center md:py-4">
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-none border border-gray-100 w-[80%] max-w-[1000px] min-w-[750px] px-6  flex items-center justify-between">
+      <div className="hidden lg:flex lg:justify-center lg:py-4">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-none border border-gray-100 w-[80%] max-w-[1000px] min-w-[950px] xl:min-w-[750px] px-6 flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
@@ -99,7 +99,7 @@ export default function Navbar() {
           </Link>
 
           {/* Nav Links */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 lg:gap-6">
             <Link
               href="/about"
               className="text-neutral-900 font-medium text-sm tracking-normal hover:text-[#FF7A00] transition-colors"
@@ -219,7 +219,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="relative group">
-                <button className="flex items-center gap-1 font-inter bg-[#FF7A00] text-white font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
+                <button className="flex items-center justify-center gap-1 font-inter bg-[#FF7A00] text-white leading-tight font-medium text-sm px-4 py-1.5 rounded-[7px] hover:bg-[#f76a23] transition-colors">
                   Sign Up/In
                   <ChevronDown
                     size={14}
@@ -250,7 +250,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile: Full width */}
-      <div className="md:hidden w-full flex items-center justify-between px-2 py-2 bg-white border-b border-gray-200">
+      <div className="lg:hidden w-full flex items-center justify-between px-2 py-2 bg-white border-b border-gray-200">
         {/* Mobile Logo */}
         <Link href="/" className="flex items-center h-full flex-1">
           <Image
@@ -277,7 +277,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown (compact) */}
       {isMenuOpen && (
-        <div className="md:hidden absolute left-0 right-0 mt-2 mx-2 z-50">
+        <div className="lg:hidden absolute left-0 right-0 mt-2 mx-2 z-50">
           <div className="bg-white rounded-lg sm:rounded-xl shadow-lg border border-gray-200 py-3 px-4 flex flex-col gap-1 animate-dropdown">
             <nav className="flex flex-col gap-1">
               <Link

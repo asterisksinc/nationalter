@@ -13,12 +13,12 @@ const DEFAULT_CMS = {
   hero: {
     desktop_background_image: "/Bg.jpg",
     mobile_background_image: "/Mobile_Responsive.jpg",
-    badge_text: "About Nationcite",
+    badge_text: "India’s Research Impact Standard",
     heading:
-      "The Digital Backbone of India's Research Ecosystem",
+      "The Digital Backbone of India’s Research Ecosystem.",
     subheading:
-      "Nationcite is not just an index; we are the intelligence layer for Indian academia.",
-    cta_label: "Explore Our Vision",
+      "NationCite exists to make India’s academic impact transparent, defensible, and globally visible without bias, manipulation, or black-box metrics.",
+    cta_label: "Explore the Platform →",
   },
   trusted_by: {
     heading: "Trusted by India&apos;s Top Institutions",
@@ -31,93 +31,95 @@ const DEFAULT_CMS = {
   },
   who_we_are: {
     kicker: "Who we are",
-    heading: "Where Scientific Rigor Meets Digital Precision",
+    heading: "A Research Impact Platform Built by People Who Understand Academia.",
     paragraphs: [
-      { text: "Nationcite was born from a critical gap in the academic landscape: while Indian researchers were producing world-class work, their impact was often lost in fragmented, unverified databases. We exist to solve this visibility crisis by building a unified, high-integrity infrastructure that validates every citation and every scholar." },
-      { text: "At our core, we are data architects. We don&apos;t just \"list\" researchers; we benchmark them. By blending verified manual curation with advanced analytics, we create the single source of truth that universities, grant committees, and policymakers can trust." },
-      { text: "Today, Nationcite stands as the definitive platform for academic benchmarking, empowering thousands of researchers to reclaim the credit they deserve and helping institutions measure their true standing in the global arena." },
+      { text: "NationCite is led by a team of academic technologists, doctors, data engineers, and research professionals who have experienced the same frustrations you might be facing: misrepresented metrics, unfair comparisons across disciplines, profile inaccuracies, and opaque ranking systems. We built NationCite because we needed it ourselves: a system grounded in methodological integrity, data transparency, and responsible evaluation." },
+      { text: "NationCite is for researchers seeking clarity, for institutions demanding defensible analytics, and for administrators who require fair, field-aware benchmarking. Whether you are an early-career scholar or a Vice-Chancellor, NationCite provides a structured, verifiable view of academic impact without distortion." },
+      // { text: "Today, Nationcite stands as the definitive platform for academic benchmarking, empowering thousands of researchers to reclaim the credit they deserve and helping institutions measure their true standing in the global arena." },
     ],
   },
   feature_visual: {
     image: "",
     alt_text: "Feature visual",
   },
-  team: {
-    heading: "The Architects of Integrity",
-    members: Array.from({ length: 8 }, () => ({
-      name: "Team Member Name",
-      role: "Lorem ipsum dolor sit amet,",
-      image: "",
-      bio_short: "",
-    })),
-  },
   reasons: {
+    kicker: "Why NationCite",
     heading: "Why Researchers Choose Nationcite",
     subheading:
       "A verified platform built for precision, transparency, and long-term academic growth.",
     reasons: [
-      { title: "Vision-Driven", description: "We don't just count citations; we are building the future of academic reputation." },
-      { title: "Verified Truth", description: "We rely on human-governed data, not just blind algorithms." },
-      { title: "Execution-Focused", description: "We turn complex bibliometric data into clear, actionable rankings." },
-      { title: "Scalable Systems", description: "Built to index millions of papers without compromising speed." },
-      { title: "Transparent Workflows", description: "You see exactly how your score is calculated. No black boxes." },
-      { title: "Long-Term Partnerships", description: "We grow with you, from your first paper to your emeritus status." },
-      { title: "Data-Backed Decisions", description: "Every rank and metric is defensible and audit-ready." },
-      { title: "Security-First", description: "Your profile data is protected by enterprise-grade encryption." },
-      { title: "Future-Ready", description: "Our infrastructure evolves faster than the academic landscape." },
-      { title: "End-to-End Ownership", description: "From data ingestion to final ranking, we control the quality chain." },
-      { title: "Precision Engineering", description: "We distinguish between \"A. Sharma\" and \"Aditya Sharma\" with zero error." },
-      { title: "Growth-Oriented", description: "Our tools are designed to help you increase your H-index, not just watch it." },
-      { title: "Automation Expertise", description: "Smart workflows that handle the heavy lifting of data entry." },
-      { title: "Compliance-Ready", description: "Fully aligned with national data standards and DPDP protocols." },
-      { title: "Global Standards", description: "We benchmark Indian research against international metrics." },
+      { title: "Unfair Comparisons", description: "Tired of being compared to researchers outside your discipline." },
+      { title: "Hidden Formulas", description: "Frustrated by rankings that don’t explain how scores are calculated." },
+      { title: "Inaccurate Profiles", description: "Publications missing, affiliations outdated, duplicates unresolved." },
+      { title: "Career Bias", description: "Early-career researchers overshadowed by tenure-length advantage." },
+      { title: "Global Visibility", description: "No self-reported inflation only verifiable bibliometric sources." },
+      { title: "Data Integrity", description: "We grow with you, from your first paper to your emeritus status." },
+      { title: "Field Fairness", description: "Percentile rankings within your discipline not across unrelated fields." },
+      { title: "Impact Context", description: "Scores explained in plain language, not just raw numbers." },
+      { title: "ORCID Verified", description: "Secure authentication ensures profile ownership and credibility." },
+      { title: "Institutional Analytics", description: "Universities gain cohort-level insight without manual spreadsheets." },
+      { title: "Duplicate Detection", description: "Intelligent merging prevents fragmented academic records." },
+      { title: "Correction Workflow", description: "Submit evidence-backed requests with full audit transparency." },
+      { title: "Responsible Metrics", description: "Designed to support evaluation not replace peer review." },
+      { title: "Grant-Ready Reports", description: "Downloadable analytics formatted for promotions and funding." },
+      { title: "India-Focused", description: "A national framework tailored to India’s research ecosystem." },
     ],
   },
   faq: {
-    kicker: "Know Nationcite",
-    title: "Transparency is Our Currency",
+    kicker: "Common Questions",
+    title: "Clarity Before You Begin",
     body:
-      "You have questions about how your reputation is managed. We have clear answers.",
+      "Everything you need to know about NationCite, its purpose, and how it works.",
     faq_items: [
       {
-        question: "What exactly does Nationcite do?",
+        question: "What is NationCite?",
         answer:
-          "We are India's centralized H-index registry. We verify researchers, calculate their true impact, and rank them on a national leaderboard.",
+          "NationCite is India’s research impact platform providing transparent, field-normalized bibliometric rankings and verified researcher profiles.",
       },
       {
-        question: "How is this different from Google Scholar?",
+        question: "How are rankings calculated?",
         answer:
-          "Google Scholar is automated and often inaccurate. Nationcite uses verified, curated data to ensure 100% attribution accuracy.",
+          "Rankings are based on documented formulas integrating H-index, productivity balance, career normalization, and recent citation momentum.",
       },
       {
-        question: "Is my data safe?",
+        question: "What data sources are used?",
         answer:
-          "Absolutely. We adhere to strict data protection laws and give you total control over your profile visibility.",
+          "Metrics are sourced from recognized academic databases such as Scopus, and Web of Science, with clear source labeling.",
       },
       {
-        question: "How do you handle name duplicates?",
+        question: "Can I claim my profile?",
         answer:
-          "We use a hybrid system of unique identifiers (like ORCID) and manual human review to ensure citations are assigned correctly.",
+          "Yes. Researchers can authenticate using ORCID and securely claim ownership of their profile.",
       },
       {
-        question: "Can institutions use this for accreditation?",
+        question: "What if my data is incorrect?",
         answer:
-          "Yes. Our reports are designed to support NAAC, NIRF, and grant applications with verified data.",
+          "You can submit a correction request with supporting evidence through our structured moderation workflow.",
       },
       {
-        question: "How does the ranking system work?",
+        question: "Are metrics self-reported?",
         answer:
-          "Rankings are dynamic, based on a composite score of H-index, total citations, and recent impact velocity.",
+          "No. NationCite does not accept unverified self-reported bibliometric data.",
+      },
+      {
+        question: "Is NationCite free to use?",
+        answer:
+          "Basic access is free. Advanced analytics and institutional dashboards are available under subscription tiers.",
+      },
+      {
+        question: "Does NationCite replace peer review?",
+        answer:
+          "No. Metrics support benchmarking and evaluation, but qualitative peer review remains essential.",
       },
     ],
   },
   final_cta: {
     kicker: "Join the Ecosystem",
-    heading: "Claim Your Place on the Leaderboard",
+    heading: "Take Control of Your Academic Visibility",
     body:
-      "Your hard work deserves to be recognized. Join the platform that is defining the standard for Indian research excellence.",
-    secondary_cta_label: "Search Directory",
-    primary_cta_label: "Get Verified Now",
+      "NationCite gives you the tools to verify, correct, and strengthen your academic profile with full transparency.",
+    primary_cta_label: "Claim My Profile →",
+    secondary_cta_label: "Report an Issue →",
     banner_image: "/CTA Section Image - Nationcite.png",
     banner_alt: "Nationcite CTA Section",
   },
@@ -134,76 +136,76 @@ export default function AboutPage() {
 
   return (
     <><Head>
-        <title>About NationCite | India&apos;s Research Ranking Platform</title>
-        <meta
-          name="description"
-          content="NationCite unifies India&apos;s researcher and institutional rankings into one transparent platform with verified metrics and compliance standards. Learn More."
-        />
-        <meta 
-          name="keywords" 
-          content="about NationCite, India research ranking platform, h-index India platform" 
-        />
-        <meta property="og:title" content="About NationCite | India&apos;s Research Ranking Platform" />
-        <meta property="og:description" content="NationCite: India&apos;s unified research ranking platform with verified h-index metrics." />
-      </Head>
-    <main className="w-full bg-white">
-      {/* Hero Section */}
-      <SiteHero cms={cms.hero}>
-        {/* BADGE */}
-        <Badge>{cms.hero.badge_text}</Badge>
+      <title>About NationCite | India&apos;s Research Ranking Platform</title>
+      <meta
+        name="description"
+        content="NationCite unifies India&apos;s researcher and institutional rankings into one transparent platform with verified metrics and compliance standards. Learn More."
+      />
+      <meta
+        name="keywords"
+        content="about NationCite, India research ranking platform, h-index India platform"
+      />
+      <meta property="og:title" content="About NationCite | India&apos;s Research Ranking Platform" />
+      <meta property="og:description" content="NationCite: India&apos;s unified research ranking platform with verified h-index metrics." />
+    </Head>
+      <main className="w-full bg-white">
+        {/* Hero Section */}
+        <SiteHero cms={cms.hero}>
+          {/* BADGE */}
+          <Badge>{cms.hero.badge_text}</Badge>
 
-        {/* HEADING */}
-        <h1 className="mb-8 text-center">
-          <span className="block sm:inline">
-            {cms.hero.heading}
-          </span>
-          <span className="block sm:inline"></span>
-        </h1>
+          {/* HEADING */}
+          <h1 className="mb-8 text-center">
+            <span className="block sm:inline">
+              {cms.hero.heading}
+            </span>
+            <span className="block sm:inline"></span>
+          </h1>
 
-        {/* DESCRIPTION */}
-        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
-          {cms.hero.subheading}
-        </p>
+          {/* DESCRIPTION */}
+          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+            {cms.hero.subheading}
+          </p>
 
-        {/* CTA */}
-        <div className="flex justify-center w-full">
-          <button
-            onClick={scrollToNextSection}
-            className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6"
-          >
-            {cms.hero.cta_label}
-          </button>
-        </div>
-      </SiteHero>
-
-      {/* two img placehodlers blocks.. one block with 70% width and other with 30% width..section padding 120px on left and right.. */}
-      <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
-        <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
-          {/* 70% block */}
-          <div className="w-full md:w-[65%] h-[320px] sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
-            {cms.image_collage.left_image ? (
-              <img src={cms.image_collage.left_image} alt={cms.image_collage.left_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
-            ) : (
-              <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.left_image_alt}</span>
-            )}
+          {/* CTA */}
+          <div className="flex justify-center w-full">
+            <button
+              onClick={scrollToNextSection}
+              className="font-inter bg-[#FF7A00] text-white px-4 py-2 rounded-[7px] font-medium text-base transition-colors hover:bg-[#ff8c1a] shadow-lg shadow-orange-200 mt-6"
+            >
+              {cms.hero.cta_label}
+            </button>
           </div>
+        </SiteHero>
 
-          {/* 30% block */}
-          <div className="w-full md:w-[35%] h-[280px] sm:h-[320px] md:h-[350px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
-            {cms.image_collage.right_image ? (
-              <img src={cms.image_collage.right_image} alt={cms.image_collage.right_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
-            ) : (
-              <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.right_image_alt}</span>
-            )}
+        {/* two img placehodlers blocks.. one block with 70% width and other with 30% width..section padding 120px on left and right.. */}
+        <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
+            {/* 70% block */}
+            <div className="w-full md:w-[65%] h-80 sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
+              {cms.image_collage.left_image ? (
+                <img src={cms.image_collage.left_image} alt={cms.image_collage.left_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
+              ) : (
+                <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.left_image_alt}</span>
+              )}
+            </div>
+
+            {/* 30% block */}
+            <div className="w-full md:w-[35%] h-[280px] sm:h-80 md:h-[350px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
+              {cms.image_collage.right_image ? (
+                <img src={cms.image_collage.right_image} alt={cms.image_collage.right_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
+              ) : (
+                <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.right_image_alt}</span>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Who We Are */}
-      <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
-        <div className="text-center md:text-left">
-          <span
-            className="
+        {/* Who We Are */}
+        <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
+          <div className="text-center md:text-left">
+            <span
+              className="
   inline-block
   bg-white
   text-[#F76A23]
@@ -214,144 +216,111 @@ export default function AboutPage() {
   tracking-wide uppercase
   shadow-none mb-3 sm:mb-4 md:mb-4 lg:mb-4  
 "
-          >
-            {cms.who_we_are.kicker}
-          </span>
-          <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug">
-            {cms.who_we_are.heading}
-          </h3>
-        </div>
-        <div className="space-y-3 sm:space-y-6 md:space-y-6 lg:space-y-8 text-[#5C5C5C] text-center md:text-left">
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[0]?.text}</p>
-          <br />
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[1]?.text}</p>
-          <br />
-          <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[2]?.text}</p>
-        </div>
-      </section>
-      <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
-        <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg overflow-hidden">
-          {cms.feature_visual.image ? <img src={cms.feature_visual.image} alt={cms.feature_visual.alt_text} className="w-full h-full object-cover" /> : null}
-        </div>
-      </section>
+            >
+              {cms.who_we_are.kicker}
+            </span>
+            <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug">
+              {cms.who_we_are.heading}
+            </h3>
+          </div>
+          <div className="space-y-3 sm:space-y-6 md:space-y-6 lg:space-y-8 text-[#5C5C5C] text-center md:text-left">
+            <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[0]?.text}</p>
+            <br />
+            <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[1]?.text}</p>
+            <br />
+            <p className="text-sm sm:text-base md:text-base lg:text-base leading-relaxed">{cms.who_we_are.paragraphs?.[2]?.text}</p>
+          </div>
+        </section>
+        <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
+          <div className="w-full h-[380px] sm:h-[380px] md:h-[500px] lg:h-[650px] mb-8 sm:mb-10 md:mb-12 lg:mb-12 bg-orange-100 border-2 rounded-md sm:rounded-lg overflow-hidden">
+            {cms.feature_visual.image ? <img src={cms.feature_visual.image} alt={cms.feature_visual.alt_text} className="w-full h-full object-cover" /> : null}
+          </div>
+        </section>
 
-      <TrustedBy cms={cms.trusted_by} />
+        <TrustedBy cms={cms.trusted_by} />
 
-      {/* The Minds Powering Nationcite Section */}
-      <section className="w-full py-10 sm:py-16 md:py-24 lg:py-32 section-padding bg-white">
-        <div className="flex flex-col items-center gap-8 sm:gap-10 md:gap-10 lg:gap-12">
-          <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl text-center text-[#1E1E1E]">
-            {cms.team.heading}
-          </h3>
+        {/* 15 Reasons to Join Us */}
+        <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
+          <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start text-center lg:text-left">
+            <Badge>{cms.reasons.kicker}</Badge>
+            <h3 className="mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-xl sm:text-2xl md:text-2xl lg:text-3xl">
+              {cms.reasons.heading}
+            </h3>
+            <p className="text-sm sm:text-base md:text-base lg:text-base text-[#5C5C5C] leading-relaxed">
+              {cms.reasons.subheading}
+            </p>
+          </div>
 
-          {/* Team Grid */}
-          <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
-            {(cms.team.members || []).slice(0, 8).map((member: any, index: number) => (
+          <div className="grid grid-cols-2 md:grid-cols-1 lg:w-3/5 lg:ml-auto gap-3 sm:gap-4 md:gap-5 lg:gap-6 lg:max-w-xl">
+            {(cms.reasons.reasons || []).map((reason: any, i: number) => (
               <div
-                key={index}
-                className="group cursor-pointer rounded-md sm:rounded-lg bg-[#F2F2F2] pb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                key={i}
+                className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-none hover:shadow-md transition-shadow"
               >
-                {/* Image Placeholder */}
-                <div className="w-full aspect-square rounded-md sm:rounded-lg bg-[#E6E6E6] mb-3 sm:mb-4 md:mb-4 lg:mb-4 overflow-hidden">
-                  {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : null}
-                </div>
-
-                {/* Text */}
-                <div>
-                  <h5 className="p2 px-3 text-base sm:text-base md:text-base lg:text-base font-medium text-[#1E1E1E] leading-snug">
-                    {member.name}
-                  </h5>
-                  <p className="p3 text-sm sm:text-sm md:text-sm lg:text-sm px-3 text-[#6B6B6B] mt-1 leading-relaxed">
-                    {member.role}
-                  </p>
+                <div className="flex items-start gap-2 sm:gap-3 md:gap-3 lg:gap-3">
+                  <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-md sm:rounded-lg flex items-center justify-center shrink-0">
+                    <Check className="w-6 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
+                  </div>
+                  <div>
+                    <h5 className="font-medium text-sm sm:text-base md:text-base lg:text-lg text-neutral-800">
+                      {reason.title}
+                    </h5>
+                    <p className="text-xs sm:text-sm md:text-sm lg:text-base text-[#5C5C5C] mt-1 leading-relaxed">
+                      {reason.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 15 Reasons to Join Us */}
-      <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-16">
-        <div className="lg:w-2/5 lg:sticky lg:top-24 lg:self-start text-center lg:text-left">
-          <h3 className="mb-4 sm:mb-6 md:mb-6 lg:mb-6 text-xl sm:text-2xl md:text-2xl lg:text-3xl">
-            {cms.reasons.heading}
-          </h3>
-          <p className="text-sm sm:text-base md:text-base lg:text-base text-[#5C5C5C] leading-relaxed">
-            {cms.reasons.subheading}
-          </p>
-        </div>
+        <FAQSection
+          cms={{
+            ...cms.faq,
+            faqItems: cms.faq.faq_items,
+          }}
+        />
 
-        <div className="lg:w-3/5 lg:ml-auto flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6 lg:max-w-xl">
-          {(cms.reasons.reasons || []).map((reason: any, i: number) => (
-            <div
-              key={i}
-              className="bg-white p-3 sm:p-4 md:p-4 lg:p-5 rounded-md sm:rounded-lg border border-gray-100 shadow-none hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-start gap-2 sm:gap-3 md:gap-3 lg:gap-3">
-                <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Check className="w-6 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
-                </div>
-                <div>
-                  <h5 className="font-medium text-sm sm:text-base md:text-base lg:text-lg text-neutral-800">
-                    {reason.title}
-                  </h5>
-                  <p className="text-sm sm:text-sm md:text-sm lg:text-base text-[#5C5C5C] mt-1 leading-relaxed">
-                    {reason.description}
-                  </p>
-                </div>
-              </div>
+        {/* Custom CTA for About Page */}
+        <section className="w-full py-12 md:py-16 bg-white section-padding">
+          <div className="w-full mx-auto flex flex-col items-center text-center">
+            <div className="mb-8 md:mb-10">
+              <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-lg text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
+                {cms.final_cta.kicker}
+              </span>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <FAQSection
-        cms={{
-          ...cms.faq,
-          faqItems: cms.faq.faq_items,
-        }}
-      />
+            <h3 className="text-[#1E1E1E] mb-8 md:mb-12 text-3xl md:text-3xl text-center">
+              {cms.final_cta.heading}
+            </h3>
 
-      {/* Custom CTA for About Page */}
-      <section className="w-full py-12 md:py-16 bg-white section-padding">
-        <div className="w-full mx-auto flex flex-col items-center text-center">
-          <div className="mb-8 md:mb-10">
-            <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
-              {cms.final_cta.kicker}
-            </span>
+            <p className="text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px] text-center leading-relaxed">
+              {cms.final_cta.body}
+            </p>
+
+            <div className="flex py-6 flex-row md:flex-row gap-3 justify-center items-center">
+              <button className="font-inter bg-[#1E1E1E] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-black transition-colors w-auto text-center whitespace-nowrap">
+                {cms.final_cta.secondary_cta_label}
+              </button>
+
+              <button className="font-inter bg-[#FF7A00] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-auto text-center whitespace-nowrap">
+                {cms.final_cta.primary_cta_label}
+              </button>
+            </div>
           </div>
 
-          <h3 className="text-[#1E1E1E] mb-8 md:mb-12 text-3xl md:text-3xl text-center">
-            {cms.final_cta.heading}
-          </h3>
-
-          <p className="text-[#5C5C5C] text-sm md:text-base mt-6 mb-10 md:mb-16 w-full md:w-[600px] text-center leading-relaxed">
-            {cms.final_cta.body}
-          </p>
-
-          <div className="flex py-6 flex-row md:flex-row gap-3 justify-center items-center">
-            <button className="font-inter bg-[#1E1E1E] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-black transition-colors w-auto text-center whitespace-nowrap">
-              {cms.final_cta.secondary_cta_label}
-            </button>
-
-            <button className="font-inter bg-[#FF7A00] text-white px-4 py-1.5 rounded-[7px] font-medium text-sm sm:text-lg hover:bg-[#e66e00] transition-colors shadow-lg shadow-orange-200 w-auto text-center whitespace-nowrap">
-              {cms.final_cta.primary_cta_label}
-            </button>
+          {/* Full-width Image Section */}
+          <div className="w-full mt-12 md:mt-16">
+            <img
+              src={cms.final_cta.banner_image}
+              alt={cms.final_cta.banner_alt}
+              className="w-full h-auto rounded-md sm:rounded-lg"
+            />
           </div>
-        </div>
+        </section>
 
-        {/* Full-width Image Section */}
-        <div className="w-full mt-12 md:mt-16">
-          <img
-            src={cms.final_cta.banner_image}
-            alt={cms.final_cta.banner_alt}
-            className="w-full h-auto rounded-md sm:rounded-lg"
-          />
-        </div>
-      </section>
-
-      {/* CTA Banner Section */}
-    </main></>
+        {/* CTA Banner Section */}
+      </main></>
   );
 }

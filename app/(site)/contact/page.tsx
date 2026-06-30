@@ -9,15 +9,16 @@ const DEFAULT_CMS = {
   hero: {
     desktop_background_image: "/Bg.jpg",
     mobile_background_image: "/Mobile_Responsive.jpg",
-    kicker: "Get in Touch with Nationcite",
-    heading_line_1: "Let's Build India's Research",
-    heading_line_2: "Transparency Together",
+    kicker: "Get in Touch",
+    heading_line_1: "We’re Here to Support",
+    heading_line_2: "Your Research Journey",
     body:
-      "Whether you're a researcher seeking profile support, an institution exploring analytics, or a partner interested in collaboration – our team is here to assist you with verified, secure, and transparent solutions.",
-    trusted_by_text: "Trusted by 8,000+ Researchers in India",
+      "Whether you need profile verification, methodological clarification, institutional collaboration, or support assistance, the NationCite team is committed to providing timely and structured responses.",
+    trusted_by_text: "Supporting Researchers Across India’s Leading Academic Institutions",
   },
   form: {
-    title: "Contact Form",
+    title: "Submit Your Query with Confidence",
+    description: "Use the form below to connect with our support or academic advisory team.",
     success_title: "Message sent successfully!",
     success_body: "We'll get back to you soon.",
     error_title: "Failed to send message",
@@ -102,13 +103,14 @@ export default function ContactPage() {
         <meta name="keywords" content="contact NationCite, research ranking support India" />
         <meta property="og:title" content="Contact NationCite | Research Ranking Support" />
       </Head>
+      
       {/* Hero/Contact Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-[120px] pt-32 pb-12 bg-white min-h-screen flex items-center">
+      <section className="w-full section-padding pt-12 xl:pt-32 pb-12 bg-white min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
           <div className="flex flex-col justify-center text-center md:text-left h-full">
             {/* BADGE */}
-            <div className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-3 py-1 rounded-[6px] font-medium text-xs tracking-wide uppercase mb-4 w-fit md:w-fit mx-auto md:mx-0">
+            <div className="inline-block bg-white text-[#F76A23] border border-[#F76A23]/30 px-3 py-1 rounded-md font-medium text-xs tracking-wide uppercase mb-4 w-fit md:w-fit mx-auto md:mx-0">
               {cms.hero.kicker}
             </div>
 
@@ -158,6 +160,7 @@ export default function ContactPage() {
           {/* Right Column - Form */}
           <div className="bg-white shadow-xl rounded-xl p-5 sm:p-6 lg:p-8 border border-gray-100">
             <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1E1E1E] mb-4">{cms.form.title}</div>
+            <p className="text-sm sm:text-base text-[#5C5C5C] mb-6">{cms.form.description}</p>
             
             {submitStatus === 'success' && (
               <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
@@ -173,18 +176,18 @@ export default function ContactPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3 lg:space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 lg:space-y-4 mt-6">
               {/* Name */}
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-[#1E1E1E] mb-1">
-                  Name <span className="text-red-500">*</span>
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Name"
+                  placeholder="Full Name"
                   required
                   className="w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-black outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                 />
@@ -209,14 +212,14 @@ export default function ContactPage() {
               {/* Email */}
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-[#1E1E1E] mb-1">
-                  Email Address <span className="text-red-500">*</span>
+                  Registered Email Address <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Email"
+                  placeholder="Registered Email Address"
                   required
                   className="w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-black outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                 />
@@ -225,14 +228,14 @@ export default function ContactPage() {
               {/* Institution/Affiliation */}
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-[#1E1E1E] mb-1">
-                  Institution/Affiliation <span className="text-red-500">*</span>
+                  Institution / Organization <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="institution"
                   value={formData.institution}
                   onChange={handleChange}
-                  placeholder="Input Text"
+                  placeholder="Institution / Organization"
                   required
                   className="w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-black outline-none focus:border-[#FF7A00] focus:bg-white focus:ring-2 focus:ring-[#FF7A00]/20 transition-all"
                 />

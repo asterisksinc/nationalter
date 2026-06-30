@@ -25,34 +25,34 @@ type TransparencyCms = {
 
 const products: Product[] = [
   {
-    id: "open-data",
-    title: "Open & Licensed Data Sources",
-    tagline: "Transparent data foundation",
+    id: "field-fairness",
+    title: "Discipline-Based Ranking",
+    tagline: "Field Fairness",
+    category: "Fairness",
+    description:
+      "Researchers are ranked within their field and converted into percentiles for unbiased comparison.",
+    image: "/dummy/placeholder-1.png",
+    slug: "field-fairness",
+  },
+  {
+    id: "verified-data",
+    title: "Trusted Bibliometric Sources",
+    tagline: "Verified Data",
     category: "Data",
     description:
-      "We ingest validated data from OpenAlex (open), and optionally from Scopus & Web of Science (licensed) where available.",
-    image: "/dummy/placeholder-1.png",
-    slug: "open-data-sources",
-  },
-  {
-    id: "verification",
-    title: "Evidence-Based Verification",
-    tagline: "Moderated accuracy",
-    category: "Verification",
-    description:
-      "All profile corrections and claims require documentary evidence and undergo structured moderation.",
+      "Metrics are sourced from Scopus, and Web of Science never self-reported.",
     image: "/dummy/placeholder-2.png",
-    slug: "evidence-verification",
+    slug: "verified-data",
   },
   {
-    id: "refresh",
-    title: "Continuous Refresh & Audit",
-    tagline: "Real-time reliability",
-    category: "Audit",
+    id: "security-standards",
+    title: "Privacy & Compliance",
+    tagline: "Security Standards",
+    category: "Compliance",
     description:
-      "Nightly updates, weekly recomputations, and immutable audit trails ensure metric reliability.",
+      "Built in alignment with India's DPDP Act, with full consent and audit transparency.",
     image: "/dummy/placeholder-3.png",
-    slug: "continuous-refresh",
+    slug: "security-standards",
   },
 ];
 
@@ -88,8 +88,8 @@ export default function TransparencySection({ cms }: { cms?: TransparencyCms }) 
   }, [renderedProducts]);
 
   return (
-    <section className="py-12 md:py-16 w-full px-4 md:px-[72px]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 md:py-16 w-full px-4 section-padding">
+      <div className="w-full mx-auto">
         {/* HEADER */}
         <div className="mb-16 w-full text-center md:text-left">
           <h3 className="text-center md:text-left">
@@ -106,7 +106,7 @@ export default function TransparencySection({ cms }: { cms?: TransparencyCms }) 
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 md:gap-0 md:gap-12">
+        <div className="grid md:grid-cols-2 gap-4">
           {/* LEFT STICKY COLUMN */}
           <div className="md:block">
             <div className="md:sticky md:top-32 space-y-6 md:space-y-10">
@@ -121,9 +121,9 @@ export default function TransparencySection({ cms }: { cms?: TransparencyCms }) 
                         : "text-neutral-400 border-neutral-200 hover:text-neutral-600"
                     }`}
                   >
-                    <span>{p.title}</span>
+                    <span>{p.tagline}</span>
                     <ArrowUpRight
-                      className={`w-4 h-4 md:w-5 md:h-5 transition flex-shrink-0 ml-2 ${
+                      className={`w-4 h-4 md:w-5 md:h-5 transition shrink-0 ml-2 ${
                         activeService === p.id ? "opacity-100" : "opacity-0"
                       }`}
                     />

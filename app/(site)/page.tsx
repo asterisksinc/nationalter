@@ -21,42 +21,42 @@ const DEFAULT_CMS = {
     heading_line_1: "India's H-Index",
     heading_line_2: "Leaderboard Portal",
     subheading:
-      "Stop guessing your impact. We verify, rank, and showcase your academic performance so you get the funding, promotions, and recognition you actually deserve.",
-    primary_cta_label: "Claim My Profile",
-    secondary_cta_label: "Search Directory",
+      "A transparent national platform for verified research metrics, fair rankings, and authenticated academic profiles.",
+    primary_cta_label: "Explore Rankings",
+    secondary_cta_label: "Claim My Profile",
   },
   trusted_by: {
     heading: "Trusted by India&apos;s Top Institutions",
   },
   h_index: {
-    heading: "The Number That Defines Your Career",
+    heading: "What Is the H-Index And Why Does It Matter?",
     subheading:
-      "Your H-index is more than just a statistic. In modern academia, it is your currency. Here is why it matters.",
+      "A simple, fair explanation of how research impact is measured and what it truly means for you.",
   },
   transparency: {
-    heading: "Built on Transparency.\nGoverned by Data Integrity.",
+    heading: "Transparent. Reproducible. Responsible.",
     subheading:
-      "NationCite follows a reproducible, evidence-backed methodology using global open and licensed bibliometric sources. Every metric is source-labeled and continuously updated.",
-    cta_label: "View Full Methodology",
+      "Every metric is source-labeled, publicly documented, and built on verified bibliographic data.",
+    cta_label: "View Full Methodology →",
     cta_url: "/methodology",
   },
   pricing: {
-    badge_text: "Membership",
-    heading: "Fair Plans for Serious Professionals",
+    badge_text: "Built for Researchers. Designed for Institutions.",
+    heading: "Start Free. Upgrade for Visibility.",
   },
   research_intelligence: {
-    kicker: "Intelligence",
-    heading: "The Research Playbook",
+    kicker: "Insights & Responsible Metrics",
+    heading: "Clarity Beyond the Score",
     subheading:
-      "Strategies to increase your citations, win grants, and publish in Q1 journals.",
+      "Guides, explainers, and research evaluation insights to help you interpret metrics responsibly.",
     cta_label: "Read All Guides",
   },
   final_cta: {
-    kicker: "Get Verified",
-    heading: "Your work deserves to be seen",
+    kicker: "Your Research Deserves Recognition.",
+    heading: "Own Your Academic Impact Today.",
     body:
-      "Don't let your hard-earned citations get lost in the noise. Join India's top researchers on the leaderboard today.",
-    primary_cta_label: "Claim My Profile Now",
+      "Claim your profile, verify your data, and strengthen your academic credibility in minutes.",
+    primary_cta_label: "Claim My Profile Now →",
     banner_image: "/CTA Section Image - Nationcite.png",
     banner_alt: "Nationcite CTA Section",
   },
@@ -171,7 +171,7 @@ export default function HomePage() {
       <TrustedBy cms={cms.trusted_by} />
       <UnderstandingHIndex cms={cms.h_index} />
       <TransparencySection cms={cms.transparency} />
-      <PricingSection cms={cms.pricing} />
+      <PricingSection className="section-padding" cms={cms.pricing} />
       <ResearchIntelligence cms={cms.research_intelligence} />
       <FinalCTA cms={cms.final_cta} />
     </div></>

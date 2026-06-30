@@ -20,11 +20,11 @@ const DEFAULT_CMS = {
   hero: {
     desktop_background_image: "/Bg.jpg",
     mobile_background_image: "/Mobile_Responsive.jpg",
-    badge_text: "Leaderboard",
-    heading: "Top Researchers & Scholars",
+    badge_text: "National Rankings",
+    heading: "India’s Verified Research Impact Rankings",
     subheading:
-      "Explore India's leading researchers and scholars who are advancing knowledge and global research.",
-    cta_label: "Explore Scholars",
+      "Explore field-normalized, source-labeled rankings built on transparent methodology and defensible bibliometric standards.",
+    cta_label: "View My Rank →",
   },
   table: {
     title: "Scholars Leaderboard",
@@ -42,42 +42,64 @@ const DEFAULT_CMS = {
     })),
   },
   tab_toggle: {
-    badge_text: "Powered by Industry Experts",
-    title: "Custom Consultancy Calls",
-    cta_label: "Explore All Resources",
+    badge_text: "Premium Advantage",
+    title: "Turn Rankings Into Results",
+    cta_label: "Unlock Premium Insights →",
     cta_url: "#",
     tabs: [
-      { label: "Feature 1", title: "Feature 1", body: "Placeholder content for feature 1", image: "", icon: "" },
-      { label: "Feature 2", title: "Feature 2", body: "Placeholder content for feature 2", image: "", icon: "" },
-      { label: "Feature 3", title: "Feature 3", body: "Placeholder content for feature 3", image: "", icon: "" },
+      { label: "Custom Impact Report", title: "Custom Impact Report", body: "A personalized breakdown of your percentile position, growth trend, citation hygiene gaps, and strategic improvement roadmap.", image: "", icon: "" },
+      { label: "1-on-1 Consultancy Call", title: "1-on-1 Consultancy Call", body: "A structured advisory session analyzing your profile, identifying missing opportunities, and guiding measurable impact growth.", image: "", icon: "" },
+      { label: "Strategic Profile Optimization", title: "Strategic Profile Optimization", body: "Actionable recommendations to improve metadata accuracy, affiliation alignment, subject tagging, and long-term citation momentum.", image: "", icon: "" },
     ],
   },
   three_blocks: {
-    heading: "Research Intelligence & Academic Insight",
+    badge_text: "Research Intelligence",
+    heading: "Learn the Science Behind the Score",
     subheading:
-      "Stay informed with data literacy, ranking methodology, and research visibility best practices.",
-    cards: Array.from({ length: 3 }, () => ({
-      title: "Lorem ipsum dolor slef amet",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "",
-      link_label: "Learn More",
-      link_url: "#",
-    })),
-    cta_label: "Explore All Resources",
+      "Access expert guides, impact breakdowns, and early-career research frameworks to strengthen your academic trajectory.",
+    cards: [
+      {
+        title: "Understanding Field-Normalized Percentiles",
+        description:
+          "A complete breakdown of how percentile ranking removes cross-disciplinary bias and improves evaluation fairness.",
+        image: "",
+        link_label: "Read Now",
+        link_url: "#",
+      },
+      {
+        title: "How to Improve Your H-Index Responsibly",
+        description:
+          "Practical, ethical strategies to strengthen citation impact without manipulation or gaming.",
+        image: "",
+        link_label: "Learn More",
+        link_url: "#",
+      },
+      {
+        title: "Top 10 Academic Decisions Early Researchers Must Make",
+        description:
+          "A strategic guide for PhD scholars and early-career academics planning long-term research visibility.",
+        image: "",
+        link_label: "Explore Guide",
+        link_url: "#",
+      },
+    ],
+    cta_label: "Visit Resource Center →",
     cta_url: "#",
   },
   faq: {
-    kicker: "Know Nationcite",
-    title: "Everything You Need to Know About Us",
+    kicker: "Common Questions",
+    title: "Everything You Should Know About Rankings",
     body:
-      "This section answers the most common questions about Nationcite, who we are, how we operate, and what makes our company different in the digital ecosystem.",
+      "Clear answers on indexing, methodology, and profile optimization.",
     faq_items: [
-      { question: "What does this scholars leaderboard measure?", answer: "It ranks verified scholars using citation-linked impact signals and metadata consistency checks." },
-      { question: "How often is ranking refreshed?", answer: "The underlying data is refreshed in scheduled cycles with recalculations and audit tracking." },
-      { question: "Can I request profile corrections?", answer: "Yes. Correction workflows are available for attribution, affiliation, and publication conflicts." },
-      { question: "Do fields affect ranking context?", answer: "Yes. Field and subject context are considered while presenting comparative views." },
-      { question: "Can institutions use this list?", answer: "Yes. Institutions can use this list for visibility, benchmarking, and reporting workflows." },
+      { question: "How are leaderboard rankings calculated?", answer: "Rankings are based on documented formulas integrating H-index, productivity balance, career normalization, and recent citation momentum." },
+      { question: "How do I get indexed on NationCite?", answer: "Researchers are indexed automatically through verified bibliometric data sources covering Indian-affiliated authors." },
+      { question: "Can I register manually?", answer: "If your profile exists, you can claim it via ORCID authentication. If missing, you may submit a request for review." },
+      { question: "What if my H-index is incorrect?", answer: "You can submit an evidence-backed correction ticket, which is reviewed through our moderation workflow." },
+      { question: "Are rankings updated regularly?", answer: "Yes. Data refresh cycles ensure metrics reflect updated citation records." },
+      { question: "Does NationCite use self-reported data?", answer: "No. All metrics are sourced from recognized academic databases and clearly labeled." },
+      { question: "What are consultancy calls included in premium plans?", answer: "Premium subscribers receive structured advisory sessions reviewing their custom impact report and strategic profile optimization steps." },
+      { question: "Do rankings replace peer review?", answer: "No. NationCite provides analytical benchmarking tools to support not replace qualitative academic evaluation." },
     ],
   },
   final_cta: {
@@ -258,14 +280,14 @@ export default function ScholarsLeaderboardPage() {
                 </div>
               </div>
             ) : (
-               <LeaderboardTable
-              data={paginatedData}
-              type="Scholars"
-              totalCount={totalCount}
-              currentPage={currentPage}
-              onPageChange={setCurrentPage}
-              itemsPerPage={10}
-            />
+              <LeaderboardTable
+                data={paginatedData}
+                type="Scholars"
+                totalCount={totalCount}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+                itemsPerPage={10}
+              />
             )}
           </div>
         </div>

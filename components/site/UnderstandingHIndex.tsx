@@ -27,29 +27,29 @@ type HIndexCms = {
 export default function UnderstandingHIndex({ cms }: { cms?: HIndexCms }) {
   const fallbackCards = [
     {
-      title: "Productivity meets Impact",
+      title: "What Is the H-Index?",
       description:
-        "H-index proves you don't just write papers you write papers that other scientists actually use. It is the only metric that measures both quantity and quality.",
+        "A balance of productivity and citations measuring sustained scholarly influence.",
     },
     {
-      title: "Unlock More Grants",
+      title: "Why It Matters",
       description:
-        "Grant committees don't have time to read every paper. They look at your score. A verified H-index on Nationcite proves your track record instantly.",
+        "Used globally for representing research credibility, and institutional benchmarking.",
     },
     {
-      title: "Fast-Track Tenure",
+      title: "The Raw Number Problem",
       description:
-        "Universities hire based on prestige. A high ranking on our National Leaderboard puts your resume at the top of the pile.",
+        "Citation cultures differ across fields, raw scores alone are misleading.",
     },
     {
-      title: "We Catch What Others Miss",
+      title: "Field-Normalized Percentiles",
       description:
-        "Generic search engines often attribute your work to others with the same name. We verify your identity so you get credit for every citation.",
+        "You’re compared only with peers in your discipline for true fairness.",
     },
     {
-      title: "Speak the Global Language",
+      title: "Beyond One Metric",
       description:
-        "Whether you are applying to IIT or Oxford, the H-index is the universal standard of scientific competence.",
+        "Additional indicators ensure balanced, and responsible research assessment.",
     },
   ];
 

@@ -1,6 +1,8 @@
+import Badge from "@/components/ui/Badge";
 import React from "react";
 
 type ThreeBlocksCms = {
+  badge_text?: string;
   heading?: string;
   subheading?: string;
   cards?: Array<{
@@ -15,6 +17,7 @@ type ThreeBlocksCms = {
 };
 
 const DEFAULT_CMS: Required<ThreeBlocksCms> = {
+  badge_text: "Research Intelligence",
   heading: "Research Intelligence & Academic Insight",
   subheading:
     "Stay informed with data literacy, ranking methodology, and research visibility best practices.",
@@ -46,6 +49,9 @@ export default function ThreeBlocksSection({ cms }: { cms?: ThreeBlocksCms }) {
       <div className="w-full mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-14">
+          {content.badge_text && (
+            <Badge>{content.badge_text}</Badge>
+          )}
           <h3 className="h3 mb-3 md:mb-4 max-w-[500px] md:max-w-[700px] text-center">
             {content.heading}
           </h3>
@@ -58,7 +64,7 @@ export default function ThreeBlocksSection({ cms }: { cms?: ThreeBlocksCms }) {
         <div className="lg:hidden flex flex-col gap-6 mb-10">
           {/* Card 1 */}
           <div className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col">
-            <div className="w-full h-[200px] bg-gray-100 flex-shrink-0">
+            <div className="w-full h-[200px] bg-gray-100 shrink-0">
               {card1.image ? <img src={card1.image} alt={card1.title || ""} className="w-full h-full object-cover" /> : null}
             </div>
             <div className="p-6 flex flex-col flex-1">

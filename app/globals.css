@@ -45,6 +45,6 @@ svg {
 
 @layer utilities {
   .section-padding {
-    @apply px-4 sm:px-8 lg:px-[120px];
+    @apply px-4 md:px-8 lg:px-[60px] xl:px-[120px];
   }
 }

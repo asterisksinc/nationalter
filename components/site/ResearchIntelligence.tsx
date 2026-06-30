@@ -40,7 +40,7 @@ export default function ResearchIntelligence({ cms }: { cms?: ResearchCms }) {
       <div className="w-full mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-12">
           <div className="mb-4">
-            <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-[8px] text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
+            <span className="bg-[#FFF5EB] text-[#FF7A00] px-4 py-1 rounded-lg text-xs sm:text-sm font-medium border border-[#FFD6B3] inline-block">
               {cms?.kicker || "Intelligence"}
             </span>
           </div>
@@ -59,7 +59,7 @@ export default function ResearchIntelligence({ cms }: { cms?: ResearchCms }) {
               className="group cursor-pointer research-card bg-[#F5F5F5] rounded-md sm:rounded-lg overflow-hidden flex flex-col h-full"
             >
               {/* Image Container - Now inside the card */}
-              <div className="h-40 md:h-[250px] lg:h-[350px] w-full relative overflow-hidden flex-shrink-0">
+              <div className="h-40 md:h-[250px] lg:h-[350px] w-full relative overflow-hidden shrink-0">
                 <div className="absolute inset-0 bg-gray-200/50 transition-colors"></div>
                 {/* Optional: Add a subtle overlay or placeholder pattern here if needed to match the 'checkerboard' look, 
                     but keeping it clean as per original code style. */}
