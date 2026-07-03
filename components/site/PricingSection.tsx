@@ -221,7 +221,7 @@ export default function PricingSection({
                         {sp}
                       </span>
                     ))}
-                    <span className="font-inter text-xl sm:text-2xl md:text-3xl font-bold text-[#111111] break-words">
+                    <span className="font-inter text-xl sm:text-2xl md:text-3xl font-bold text-[#111111] wrap-break-words">
                       {splitPrice(tier.price).main}
                       {splitPrice(tier.price).suffix && (
                         <span className="text-xs sm:text-sm md:text-base font-normal text-gray-500">
