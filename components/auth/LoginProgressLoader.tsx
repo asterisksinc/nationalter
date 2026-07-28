@@ -8,7 +8,8 @@ interface LoginProgressLoaderProps {
   duration?: number;
 }
 
-const DEFAULT_DURATION = 1300;
+const DEFAULT_DURATION = 10_000;
+const PROGRESS_STEPS = 10;
 const COMPLETION_PAUSE = 120;
 const FADE_DURATION = 240;
 
@@ -25,38 +26,29 @@ export function LoginProgressLoader({
   }, [onComplete]);
 
   useEffect(() => {
-    let animationFrame = 0;
+    let currentStep = 0;
     let completionTimer = 0;
     let redirectTimer = 0;
-    const startedAt = performance.now();
+    const stepDuration = duration / PROGRESS_STEPS;
 
-    const updateProgress = (now: number) => {
-      const elapsed = now - startedAt;
-      const timeRatio = Math.min(elapsed / duration, 1);
-      const easedProgress = 1 - Math.pow(1 - timeRatio, 2.4);
-      const nextProgress =
-        timeRatio === 1 ? 100 : Math.min(99, Math.floor(easedProgress * 100));
+    const progressTimer = window.setInterval(() => {
+      currentStep += 1;
+      setProgress(currentStep * 10);
 
-      setProgress(nextProgress);
-
-      if (timeRatio < 1) {
-        animationFrame = requestAnimationFrame(updateProgress);
-        return;
+      if (currentStep === PROGRESS_STEPS) {
+        window.clearInterval(progressTimer);
+        completionTimer = window.setTimeout(() => {
+          setIsExiting(true);
+          redirectTimer = window.setTimeout(
+            () => onCompleteRef.current(),
+            FADE_DURATION,
+          );
+        }, COMPLETION_PAUSE);
       }
-
-      completionTimer = window.setTimeout(() => {
-        setIsExiting(true);
-        redirectTimer = window.setTimeout(
-          () => onCompleteRef.current(),
-          FADE_DURATION,
-        );
-      }, COMPLETION_PAUSE);
-    };
-
-    animationFrame = requestAnimationFrame(updateProgress);
+    }, stepDuration);
 
     return () => {
-      cancelAnimationFrame(animationFrame);
+      window.clearInterval(progressTimer);
       window.clearTimeout(completionTimer);
       window.clearTimeout(redirectTimer);
     };
