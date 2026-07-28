@@ -64,14 +64,14 @@ export function LoginProgressLoader({
       aria-atomic="true"
     >
       <div className="w-full max-w-[560px] text-center">
-        <div className="login-progress-logo-shell mx-auto mb-6 flex h-24 w-48 items-center justify-center rounded-[var(--radius-md)] sm:h-28 sm:w-56">
+        <div className="mx-auto mb-6 flex h-28 w-56 items-center justify-center sm:h-32 sm:w-64">
           <Image
             src="/logo.png"
             alt="NationCite"
             width={450}
             height={270}
             priority
-            className="login-progress-logo h-auto w-36 sm:w-44"
+            className="login-progress-logo h-auto w-44 sm:w-52"
           />
         </div>
 
@@ -106,16 +106,6 @@ export function LoginProgressLoader({
 
         .login-progress-overlay--exiting {
           animation: login-overlay-out ${FADE_DURATION}ms ease-in both;
-        }
-
-        .login-progress-logo-shell {
-          background: color-mix(
-            in srgb,
-            var(--color-warm-100) 82%,
-            white
-          );
-          border: 2px solid var(--color-primary);
-          box-shadow: var(--shadow-xs);
         }
 
         .login-progress-logo {
