@@ -120,12 +120,11 @@ export default function LoginPage() {
   // MAIN LOGIN FORM VIEW (Step 1 & 2)
   return (
     <>
-      <LoginProgressLoader
-        isVisible={pendingRedirect !== null}
-        onComplete={() => {
-          if (pendingRedirect) window.location.assign(pendingRedirect);
-        }}
-      />
+      {pendingRedirect && (
+        <LoginProgressLoader
+          onComplete={() => window.location.assign(pendingRedirect)}
+        />
+      )}
       <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
       {/* Sidebar */}
       <div

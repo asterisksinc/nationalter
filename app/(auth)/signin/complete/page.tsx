@@ -21,7 +21,6 @@ function GoogleLoginCompletion() {
 
   return (
     <LoginProgressLoader
-      isVisible
       onComplete={() => window.location.replace(redirectUrl)}
     />
   );
