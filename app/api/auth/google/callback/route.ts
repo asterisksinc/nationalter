@@ -180,7 +180,8 @@ export async function GET(req: NextRequest) {
       else redirectPath = "/dashboard/researchers";
     }
 
-    const redirect = new URL(redirectPath, origin);
+    const redirect = new URL("/signin/complete", origin);
+    redirect.searchParams.set("next", redirectPath);
     const res = NextResponse.redirect(redirect.toString());
 
     res.cookies.set("nationciteId", sessionToken, {

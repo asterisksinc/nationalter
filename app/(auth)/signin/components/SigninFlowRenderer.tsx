@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FormInput } from "../../signup/components/FormInput";
 import { Icon } from "../../signup/components/Icon";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
@@ -15,7 +15,7 @@ interface SigninFlowRendererProps {
   userType: string;
   step: number;
   setStep: (step: number) => void;
-  onSuccess: () => void;
+  onSuccess: (redirectUrl: string) => void;
 }
 
 export const SigninFlowRenderer = ({
@@ -26,6 +26,7 @@ export const SigninFlowRenderer = ({
 }: SigninFlowRendererProps) => {
   // const [step, setStep] = useState(1); // MIGRATED TO PROPS
   const [isLoading, setIsLoading] = useState(false);
+  const submissionLock = useRef(false);
   const [timer, setTimer] = useState(60);
   const [otpError, setOtpError] = useState("");
 
@@ -59,6 +60,8 @@ export const SigninFlowRenderer = ({
   };
 
   const handleEmailPassSubmit = async () => {
+    if (submissionLock.current) return;
+    submissionLock.current = true;
     setIsLoading(true);
     console.log("[AUTH] Starting login...", { email, userType });
 
@@ -84,6 +87,7 @@ export const SigninFlowRenderer = ({
       if (!result.success) {
         console.error("[AUTH] Login failed:", result.message);
         alert(result.message || "Login failed");
+        submissionLock.current = false;
         setIsLoading(false);
         return;
       }
@@ -104,17 +108,14 @@ export const SigninFlowRenderer = ({
       //   return;
       // }
 
-      // Role-based redirect (using actual database role)
-      // Small delay to ensure cookies are saved
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       const redirectUrl = resolveRedirectUrl(userRole, registrationType);
 
-      console.log("[AUTH] Redirecting to:", redirectUrl);
-      window.location.href = redirectUrl;
+      console.log("[AUTH] Preparing redirect to:", redirectUrl);
+      onSuccess(redirectUrl);
     } catch (err) {
       console.error("[AUTH] Login error:", err);
       alert("Something went wrong");
+      submissionLock.current = false;
       setIsLoading(false);
     }
   };
@@ -129,6 +130,8 @@ export const SigninFlowRenderer = ({
   }, [step, timer]);
 
   const handleMobileSubmit = async () => {
+    if (submissionLock.current) return;
+    submissionLock.current = true;
     setOtpError("");
     setIsLoading(true);
     try {
@@ -144,10 +147,12 @@ export const SigninFlowRenderer = ({
       const result = await res.json();
       if (!result.success) {
         setOtpError(result.message || "Failed to send OTP");
+        submissionLock.current = false;
         setIsLoading(false);
         return;
       }
 
+      submissionLock.current = false;
       setIsLoading(false);
       setStep(2); // Move to OTP
       setTimer(60);
@@ -155,11 +160,14 @@ export const SigninFlowRenderer = ({
     } catch (err) {
       console.error("[AUTH] OTP send error:", err);
       setOtpError("Failed to send OTP");
+      submissionLock.current = false;
       setIsLoading(false);
     }
   };
 
   const handleOtpSubmit = async () => {
+    if (submissionLock.current) return;
+    submissionLock.current = true;
     setOtpError("");
     setIsLoading(true);
     try {
@@ -178,26 +186,27 @@ export const SigninFlowRenderer = ({
       const result = await res.json();
       if (!result.success) {
         setOtpError(result.message || "OTP verification failed");
+        submissionLock.current = false;
         setIsLoading(false);
         return;
       }
 
-      setIsLoading(false);
       const redirectUrl = resolveRedirectUrl(
         result.data?.role,
         result.data?.registrationType,
       );
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      window.location.href = redirectUrl;
-      onSuccess();
+      onSuccess(redirectUrl);
     } catch (err) {
       console.error("[AUTH] OTP verify error:", err);
       setOtpError("OTP verification failed");
+      submissionLock.current = false;
       setIsLoading(false);
     }
   };
 
   const handleResendOtp = async () => {
+    if (submissionLock.current) return;
+    submissionLock.current = true;
     setOtpError("");
     setIsLoading(true);
     try {
@@ -213,16 +222,19 @@ export const SigninFlowRenderer = ({
       const result = await res.json();
       if (!result.success) {
         setOtpError(result.message || "Failed to resend OTP");
+        submissionLock.current = false;
         setIsLoading(false);
         return;
       }
 
       setTimer(60);
       setOtp(["", "", "", ""]);
+      submissionLock.current = false;
       setIsLoading(false);
     } catch (err) {
       console.error("[AUTH] OTP resend error:", err);
       setOtpError("Failed to resend OTP");
+      submissionLock.current = false;
       setIsLoading(false);
     }
   };
@@ -232,6 +244,9 @@ export const SigninFlowRenderer = ({
       type="button"
       disabled={isLoading}
       onClick={() => {
+        if (submissionLock.current) return;
+        submissionLock.current = true;
+        setIsLoading(true);
         const loginType = encodeURIComponent(userType || "");
         window.location.href = `/api/auth/google/start?mode=signin&loginType=${loginType}`;
       }}
@@ -323,7 +338,7 @@ export const SigninFlowRenderer = ({
 
           <button
             className="text-[var(--color-primary)] font-medium hover:underline disabled:opacity-50"
-            disabled={timer > 0}
+            disabled={timer > 0 || isLoading}
             onClick={() => void handleResendOtp()}
           >
             Resend
@@ -348,6 +363,7 @@ export const SigninFlowRenderer = ({
 
           <button
             onClick={() => setStep(1)}
+            disabled={isLoading}
             className="w-full border border-neutral-200 text-neutral-600 py-3 rounded-xl font-medium hover:bg-neutral-50 transition-all"
           >
             Cancel
@@ -390,6 +406,7 @@ export const SigninFlowRenderer = ({
           {mobile && (
             <button
               onClick={() => void handleMobileSubmit()}
+              disabled={isLoading}
               className="w-full bg-[var(--color-primary)] text-white py-3 mt-2 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all"
             >
               {isLoading ? "Sending OTP..." : "Send OTP"}
@@ -439,7 +456,7 @@ export const SigninFlowRenderer = ({
             </div>
             <button
               onClick={handleEmailPassSubmit}
-              disabled={!email || !password}
+              disabled={!email || !password || isLoading}
               className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
             >
               Login
@@ -516,7 +533,7 @@ export const SigninFlowRenderer = ({
             </div>
             <button
               onClick={handleEmailPassSubmit}
-              disabled={!email || !password}
+              disabled={!email || !password || isLoading}
               className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
             >
               Next
@@ -584,7 +601,7 @@ export const SigninFlowRenderer = ({
             </div>
             <button
               onClick={handleEmailPassSubmit}
-              disabled={!email || !password}
+              disabled={!email || !password || isLoading}
               className="w-full bg-[var(--color-primary)] text-white py-3 rounded-xl font-semibold hover:bg-[var(--color-warm-200)] transition-all shadow-md disabled:opacity-50 disabled:shadow-none"
             >
               Login

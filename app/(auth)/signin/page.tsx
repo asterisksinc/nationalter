@@ -8,6 +8,7 @@ import { UserTypeCard } from "../signup/components/UserTypeCard";
 import { Icon } from "../signup/components/Icon";
 import { useSearchParams } from "next/navigation";
 import Head from "next/head";
+import { LoginProgressLoader } from "@/components/auth/LoginProgressLoader";
 
 // Reuse Types
 enum UserType {
@@ -19,7 +20,7 @@ enum UserType {
 function SigninContent() {
   const [userType, setUserType] = useState<UserType | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const authError = searchParams.get("error");
 
@@ -37,56 +38,6 @@ function SigninContent() {
       setUserType(null);
     }
   };
-
-  // SUCCESS / DASHBOARD VIEW
-  if (isSuccess) {
-    return (
-      <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
-        {/* Left Sidebar */}
-        <div
-          className="hidden md:flex md:w-[355px] h-full shrink-0 relative z-20"
-          style={{
-            background: "linear-gradient(135deg, #ffe9c5 0%, #ffffff 100%)",
-          }}
-        >
-          <SigninSidebar />
-        </div>
-
-        {/* Right Content */}
-        <div className="flex-1 h-full bg-white relative z-10 flex flex-col">
-          {/* Mobile Header */}
-          <div className="md:hidden w-full px-6 py-6 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-50/50">
-            <div className="flex justify-center">
-              <img src="/logo.png" alt="NationCite" className="h-24 w-auto" />
-            </div>
-          </div>
-
-          <div className="w-full h-full flex flex-col items-center justify-center p-8">
-            <div className="text-center bg-white border border-neutral-200 rounded-2xl p-8 shadow-none flex flex-col justify-center max-w-md w-full">
-              <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon name="check" size={24} />
-              </div>
-              <h4 className="text-lg font-medium mb-2 text-neutral-800">
-                Welcome Back!
-              </h4>
-              <p className="text-xs text-neutral-500 mb-5">
-                You have successfully signed in as <br />
-                <span className="font-semibold text-[var(--color-primary)]">
-                  {userType}
-                </span>
-              </p>
-              <button
-                className="bg-[var(--color-primary)] text-white py-3 px-8 text-sm rounded-xl font-medium hover:bg-[var(--color-warm-200)] transition-all shadow-md hover:shadow-lg w-full"
-                onClick={() => (window.location.href = "/dashboard")}
-              >
-                Go to Dashboard
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // USER TYPE SELECTION VIEW (Step 0)
   if (!userType) {
@@ -185,7 +136,8 @@ function SigninContent() {
 
   // MAIN LOGIN FORM VIEW (Step 1 & 2)
   return (
-    <>  <Head>
+    <>
+      <Head>
         <title>NationCite Login | Researcher Dashboard Access</title>
         <meta
           name="description"
@@ -194,6 +146,12 @@ function SigninContent() {
         <meta name="keywords" content="NationCite login, researcher dashboard login India" />
         <meta property="og:title" content="NationCite Login | Researcher Dashboard Access" />
       </Head>
+      <LoginProgressLoader
+        isVisible={pendingRedirect !== null}
+        onComplete={() => {
+          if (pendingRedirect) window.location.assign(pendingRedirect);
+        }}
+      />
     <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
       {/* Sidebar */}
       <div
@@ -251,7 +209,7 @@ function SigninContent() {
                 userType={userType}
                 step={currentStep}
                 setStep={setCurrentStep}
-                onSuccess={() => setIsSuccess(true)}
+                onSuccess={setPendingRedirect}
               />
             </div>
 
