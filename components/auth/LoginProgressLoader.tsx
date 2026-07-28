@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface LoginProgressLoaderProps {
-  isVisible: boolean;
   onComplete: () => void;
   duration?: number;
 }
@@ -14,7 +13,6 @@ const COMPLETION_PAUSE = 120;
 const FADE_DURATION = 240;
 
 export function LoginProgressLoader({
-  isVisible,
   onComplete,
   duration = DEFAULT_DURATION,
 }: LoginProgressLoaderProps) {
@@ -27,12 +25,6 @@ export function LoginProgressLoader({
   }, [onComplete]);
 
   useEffect(() => {
-    if (!isVisible) {
-      setProgress(0);
-      setIsExiting(false);
-      return;
-    }
-
     let animationFrame = 0;
     let completionTimer = 0;
     let redirectTimer = 0;
@@ -68,9 +60,7 @@ export function LoginProgressLoader({
       window.clearTimeout(completionTimer);
       window.clearTimeout(redirectTimer);
     };
-  }, [duration, isVisible]);
-
-  if (!isVisible) return null;
+  }, [duration]);
 
   return (
     <div

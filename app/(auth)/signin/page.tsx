@@ -146,12 +146,11 @@ function SigninContent() {
         <meta name="keywords" content="NationCite login, researcher dashboard login India" />
         <meta property="og:title" content="NationCite Login | Researcher Dashboard Access" />
       </Head>
-      <LoginProgressLoader
-        isVisible={pendingRedirect !== null}
-        onComplete={() => {
-          if (pendingRedirect) window.location.assign(pendingRedirect);
-        }}
-      />
+      {pendingRedirect && (
+        <LoginProgressLoader
+          onComplete={() => window.location.assign(pendingRedirect)}
+        />
+      )}
     <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
       {/* Sidebar */}
       <div
