@@ -3,8 +3,9 @@ import { Check } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 
 type PricingPlan = {
+  tag?: string;
   title: string;
-  description: string;
+  description?: string;
   btnText: string;
   btnStyle: string;
   highlight: boolean;
@@ -13,13 +14,13 @@ type PricingPlan = {
     price: string;
     strikePrices?: string[];
     note?: string;
-    tiers?: { label: string; perPerson: string; total: string; additional?: string }[];
+    tiers?: { perPerson: string; }[];
   };
   yearly: {
     price: string;
     strikePrices?: string[];
     note?: string;
-    tiers?: { label: string; perPerson: string; total: string; additional?: string }[];
+    tiers?: { perPerson: string; }[];
   };
   includesNote?: string;
   audience_note?: string;
@@ -42,7 +43,7 @@ type PricingCms = {
 const DEFAULT_PLANS: PricingPlan[] = [
   {
     title: "Free",
-    description: "For every researcher who wants visibility on the platform.",
+    // description: "For every researcher who wants visibility on the platform.",
     btnText: "Get Verified",
     btnStyle:
       "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
@@ -61,7 +62,7 @@ const DEFAULT_PLANS: PricingPlan[] = [
   },
   {
     title: "Professional",
-    description: "For researchers who want control over their public presence.",
+    // description: "For researchers who want control over their public presence.",
     btnText: "Request Access",
     btnStyle:
       "bg-[#FF9534] border border-[#FF9534] text-white hover:bg-[#E6862D] shadow-md",
@@ -88,9 +89,10 @@ const DEFAULT_PLANS: PricingPlan[] = [
     footer_note: "Note: Best value for professionals",
   },
   {
+    tag: "Under 30 users",
     title: "Institutional",
-    description:
-      "For universities and research institutions managing many researcher profiles.",
+    // description:
+    //   "For universities and research institutions managing many researcher profiles.",
     btnText: "Contact Sales",
     btnStyle:
       "bg-white border border-gray-200 text-[#FF7A00] hover:bg-gray-50",
@@ -104,17 +106,17 @@ const DEFAULT_PLANS: PricingPlan[] = [
     ],
     includesNote: "Includes everything in Professional.",
     monthly: {
-      price: "₹1,399/person/month",
+      price: "₹1,399/professional/month",
       note: "All prices incl. GST.",
       tiers: [
-        { label: "Under 30 users", perPerson: "₹1,399/person/month", total: "₹41,970 total for 30 users", additional: "Additionally ₹1,099/person/month" },
+        { perPerson: "Additionally ₹1,399/professional/month", },
       ],
     },
     yearly: {
-      price: "₹899/person/year",
+      price: "₹899/professional/year",
       note: "All prices incl. GST.",
       tiers: [
-        { label: "Under 30 users", perPerson: "₹899/person/year", total: "₹26,970 total for 30 users", additional: "Additionally ₹642/person/year" },
+        { perPerson: "Additionally ₹899/professional/year" },
       ],
     },
     audience_note: "For universities & research institutions",
@@ -142,18 +144,16 @@ export default function PricingSection({
 
   return (
     <section
-      className={`w-full ${
-        isHero
+      className={`w-full ${isHero
           ? "pt-8 pb-12"
           : "pt-24 sm:pt-32 pb-10 sm:pb-16 md:pb-20 lg:pb-24"
-      } ${className || "bg-white"}`}
+        } ${className || "bg-white"}`}
     >
       <div className="w-full mx-auto">
         {/* Header Section */}
         <div
-          className={`text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 ${
-            isHero ? "" : ""
-          }`}
+          className={`text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 ${isHero ? "" : ""
+            }`}
         >
           <Badge>{cms?.badge_text || "Membership"}</Badge>
 
@@ -166,21 +166,19 @@ export default function PricingSection({
             <div className="bg-[#F3F4F6] p-1 rounded-md sm:rounded-lg inline-flex items-center gap-1">
               <button
                 onClick={() => setBillingCycle("monthly")}
-                className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${
-                  billingCycle === "monthly"
+                className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${billingCycle === "monthly"
                     ? "bg-white text-black shadow-none"
                     : "text-gray-500 hover:text-gray-700"
-                }`}
+                  }`}
               >
                 {cms?.billing_cycle_labels?.monthly || "Monthly"}
               </button>
               <button
                 onClick={() => setBillingCycle("switch")}
-                className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${
-                  billingCycle === "switch"
+                className={`px-6 py-2 rounded-md text-sm font-medium font-inter transition-all duration-200 ${billingCycle === "switch"
                     ? "bg-white text-black shadow-none"
                     : "text-gray-500 hover:text-gray-700"
-                }`}
+                  }`}
               >
                 {cms?.billing_cycle_labels?.alternate || "Yearly"}
               </button>
@@ -196,21 +194,25 @@ export default function PricingSection({
             return (
               <div
                 key={i}
-                className={`rounded-md sm:rounded-lg overflow-hidden transition-all duration-300 flex flex-col ${
-                  plan.highlight
+                className={`rounded-md sm:rounded-lg overflow-hidden transition-all duration-300 flex flex-col ${plan.highlight
                     ? "border border-[#FF9534] shadow-[0_0_40px_-5px_rgba(255,149,52,0.3)] scale-100 z-10"
                     : "border border-gray-200 shadow-none hover:shadow-md"
-                }`}
+                  }`}
               >
                 {/* Top Section (Colored Background) */}
                 <div
-                  className={`p-4 sm:p-5 md:p-6 lg:p-8 pb-5 sm:pb-6 md:pb-8 lg:pb-10 flex flex-col h-full ${
-                    plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
-                  }`}
+                  className={`p-4 sm:p-5 md:p-6 lg:p-8 pb-5 sm:pb-6 md:pb-8 lg:pb-10 flex flex-col h-full ${plan.highlight ? "bg-[#FFF5EB]" : "bg-[#F9FAFB]"
+                    }`}
                 >
-                  <h4 className="font-inter text-base sm:text-base md:text-lg font-semibold text-[#111111] mb-4 md:mb-5 text-left">
-                    {plan.title}
-                  </h4>
+                  <div className="flex gap-2 items-center justify-between">
+                    <h4 className="font-inter text-base sm:text-base md:text-lg font-semibold text-[#111111] mb-4 md:mb-5 text-left">
+                      {plan.title}
+                    </h4>
+
+                    {plan.tag && (
+                      <Badge className="mb-0! text-xs!">{plan.tag}</Badge>
+                    )}
+                  </div>
 
                   <div className="flex items-baseline gap-2 mb-1 flex-wrap">
                     {tier.strikePrices?.map((sp, k) => (
@@ -239,9 +241,6 @@ export default function PricingSection({
                           className="rounded-md border border-gray-200 bg-white px-3 py-2"
                         >
                           <div className="flex items-start justify-between gap-2 flex-wrap">
-                            <span className="font-inter text-xs font-semibold text-[#111111] text-left">
-                              {t.label}
-                            </span>
                             <span className="font-inter text-xs sm:text-sm font-semibold text-[#FF7A00] text-right">
                               {splitPrice(t.perPerson).main}
                               {splitPrice(t.perPerson).suffix && (
@@ -251,30 +250,6 @@ export default function PricingSection({
                               )}
                             </span>
                           </div>
-                          <p className="font-inter text-xs text-gray-500 mt-0.5 text-left">
-                            {t.total}
-                          </p>
-                          {t.additional && (() => {
-                            const m = t.additional.match(/^(.*?)(₹[\d,]+)(\/[a-zA-Z\/]+)?$/);
-                            if (!m) {
-                              return (
-                                <p className="font-inter text-xs text-[#FF7A00] mt-1 text-left">
-                                  {t.additional}
-                                </p>
-                              );
-                            }
-                            const [, prefix, amount, suffix] = m;
-                            return (
-                              <p className="font-inter text-xs mt-1 text-left">
-                                <span className="text-[#FF7A00] font-semibold">
-                                  {prefix}{amount}
-                                </span>
-                                {suffix && (
-                                  <span className="text-gray-400 text-[14px]">{suffix}</span>
-                                )}
-                              </p>
-                            );
-                          })()}
                         </div>
                       ))}
                       {tier.note && (
@@ -291,9 +266,9 @@ export default function PricingSection({
                     <div className="mb-4 md:mb-5" />
                   )}
 
-                  <p className="font-inter text-sm sm:text-sm md:text-base text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed text-left">
+                  {/* <p className="font-inter text-sm sm:text-sm md:text-base text-[#5C5C5C] mb-4 sm:mb-5 md:mb-6 leading-relaxed text-left">
                     {plan.description}
-                  </p>
+                  </p> */}
 
                   <div className="mt-4 flex justify-center">
                     <button
