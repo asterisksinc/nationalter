@@ -46,9 +46,9 @@ const DEFAULT_CMS = {
     cta_label: "Unlock Premium Insights →",
     cta_url: "#",
     tabs: [
-      { label: "Custom Impact Report", title: "Custom Impact Report", body: "A personalized breakdown of your percentile position, growth trend, citation hygiene gaps, and strategic improvement roadmap.", image: "", icon: "" },
-      { label: "1-on-1 Consultancy Call", title: "1-on-1 Consultancy Call", body: "A structured advisory session analyzing your profile, identifying missing opportunities, and guiding measurable impact growth.", image: "", icon: "" },
-      { label: "Strategic Profile Optimization", title: "Strategic Profile Optimization", body: "Actionable recommendations to improve metadata accuracy, affiliation alignment, subject tagging, and long-term citation momentum.", image: "", icon: "" },
+      { label: "Custom Impact Report", title: "Custom Impact Report", body: "A personalized breakdown of your percentile position, growth trend, citation hygiene gaps, and strategic improvement roadmap.", video_url: "/creatives/custom impact _2.mp4", icon: "" },
+      { label: "1-on-1 Consultancy Call", title: "1-on-1 Consultancy Call", body: "A structured advisory session analyzing your profile, identifying missing opportunities, and guiding measurable impact growth.", video_url: "/creatives/one-0-one_1.mp4", icon: "" },
+      { label: "Strategic Profile Optimization", title: "Strategic Profile Optimization", body: "Actionable recommendations to improve metadata accuracy, affiliation alignment, subject tagging, and long-term citation momentum.", video_url: "/creatives/Strategic Profile Optimisation_1.mp4", icon: "" },
     ],
   },
   three_blocks: {
@@ -307,12 +307,12 @@ export default function DoctorsLeaderboardPage() {
           id: `feature${index + 1}`,
           label: tab.label || `Feature ${index + 1}`,
           content: (
-            <div className="max-w-2xl mx-auto text-center text-slate-700">
-              {tab.image ? (
-                <img src={tab.image} alt={tab.title || tab.label || "Feature"} className="w-full h-56 object-cover rounded-md sm:rounded-lg mb-4" />
+            <div className="max-w-3xl mx-auto text-center text-slate-700 pb-2">
+              {tab.video_url ? (
+                <video src={tab.video_url} loop autoPlay muted className="w-full h-full object-cover rounded-md sm:rounded-lg mb-4" />
               ) : null}
               <h4 className="text-lg font-semibold mb-2">{tab.title || tab.label}</h4>
-              <p>{tab.body}</p>
+              <p className="w-full mx-auto text-center">{tab.body}</p>
             </div>
           ),
         }))}
