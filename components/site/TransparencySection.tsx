@@ -12,6 +12,7 @@ interface Product {
   category: string;
   description: string;
   image: string;
+  video_url: string;
   slug: string;
 }
 
@@ -32,6 +33,7 @@ const products: Product[] = [
     description:
       "Researchers are ranked within their field and converted into percentiles for unbiased comparison.",
     image: "/dummy/placeholder-1.png",
+    video_url: "/creatives/",
     slug: "field-fairness",
   },
   {
@@ -42,6 +44,7 @@ const products: Product[] = [
     description:
       "Metrics are sourced from Scopus, and Web of Science never self-reported.",
     image: "/dummy/placeholder-2.png",
+    video_url: "/creatives/Trusted biometric sources_.mov",
     slug: "verified-data",
   },
   {
@@ -52,6 +55,7 @@ const products: Product[] = [
     description:
       "Built in alignment with India's DPDP Act, with full consent and audit transparency.",
     image: "/dummy/placeholder-3.png",
+    video_url: "/creatives/Privacy and complience_.mov",
     slug: "security-standards",
   },
 ];
@@ -152,12 +156,7 @@ export default function TransparencySection({ cms }: { cms?: TransparencyCms }) 
               >
                 <div className="space-y-2 md:space-y-6">
                   <div className="relative aspect-4/3 bg-neutral-100 rounded-md sm:rounded-lg overflow-hidden">
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      className="object-cover"
-                    />
+                    <video src={p.video_url} className="w-full h-full object-cover" loop autoPlay muted></video>
                   </div>
 
                   <div className="max-w-md block md:block mt-4 md:mt-0">

@@ -21,7 +21,7 @@ const CheckerboardPattern = ({ className }: { className?: string }) => (
 type HIndexCms = {
   heading?: string;
   subheading?: string;
-  cards?: Array<{ title: string; description: string }>;
+  cards?: Array<{ title: string; description: string; video_url?: string }>;
 };
 
 export default function UnderstandingHIndex({ cms }: { cms?: HIndexCms }) {
@@ -30,26 +30,31 @@ export default function UnderstandingHIndex({ cms }: { cms?: HIndexCms }) {
       title: "What Is the H-Index?",
       description:
         "A balance of productivity and citations measuring sustained scholarly influence.",
+      video_url: "/creatives/what is h index.mov"
     },
     {
       title: "Why It Matters",
       description:
         "Used globally for representing research credibility, and institutional benchmarking.",
+      video_url: "/creatives/why it matters_.mov"
     },
     {
       title: "The Raw Number Problem",
       description:
         "Citation cultures differ across fields, raw scores alone are misleading.",
+      video_url: "/creatives/The raw number problem_.mov"
     },
     {
       title: "Field-Normalized Percentiles",
       description:
         "You’re compared only with peers in your discipline for true fairness.",
+      video_url: "/creatives/field normalised_.mov"
     },
     {
       title: "Beyond One Metric",
       description:
         "Additional indicators ensure balanced, and responsible research assessment.",
+      video_url: "/creatives/Beyond one metric_.mov"
     },
   ];
 
@@ -69,7 +74,7 @@ function renderComponent({
   cards,
 }: {
   header: { heading: string; subheading: string };
-  cards: Array<{ title: string; description: string }>;
+  cards: Array<{ title: string; description: string; video_url?: string }>;
 }) {
 
   return (
@@ -92,7 +97,11 @@ function renderComponent({
               key={index}
               className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden"
             >
-              <CheckerboardPattern className="w-full h-40" />
+              {card.video_url ? (
+                <video src={card.video_url} className="w-full flex-1 object-cover" loop autoPlay muted></video>
+              ): (
+                <CheckerboardPattern className="w-full flex-1" />
+              )}
               <div className="p-4">
                 <h5 className="text-base sm:text-base font-semibold text-[#1E1E1E] mb-1 leading-snug">
                   {card.title}
@@ -114,7 +123,11 @@ function renderComponent({
                 key={index}
                 className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-[420px]"
               >
+                {card.video_url ? (
+                <video src={card.video_url} className="w-full flex-1 object-cover" loop autoPlay muted></video>
+              ): (
                 <CheckerboardPattern className="w-full flex-1" />
+              )}
                 <div className="p-5 pb-6">
                   <h5 className="text-base font-semibold text-[#1E1E1E] mb-2 leading-snug">
                     {card.title}
@@ -134,7 +147,11 @@ function renderComponent({
                 key={index}
                 className="bg-white rounded-md sm:rounded-lg border border-gray-200 shadow-none overflow-hidden flex flex-col h-[420px]"
               >
+                {card.video_url ? (
+                <video src={card.video_url} className="w-full flex-1 object-cover" loop autoPlay muted></video>
+              ): (
                 <CheckerboardPattern className="w-full flex-1" />
+              )}
                 <div className="p-5 pb-6">
                   <h5 className="text-base font-semibold text-[#1E1E1E] mb-2 leading-snug">
                     {card.title}

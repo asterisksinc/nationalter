@@ -48,7 +48,7 @@ const DEFAULT_CMS = {
     subheading:
       "A verified platform built for precision, transparency, and long-term academic growth.",
     reasons: [
-      { title: "Unfair Comparisons", description: "Tired of being compared to researchers outside your discipline." },
+      { title: "Unfair Comparisons", description: "Tired of being compared to researchers outside your discipline.", },
       { title: "Hidden Formulas", description: "Frustrated by rankings that don’t explain how scores are calculated." },
       { title: "Inaccurate Profiles", description: "Publications missing, affiliations outdated, duplicates unresolved." },
       { title: "Career Bias", description: "Early-career researchers overshadowed by tenure-length advantage." },
@@ -163,7 +163,7 @@ export default function AboutPage() {
           </h1>
 
           {/* DESCRIPTION */}
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto">
+          <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[600px] mx-auto">
             {cms.hero.subheading}
           </p>
 
@@ -177,29 +177,6 @@ export default function AboutPage() {
             </button>
           </div>
         </SiteHero>
-
-        {/* two img placehodlers blocks.. one block with 70% width and other with 30% width..section padding 120px on left and right.. */}
-        <section className="section-padding w-full py-8 sm:py-10 md:py-12 lg:py-12">
-          <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
-            {/* 70% block */}
-            <div className="w-full md:w-[65%] h-80 sm:h-[420px] md:h-[350px] lg:h-[600px] bg-neutral-200 rounded-md sm:rounded-lg flex items-center justify-center">
-              {cms.image_collage.left_image ? (
-                <img src={cms.image_collage.left_image} alt={cms.image_collage.left_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
-              ) : (
-                <span className="text-neutral-500 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.left_image_alt}</span>
-              )}
-            </div>
-
-            {/* 30% block */}
-            <div className="w-full md:w-[35%] h-[280px] sm:h-80 md:h-[350px] lg:h-[600px] bg-neutral-300 rounded-md sm:rounded-lg flex items-center justify-center">
-              {cms.image_collage.right_image ? (
-                <img src={cms.image_collage.right_image} alt={cms.image_collage.right_image_alt} className="w-full h-full object-cover rounded-md sm:rounded-lg" />
-              ) : (
-                <span className="text-neutral-600 text-sm sm:text-base md:text-base lg:text-base">{cms.image_collage.right_image_alt}</span>
-              )}
-            </div>
-          </div>
-        </section>
 
         {/* Who We Are */}
         <section className="w-full section-padding py-10 sm:py-16 md:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
