@@ -48,21 +48,21 @@ const DEFAULT_CMS = {
     subheading:
       "A verified platform built for precision, transparency, and long-term academic growth.",
     reasons: [
-      { title: "Unfair Comparisons", description: "Tired of being compared to researchers outside your discipline.", },
-      { title: "Hidden Formulas", description: "Frustrated by rankings that don’t explain how scores are calculated." },
-      { title: "Inaccurate Profiles", description: "Publications missing, affiliations outdated, duplicates unresolved." },
-      { title: "Career Bias", description: "Early-career researchers overshadowed by tenure-length advantage." },
-      { title: "Global Visibility", description: "No self-reported inflation only verifiable bibliometric sources." },
-      { title: "Data Integrity", description: "We grow with you, from your first paper to your emeritus status." },
-      { title: "Field Fairness", description: "Percentile rankings within your discipline not across unrelated fields." },
-      { title: "Impact Context", description: "Scores explained in plain language, not just raw numbers." },
-      { title: "ORCID Verified", description: "Secure authentication ensures profile ownership and credibility." },
-      { title: "Institutional Analytics", description: "Universities gain cohort-level insight without manual spreadsheets." },
-      { title: "Duplicate Detection", description: "Intelligent merging prevents fragmented academic records." },
-      { title: "Correction Workflow", description: "Submit evidence-backed requests with full audit transparency." },
-      { title: "Responsible Metrics", description: "Designed to support evaluation not replace peer review." },
-      { title: "Grant-Ready Reports", description: "Downloadable analytics formatted for promotions and funding." },
-      { title: "India-Focused", description: "A national framework tailored to India’s research ecosystem." },
+      { title: "Unfair Comparisons", description: "Tired of being compared to researchers outside your discipline.", icon: "/about/Unfair Comparision.svg" },
+      { title: "Hidden Formulas", description: "Frustrated by rankings that don’t explain how scores are calculated.", icon: "/about/Hidden Formulas.svg" },
+      { title: "Inaccurate Profiles", description: "Publications missing, affiliations outdated, duplicates unresolved.", icon: "/about/In-Accurate-Profiles.svg" },
+      { title: "Career Bias", description: "Early-career researchers overshadowed by tenure-length advantage.", icon: "/about/Career Bias.svg" },
+      { title: "Global Visibility", description: "No self-reported inflation only verifiable bibliometric sources.", icon: "/about/GLobal Visibility.svg" },
+      { title: "Data Integrity", description: "We grow with you, from your first paper to your emeritus status.", icon: "/about/Data-Integrity.svg" },
+      { title: "Field Fairness", description: "Percentile rankings within your discipline not across unrelated fields.", icon: "/about/Field Fairness.svg" },
+      { title: "Impact Context", description: "Scores explained in plain language, not just raw numbers.", icon: "/about/Impact-Context.svg" },
+      { title: "ORCID Verified", description: "Secure authentication ensures profile ownership and credibility.", icon: "/about/ORCID-Verified.svg" },
+      { title: "Institutional Analytics", description: "Universities gain cohort-level insight without manual spreadsheets.", icon: "/about/Institutional-Analytics.svg" },
+      { title: "Duplicate Detection", description: "Intelligent merging prevents fragmented academic records.", icon: "/about/Duplicate-Detection.svg" },
+      { title: "Correction Workflow", description: "Submit evidence-backed requests with full audit transparency.", icon: "/about/Correction-Workflow.svg" },
+      { title: "Responsible Metrics", description: "Designed to support evaluation not replace peer review.", icon: "/about/Responsible Metrics.svg" },
+      { title: "Grant-Ready Reports", description: "Downloadable analytics formatted for promotions and funding.", icon: "/about/Grant-Ready-Reports.svg" },
+      { title: "India-Focused", description: "A national framework tailored to India’s research ecosystem.", icon: "/about/India-Focussed.svg" },
     ],
   },
   faq: {
@@ -236,7 +236,7 @@ export default function AboutPage() {
               >
                 <div className="flex items-start gap-2 sm:gap-3 md:gap-3 lg:gap-3">
                   <div className="w-6 sm:w-6 md:w-7 lg:w-7 mt-1 sm:mt-2 md:mt-2 lg:mt-2 h-6 sm:h-6 md:h-7 lg:h-7 text-[#F76A23] bg-orange-50 rounded-md sm:rounded-lg flex items-center justify-center shrink-0">
-                    <Check className="w-6 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
+                    <img src={reason.icon} alt={reason.title} className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
                   </div>
                   <div>
                     <h5 className="font-medium text-sm sm:text-base md:text-base lg:text-lg text-neutral-800">
