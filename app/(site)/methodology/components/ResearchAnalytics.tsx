@@ -50,7 +50,7 @@ const DEFAULT_ANALYTICS: ResearchAnalyticsItem[] = [
   },
 ];
 
-const DEFAULT_IMAGE = "/dummy/researcher.jpg";
+const DEFAULT_IMAGE = "/methodology-analytics-dashboard.png";
 
 export default function ResearchAnalytics({ cms }: { cms?: ResearchAnalyticsCms }) {
   const analytics = useMemo(
@@ -66,28 +66,35 @@ export default function ResearchAnalytics({ cms }: { cms?: ResearchAnalyticsCms 
 
   const activeItem = analytics.find((item) => item.kicker === activeTab) || analytics[0];
   const imageSrc = cms?.image && cms.image.length > 0 ? cms.image : DEFAULT_IMAGE;
+  const heading = cms?.heading || "Five Dimensions of Research Excellence";
+  const headingLines =
+    heading === "Five Dimensions of Research Excellence"
+      ? ["Five Dimensions of", "Research Excellence"]
+      : [heading];
 
   return (
     <section className="w-full py-10 md:py-16 bg-white section-padding">
       <div className="mx-auto grid w-full grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 items-stretch">
-        <div className="relative order-2 min-h-80 overflow-hidden rounded-[28px] border border-[#F0E3D7] bg-[#FFF8F1] shadow-[0_20px_60px_rgba(247,106,35,0.12)] md:min-h-[420px] lg:order-1 lg:min-h-[620px]">
+        <div className="relative order-2 aspect-[3644/3772] self-start overflow-hidden rounded-xl border border-[#F0E3D7] bg-[#FFDFC4] shadow-[0_20px_60px_rgba(247,106,35,0.12)] lg:order-1">
           <Image
             src={imageSrc}
             alt={cms?.heading || activeItem?.title || "Research analytics"}
             fill
             priority={false}
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover object-center"
+            className="object-contain object-center"
           />
-          <div className="absolute inset-0 bg-linear-to-tr from-black/25 via-black/0 to-white/10" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-black/35 to-transparent" />
         </div>
 
-        <div className="order-1 flex h-full flex-col justify-center rounded-[28px] bg-white px-6 py-8 text-center sm:px-8 sm:py-10 lg:order-2 lg:px-12 lg:py-14 lg:text-left">
+        <div className="order-1 flex h-full flex-col justify-center rounded-xl bg-white px-6 py-8 text-center sm:px-8 sm:py-10 lg:order-2 lg:px-12 lg:py-14 lg:text-left">
           <Badge>Core Analytics</Badge>
 
-          <h3 className="mt-5 max-w-none text-3xl font-semibold leading-tight text-[#1E1E1E] sm:text-4xl lg:max-w-[12ch] lg:text-5xl">
-            {cms?.heading || "Five Dimensions of Research Excellence"}
+          <h3 className="mt-5 max-w-none text-3xl font-semibold leading-tight text-[#1E1E1E] sm:text-4xl xl:text-5xl">
+            {headingLines.map((line) => (
+              <span key={line} className="block lg:whitespace-nowrap">
+                {line}
+              </span>
+            ))}
           </h3>
 
           <p className="mt-5 max-w-2xl text-sm leading-7 text-[#5C5C5C] sm:text-base">
@@ -119,10 +126,10 @@ export default function ResearchAnalytics({ cms }: { cms?: ResearchAnalyticsCms 
             </div>
           </div>
 
-          <div className="mt-8 rounded-3xl border border-[#EFE6DC] bg-[#FFFDF9] p-5 shadow-[0_10px_30px_rgba(247,106,35,0.06)] transition-all duration-300 sm:p-6 lg:p-7">
-            <div className="inline-flex rounded-full bg-[#FFF1E5] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#C95D10]">
+          <div className="mt-8 rounded-xl border border-[#EFE6DC] bg-[#FFFDF9] p-5 shadow-[0_10px_30px_rgba(247,106,35,0.06)] transition-all duration-300 sm:p-6 lg:p-7">
+            <Badge className="mb-0">
               {activeItem?.kicker}
-            </div>
+            </Badge>
 
             <h4 className="mt-4 text-lg font-medium leading-tight text-[#1E1E1E] sm:text-2xl lg:text-[2rem]">
               {activeItem?.title}

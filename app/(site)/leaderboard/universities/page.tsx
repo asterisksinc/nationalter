@@ -32,15 +32,15 @@ const DEFAULT_CMS = {
     search_placeholder: "Search universities...",
   },
   three_cards: {
-    heading: "Lorem Ipsum",
+    badge_text: "Evaluation Framework",
+    heading: "Standardized. Transparent. Defensible.",
     subheading:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    cards: Array.from({ length: 3 }, () => ({
-      title: "Lorem ipsum dolor sit amet",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "",
-    })),
+      "All rankings are derived from documented bibliometric methodologies, verified academic data sources, and discipline-sensitive normalization principles to ensure credibility and fairness.",
+    cards: [
+      { title: "Discipline-Normalized Assessment", description: "Researchers and institutions are evaluated within subject-specific cohorts to ensure equitable comparison across diverse academic domains.", image: "" },
+      { title: "Verified Data Governance", description: "All metrics are sourced from recognized scholarly databases and processed under strict validation protocols to maintain data integrity.", image: "" },
+      { title: "Standard H-Index Computation", description: "H-index values are calculated in accordance with established Hirsch methodology, ensuring methodological consistency and international comparability.", image: "" },
+    ],
   },
   tab_toggle: {
     badge_text: "Premium Advantage",
