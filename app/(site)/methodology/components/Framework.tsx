@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Badge from "@/components/ui/Badge";
 
 type Framework = {
@@ -14,33 +15,33 @@ type Framework = {
 
 const DEFAULT_CARDS = [
     {
-        icon: "",
+        icon: "/icons/methodology/reduce-disciplinary-bias.svg",
         title: "Reduce Disciplinary Bias",
         description: "Ensures fair comparisons through field-normalized evaluation.",
     },
     {
-        icon: "",
+        icon: "/icons/methodology/reward-meaningful-impact.svg",
         title: "Reward Meaningful Impact",
         description: "Recognizes sustained scholarly influence rather than publication quantity.",
     },
     {
-        icon: "",
+        icon: "/icons/methodology/transparent-methodology.svg",
         title: "Transparent Methodology",
         description: "Every analytical framework and calculation is publicly documented.",
     },
     {
-        icon: "",
+        icon: "/icons/methodology/difficult-to-manipulate.svg",
         title: "Difficult to Manipulate",
         description:
             "Verified data sources and structured evaluation reduce opportunities for metric inflation.",
     },
     {
-        icon: "",
+        icon: "/icons/methodology/reproducible-results.svg",
         title: "Reproducible Results",
         description: "Version-controlled methodologies ensure long-term consistency and auditability.",
     },
     {
-        icon: "",
+        icon: "/icons/methodology/supports-better-decisions.svg",
         title: "Supports Better Decisions",
         description:
             "Provides valuable insights for researchers, institutions, funding agencies, and policymakers.",
@@ -67,14 +68,27 @@ const Framework = ({ cms }: { cms: Framework }) => {
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
-                    {cards.map((card, index) => (
-                        <article
-                            key={`${card.title}-${index}`}
-                            className="group rounded-3xl border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-[0_10px_30px_rgba(247,106,35,0.1)]"
-                        >
+                    {cards.map((card, index) => {
+                        const iconSrc = card.icon || DEFAULT_CARDS[index]?.icon;
+
+                        return (
+                            <article
+                                key={`${card.title}-${index}`}
+                                className="group rounded-xl border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-[0_10px_30px_rgba(247,106,35,0.1)]"
+                            >
                                 <div className="flex justify-start">
-                                    <div className="inline-flex h-12 w-12 mb-2 items-center justify-center rounded-full bg-[#f9f6f3] text-sm font-semibold text-[#C95D10]">
-                                        {card.icon || `0${index + 1}`}
+                                    <div className="inline-flex h-12 w-12 mb-2 items-center justify-center rounded-full bg-[#FF7A00]/10 text-sm font-semibold text-[#C95D10]">
+                                        {iconSrc ? (
+                                            <Image
+                                                src={iconSrc}
+                                                alt=""
+                                                width={24}
+                                                height={24}
+                                                aria-hidden="true"
+                                            />
+                                        ) : (
+                                            `0${index + 1}`
+                                        )}
                                     </div>
                                 </div>
                                 <div className="min-w-0">
@@ -85,8 +99,9 @@ const Framework = ({ cms }: { cms: Framework }) => {
                                         {card.description}
                                     </p>
                                 </div>
-                        </article>
-                    ))}
+                            </article>
+                        );
+                    })}
                 </div>
             </div>
         </section>

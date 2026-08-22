@@ -10,7 +10,6 @@ import Thebigcard from "../methodology/components/Thebigcard";
 import RightCard from "../methodology/components/Rightcard";
 import { getCmsPageServer } from "@/lib/cms-server";
 import ResearchAnalytics from "./components/ResearchAnalytics";
-import PerformanceCategories from "./components/PerformanceCategories";
 import Framework from "./components/Framework";
 import PracticalApplications from "./components/PracticalApplications";
 
@@ -30,9 +29,9 @@ const DEFAULT_CMS = {
     desktop_background_image: "/Bg.jpg",
     mobile_background_image: "/Mobile_Responsive.jpg",
     badge_text: "Scientometric Framework",
-    heading: "Transparent Research Intelligence. Scientifically Measured.",
+    heading: "Transparent Research Intelligence.\nScientifically Measured.",
     subheading:
-      "NationCite evaluates research through a transparent, field-normalized scientometric framework that combines globally recognized bibliometric indicators with advanced research analytics to deliver fair, reproducible, and evidence-based academic evaluation.",
+      "NationCite combines trusted bibliometric indicators with advanced research analytics\nto deliver fair, transparent, and evidence-based evaluation.",
     cta_label: "Explore the Methodology",
   },
   trusted_by: {
@@ -272,13 +271,21 @@ export default async function MethodologyPage() {
         <Badge>{cms.hero.badge_text}</Badge>
 
         {/* HEADING */}
-        <h1 className="font-inter mb-8 text-center leading-snug md:max-w-[800px]">
-          <span className="block sm:inline">{cms.hero.heading}</span>
+        <h1 className="font-inter mb-8 max-w-none text-center leading-snug lg:max-w-[1400px]">
+          {cms.hero.heading.split("\n").map((line: string) => (
+            <span key={line} className="block lg:whitespace-nowrap">
+              {line}
+            </span>
+          ))}
         </h1>
 
         {/* DESCRIPTION */}
-        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[500px] mx-auto text-center">
-          {cms.hero.subheading}
+        <p className="text-sm sm:text-base md:text-base lg:text-lg text-[#5C5C5C] pt-4 mb-10 max-w-[760px] mx-auto text-center">
+          {cms.hero.subheading.split("\n").map((line: string) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
         </p>
 
         {/* CTA */}
@@ -299,8 +306,6 @@ export default async function MethodologyPage() {
       <ResearchAnalytics cms={cms.research_analytics} />
 
       <RightCard cms={cms.evaluation} />
-
-      <PerformanceCategories cms={cms.performance} />
 
       <Framework cms={cms.framework} />
 

@@ -72,7 +72,7 @@ const PracticalApplications = ({ cms }: { cms: PracticalApplicationsProps }) => 
             <h4 className="text-lg font-medium leading-tight text-[#1E1E1E]">
                 {application.title}
             </h4>
-            <p className="mt-3 text-sm leading-7 text-[#5C5C5C] sm:text-base">
+            <p className="mt-3 text-xs leading-5 text-[#5C5C5C] sm:text-sm sm:leading-6">
                 {application.description}
             </p>
         </div>
